@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="cell_height">56dp</dimen>
+    <dimen name="row_header_width">56dp</dimen>
+</resources>
