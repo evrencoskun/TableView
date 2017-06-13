@@ -81,6 +81,10 @@ public class TableView extends FrameLayout {
         recyclerView.setLayoutParams(layoutParams);
 
         // Set scroll listener to be able to scroll all rows synchrony.
+        m_jColumnScrollListener = new ColumnScrollListener(m_jCellRecyclerView.getLayoutManager()
+                , recyclerView);
+
+        // Set scroll listener to be able to scroll all rows synchrony.
         recyclerView.addOnScrollListener(m_jColumnScrollListener);
         return recyclerView;
     }
@@ -115,9 +119,6 @@ public class TableView extends FrameLayout {
         layoutParams.topMargin = m_nColumnHeaderHeight;
         recyclerView.setLayoutParams(layoutParams);
 
-        // Set scroll listener to be able to scroll all rows synchrony.
-        m_jColumnScrollListener = new ColumnScrollListener(layoutManager);
-
         return recyclerView;
     }
 
@@ -140,7 +141,7 @@ public class TableView extends FrameLayout {
             this.m_iTableAdapter.setRowHeaderWidth(m_nRowHeaderWidth);
             this.m_iTableAdapter.setColumnHeaderHeight(m_nColumnHeaderHeight);
             this.m_iTableAdapter.setTableView(this);
-            //this.m_iTableAdapter.setColumnScrollListener(m_jColumnScrollListener);
+            this.m_iTableAdapter.setColumnScrollListener(m_jColumnScrollListener);
 
             // set adapters
             if (m_jRowHeaderRecyclerView != null) {
