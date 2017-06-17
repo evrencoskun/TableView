@@ -1,10 +1,12 @@
 package com.evrencoskun.tableview;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -86,6 +88,9 @@ public class TableView extends FrameLayout {
 
         // Set scroll listener to be able to scroll all rows synchrony.
         recyclerView.addOnScrollListener(m_jColumnScrollListener);
+
+        // Add vertical item decoration to display column line
+        recyclerView.addItemDecoration(createItemDecoration(DividerItemDecoration.HORIZONTAL));
         return recyclerView;
     }
 
@@ -100,6 +105,9 @@ public class TableView extends FrameLayout {
         layoutParams.topMargin = m_nColumnHeaderHeight;
         recyclerView.setLayoutParams(layoutParams);
 
+        // Add vertical item decoration to display row line
+        recyclerView.addItemDecoration(createItemDecoration(DividerItemDecoration.VERTICAL));
+
         //recyclerView.addOnScrollListener(contentScrollListener);
         return recyclerView;
     }
@@ -108,7 +116,7 @@ public class TableView extends FrameLayout {
         RecyclerView recyclerView = new RecyclerView(getContext());
 
         // Set layout manager
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -119,6 +127,8 @@ public class TableView extends FrameLayout {
         layoutParams.topMargin = m_nColumnHeaderHeight;
         recyclerView.setLayoutParams(layoutParams);
 
+        // Add vertical item decoration to display row line on center recycler view
+        recyclerView.addItemDecoration(createItemDecoration(DividerItemDecoration.VERTICAL));
         return recyclerView;
     }
 
@@ -132,6 +142,15 @@ public class TableView extends FrameLayout {
         layoutParams.leftMargin = m_nRowHeaderWidth;
         view.setLayoutParams(layoutParams);
         return view;
+    }
+
+    private DividerItemDecoration createItemDecoration(int orientation) {
+        Drawable mDivider = ContextCompat.getDrawable(getContext(), R.drawable.cell_line_divider);
+
+        DividerItemDecoration jItemDecoration = new DividerItemDecoration(getContext(),
+                orientation);
+        jItemDecoration.setDrawable(mDivider);
+        return jItemDecoration;
     }
 
 
