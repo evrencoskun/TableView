@@ -4,17 +4,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.evrencoskun.tableview.ITableView;
+
 /**
  * Created by evrencoskun on 10/06/2017.
  */
 
 public interface ITableAdapter {
-
-    int getColumnWidth(int p_nColumn);
-
-    int getRowHeight(int p_nRow);
-
-    int getCellItemViewType(int p_nRow, int p_nColumn);
 
     int getColumnHeaderItemViewType(int position);
 
@@ -34,6 +30,6 @@ public interface ITableAdapter {
 
     View onCreateCornerView();
 
-    RecyclerView.LayoutManager getColumnHeaderLayoutManager();
+    ITableView getTableView();
 
 }

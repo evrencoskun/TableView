@@ -1,15 +1,15 @@
 package com.evrencoskun.tableview.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.ColumnHeaderRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.RowHeaderRecyclerViewAdapter;
-import com.evrencoskun.tableview.listener.ColumnScrollListener;
+import com.evrencoskun.tableview.listener.OnScrollListenerManagerOnItemTouchListener;
 
 import java.util.List;
 
@@ -31,10 +31,9 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
     protected List<RH> m_jRowHeaderItems;
     protected List<List<C>> m_jCellItems;
 
-    private RecyclerView.LayoutManager m_jColumnHeaderLayoutManager;
-    private TableView m_iTableView;
+    private ITableView m_iTableView;
 
-    private ColumnScrollListener m_jColumnScrollListener;
+    private OnScrollListenerManagerOnItemTouchListener m_jColumnScrollListener;
 
     public AbstractTableAdapter(Context p_jContext) {
         m_jContext = p_jContext;
@@ -145,22 +144,14 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
         return m_jCellItems.get(p_nXPosition).get(p_nYPosition);
     }
 
-    public void setAmountAxisY(int p_nAmountAxisY) {
-        //m_nAmountAxisY = p_nAmountAxisY;
-
-        if (m_iCellRecyclerViewAdapter != null) {
-            // m_iCellRecyclerViewAdapter.setAmountAxisY(p_nAmountAxisY);
-        }
-    }
-
-
     public final void notifyDataSetChanged() {
         m_iColumnHeaderRecyclerViewAdapter.notifyDataSetChanged();
         m_iRowHeaderRecyclerViewAdapter.notifyDataSetChanged();
         m_iCellRecyclerViewAdapter.notifyCellDataSetChanged();
     }
 
-    public void setColumnScrollListener(ColumnScrollListener p_jColumnScrollListener) {
+    public void setColumnScrollListener(OnScrollListenerManagerOnItemTouchListener
+                                                p_jColumnScrollListener) {
         this.m_jColumnScrollListener = p_jColumnScrollListener;
 
         if (m_iCellRecyclerViewAdapter != null) {
@@ -172,13 +163,8 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
         m_iTableView = p_iTableView;
     }
 
-
     @Override
-    public RecyclerView.LayoutManager getColumnHeaderLayoutManager() {
-        return m_jColumnHeaderLayoutManager;
-    }
-
-    public void setColumnHeaderLayoutManager(RecyclerView.LayoutManager p_jLayoutManager) {
-        this.m_jColumnHeaderLayoutManager = p_jLayoutManager;
+    public ITableView getTableView() {
+        return m_iTableView;
     }
 }

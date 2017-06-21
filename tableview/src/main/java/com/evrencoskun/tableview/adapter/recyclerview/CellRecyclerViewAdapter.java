@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 
 import com.evrencoskun.tableview.R;
 import com.evrencoskun.tableview.adapter.ITableAdapter;
-import com.evrencoskun.tableview.layoutmanager.ColumnLayoutManager;
-import com.evrencoskun.tableview.listener.ColumnScrollListener;
+import com.evrencoskun.tableview.listener.CellRecyclerViewListener;
+import com.evrencoskun.tableview.listener.OnScrollListenerManagerOnItemTouchListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +26,9 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
     private ITableAdapter m_iTableAdapter;
 
-    private ColumnScrollListener m_jColumnScrollListener;
+    private OnScrollListenerManagerOnItemTouchListener m_jColumnScrollListener;
     private final DividerItemDecoration m_jCellItemDecoration;
+    private CellRecyclerViewListener listener;
 
     public CellRecyclerViewAdapter(Context context, List<C> p_jItemList, ITableAdapter
             p_iTableAdapter) {
@@ -39,27 +40,27 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
         // Create Item decoration
         m_jCellItemDecoration = createCellItemDecoration();
+
+
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+
+
         // Create a RecyclerView as a Row of the CellRecyclerView
-        RecyclerView jRecyclerView = new RecyclerView(m_jContext);
-
-        // Set the custom layout manager that helps the fit width of the cell and column header
-        ColumnLayoutManager layoutManager = new ColumnLayoutManager(m_jContext, m_iTableAdapter
-                .getColumnHeaderLayoutManager());
-        layoutManager.setOrientation(ColumnLayoutManager.HORIZONTAL);
-        jRecyclerView.setLayoutManager(layoutManager);
-
-        // Add scroll listener to be able to scroll all rows synchrony.
-        if (m_jColumnScrollListener != null) {
-            jRecyclerView.removeOnScrollListener(m_jColumnScrollListener);
-            jRecyclerView.addOnScrollListener(m_jColumnScrollListener);
-        }
+        CellRecyclerView jRecyclerView = new CellRecyclerView(m_jContext, m_iTableAdapter
+                .getTableView());
 
         // Add divider
         jRecyclerView.addItemDecoration(m_jCellItemDecoration);
+
+
+        if (m_iTableAdapter.getTableView() != null && listener == null) {
+            listener = new CellRecyclerViewListener(m_iTableAdapter.getTableView());
+        }
+        jRecyclerView.addOnItemTouchListener(listener);
 
         return new CellColumnViewHolder(jRecyclerView);
     }
@@ -109,7 +110,8 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         }
     }
 
-    public void setColumnScrollListener(ColumnScrollListener p_jScrollListener) {
+    public void setColumnScrollListener(OnScrollListenerManagerOnItemTouchListener
+                                                p_jScrollListener) {
         m_jColumnScrollListener = p_jScrollListener;
     }
 }

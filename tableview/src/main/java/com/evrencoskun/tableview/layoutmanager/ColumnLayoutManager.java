@@ -18,6 +18,7 @@ public class ColumnLayoutManager extends LinearLayoutManager {
     public ColumnLayoutManager(Context context, RecyclerView.LayoutManager p_jLayoutManager) {
         super(context);
         this.m_jLayoutManager = p_jLayoutManager;
+        this.setOrientation(ColumnLayoutManager.HORIZONTAL);
     }
 
 
@@ -25,7 +26,7 @@ public class ColumnLayoutManager extends LinearLayoutManager {
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
         super.onLayoutChildren(recycler, state);
 
-        fitColumnWidth();
+        //fitColumnWidth();
     }
 
     private void fitColumnWidth() {

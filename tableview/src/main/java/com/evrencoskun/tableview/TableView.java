@@ -14,13 +14,13 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
-import com.evrencoskun.tableview.listener.ColumnScrollListener;
+import com.evrencoskun.tableview.listener.OnScrollListenerManagerOnItemTouchListener;
 
 /**
  * Created by evrencoskun on 11/06/2017.
  */
 
-public class TableView extends FrameLayout {
+public class TableView extends FrameLayout implements ITableView {
 
     protected View dividerLine;
     protected RecyclerView m_jCellRecyclerView;
@@ -32,7 +32,8 @@ public class TableView extends FrameLayout {
     private int m_nRowHeaderWidth;
     private int m_nColumnHeaderHeight;
 
-    private ColumnScrollListener m_jColumnScrollListener;
+    // private ColumnScrollListener m_jColumnScrollListener;
+    OnScrollListenerManagerOnItemTouchListener cellListener;
 
     public TableView(@NonNull Context context) {
         super(context);
@@ -66,8 +67,14 @@ public class TableView extends FrameLayout {
         addView(m_jColumnHeaderRecyclerView);
         addView(m_jRowHeaderRecyclerView);
         addView(dividerLine);
+
+        //initializeListeners();
     }
 
+    private void initializeListeners() {
+        cellListener = new OnScrollListenerManagerOnItemTouchListener(m_jCellRecyclerView
+                .getLayoutManager(), m_jColumnHeaderRecyclerView);
+    }
 
     protected RecyclerView createColumnHeaderRecyclerView() {
         RecyclerView recyclerView = new RecyclerView(getContext());
@@ -82,12 +89,15 @@ public class TableView extends FrameLayout {
         layoutParams.leftMargin = m_nRowHeaderWidth;
         recyclerView.setLayoutParams(layoutParams);
 
-        // Set scroll listener to be able to scroll all rows synchrony.
-        m_jColumnScrollListener = new ColumnScrollListener(m_jCellRecyclerView.getLayoutManager()
-                , recyclerView);
+        //TODO: for testing purpose, remove it
+        recyclerView.setNestedScrollingEnabled(false);
 
         // Set scroll listener to be able to scroll all rows synchrony.
-        recyclerView.addOnScrollListener(m_jColumnScrollListener);
+        /*m_jColumnScrollListener = new ColumnScrollListener(m_jCellRecyclerView.getLayoutManager()
+                , recyclerView);*/
+
+        // Set scroll listener to be able to scroll all rows synchrony.
+        //recyclerView.addOnScrollListener(m_jColumnScrollListener);
 
         // Add vertical item decoration to display column line
         recyclerView.addItemDecoration(createItemDecoration(DividerItemDecoration.HORIZONTAL));
@@ -114,7 +124,8 @@ public class TableView extends FrameLayout {
 
     protected RecyclerView createCellRecyclerView() {
         RecyclerView recyclerView = new RecyclerView(getContext());
-
+        // Disable multitouch
+        recyclerView.setMotionEventSplittingEnabled(false);
         // Set layout manager
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -160,7 +171,7 @@ public class TableView extends FrameLayout {
             this.m_iTableAdapter.setRowHeaderWidth(m_nRowHeaderWidth);
             this.m_iTableAdapter.setColumnHeaderHeight(m_nColumnHeaderHeight);
             this.m_iTableAdapter.setTableView(this);
-            this.m_iTableAdapter.setColumnScrollListener(m_jColumnScrollListener);
+            this.m_iTableAdapter.setColumnScrollListener(cellListener);
 
             // set adapters
             if (m_jRowHeaderRecyclerView != null) {
@@ -173,12 +184,27 @@ public class TableView extends FrameLayout {
 
                 // Send column header layout manager to cell layout manager
                 // to be able to fit each of items width the same size
-                m_iTableAdapter.setColumnHeaderLayoutManager(m_jColumnHeaderRecyclerView
-                        .getLayoutManager());
+                //m_iTableAdapter.setColumnHeaderLayoutManager(m_jColumnHeaderRecyclerView
+                //       .getLayoutManager());
             }
             if (m_jCellRecyclerView != null) {
                 m_jCellRecyclerView.setAdapter(m_iTableAdapter.getCellRecyclerViewAdapter());
             }
         }
+    }
+
+    @Override
+    public RecyclerView getCellRecyclerView() {
+        return m_jCellRecyclerView;
+    }
+
+    @Override
+    public RecyclerView getColumnHeaderRecyclerView() {
+        return m_jColumnHeaderRecyclerView;
+    }
+
+    @Override
+    public RecyclerView getRowHeaderRecyclerView() {
+        return m_jRowHeaderRecyclerView;
     }
 }
