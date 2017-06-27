@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 
 import com.evrencoskun.tableview.R;
 import com.evrencoskun.tableview.adapter.ITableAdapter;
+import com.evrencoskun.tableview.layoutmanager.ColumnLayoutManager;
 import com.evrencoskun.tableview.listener.CellRecyclerViewListener;
-import com.evrencoskun.tableview.listener.OnScrollListenerManagerOnItemTouchListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +22,14 @@ import java.util.List;
 
 public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
+    private static final String LOG_TAG = CellRecyclerViewAdapter.class.getSimpleName();
+
     private List<RecyclerView.Adapter> m_jAdapterList;
 
     private ITableAdapter m_iTableAdapter;
 
-    private OnScrollListenerManagerOnItemTouchListener m_jColumnScrollListener;
+    private int mXPosition = 0;
+
     private final DividerItemDecoration m_jCellItemDecoration;
     private CellRecyclerViewListener listener;
 
@@ -46,9 +49,6 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-
-
         // Create a RecyclerView as a Row of the CellRecyclerView
         CellRecyclerView jRecyclerView = new CellRecyclerView(m_jContext, m_iTableAdapter
                 .getTableView());
@@ -57,10 +57,21 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         jRecyclerView.addItemDecoration(m_jCellItemDecoration);
 
 
-        if (m_iTableAdapter.getTableView() != null && listener == null) {
-            listener = new CellRecyclerViewListener(m_iTableAdapter.getTableView());
+        if (m_iTableAdapter.getTableView() != null) {
+            // set touch listener to scroll synchronously
+            if (listener == null) {
+                listener = new CellRecyclerViewListener(this, m_iTableAdapter.getTableView());
+            }
+            jRecyclerView.addOnItemTouchListener(listener);
+
+            // Set the Column layout manager that helps the fit width of the cell and column header
+            // and it also helps to locate the scroll position of the horizontal recyclerView
+            // which is row recyclerView
+            ColumnLayoutManager layoutManager = new ColumnLayoutManager(m_jContext,
+                    m_iTableAdapter.getTableView().getColumnHeaderRecyclerView().getLayoutManager
+                            (), listener);
+            jRecyclerView.setLayoutManager(layoutManager);
         }
-        jRecyclerView.addOnItemTouchListener(listener);
 
         return new CellColumnViewHolder(jRecyclerView);
     }
@@ -82,6 +93,16 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         // Add the adapter to the list
         m_jAdapterList.add(viewAdapter);
     }
+
+    @Override
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+
+        CellColumnViewHolder viewHolder = (CellColumnViewHolder) holder;
+        viewHolder.m_jRecyclerView.scrollBy(mXPosition, 0);
+        //Log.e(LOG_TAG, "Attached " + viewHolder.m_jRecyclerView);
+    }
+
 
     private static class CellColumnViewHolder extends RecyclerView.ViewHolder {
         public final RecyclerView m_jRecyclerView;
@@ -110,8 +131,9 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         }
     }
 
-    public void setColumnScrollListener(OnScrollListenerManagerOnItemTouchListener
-                                                p_jScrollListener) {
-        m_jColumnScrollListener = p_jScrollListener;
+    public void setXPosition(int p_nXPosition) {
+        //Log.e(LOG_TAG, p_nXPosition + " x position has been set");
+        this.mXPosition = p_nXPosition;
+
     }
 }

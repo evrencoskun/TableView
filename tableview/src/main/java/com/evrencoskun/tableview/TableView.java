@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
-import com.evrencoskun.tableview.listener.OnScrollListenerManagerOnItemTouchListener;
+import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 
 /**
  * Created by evrencoskun on 11/06/2017.
@@ -31,9 +31,6 @@ public class TableView extends FrameLayout implements ITableView {
 
     private int m_nRowHeaderWidth;
     private int m_nColumnHeaderHeight;
-
-    // private ColumnScrollListener m_jColumnScrollListener;
-    OnScrollListenerManagerOnItemTouchListener cellListener;
 
     public TableView(@NonNull Context context) {
         super(context);
@@ -71,11 +68,6 @@ public class TableView extends FrameLayout implements ITableView {
         //initializeListeners();
     }
 
-    private void initializeListeners() {
-        cellListener = new OnScrollListenerManagerOnItemTouchListener(m_jCellRecyclerView
-                .getLayoutManager(), m_jColumnHeaderRecyclerView);
-    }
-
     protected RecyclerView createColumnHeaderRecyclerView() {
         RecyclerView recyclerView = new RecyclerView(getContext());
         // Set layout manager
@@ -91,10 +83,6 @@ public class TableView extends FrameLayout implements ITableView {
 
         //TODO: for testing purpose, remove it
         recyclerView.setNestedScrollingEnabled(false);
-
-        // Set scroll listener to be able to scroll all rows synchrony.
-        /*m_jColumnScrollListener = new ColumnScrollListener(m_jCellRecyclerView.getLayoutManager()
-                , recyclerView);*/
 
         // Set scroll listener to be able to scroll all rows synchrony.
         //recyclerView.addOnScrollListener(m_jColumnScrollListener);
@@ -127,9 +115,10 @@ public class TableView extends FrameLayout implements ITableView {
         // Disable multitouch
         recyclerView.setMotionEventSplittingEnabled(false);
         // Set layout manager
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        CellLayoutManager layoutManager = new CellLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
+
 
         // Set layout params
         LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams
@@ -171,7 +160,6 @@ public class TableView extends FrameLayout implements ITableView {
             this.m_iTableAdapter.setRowHeaderWidth(m_nRowHeaderWidth);
             this.m_iTableAdapter.setColumnHeaderHeight(m_nColumnHeaderHeight);
             this.m_iTableAdapter.setTableView(this);
-            this.m_iTableAdapter.setColumnScrollListener(cellListener);
 
             // set adapters
             if (m_jRowHeaderRecyclerView != null) {

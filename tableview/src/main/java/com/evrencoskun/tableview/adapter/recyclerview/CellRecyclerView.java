@@ -2,9 +2,9 @@ package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.evrencoskun.tableview.ITableView;
-import com.evrencoskun.tableview.layoutmanager.ColumnLayoutManager;
 import com.evrencoskun.tableview.listener.CellRecyclerViewListener;
 
 /**
@@ -12,30 +12,16 @@ import com.evrencoskun.tableview.listener.CellRecyclerViewListener;
  */
 
 public class CellRecyclerView extends RecyclerView {
+    private static final String LOG_TAG = CellRecyclerView.class.getSimpleName();
 
     private int m_nScrolledX = 0;
     private ITableView m_jTableView;
-    private CellRecyclerViewListener listener;
+    private boolean mIsScrollListenerRemoved = true;
 
     public CellRecyclerView(Context context, ITableView p_jTableView) {
         super(context);
         this.m_jTableView = p_jTableView;
 
-        initialize();
-        //initializeListeners();
-    }
-
-    private void initialize() {
-        // Set the Column layout manager that helps the fit width of the cell and column header
-        ColumnLayoutManager layoutManager = new ColumnLayoutManager(getContext(), m_jTableView
-                .getColumnHeaderRecyclerView().getLayoutManager());
-
-        this.setLayoutManager(layoutManager);
-    }
-
-    private void initializeListeners() {
-        listener = new CellRecyclerViewListener(m_jTableView);
-        this.addOnItemTouchListener(listener);
     }
 
     @Override
@@ -47,20 +33,55 @@ public class CellRecyclerView extends RecyclerView {
     public void onScrolled(int dx, int dy) {
         m_nScrolledX += dx;
         super.onScrolled(dx, dy);
+        //Log.e(LOG_TAG, "index : " + getIndex(this) + " x : " + dx + " " +
+        //mIsScrollListenerRemoved + " " + this);
     }
-
 
     public int getScrolledX() {
         return m_nScrolledX;
     }
 
-    public void setScrollEnabled(boolean p_bIsScrollEnabled) {
-        ((ColumnLayoutManager) getLayoutManager()).setScrollEnabled(p_bIsScrollEnabled);
-        //((ColumnLayoutManager) getLayoutManager()).setScrollEnabled(true);
+
+    @Override
+    public void addOnScrollListener(OnScrollListener listener) {
+        if (!(listener instanceof CellRecyclerViewListener)) {
+            super.addOnScrollListener(listener);
+        } else if (listener instanceof CellRecyclerViewListener && mIsScrollListenerRemoved) {
+            mIsScrollListenerRemoved = false;
+            super.addOnScrollListener(listener);
+        }
     }
 
     @Override
-    public boolean fling(int velocityX, int velocityY) {
-        return super.fling(velocityX, velocityY);
+    public void removeOnScrollListener(OnScrollListener listener) {
+        if (listener instanceof CellRecyclerViewListener) {
+            if (mIsScrollListenerRemoved) {
+                // Do not let remove the listener
+                Log.e(LOG_TAG, "CellRecyclerViewListener has been tried to remove itself before "
+                        + "add new " + "one");
+            } else {
+                mIsScrollListenerRemoved = true;
+                super.removeOnScrollListener(listener);
+            }
+        } else {
+            super.removeOnScrollListener(listener);
+        }
+    }
+
+    public boolean isScrollListenerRemoved() {
+        return mIsScrollListenerRemoved;
+    }
+
+
+    private int getIndex(RecyclerView rv) {
+        for (int i = 0; i < m_jTableView.getCellRecyclerView().getLayoutManager().getChildCount()
+                ; i++) {
+            RecyclerView child = (RecyclerView) m_jTableView.getCellRecyclerView()
+                    .getLayoutManager().getChildAt(i);
+            if (child == rv) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

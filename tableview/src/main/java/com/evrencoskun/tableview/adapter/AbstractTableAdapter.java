@@ -9,7 +9,6 @@ import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.ColumnHeaderRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.RowHeaderRecyclerViewAdapter;
-import com.evrencoskun.tableview.listener.OnScrollListenerManagerOnItemTouchListener;
 
 import java.util.List;
 
@@ -33,23 +32,35 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
 
     private ITableView m_iTableView;
 
-    private OnScrollListenerManagerOnItemTouchListener m_jColumnScrollListener;
-
     public AbstractTableAdapter(Context p_jContext) {
         m_jContext = p_jContext;
         initialize();
     }
 
     private void initialize() {
-        // set all recyclerViews adapters
-        m_iColumnHeaderRecyclerViewAdapter = new ColumnHeaderRecyclerViewAdapter(m_jContext,
-                m_jColumnHeaderItems, this);
-        m_iRowHeaderRecyclerViewAdapter = new RowHeaderRecyclerViewAdapter(m_jContext,
-                m_jRowHeaderItems, this);
-        m_iCellRecyclerViewAdapter = new CellRecyclerViewAdapter(m_jContext, m_jCellItems, this);
+        // Create Column header RecyclerView Adapter
+        if (m_jColumnHeaderItems != null) {
+            m_iColumnHeaderRecyclerViewAdapter = new ColumnHeaderRecyclerViewAdapter(m_jContext,
+                    m_jColumnHeaderItems, this);
+        }
+        // Create Row Header RecyclerView Adapter
+        if (m_jRowHeaderItems != null) {
+            m_iRowHeaderRecyclerViewAdapter = new RowHeaderRecyclerViewAdapter(m_jContext,
+                    m_jRowHeaderItems, this);
+        }
+
+        // Create Cell RecyclerView Adapter
+        if (m_jCellItems != null) {
+            m_iCellRecyclerViewAdapter = new CellRecyclerViewAdapter(m_jContext, m_jCellItems,
+                    this);
+        }
     }
 
     public void setColumnHeaderItems(List<CH> p_jColumnHeaderItems) {
+        if (p_jColumnHeaderItems == null) {
+            return;
+        }
+
         m_jColumnHeaderItems = p_jColumnHeaderItems;
 
         // Set the items to the adapter
@@ -57,6 +68,10 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
     }
 
     public void setRowHeaderItems(List<RH> p_jRowHeaderItems) {
+        if (p_jRowHeaderItems == null) {
+            return;
+        }
+
         m_jRowHeaderItems = p_jRowHeaderItems;
 
         // Set the items to the adapter
@@ -64,6 +79,10 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
     }
 
     public void setCellItems(List<List<C>> p_jCellItems) {
+        if (p_jCellItems == null) {
+            return;
+        }
+
         m_jCellItems = p_jCellItems;
 
         // Set the items to the adapter
@@ -119,7 +138,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
     }
 
     public CH getColumnHeaderItem(int p_nPosition) {
-        if ((m_jColumnHeaderItems == null && m_jColumnHeaderItems.isEmpty()) || p_nPosition < 0
+        if ((m_jColumnHeaderItems == null || m_jColumnHeaderItems.isEmpty()) || p_nPosition < 0
                 || p_nPosition >= m_jColumnHeaderItems.size()) {
             return null;
         }
@@ -127,7 +146,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
     }
 
     public RH getRowHeaderItem(int p_nPosition) {
-        if ((m_jRowHeaderItems == null & m_jRowHeaderItems.isEmpty()) || p_nPosition < 0 ||
+        if ((m_jRowHeaderItems == null || m_jRowHeaderItems.isEmpty()) || p_nPosition < 0 ||
                 p_nPosition >= m_jRowHeaderItems.size()) {
             return null;
         }
@@ -135,7 +154,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
     }
 
     public C getCellItem(int p_nXPosition, int p_nYPosition) {
-        if ((m_jCellItems == null && m_jCellItems.isEmpty()) || p_nXPosition < 0 || p_nXPosition
+        if ((m_jCellItems == null || m_jCellItems.isEmpty()) || p_nXPosition < 0 || p_nXPosition
                 >= m_jCellItems.size() || m_jCellItems.get(p_nXPosition) == null || p_nYPosition
                 < 0 || p_nYPosition >= m_jCellItems.get(p_nXPosition).size()) {
             return null;
@@ -148,15 +167,6 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
         m_iColumnHeaderRecyclerViewAdapter.notifyDataSetChanged();
         m_iRowHeaderRecyclerViewAdapter.notifyDataSetChanged();
         m_iCellRecyclerViewAdapter.notifyCellDataSetChanged();
-    }
-
-    public void setColumnScrollListener(OnScrollListenerManagerOnItemTouchListener
-                                                p_jColumnScrollListener) {
-        this.m_jColumnScrollListener = p_jColumnScrollListener;
-
-        if (m_iCellRecyclerViewAdapter != null) {
-            m_iCellRecyclerViewAdapter.setColumnScrollListener(m_jColumnScrollListener);
-        }
     }
 
     public void setTableView(TableView p_iTableView) {
