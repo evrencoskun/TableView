@@ -39,21 +39,15 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
 
     private void initialize() {
         // Create Column header RecyclerView Adapter
-        if (m_jColumnHeaderItems != null) {
-            m_iColumnHeaderRecyclerViewAdapter = new ColumnHeaderRecyclerViewAdapter(m_jContext,
-                    m_jColumnHeaderItems, this);
-        }
+        m_iColumnHeaderRecyclerViewAdapter = new ColumnHeaderRecyclerViewAdapter(m_jContext,
+                m_jColumnHeaderItems, this);
+
         // Create Row Header RecyclerView Adapter
-        if (m_jRowHeaderItems != null) {
-            m_iRowHeaderRecyclerViewAdapter = new RowHeaderRecyclerViewAdapter(m_jContext,
-                    m_jRowHeaderItems, this);
-        }
+        m_iRowHeaderRecyclerViewAdapter = new RowHeaderRecyclerViewAdapter(m_jContext,
+                m_jRowHeaderItems, this);
 
         // Create Cell RecyclerView Adapter
-        if (m_jCellItems != null) {
-            m_iCellRecyclerViewAdapter = new CellRecyclerViewAdapter(m_jContext, m_jCellItems,
-                    this);
-        }
+        m_iCellRecyclerViewAdapter = new CellRecyclerViewAdapter(m_jContext, m_jCellItems, this);
     }
 
     public void setColumnHeaderItems(List<CH> p_jColumnHeaderItems) {

@@ -99,7 +99,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         super.onViewAttachedToWindow(holder);
 
         CellColumnViewHolder viewHolder = (CellColumnViewHolder) holder;
-        viewHolder.m_jRecyclerView.scrollBy(mXPosition, 0);
+        //viewHolder.m_jRecyclerView.scrollBy(mXPosition, 0);
         //Log.e(LOG_TAG, "Attached " + viewHolder.m_jRecyclerView);
     }
 

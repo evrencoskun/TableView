@@ -2,10 +2,10 @@
 
 
 <LinearLayout
+    android:id="@+id/column_header_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/column_header_container"
-    android:layout_width="wrap_content"
+    android:layout_width="@dimen/cell_height"
     android:layout_height="@dimen/cell_height"
     android:background="@color/cell_background_color"
     android:orientation="vertical">
@@ -20,18 +20,12 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
             android:gravity="center"
             android:textColor="@color/cell_text_color"
-            android:textSize="11sp"
+            android:textSize="12sp"
             tools:text="Header Data"/>
-
-        <View
-            android:layout_width="1px"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:background="@color/cell_line_color"/>
 
         <View
             android:layout_width="match_parent"
