@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.evrencoskun.tableview.R;
 import com.evrencoskun.tableview.adapter.ITableAdapter;
 import com.evrencoskun.tableview.layoutmanager.ColumnLayoutManager;
-import com.evrencoskun.tableview.listener.CellRecyclerViewListener;
+import com.evrencoskun.tableview.listener.HorizontalRecyclerViewListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +28,8 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
     private ITableAdapter m_iTableAdapter;
 
-    private int mXPosition = 0;
-
     private final DividerItemDecoration m_jCellItemDecoration;
-    private CellRecyclerViewListener listener;
+    private HorizontalRecyclerViewListener listener;
 
     public CellRecyclerViewAdapter(Context context, List<C> p_jItemList, ITableAdapter
             p_iTableAdapter) {
@@ -50,8 +48,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Create a RecyclerView as a Row of the CellRecyclerView
-        CellRecyclerView jRecyclerView = new CellRecyclerView(m_jContext, m_iTableAdapter
-                .getTableView());
+        CellRecyclerView jRecyclerView = new CellRecyclerView(m_jContext);
 
         // Add divider
         jRecyclerView.addItemDecoration(m_jCellItemDecoration);
@@ -60,33 +57,33 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         if (m_iTableAdapter.getTableView() != null) {
             // set touch listener to scroll synchronously
             if (listener == null) {
-                listener = new CellRecyclerViewListener(this, m_iTableAdapter.getTableView());
+                listener = m_iTableAdapter.getTableView().getHorizontalRecyclerViewListener();
             }
+
             jRecyclerView.addOnItemTouchListener(listener);
 
             // Set the Column layout manager that helps the fit width of the cell and column header
             // and it also helps to locate the scroll position of the horizontal recyclerView
             // which is row recyclerView
             ColumnLayoutManager layoutManager = new ColumnLayoutManager(m_jContext,
-                    m_iTableAdapter.getTableView().getColumnHeaderRecyclerView().getLayoutManager
-                            (), listener);
+                    m_iTableAdapter.getTableView());
             jRecyclerView.setLayoutManager(layoutManager);
         }
 
-        return new CellColumnViewHolder(jRecyclerView);
+        return new CellRowViewHolder(jRecyclerView);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (!(holder instanceof CellColumnViewHolder)) {
+        if (!(holder instanceof CellRowViewHolder)) {
             return;
         }
 
-        CellColumnViewHolder viewHolder = (CellColumnViewHolder) holder;
+        CellRowViewHolder viewHolder = (CellRowViewHolder) holder;
         // Set adapter to the RecyclerView
         List<C> rowList = (List<C>) m_jItemList.get(position);
 
-        CellColumnRecyclerViewAdapter viewAdapter = new CellColumnRecyclerViewAdapter(m_jContext,
+        CellRowRecyclerViewAdapter viewAdapter = new CellRowRecyclerViewAdapter(m_jContext,
                 rowList, m_iTableAdapter, position);
         viewHolder.m_jRecyclerView.setAdapter(viewAdapter);
 
@@ -98,18 +95,18 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
     public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
 
-        CellColumnViewHolder viewHolder = (CellColumnViewHolder) holder;
-        //viewHolder.m_jRecyclerView.scrollBy(mXPosition, 0);
-        //Log.e(LOG_TAG, "Attached " + viewHolder.m_jRecyclerView);
+        CellRowViewHolder viewHolder = (CellRowViewHolder) holder;
+        //viewHolder.m_jRecyclerView.scrollBy(listener.getLastXPosition(), 0);
+        
     }
 
 
-    private static class CellColumnViewHolder extends RecyclerView.ViewHolder {
-        public final RecyclerView m_jRecyclerView;
+    private static class CellRowViewHolder extends RecyclerView.ViewHolder {
+        public final CellRecyclerView m_jRecyclerView;
 
-        public CellColumnViewHolder(View itemView) {
+        public CellRowViewHolder(View itemView) {
             super(itemView);
-            m_jRecyclerView = (RecyclerView) itemView;
+            m_jRecyclerView = (CellRecyclerView) itemView;
         }
     }
 
@@ -129,11 +126,5 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
                 adapter.notifyDataSetChanged();
             }
         }
-    }
-
-    public void setXPosition(int p_nXPosition) {
-        //Log.e(LOG_TAG, p_nXPosition + " x position has been set");
-        this.mXPosition = p_nXPosition;
-
     }
 }

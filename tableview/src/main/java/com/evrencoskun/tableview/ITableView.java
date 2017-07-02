@@ -4,6 +4,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.evrencoskun.tableview.listener.HorizontalRecyclerViewListener;
+import com.evrencoskun.tableview.listener.VerticalRecyclerViewListener;
+
 /**
  * Created by evrencoskun on 19/06/2017.
  */
@@ -17,4 +20,8 @@ public interface ITableView {
     RecyclerView getColumnHeaderRecyclerView();
 
     RecyclerView getRowHeaderRecyclerView();
+
+    HorizontalRecyclerViewListener getHorizontalRecyclerViewListener();
+
+    VerticalRecyclerViewListener getVerticalRecyclerViewListener();
 }

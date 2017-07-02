@@ -6,7 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.evrencoskun.tableview.listener.CellRecyclerViewListener;
+import com.evrencoskun.tableview.ITableView;
+import com.evrencoskun.tableview.listener.HorizontalRecyclerViewListener;
 
 /**
  * Created by evrencoskun on 10/06/2017.
@@ -16,23 +17,23 @@ public class ColumnLayoutManager extends LinearLayoutManager {
     private static final String LOG_TAG = ColumnLayoutManager.class.getSimpleName();
 
     private RecyclerView.LayoutManager m_jLayoutManager;
-    private CellRecyclerViewListener mCellRecyclerViewListener;
+    private ITableView m_iTableView;
+    private HorizontalRecyclerViewListener m_iListener;
 
-    public ColumnLayoutManager(Context context, RecyclerView.LayoutManager p_jLayoutManager,
-                               CellRecyclerViewListener pCellRecyclerViewListener) {
+    public ColumnLayoutManager(Context context, ITableView p_iTableView) {
         super(context);
-        this.m_jLayoutManager = p_jLayoutManager;
-        this.mCellRecyclerViewListener = pCellRecyclerViewListener;
+        this.m_iTableView = p_iTableView;
+        this.m_jLayoutManager = m_iTableView.getColumnHeaderRecyclerView().getLayoutManager();
+        this.m_iListener = m_iTableView.getHorizontalRecyclerViewListener();
+
+        // Set default orientation
         this.setOrientation(ColumnLayoutManager.HORIZONTAL);
-
-        //this.setInitialPrefetchItemCount(4);
-
     }
 
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
         super.onLayoutChildren(recycler, state);
-        //scrollHorizontallyBy(mCellRecyclerViewListener.getLastXPosition(), recycler, state);
+        scrollHorizontallyBy(m_iListener.getLastXPosition(), recycler, state);
         //fitColumnWidth();
         //Log.e(LOG_TAG, "onLayoutChildren");
     }

@@ -12,12 +12,12 @@ import java.util.List;
  * Created by evrencoskun on 10/06/2017.
  */
 
-public class CellColumnRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
+public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
     private int m_nXPosition;
     private ITableAdapter m_iTableAdapter;
 
-    public CellColumnRecyclerViewAdapter(Context context, List p_jItemList, ITableAdapter
+    public CellRowRecyclerViewAdapter(Context context, List p_jItemList, ITableAdapter
             p_iTableAdapter, int p_nXPosition) {
         super(context, p_jItemList);
         this.m_nXPosition = p_nXPosition;

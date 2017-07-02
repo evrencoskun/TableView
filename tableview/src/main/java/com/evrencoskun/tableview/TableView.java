@@ -10,11 +10,13 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.FrameLayout;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
+import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
+import com.evrencoskun.tableview.listener.HorizontalRecyclerViewListener;
+import com.evrencoskun.tableview.listener.VerticalRecyclerViewListener;
 
 /**
  * Created by evrencoskun on 11/06/2017.
@@ -22,12 +24,14 @@ import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 
 public class TableView extends FrameLayout implements ITableView {
 
-    protected View dividerLine;
     protected RecyclerView m_jCellRecyclerView;
     protected RecyclerView m_jColumnHeaderRecyclerView;
     protected RecyclerView m_jRowHeaderRecyclerView;
 
     protected AbstractTableAdapter m_iTableAdapter;
+
+    private VerticalRecyclerViewListener m_jVerticalRecyclerListener;
+    private HorizontalRecyclerViewListener m_jHorizontalRecyclerViewListener;
 
     private int m_nRowHeaderWidth;
     private int m_nColumnHeaderHeight;
@@ -57,19 +61,31 @@ public class TableView extends FrameLayout implements ITableView {
         m_jCellRecyclerView = createCellRecyclerView();
         m_jColumnHeaderRecyclerView = createColumnHeaderRecyclerView();
         m_jRowHeaderRecyclerView = createRowHeaderRecyclerView();
-        dividerLine = createDividerToLeftHeader();
 
         // Add Views
         addView(m_jCellRecyclerView);
         addView(m_jColumnHeaderRecyclerView);
         addView(m_jRowHeaderRecyclerView);
-        addView(dividerLine);
 
-        //initializeListeners();
+        initializeListeners();
+    }
+
+    protected void initializeListeners() {
+        // It handles Vertical scroll listener
+        m_jVerticalRecyclerListener = new VerticalRecyclerViewListener(this);
+
+        // Set this listener both of Cell RecyclerView and RowHeader RecyclerView
+        m_jRowHeaderRecyclerView.addOnItemTouchListener(m_jVerticalRecyclerListener);
+        m_jCellRecyclerView.addOnItemTouchListener(m_jVerticalRecyclerListener);
+
+        // It handles Horizontal scroll listener
+        m_jHorizontalRecyclerViewListener = new HorizontalRecyclerViewListener(this);
+        // Set scroll listener to be able to scroll all rows synchrony.
+        m_jColumnHeaderRecyclerView.addOnItemTouchListener(m_jHorizontalRecyclerViewListener);
     }
 
     protected RecyclerView createColumnHeaderRecyclerView() {
-        RecyclerView recyclerView = new RecyclerView(getContext());
+        CellRecyclerView recyclerView = new CellRecyclerView(getContext());
         // Set layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -84,16 +100,13 @@ public class TableView extends FrameLayout implements ITableView {
         //TODO: for testing purpose, remove it
         recyclerView.setNestedScrollingEnabled(false);
 
-        // Set scroll listener to be able to scroll all rows synchrony.
-        //recyclerView.addOnScrollListener(m_jColumnScrollListener);
-
         // Add vertical item decoration to display column line
         recyclerView.addItemDecoration(createItemDecoration(DividerItemDecoration.HORIZONTAL));
         return recyclerView;
     }
 
     protected RecyclerView createRowHeaderRecyclerView() {
-        RecyclerView recyclerView = new RecyclerView(getContext());
+        CellRecyclerView recyclerView = new CellRecyclerView(getContext());
         // Set layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -106,12 +119,11 @@ public class TableView extends FrameLayout implements ITableView {
         // Add vertical item decoration to display row line
         recyclerView.addItemDecoration(createItemDecoration(DividerItemDecoration.VERTICAL));
 
-        //recyclerView.addOnScrollListener(contentScrollListener);
         return recyclerView;
     }
 
     protected RecyclerView createCellRecyclerView() {
-        RecyclerView recyclerView = new RecyclerView(getContext());
+        CellRecyclerView recyclerView = new CellRecyclerView(getContext());
         // Disable multitouch
         recyclerView.setMotionEventSplittingEnabled(false);
         // Set layout manager
@@ -130,18 +142,6 @@ public class TableView extends FrameLayout implements ITableView {
         // Add vertical item decoration to display row line on center recycler view
         recyclerView.addItemDecoration(createItemDecoration(DividerItemDecoration.VERTICAL));
         return recyclerView;
-    }
-
-    protected View createDividerToLeftHeader() {
-        View view = new View(getContext());
-        view.setVisibility(GONE);
-        view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color
-                .default_background_line_color));
-        // Set layout params
-        LayoutParams layoutParams = new LayoutParams(1, LayoutParams.WRAP_CONTENT);
-        layoutParams.leftMargin = m_nRowHeaderWidth;
-        view.setLayoutParams(layoutParams);
-        return view;
     }
 
     private DividerItemDecoration createItemDecoration(int orientation) {
@@ -169,11 +169,6 @@ public class TableView extends FrameLayout implements ITableView {
             if (m_jColumnHeaderRecyclerView != null) {
                 m_jColumnHeaderRecyclerView.setAdapter(m_iTableAdapter
                         .getColumnHeaderRecyclerViewAdapter());
-
-                // Send column header layout manager to cell layout manager
-                // to be able to fit each of items width the same size
-                //m_iTableAdapter.setColumnHeaderLayoutManager(m_jColumnHeaderRecyclerView
-                //       .getLayoutManager());
             }
             if (m_jCellRecyclerView != null) {
                 m_jCellRecyclerView.setAdapter(m_iTableAdapter.getCellRecyclerViewAdapter());
@@ -194,5 +189,15 @@ public class TableView extends FrameLayout implements ITableView {
     @Override
     public RecyclerView getRowHeaderRecyclerView() {
         return m_jRowHeaderRecyclerView;
+    }
+
+    @Override
+    public HorizontalRecyclerViewListener getHorizontalRecyclerViewListener() {
+        return m_jHorizontalRecyclerViewListener;
+    }
+
+    @Override
+    public VerticalRecyclerViewListener getVerticalRecyclerViewListener() {
+        return m_jVerticalRecyclerListener;
     }
 }
