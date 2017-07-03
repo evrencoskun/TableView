@@ -2,7 +2,7 @@
 An Android library providing a TableView and a Data Table. This repository contains a **TableViewSample** that is
 designed to show you how to create your own TableView in your application.
 
-![TableView Example](https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/README/TableView.gif)
+![TableView Example](https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/TableView.gif)
 
 
 ## Features
