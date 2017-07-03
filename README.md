@@ -6,7 +6,7 @@ designed to show you how to create your own TableView in your application.
 
 
 ## Features
-  - [Set your own model class to displayed in a table view]
+  - Set your own model class to displayed in a table view
   - RowHeader and cells can scroll vertically and synchronously
   - ColumnHeader and cells can scroll horizontally and synchronously
 
