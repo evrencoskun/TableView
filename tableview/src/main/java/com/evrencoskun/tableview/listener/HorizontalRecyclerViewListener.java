@@ -1,5 +1,6 @@
 package com.evrencoskun.tableview.listener;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -16,18 +17,21 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
 
     private static final String LOG_TAG = HorizontalRecyclerViewListener.class.getSimpleName();
 
-    private RecyclerView m_jColumnHeaderRecyclerView;
+    private CellRecyclerView m_jColumnHeaderRecyclerView;
     private RecyclerView.LayoutManager m_jCellLayoutManager;
     private RecyclerView m_jLastTouchedRecyclerView;
 
     private boolean m_bMoved = false;
     private int m_nXPosition;
-    private int m_nLastXPosition;
+
+    private int m_nScrollPosition;
+    private int m_nScrollPositionOffset = 0;
 
     private VerticalRecyclerViewListener m_iVerticalRecyclerViewListener;
 
     public HorizontalRecyclerViewListener(ITableView p_iTableView) {
-        this.m_jColumnHeaderRecyclerView = p_iTableView.getColumnHeaderRecyclerView();
+        this.m_jColumnHeaderRecyclerView = (CellRecyclerView) p_iTableView
+                .getColumnHeaderRecyclerView();
         this.m_jCellLayoutManager = p_iTableView.getCellRecyclerView().getLayoutManager();
         this.m_iVerticalRecyclerViewListener = p_iTableView.getVerticalRecyclerViewListener();
     }
@@ -125,14 +129,14 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
         if (recyclerView == m_jColumnHeaderRecyclerView) {
             // Scroll each cell recyclerViews
             for (int i = 0; i < m_jCellLayoutManager.getChildCount(); i++) {
-                RecyclerView child = (RecyclerView) m_jCellLayoutManager.getChildAt(i);
+                CellRecyclerView child = (CellRecyclerView) m_jCellLayoutManager.getChildAt(i);
                 // Scroll horizontally
                 child.scrollBy(dx, 0);
             }
         } else {
             // Scroll each cell recyclerViews except the current touched one
             for (int i = 0; i < m_jCellLayoutManager.getChildCount(); i++) {
-                RecyclerView child = (RecyclerView) m_jCellLayoutManager.getChildAt(i);
+                CellRecyclerView child = (CellRecyclerView) m_jCellLayoutManager.getChildAt(i);
                 if (child != recyclerView) {
                     // Scroll horizontally
                     child.scrollBy(dx, 0);
@@ -149,13 +153,11 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
         super.onScrollStateChanged(recyclerView, newState);
 
         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-            // Renew the last x position
-            m_nLastXPosition = ((CellRecyclerView) recyclerView).getScrolledX();
-            Log.e(LOG_TAG, "m_nLastXPosition : " + m_nLastXPosition);
-
-            // Send last x position to be able to change scroll position of the new attached
-            // recyclerViews
-            //m_iAdapter.setXPosition(m_nLastXPosition);
+            // Renew the scroll position and its offset
+            m_nScrollPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
+                    .findFirstCompletelyVisibleItemPosition();
+            m_nScrollPositionOffset = recyclerView.getLayoutManager().findViewByPosition
+                    (m_nScrollPosition).getLeft();
 
             recyclerView.removeOnScrollListener(this);
             Log.d(LOG_TAG, "Scroll listener  has been removed to " + recyclerView + " at " +
@@ -183,10 +185,24 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
 
     /**
      * When parent RecyclerView scrolls vertically, the child horizontal recycler views should be
-     * displayed on right scroll position. So m_nLastXPosition is needed for ColumnLayoutManager
+     * displayed on right scroll position. So the first complete visible position of the
+     * recyclerView is stored as a member to use it for a new attached recyclerview whose
+     * orientation is horizontal as well.
+     *
+     * @see #getScrollPositionOffset()
      */
-    public int getLastXPosition() {
-        return m_nLastXPosition;
+    public int getScrollPosition() {
+        return m_nScrollPosition;
     }
 
+    /**
+     * Users can scroll the recyclerViews to the any x position which may not the exact position. So
+     * we need to know store the offset value to locate a specific location for a new attached
+     * recyclerView
+     *
+     * @see #getScrollPosition()
+     */
+    public int getScrollPositionOffset() {
+        return m_nScrollPositionOffset;
+    }
 }

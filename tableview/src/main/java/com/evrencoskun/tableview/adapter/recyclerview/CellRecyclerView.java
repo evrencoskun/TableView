@@ -22,17 +22,27 @@ public class CellRecyclerView extends RecyclerView {
 
     public CellRecyclerView(Context context) {
         super(context);
+
+        /*this.setItemViewCacheSize(100);
+        this.setDrawingCacheEnabled(true);
+        this.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);*/
     }
 
     @Override
     public void onScrolled(int dx, int dy) {
         m_nScrolledX += dx;
         m_nScrolledY += dy;
+
         super.onScrolled(dx, dy);
     }
 
+
     public int getScrolledX() {
         return m_nScrolledX;
+    }
+
+    public void clearScrolledX() {
+        m_nScrolledX = 0;
     }
 
     public int getScrolledY() { return m_nScrolledY; }

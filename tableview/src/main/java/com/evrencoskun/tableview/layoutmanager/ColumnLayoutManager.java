@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.evrencoskun.tableview.ITableView;
-import com.evrencoskun.tableview.listener.HorizontalRecyclerViewListener;
 
 /**
  * Created by evrencoskun on 10/06/2017.
@@ -18,13 +17,11 @@ public class ColumnLayoutManager extends LinearLayoutManager {
 
     private RecyclerView.LayoutManager m_jLayoutManager;
     private ITableView m_iTableView;
-    private HorizontalRecyclerViewListener m_iListener;
 
     public ColumnLayoutManager(Context context, ITableView p_iTableView) {
         super(context);
         this.m_iTableView = p_iTableView;
         this.m_jLayoutManager = m_iTableView.getColumnHeaderRecyclerView().getLayoutManager();
-        this.m_iListener = m_iTableView.getHorizontalRecyclerViewListener();
 
         // Set default orientation
         this.setOrientation(ColumnLayoutManager.HORIZONTAL);
@@ -33,11 +30,9 @@ public class ColumnLayoutManager extends LinearLayoutManager {
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
         super.onLayoutChildren(recycler, state);
-        scrollHorizontallyBy(m_iListener.getLastXPosition(), recycler, state);
         //fitColumnWidth();
         //Log.e(LOG_TAG, "onLayoutChildren");
     }
-
 
     private void fitColumnWidth() {
         if (m_jLayoutManager == null) {
