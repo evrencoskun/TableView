@@ -2,8 +2,8 @@
 An Android library providing a TableView and a Data Table. This repository contains a **TableViewSample** that is
 designed to show you how to create your own TableView in your application.
 
-![TableView Portrait](https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/TableView-portrait.gif)
 ![TableView Landscape](https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/TableView-landscape.gif)
+![TableView Portrait](https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/TableView-portrait.gif)
 
 ## Features
   - Set your own model class to displayed in a table view
