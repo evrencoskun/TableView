@@ -51,7 +51,7 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
                         int nLastTouchedIndex = getIndex(m_jLastTouchedRecyclerView);
 
                         // Control whether the last touched recyclerView is still attached or not
-                        if (nLastTouchedIndex > 0 && nLastTouchedIndex < m_jCellLayoutManager
+                        if (nLastTouchedIndex >= 0 && nLastTouchedIndex < m_jCellLayoutManager
                                 .getChildCount()) {
                             // Control the scroll listener is already removed. For instance; if user
                             // scroll the parent recyclerView vertically, at that time,
@@ -68,7 +68,8 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
                                         (nLastTouchedIndex)).removeOnScrollListener(this);
 
                                 Log.d(LOG_TAG, "Scroll listener  has been removed to " +
-                                        "CellRecyclerView at last touch control");
+                                        m_jLastTouchedRecyclerView.getId() + " CellRecyclerView "
+                                        + "at last touch control");
 
                                 // the last one scroll must be stopped to be sync with others
                                 ((RecyclerView) m_jCellLayoutManager.getChildAt
@@ -80,7 +81,8 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
 
                 m_nXPosition = ((CellRecyclerView) rv).getScrolledX();
                 rv.addOnScrollListener(this);
-                Log.d(LOG_TAG, "Scroll listener  has been added to " + rv + " at action down");
+                Log.d(LOG_TAG, "Scroll listener  has been added to " + rv.getId() + " at action "
+                        + "down");
             }
         } else if (e.getAction() == MotionEvent.ACTION_MOVE) {
             // Why does it matter ?
@@ -93,7 +95,8 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
             // Is it just touched without scrolling then remove the listener
             if (m_nXPosition == nScrollX && !m_bMoved) {
                 rv.removeOnScrollListener(this);
-                Log.d(LOG_TAG, "Scroll listener  has been removed to " + rv + " at action up");
+                Log.d(LOG_TAG, "Scroll listener  has been removed to " + rv.getId() + " at " +
+                        "action" + " up");
             }
 
             m_jLastTouchedRecyclerView = rv;
@@ -105,8 +108,13 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
             // triggered on cancel action. So, we need to change state of the m_bMoved value as
             // well.
 
+            // Renew the scroll position and its offset
+            renewScrollPosition(rv);
+
             rv.removeOnScrollListener(this);
-            Log.d(LOG_TAG, "Scroll listener  has been removed to " + rv + " at action cancel");
+            Log.d(LOG_TAG, "Scroll listener  has been removed to " + rv.getId() + " at action " +
+                    "cancel");
+
             m_bMoved = false;
 
             m_jLastTouchedRecyclerView = rv;
@@ -154,13 +162,10 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
 
         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
             // Renew the scroll position and its offset
-            m_nScrollPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
-                    .findFirstCompletelyVisibleItemPosition();
-            m_nScrollPositionOffset = recyclerView.getLayoutManager().findViewByPosition
-                    (m_nScrollPosition).getLeft();
+            renewScrollPosition(recyclerView);
 
             recyclerView.removeOnScrollListener(this);
-            Log.d(LOG_TAG, "Scroll listener  has been removed to " + recyclerView + " at " +
+            Log.d(LOG_TAG, "Scroll listener has been removed to " + recyclerView.getId() + " at " +
                     "onScrollStateChanged");
             m_bMoved = false;
 
@@ -181,6 +186,21 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
             }
         }
         return -1;
+    }
+
+
+    /**
+     * This method calculates the current scroll position and its offset to help new attached
+     * recyclerView on window at that position and offset
+     *
+     * @see #getScrollPosition()
+     * @see #getScrollPositionOffset()
+     */
+    private void renewScrollPosition(RecyclerView p_jRecyclerView) {
+        m_nScrollPosition = ((LinearLayoutManager) p_jRecyclerView.getLayoutManager())
+                .findFirstCompletelyVisibleItemPosition();
+        m_nScrollPositionOffset = p_jRecyclerView.getLayoutManager().findViewByPosition
+                (m_nScrollPosition).getLeft();
     }
 
     /**
