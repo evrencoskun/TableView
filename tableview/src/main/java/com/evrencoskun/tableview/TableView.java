@@ -8,13 +8,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
+import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
 import com.evrencoskun.tableview.listener.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.VerticalRecyclerViewListener;
 
@@ -24,9 +24,9 @@ import com.evrencoskun.tableview.listener.VerticalRecyclerViewListener;
 
 public class TableView extends FrameLayout implements ITableView {
 
-    protected RecyclerView m_jCellRecyclerView;
-    protected RecyclerView m_jColumnHeaderRecyclerView;
-    protected RecyclerView m_jRowHeaderRecyclerView;
+    protected CellRecyclerView m_jCellRecyclerView;
+    protected CellRecyclerView m_jColumnHeaderRecyclerView;
+    protected CellRecyclerView m_jRowHeaderRecyclerView;
 
     protected AbstractTableAdapter m_iTableAdapter;
 
@@ -58,14 +58,14 @@ public class TableView extends FrameLayout implements ITableView {
         m_nColumnHeaderHeight = (int) getResources().getDimension(R.dimen.default_row_header_width);
 
         // Create Views
-        m_jCellRecyclerView = createCellRecyclerView();
         m_jColumnHeaderRecyclerView = createColumnHeaderRecyclerView();
         m_jRowHeaderRecyclerView = createRowHeaderRecyclerView();
+        m_jCellRecyclerView = createCellRecyclerView();
 
         // Add Views
-        addView(m_jCellRecyclerView);
         addView(m_jColumnHeaderRecyclerView);
         addView(m_jRowHeaderRecyclerView);
+        addView(m_jCellRecyclerView);
 
         initializeListeners();
     }
@@ -84,11 +84,10 @@ public class TableView extends FrameLayout implements ITableView {
         m_jColumnHeaderRecyclerView.addOnItemTouchListener(m_jHorizontalRecyclerViewListener);
     }
 
-    protected RecyclerView createColumnHeaderRecyclerView() {
+    protected CellRecyclerView createColumnHeaderRecyclerView() {
         CellRecyclerView recyclerView = new CellRecyclerView(getContext());
         // Set layout manager
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        ColumnHeaderLayoutManager layoutManager = new ColumnHeaderLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
         // Set layout params
@@ -105,7 +104,7 @@ public class TableView extends FrameLayout implements ITableView {
         return recyclerView;
     }
 
-    protected RecyclerView createRowHeaderRecyclerView() {
+    protected CellRecyclerView createRowHeaderRecyclerView() {
         CellRecyclerView recyclerView = new CellRecyclerView(getContext());
         // Set layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -122,12 +121,13 @@ public class TableView extends FrameLayout implements ITableView {
         return recyclerView;
     }
 
-    protected RecyclerView createCellRecyclerView() {
+    protected CellRecyclerView createCellRecyclerView() {
         CellRecyclerView recyclerView = new CellRecyclerView(getContext());
         // Disable multitouch
         recyclerView.setMotionEventSplittingEnabled(false);
         // Set layout manager
-        CellLayoutManager layoutManager = new CellLayoutManager(getContext());
+        CellLayoutManager layoutManager = new CellLayoutManager(getContext(),
+                (LinearLayoutManager) getColumnHeaderRecyclerView().getLayoutManager());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -162,13 +162,13 @@ public class TableView extends FrameLayout implements ITableView {
             this.m_iTableAdapter.setTableView(this);
 
             // set adapters
-            if (m_jRowHeaderRecyclerView != null) {
-                m_jRowHeaderRecyclerView.setAdapter(m_iTableAdapter
-                        .getRowHeaderRecyclerViewAdapter());
-            }
             if (m_jColumnHeaderRecyclerView != null) {
                 m_jColumnHeaderRecyclerView.setAdapter(m_iTableAdapter
                         .getColumnHeaderRecyclerViewAdapter());
+            }
+            if (m_jRowHeaderRecyclerView != null) {
+                m_jRowHeaderRecyclerView.setAdapter(m_iTableAdapter
+                        .getRowHeaderRecyclerViewAdapter());
             }
             if (m_jCellRecyclerView != null) {
                 m_jCellRecyclerView.setAdapter(m_iTableAdapter.getCellRecyclerViewAdapter());
@@ -177,17 +177,17 @@ public class TableView extends FrameLayout implements ITableView {
     }
 
     @Override
-    public RecyclerView getCellRecyclerView() {
+    public CellRecyclerView getCellRecyclerView() {
         return m_jCellRecyclerView;
     }
 
     @Override
-    public RecyclerView getColumnHeaderRecyclerView() {
+    public CellRecyclerView getColumnHeaderRecyclerView() {
         return m_jColumnHeaderRecyclerView;
     }
 
     @Override
-    public RecyclerView getRowHeaderRecyclerView() {
+    public CellRecyclerView getRowHeaderRecyclerView() {
         return m_jRowHeaderRecyclerView;
     }
 

@@ -1,9 +1,9 @@
 package com.evrencoskun.tableview;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.listener.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.VerticalRecyclerViewListener;
 
@@ -15,11 +15,11 @@ public interface ITableView {
 
     void addView(View child, ViewGroup.LayoutParams params);
 
-    RecyclerView getCellRecyclerView();
+    CellRecyclerView getCellRecyclerView();
 
-    RecyclerView getColumnHeaderRecyclerView();
+    CellRecyclerView getColumnHeaderRecyclerView();
 
-    RecyclerView getRowHeaderRecyclerView();
+    CellRecyclerView getRowHeaderRecyclerView();
 
     HorizontalRecyclerViewListener getHorizontalRecyclerViewListener();
 

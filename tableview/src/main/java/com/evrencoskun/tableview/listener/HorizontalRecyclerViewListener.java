@@ -30,8 +30,7 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
     private VerticalRecyclerViewListener m_iVerticalRecyclerViewListener;
 
     public HorizontalRecyclerViewListener(ITableView p_iTableView) {
-        this.m_jColumnHeaderRecyclerView = (CellRecyclerView) p_iTableView
-                .getColumnHeaderRecyclerView();
+        this.m_jColumnHeaderRecyclerView = p_iTableView.getColumnHeaderRecyclerView();
         this.m_jCellLayoutManager = p_iTableView.getCellRecyclerView().getLayoutManager();
         this.m_iVerticalRecyclerViewListener = p_iTableView.getVerticalRecyclerViewListener();
     }
@@ -132,9 +131,12 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
 
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-        super.onScrolled(recyclerView, dx, dy);
+        // Column Header should be scrolled firstly. Because it is the compared recyclerView to
+        // make column width fit.
 
         if (recyclerView == m_jColumnHeaderRecyclerView) {
+            super.onScrolled(recyclerView, dx, dy);
+
             // Scroll each cell recyclerViews
             for (int i = 0; i < m_jCellLayoutManager.getChildCount(); i++) {
                 CellRecyclerView child = (CellRecyclerView) m_jCellLayoutManager.getChildAt(i);
@@ -142,6 +144,11 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
                 child.scrollBy(dx, 0);
             }
         } else {
+            // Scroll column header recycler view as well
+            //m_jColumnHeaderRecyclerView.scrollBy(dx, 0);
+
+            super.onScrolled(recyclerView, dx, dy);
+
             // Scroll each cell recyclerViews except the current touched one
             for (int i = 0; i < m_jCellLayoutManager.getChildCount(); i++) {
                 CellRecyclerView child = (CellRecyclerView) m_jCellLayoutManager.getChildAt(i);
@@ -150,9 +157,6 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
                     child.scrollBy(dx, 0);
                 }
             }
-
-            // Scroll column header recycler view as well
-            m_jColumnHeaderRecyclerView.scrollBy(dx, 0);
         }
     }
 
@@ -165,8 +169,8 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
             renewScrollPosition(recyclerView);
 
             recyclerView.removeOnScrollListener(this);
-            Log.d(LOG_TAG, "Scroll listener has been removed to " + recyclerView.getId() + " at " +
-                    "onScrollStateChanged");
+            Log.d(LOG_TAG, "Scroll listener has been removed to " + recyclerView.getId() + " at "
+                    + "onScrollStateChanged");
             m_bMoved = false;
 
             // When a user scrolls horizontally, VerticalRecyclerView add vertical scroll
@@ -199,8 +203,12 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
     private void renewScrollPosition(RecyclerView p_jRecyclerView) {
         m_nScrollPosition = ((LinearLayoutManager) p_jRecyclerView.getLayoutManager())
                 .findFirstCompletelyVisibleItemPosition();
-        m_nScrollPositionOffset = p_jRecyclerView.getLayoutManager().findViewByPosition
-                (m_nScrollPosition).getLeft();
+
+        // TODO: Remove this condition after fit column process
+        if (p_jRecyclerView.getLayoutManager().findViewByPosition(m_nScrollPosition) != null) {
+            m_nScrollPositionOffset = p_jRecyclerView.getLayoutManager().findViewByPosition
+                    (m_nScrollPosition).getLeft();
+        }
     }
 
     /**

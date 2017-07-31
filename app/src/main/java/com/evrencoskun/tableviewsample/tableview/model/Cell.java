@@ -8,6 +8,7 @@ public class Cell {
 
     private long m_nId;
     private String m_nData;
+    private int m_nWidth = -1;
 
     public Cell(long p_nId) {
         this(p_nId, "");
@@ -28,6 +29,14 @@ public class Cell {
 
     public void setData(String p_strData) {
         m_nData = p_strData;
+    }
+
+    public void setWidth(int p_nWidth) {
+        this.m_nWidth = p_nWidth;
+    }
+
+    public int getWidth() {
+        return m_nWidth;
     }
 }
 

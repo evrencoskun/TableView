@@ -25,8 +25,8 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
     private int m_nYPosition;
 
     public VerticalRecyclerViewListener(ITableView p_iTableView) {
-        this.m_jRowHeaderRecyclerView = (CellRecyclerView) p_iTableView.getRowHeaderRecyclerView();
-        this.m_jCellRecyclerView = (CellRecyclerView) p_iTableView.getCellRecyclerView();
+        this.m_jRowHeaderRecyclerView = p_iTableView.getRowHeaderRecyclerView();
+        this.m_jCellRecyclerView = p_iTableView.getCellRecyclerView();
     }
 
     @Override

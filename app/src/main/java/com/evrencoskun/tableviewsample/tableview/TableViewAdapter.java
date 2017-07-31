@@ -2,6 +2,7 @@ package com.evrencoskun.tableviewsample.tableview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,10 @@ import com.evrencoskun.tableviewsample.tableview.model.RowHeader;
 
 public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHeader, Cell> {
 
+    private static final String LOG_TAG = TableViewAdapter.class.getSimpleName();
+
+    private int m_nId = 0;
+
     public TableViewAdapter(Context p_jContext) {
         super(p_jContext);
 
@@ -31,20 +36,34 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
                 parent, false);
 
         CellViewHolder cellViewHolder = new CellViewHolder(layout);
+        cellViewHolder.itemView.setId(m_nId);
+        Log.e("TableViewAdapter:", m_nId + " onCreateCellViewHolder ");
+        m_nId++;
         return cellViewHolder;
     }
 
     @Override
-    public void onBindCellViewHolder(RecyclerView.ViewHolder holder, int verticalPosition, int
-            horizontalPosition) {
-        Cell cell = getCellItem(verticalPosition, horizontalPosition);
+    public void onBindCellViewHolder(RecyclerView.ViewHolder holder, int p_nXPosition, int
+            p_nYPosition) {
+        Cell cell = getCellItem(p_nYPosition, p_nXPosition);
         if (null == holder || !(holder instanceof CellViewHolder) || cell == null) {
             return;
         }
 
         CellViewHolder viewHolder = (CellViewHolder) holder;
+        viewHolder.cell_container.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
         viewHolder.cell_container.setTag(cell);
         viewHolder.cell_textview.setText(cell.getData());
+        viewHolder.cell_textview.requestLayout();
+        viewHolder.cell_container.requestLayout();
+        viewHolder.itemView.requestLayout();
+
+        Log.e(LOG_TAG, viewHolder.itemView.getId() + " getwidth: " + viewHolder.itemView.getWidth
+                () + " m w: " + viewHolder.itemView.getMeasuredWidth() + " params w: " +
+                viewHolder.itemView.getLayoutParams().width + " getWidth(view): " + getWidth
+                (viewHolder.itemView));
+
+        //viewHolder.setIsRecyclable(false);
     }
 
     static class CellViewHolder extends RecyclerView.ViewHolder {
@@ -74,7 +93,13 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
             return;
         }
         ColumnHeaderViewHolder columnHeaderViewHolder = (ColumnHeaderViewHolder) holder;
+        columnHeaderViewHolder.column_header_container.getLayoutParams().width = LinearLayout
+                .LayoutParams.WRAP_CONTENT;
         columnHeaderViewHolder.column_header_textview.setText(columnHeader.getData());
+        columnHeaderViewHolder.column_header_textview.requestLayout();
+        columnHeaderViewHolder.column_header_container.requestLayout();
+        columnHeaderViewHolder.itemView.requestLayout();
+
     }
 
     static class ColumnHeaderViewHolder extends RecyclerView.ViewHolder {
@@ -122,24 +147,6 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
     }
 
     @Override
-    public int getColumnWidth(int p_nColumn) {
-        // TODO:
-        return 0;
-    }
-
-    @Override
-    public int getRowHeight(int p_nRow) {
-        // TODO:
-        return 0;
-    }
-
-    @Override
-    public int getCellItemViewType(int verticalPosition, int horizontalPosition) {
-        // TODO:
-        return 0;
-    }
-
-    @Override
     public int getColumnHeaderItemViewType(int position) {
         // TODO:
         return 0;
@@ -151,4 +158,9 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
         return 0;
     }
 
+    private int getWidth(View p_jView) {
+        p_jView.measure(LinearLayout.LayoutParams.WRAP_CONTENT, View.MeasureSpec.makeMeasureSpec
+                (p_jView.getMeasuredHeight(), View.MeasureSpec.EXACTLY));
+        return p_jView.getMeasuredWidth();
+    }
 }

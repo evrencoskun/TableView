@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.evrencoskun.tableview.R;
 import com.evrencoskun.tableview.adapter.ITableAdapter;
+import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnLayoutManager;
 import com.evrencoskun.tableview.listener.HorizontalRecyclerViewListener;
 
@@ -30,6 +31,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
     private final DividerItemDecoration m_jCellItemDecoration;
     private HorizontalRecyclerViewListener m_iHorizontalListener;
+    private CellLayoutManager m_iCellLayoutManager;
 
     // This is for testing purpose
     private int m_nRecyclerViewId = 0;
@@ -68,11 +70,16 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
             // and it also helps to locate the scroll position of the horizontal recyclerView
             // which is row recyclerView
             ColumnLayoutManager layoutManager = new ColumnLayoutManager(m_jContext,
-                    m_iTableAdapter.getTableView());
+                    m_iTableAdapter.getTableView(), jRecyclerView);
             jRecyclerView.setLayoutManager(layoutManager);
 
             // This is for testing purpose to find out which recyclerView is displayed.
             jRecyclerView.setId(m_nRecyclerViewId);
+
+            if (m_iCellLayoutManager == null) {
+                m_iCellLayoutManager = (CellLayoutManager) m_iTableAdapter.getTableView()
+                        .getCellRecyclerView().getLayoutManager();
+            }
 
             m_nRecyclerViewId++;
         }
@@ -81,17 +88,17 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int p_nYPosition) {
         if (!(holder instanceof CellRowViewHolder)) {
             return;
         }
 
         CellRowViewHolder viewHolder = (CellRowViewHolder) holder;
         // Set adapter to the RecyclerView
-        List<C> rowList = (List<C>) m_jItemList.get(position);
+        List<C> rowList = (List<C>) m_jItemList.get(p_nYPosition);
 
         CellRowRecyclerViewAdapter viewAdapter = new CellRowRecyclerViewAdapter(m_jContext,
-                rowList, m_iTableAdapter, position);
+                rowList, m_iTableAdapter, p_nYPosition);
         viewHolder.m_jRecyclerView.setAdapter(viewAdapter);
 
         // Add the adapter to the list
@@ -107,6 +114,9 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         ((ColumnLayoutManager) viewHolder.m_jRecyclerView.getLayoutManager())
                 .scrollToPositionWithOffset(m_iHorizontalListener.getScrollPosition(),
                         m_iHorizontalListener.getScrollPositionOffset());
+
+        m_iCellLayoutManager.fitWidthSize();
+
     }
 
     @Override
@@ -118,7 +128,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         viewHolder.m_jRecyclerView.clearScrolledX();
     }
 
-    private static class CellRowViewHolder extends RecyclerView.ViewHolder {
+    public static class CellRowViewHolder extends RecyclerView.ViewHolder {
         public final CellRecyclerView m_jRecyclerView;
 
         public CellRowViewHolder(View itemView) {

@@ -23,6 +23,7 @@ public class CellRecyclerView extends RecyclerView {
     public CellRecyclerView(Context context) {
         super(context);
 
+        this.setHasFixedSize(false);
         /*this.setItemViewCacheSize(100);
         this.setDrawingCacheEnabled(true);
         this.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);*/
@@ -100,5 +101,9 @@ public class CellRecyclerView extends RecyclerView {
 
     public boolean isHorizontalScrollListenerRemoved() {
         return mIsHorizontalScrollListenerRemoved;
+    }
+
+    public boolean isScrollOthers() {
+        return !mIsHorizontalScrollListenerRemoved;
     }
 }

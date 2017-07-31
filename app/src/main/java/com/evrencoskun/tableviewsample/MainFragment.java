@@ -18,6 +18,7 @@ import com.evrencoskun.tableviewsample.tableview.model.RowHeader;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -25,7 +26,7 @@ import java.util.List;
  */
 public class MainFragment extends Fragment {
 
-    public static final int COLUMN_SIZE = 10;
+    public static final int COLUMN_SIZE = 100;
     public static final int ROW_SIZE = 1000;
 
     private List<RowHeader> m_jRowHeaderList;
@@ -87,7 +88,8 @@ public class MainFragment extends Fragment {
 
     private void loadData() {
         List<RowHeader> rowHeaders = getRowHeaderList();
-        List<List<Cell>> cellList = getCellList();
+        List<List<Cell>> cellList =  getRandomCellList(); //getCellList();
+        List<ColumnHeader> columnHeaders =  getRandomColumnHeaderList(); //getColumnHeaderList(); //
 
         m_jRowHeaderList.addAll(rowHeaders);
         for (int i = 0; i < cellList.size(); i++) {
@@ -95,7 +97,7 @@ public class MainFragment extends Fragment {
         }
 
         // Load all data
-        m_jColumnHeaderList.addAll(getColumnHeaderList());
+        m_jColumnHeaderList.addAll(columnHeaders);
         m_iTableViewAdapter.setAllItems(m_jColumnHeaderList, m_jRowHeaderList, m_jCellList);
 
     }
@@ -125,6 +127,22 @@ public class MainFragment extends Fragment {
         return list;
     }
 
+    private List<ColumnHeader> getRandomColumnHeaderList() {
+        List<ColumnHeader> list = new ArrayList<>();
+
+        for (int i = 0; i < COLUMN_SIZE; i++) {
+            String strTitle = "column " + i;
+            int nRandom = new Random().nextInt();
+            if (nRandom % 4 == 0 || nRandom % 3 == 0 || nRandom == i) {
+                strTitle = "large column " + i;
+            }
+            ColumnHeader header = new ColumnHeader(i, strTitle);
+            list.add(header);
+        }
+
+        return list;
+    }
+
     private List<List<Cell>> getCellList() {
         List<List<Cell>> list = new ArrayList<>();
         for (int i = 0; i < ROW_SIZE; i++) {
@@ -132,8 +150,8 @@ public class MainFragment extends Fragment {
             list.add(cellList);
             for (int j = 0; j < COLUMN_SIZE; j++) {
                 String strText = "cell " + j + " " + i;
-                if (j % 3 == 0 && i % 5 == 0) {
-                    strText = "large column " + i;
+                if (j % 4 == 0) { // && i % 3 == 0
+                    strText = "large cell " + i + ".";
                 }
                 Cell cell = new Cell(j, strText);
                 cellList.add(cell);
@@ -143,4 +161,33 @@ public class MainFragment extends Fragment {
         return list;
     }
 
+    private List<List<Cell>> getRandomCellList() {
+        List<List<Cell>> list = new ArrayList<>();
+        for (int i = 0; i < ROW_SIZE; i++) {
+            List<Cell> cellList = new ArrayList<>();
+            list.add(cellList);
+            for (int j = 0; j < COLUMN_SIZE; j++) {
+                String strText = "cell " + j + " " + i;
+                int nRandom = new Random().nextInt();
+                if (nRandom % 2 == 0 || nRandom % 5 == 0 || nRandom == j) {
+                    strText = "large cell  " + i + getRandomString() + ".";
+                }
+                Cell cell = new Cell(j, strText);
+                cellList.add(cell);
+            }
+        }
+
+        return list;
+    }
+
+
+    private String getRandomString() {
+        Random r = new Random();
+        String str = " a ";
+        for (int i = 0; i < r.nextInt(); i++) {
+            str = str + " a ";
+        }
+
+        return str;
+    }
 }
