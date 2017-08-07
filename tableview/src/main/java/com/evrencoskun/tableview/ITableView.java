@@ -1,9 +1,12 @@
 package com.evrencoskun.tableview;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
+import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
+import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
 import com.evrencoskun.tableview.listener.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.VerticalRecyclerViewListener;
 
@@ -20,6 +23,12 @@ public interface ITableView {
     CellRecyclerView getColumnHeaderRecyclerView();
 
     CellRecyclerView getRowHeaderRecyclerView();
+
+    ColumnHeaderLayoutManager getColumnHeaderLayoutManager();
+
+    CellLayoutManager getCellLayoutManager();
+
+    LinearLayoutManager getRowHeaderLayoutManager();
 
     HorizontalRecyclerViewListener getHorizontalRecyclerViewListener();
 

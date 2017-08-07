@@ -33,6 +33,10 @@ public class TableView extends FrameLayout implements ITableView {
     private VerticalRecyclerViewListener m_jVerticalRecyclerListener;
     private HorizontalRecyclerViewListener m_jHorizontalRecyclerViewListener;
 
+    private ColumnHeaderLayoutManager m_iColumnHeaderLayoutManager;
+    private LinearLayoutManager m_jRowHeaderLayoutManager;
+    private CellLayoutManager m_iCellLayoutManager;
+
     private int m_nRowHeaderWidth;
     private int m_nColumnHeaderHeight;
 
@@ -87,9 +91,7 @@ public class TableView extends FrameLayout implements ITableView {
     protected CellRecyclerView createColumnHeaderRecyclerView() {
         CellRecyclerView recyclerView = new CellRecyclerView(getContext());
         // Set layout manager
-        ColumnHeaderLayoutManager layoutManager = new ColumnHeaderLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-
+        recyclerView.setLayoutManager(getColumnHeaderLayoutManager());
         // Set layout params
         LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT,
                 m_nColumnHeaderHeight);
@@ -107,9 +109,7 @@ public class TableView extends FrameLayout implements ITableView {
     protected CellRecyclerView createRowHeaderRecyclerView() {
         CellRecyclerView recyclerView = new CellRecyclerView(getContext());
         // Set layout manager
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(getRowHeaderLayoutManager());
         // Set layout params
         LayoutParams layoutParams = new LayoutParams(m_nRowHeaderWidth, LayoutParams.WRAP_CONTENT);
         layoutParams.topMargin = m_nColumnHeaderHeight;
@@ -126,12 +126,7 @@ public class TableView extends FrameLayout implements ITableView {
         // Disable multitouch
         recyclerView.setMotionEventSplittingEnabled(false);
         // Set layout manager
-        CellLayoutManager layoutManager = new CellLayoutManager(getContext(),
-                (LinearLayoutManager) getColumnHeaderRecyclerView().getLayoutManager());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-
-
+        recyclerView.setLayoutManager(getCellLayoutManager());
         // Set layout params
         LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams
                 .WRAP_CONTENT);
@@ -189,6 +184,32 @@ public class TableView extends FrameLayout implements ITableView {
     @Override
     public CellRecyclerView getRowHeaderRecyclerView() {
         return m_jRowHeaderRecyclerView;
+    }
+
+    @Override
+    public ColumnHeaderLayoutManager getColumnHeaderLayoutManager() {
+        if (m_iColumnHeaderLayoutManager == null) {
+            m_iColumnHeaderLayoutManager = new ColumnHeaderLayoutManager(getContext());
+        }
+        return m_iColumnHeaderLayoutManager;
+    }
+
+    @Override
+    public CellLayoutManager getCellLayoutManager() {
+        if (m_iCellLayoutManager == null) {
+            m_iCellLayoutManager = new CellLayoutManager(getContext(),
+                    getColumnHeaderLayoutManager(), getRowHeaderLayoutManager());
+        }
+        return m_iCellLayoutManager;
+    }
+
+    @Override
+    public LinearLayoutManager getRowHeaderLayoutManager() {
+        if (m_jRowHeaderLayoutManager == null) {
+            m_jRowHeaderLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager
+                    .VERTICAL, false);
+        }
+        return m_jRowHeaderLayoutManager;
     }
 
     @Override

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import com.evrencoskun.tableview.R;
 import com.evrencoskun.tableview.adapter.ITableAdapter;
-import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnLayoutManager;
 import com.evrencoskun.tableview.listener.HorizontalRecyclerViewListener;
 
@@ -31,7 +30,6 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
     private final DividerItemDecoration m_jCellItemDecoration;
     private HorizontalRecyclerViewListener m_iHorizontalListener;
-    private CellLayoutManager m_iCellLayoutManager;
 
     // This is for testing purpose
     private int m_nRecyclerViewId = 0;
@@ -76,11 +74,6 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
             // This is for testing purpose to find out which recyclerView is displayed.
             jRecyclerView.setId(m_nRecyclerViewId);
 
-            if (m_iCellLayoutManager == null) {
-                m_iCellLayoutManager = (CellLayoutManager) m_iTableAdapter.getTableView()
-                        .getCellRecyclerView().getLayoutManager();
-            }
-
             m_nRecyclerViewId++;
         }
 
@@ -114,9 +107,6 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         ((ColumnLayoutManager) viewHolder.m_jRecyclerView.getLayoutManager())
                 .scrollToPositionWithOffset(m_iHorizontalListener.getScrollPosition(),
                         m_iHorizontalListener.getScrollPositionOffset());
-
-        m_iCellLayoutManager.fitWidthSize();
-
     }
 
     @Override

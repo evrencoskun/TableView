@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import java.util.HashMap;
 
@@ -41,14 +40,10 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
 
     private void setWidth(View p_jView, int p_nWidth) {
         // Change width value from params
-        //RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) p_jView.getLayoutParams();
-        //params.width = p_nWidth;
 
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) p_jView.getLayoutParams();
         params.width = p_nWidth;
         p_jView.setLayoutParams(params);
-
-        //p_jView.setMinimumWidth(p_nWidth);
 
         int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(p_nWidth, View.MeasureSpec.EXACTLY);
         int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(p_jView.getMeasuredHeight(),
@@ -61,18 +56,8 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
 
     }
 
-    private int getWidth(View p_jView) {
-        p_jView.measure(LinearLayout.LayoutParams.WRAP_CONTENT, View.MeasureSpec.makeMeasureSpec
-                (p_jView.getMeasuredHeight(), View.MeasureSpec.EXACTLY));
-        return p_jView.getMeasuredWidth();
-    }
 
     public void setCacheWidth(int p_nPosition, int p_nWidth) {
-        /*if (getCacheWidth(p_nPosition) == -1) {
-            m_aWidthList.add(p_nPosition, p_nWidth);
-        } else {
-            m_aWidthList.set(p_nPosition, p_nWidth);
-        }*/
         m_aWidthList.put(p_nPosition, p_nWidth);
     }
 
@@ -81,9 +66,11 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
         if (nCachedWidth != null) {
             return m_aWidthList.get(p_nPosition);
         }
-        //if (m_aWidthList.size() > p_nPosition && m_aWidthList.get(p_nPosition) != null) {
-        //    return m_aWidthList.get(p_nPosition);
-        //}
         return -1;
+    }
+
+    public int getFirstItemLeft() {
+        View firstColumnHeader = findViewByPosition(findFirstVisibleItemPosition());
+        return firstColumnHeader.getLeft();
     }
 }
