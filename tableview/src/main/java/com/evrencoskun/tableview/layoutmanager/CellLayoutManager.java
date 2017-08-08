@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
+import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 
 /**
@@ -17,15 +18,18 @@ public class CellLayoutManager extends LinearLayoutManager {
 
     private ColumnHeaderLayoutManager m_jColumnHeaderLayoutManager;
     private LinearLayoutManager m_jRowHeaderLayoutManager;
+    private CellRecyclerView m_iRowHeaderRecyclerView;
+
     private int m_nLastDy = 0;
     private boolean m_bNeedSetLeft = false;
+    private boolean m_bNeedFit = false;
 
-    public CellLayoutManager(Context context, LinearLayoutManager p_jColumnHeaderLayoutManager,
-                             LinearLayoutManager p_jRowHeaderLayoutManager) {
+    public CellLayoutManager(Context context, ITableView p_iTableView) {
         super(context);
-        this.m_jColumnHeaderLayoutManager = (ColumnHeaderLayoutManager)
-                p_jColumnHeaderLayoutManager;
-        this.m_jRowHeaderLayoutManager = p_jRowHeaderLayoutManager;
+        this.m_jColumnHeaderLayoutManager = p_iTableView.getColumnHeaderLayoutManager();
+        this.m_jRowHeaderLayoutManager = p_iTableView.getRowHeaderLayoutManager();
+        this.m_iRowHeaderRecyclerView = p_iTableView.getRowHeaderRecyclerView();
+
         initialize();
     }
 
@@ -47,8 +51,16 @@ public class CellLayoutManager extends LinearLayoutManager {
     @Override
     public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler, RecyclerView.State
             state) {
+        if (m_iRowHeaderRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE &&
+                !m_iRowHeaderRecyclerView.isScrollOthers()) {
+            // CellRecyclerViews should be scrolled after the RowHeaderRecyclerView.
+            // Because it is one of the main compared criterion to make each columns fit.
+            m_iRowHeaderRecyclerView.scrollBy(0, dy);
+        }
+
         int nScroll = super.scrollVerticallyBy(dy, recycler, state);
-        // It is important to determine right position to fit all columns which are the same x pos.
+
+        // It is important to determine right position to fit all columns which are the same y pos.
         m_nLastDy = dy;
         return nScroll;
     }
@@ -57,16 +69,9 @@ public class CellLayoutManager extends LinearLayoutManager {
     public void onScrollStateChanged(int state) {
         super.onScrollStateChanged(state);
         if (state == RecyclerView.SCROLL_STATE_IDLE) {
+            // It is important to set it 0 to be able to know which direction is being scrolled
             m_nLastDy = 0;
         }
-    }
-
-
-    @Override
-    public void layoutDecoratedWithMargins(View child, int left, int top, int right, int bottom) {
-        super.layoutDecoratedWithMargins(child, left, top, right, bottom);
-
-        Log.e(LOG_TAG, " y: " + getPosition(child) + " last : " + findLastVisibleItemPosition());
     }
 
     /**
@@ -89,6 +94,10 @@ public class CellLayoutManager extends LinearLayoutManager {
      */
     public void fitWidthSize(int p_nPosition, boolean p_nControlXPosition) {
         fitSize(p_nPosition, -1, p_nControlXPosition);
+
+        if (m_bNeedSetLeft && p_nControlXPosition) {
+            fitWidthSize();
+        }
     }
 
 
@@ -135,12 +144,14 @@ public class CellLayoutManager extends LinearLayoutManager {
                         if (p_nLeft != -1 && cell.getLeft() != p_nLeft) {
                             cell.setLeft(p_nLeft);
                         }
-                        if (cell.getWidth() != nCellCacheWidth && !p_nControlXPosition) {
-                            nCellRight = cell.getLeft() + nCellCacheWidth + 1;
-                            cell.setRight(nCellRight);
+                        if (cell.getWidth() != nCellCacheWidth) {
+                            if (!p_nControlXPosition) {
+                                nCellRight = cell.getLeft() + nCellCacheWidth + 1;
+                                cell.setRight(nCellRight);
 
-                            childLayoutManager.layoutDecoratedWithMargins(cell, cell.getLeft(),
-                                    cell.getTop(), cell.getRight(), cell.getBottom());
+                                childLayoutManager.layoutDecoratedWithMargins(cell, cell.getLeft
+                                        (), cell.getTop(), cell.getRight(), cell.getBottom());
+                            }
                             m_bNeedSetLeft = true;
                         }
                     }
@@ -154,9 +165,9 @@ public class CellLayoutManager extends LinearLayoutManager {
                             "scrolled X : " + child.getScrolledX() + " " + "child ");*/
                 }
 
-                Log.e(LOG_TAG, "x: " + p_nPosition + " y: " + j + " nCellCacheWidth: " +
+                /*Log.e(LOG_TAG, "x: " + p_nPosition + " y: " + j + " nCellCacheWidth: " +
                         nCellCacheWidth + "" + " nColumnCacheWidth: " + nColumnCacheWidth + " " +
-                        "scrolled x: " + child.getScrolledX());
+                        "scrolled x: " + child.getScrolledX()); */
             }
         }
         return nCellRight;
@@ -179,17 +190,12 @@ public class CellLayoutManager extends LinearLayoutManager {
 
     public boolean shouldFitColumns(int p_nPosition) {
 
-        // Scrolling vertically
+        // Scrolling horizontally
         if (m_nLastDy == 0) {
             CellRecyclerView cellRecyclerView = (CellRecyclerView) findViewByPosition(p_nPosition);
             if (!cellRecyclerView.isScrollOthers()) {
-                // Why we compare the position to the last position of the row header
-                // instead of its findLastVisibleItemPosition because of performance approach.
-                // When this layout manager is laying out for the first time, at every position
-                // this method will be called. Because first & last visible item position is
-                // already same position. However, through row header is already lay out, it will
-                // give us the write position value to compare it.
-                int nLastVisiblePosition = m_jRowHeaderLayoutManager.findLastVisibleItemPosition();
+
+                int nLastVisiblePosition = findLastVisibleItemPosition();
                 CellRecyclerView lastCellRecyclerView = (CellRecyclerView) findViewByPosition
                         (nLastVisiblePosition);
 
@@ -202,12 +208,39 @@ public class CellLayoutManager extends LinearLayoutManager {
                     }
                 }
             }
-        } else {
-            // Scrolling up or down
-            return true;
         }
 
         return false;
+    }
+
+
+    @Override
+    public void measureChildWithMargins(View child, int widthUsed, int heightUsed) {
+        super.measureChildWithMargins(child, widthUsed, heightUsed);
+
+        ColumnLayoutManager childLayoutManager = (ColumnLayoutManager) ((CellRecyclerView) child)
+                .getLayoutManager();
+        if (childLayoutManager.isNeedFit()) {
+            m_bNeedFit = true;
+
+            // all columns have been fitted.
+            childLayoutManager.clearNeedFit();
+        }
+
+        // Why we compare the position to the last position of the row header
+        // instead of its findLastVisibleItemPosition because of performance approach.
+        // When this layout manager is laying out for the first time, at every position
+        // this method will be called. Because first & last visible item position is
+        // already same position. However, through row header is already lay out, it will
+        // give us the write position value to compare it.
+        if (m_bNeedFit && m_jRowHeaderLayoutManager.findLastVisibleItemPosition() == getPosition
+                (child)) {
+            Log.e(LOG_TAG, getPosition(child) + " fitWidthSize all vertically");
+            fitWidthSize();
+
+            m_bNeedFit = false;
+        }
+
     }
 
 }

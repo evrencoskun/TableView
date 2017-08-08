@@ -40,7 +40,6 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
 
     private void setWidth(View p_jView, int p_nWidth) {
         // Change width value from params
-
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) p_jView.getLayoutParams();
         params.width = p_nWidth;
         p_jView.setLayoutParams(params);
@@ -50,10 +49,7 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
                 View.MeasureSpec.EXACTLY);
         p_jView.measure(widthMeasureSpec, heightMeasureSpec);
 
-        p_jView.invalidate();
         p_jView.requestLayout();
-        p_jView.forceLayout();
-
     }
 
 

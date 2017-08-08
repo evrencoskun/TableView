@@ -90,11 +90,17 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
 
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-        super.onScrolled(recyclerView, dx, dy);
+        // CellRecyclerViews should be scrolled after the RowHeaderRecyclerView.
+        // Because it is one of the main compared criterion to make each columns fit.
 
         if (recyclerView == m_jCellRecyclerView) {
-            m_jRowHeaderRecyclerView.scrollBy(0, dy);
+            super.onScrolled(recyclerView, dx, dy);
+            // The below code has been moved in CellLayoutManager
+            //m_jRowHeaderRecyclerView.scrollBy(0, dy);
+
         } else if (recyclerView == m_jRowHeaderRecyclerView) {
+            super.onScrolled(recyclerView, dx, dy);
+
             m_jCellRecyclerView.scrollBy(0, dy);
         }
     }

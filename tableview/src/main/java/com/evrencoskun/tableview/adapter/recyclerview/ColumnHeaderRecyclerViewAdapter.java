@@ -2,7 +2,6 @@ package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import com.evrencoskun.tableview.adapter.ITableAdapter;
@@ -30,7 +29,6 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Log.e(LOG_TAG, position + " onBindViewHolder ");
         m_iTableAdapter.onBindColumnHeaderViewHolder(holder, position);
     }
 

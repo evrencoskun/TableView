@@ -73,17 +73,16 @@ public class ColumnLayoutManager extends LinearLayoutManager {
                 "" + "" + "" + "" + "" + ": " + child.getLeft() + " right : " + child.getRight())
                 ; */
 
-        Log.e(LOG_TAG, "x: " + nPosition + " y: " + getRowPosition() + " last : " +
-                m_iCellLayoutManager.findLastVisibleItemPosition());
-
         // Control all of the rows which has same column position.
         if (shouldFitColumns(nPosition)) {
-            if (m_nLastDx == 0) {
-                m_iCellLayoutManager.fitWidthSize();
-            } else if (m_nLastDx < 0) {
+            if (m_nLastDx < 0) {
+                Log.e(LOG_TAG, "x: " + nPosition + " y: " + getRowPosition() + " fitWidthSize " +
+                        "left side");
                 m_iCellLayoutManager.fitWidthSize(nPosition, true);
             } else {
                 m_iCellLayoutManager.fitWidthSize(nPosition, false);
+                Log.e(LOG_TAG, "x: " + nPosition + " y: " + getRowPosition() + " fitWidthSize " +
+                        "right side");
             }
             m_bNeedFit = false;
         }
@@ -101,16 +100,6 @@ public class ColumnLayoutManager extends LinearLayoutManager {
                     if (p_nPosition == findFirstVisibleItemPosition()) {
                         return true;
                     }
-                } else {
-                    // Why we compare the position to the last position of the column header
-                    // instead of its findLastVisibleItemPosition because of performance approach.
-                    // When this columnLayout manager is laying out for the first time, first &
-                    // last visible item position is already same position. However, through
-                    // column header is already lay out, it will give us the write position value
-                    // to compare it.
-                    if (m_jColumnHeaderLayoutManager.findLastVisibleItemPosition() == p_nPosition) {
-                        return true;
-                    }
                 }
             }
         }
@@ -126,12 +115,10 @@ public class ColumnLayoutManager extends LinearLayoutManager {
             // Because it is the main compared one to make each columns fit.
             m_iColumnHeaderRecyclerView.scrollBy(dx, 0);
         }
-        int nScroll = super.scrollHorizontallyBy(dx, recycler, state);
-
         // It is important to determine the next attached view to fit all columns
         m_nLastDx = dx;
 
-        return nScroll;
+        return super.scrollHorizontallyBy(dx, recycler, state);
     }
 
     private void setWidth(View p_jView, int p_nWidth) {
@@ -188,12 +175,6 @@ public class ColumnLayoutManager extends LinearLayoutManager {
 
                     // Set the value to cache it for column header.
                     m_jColumnHeaderLayoutManager.setCacheWidth(nPosition, nColumnHeaderWidth);
-
-                    /*// Control the right values of the cell are same with the column header
-                    int nRight = columnHeaderChild.getLeft() + nColumnHeaderWidth;
-                    if (nRight != child.getRight()) {
-                        m_bNeedFit = true;
-                    }*/
                 }
             }
         }
@@ -231,4 +212,11 @@ public class ColumnLayoutManager extends LinearLayoutManager {
         return -1;
     }
 
+    public boolean isNeedFit() {
+        return m_bNeedFit;
+    }
+
+    public void clearNeedFit() {
+        m_bNeedFit = false;
+    }
 }

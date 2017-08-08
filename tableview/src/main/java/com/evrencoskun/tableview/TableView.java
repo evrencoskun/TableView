@@ -197,8 +197,7 @@ public class TableView extends FrameLayout implements ITableView {
     @Override
     public CellLayoutManager getCellLayoutManager() {
         if (m_iCellLayoutManager == null) {
-            m_iCellLayoutManager = new CellLayoutManager(getContext(),
-                    getColumnHeaderLayoutManager(), getRowHeaderLayoutManager());
+            m_iCellLayoutManager = new CellLayoutManager(getContext(), this);
         }
         return m_iCellLayoutManager;
     }
