@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
+
 
 android {
     compileSdkVersion 25
@@ -28,5 +30,15 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
+
     testCompile 'junit:junit:4.12'
+}
+
+publish {
+    userOrg = 'evrencoskun'//user name of bintray.com
+    groupId = 'com.evrencoskun.library'//jcenter's url
+    artifactId = 'tableview'//project name
+    publishVersion = '0.6.1'//version code
+    desc = 'TableView is a custom view that help to show datas as a data table.'
+    website = 'https://github.com/evrencoskun/TableView'//website
 }

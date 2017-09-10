@@ -5,6 +5,16 @@ designed to show you how to create your own TableView in your application.
 ![TableView Landscape](https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/TableView-landscape.gif)
 ![TableView Portrait](https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/TableView-portrait.gif)
 
+## Installation
+
+To use this library in your android project, just simply add the following dependency into your build.gradle
+
+``` 
+dependencies {
+compile 'com.evrencoskun.library:tableview:0.6.1' 
+}
+```
+
 ## Features
   - Set your own model class to displayed in a table view
   - RowHeader and cells can scroll vertically and synchronously
