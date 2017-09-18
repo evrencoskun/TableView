@@ -90,16 +90,15 @@ public class TableView extends FrameLayout implements ITableView {
 
     protected CellRecyclerView createColumnHeaderRecyclerView() {
         CellRecyclerView recyclerView = new CellRecyclerView(getContext());
+
         // Set layout manager
         recyclerView.setLayoutManager(getColumnHeaderLayoutManager());
+
         // Set layout params
         LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT,
                 m_nColumnHeaderHeight);
         layoutParams.leftMargin = m_nRowHeaderWidth;
         recyclerView.setLayoutParams(layoutParams);
-
-        //TODO: for testing purpose, remove it
-        recyclerView.setNestedScrollingEnabled(false);
 
         // Add vertical item decoration to display column line
         recyclerView.addItemDecoration(createItemDecoration(DividerItemDecoration.HORIZONTAL));
@@ -108,8 +107,10 @@ public class TableView extends FrameLayout implements ITableView {
 
     protected CellRecyclerView createRowHeaderRecyclerView() {
         CellRecyclerView recyclerView = new CellRecyclerView(getContext());
+
         // Set layout manager
         recyclerView.setLayoutManager(getRowHeaderLayoutManager());
+
         // Set layout params
         LayoutParams layoutParams = new LayoutParams(m_nRowHeaderWidth, LayoutParams.WRAP_CONTENT);
         layoutParams.topMargin = m_nColumnHeaderHeight;
@@ -123,10 +124,13 @@ public class TableView extends FrameLayout implements ITableView {
 
     protected CellRecyclerView createCellRecyclerView() {
         CellRecyclerView recyclerView = new CellRecyclerView(getContext());
+
         // Disable multitouch
         recyclerView.setMotionEventSplittingEnabled(false);
+
         // Set layout manager
         recyclerView.setLayoutManager(getCellLayoutManager());
+
         // Set layout params
         LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams
                 .WRAP_CONTENT);

@@ -4,13 +4,12 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
-
-import java.util.HashMap;
+import com.evrencoskun.tableview.util.TableViewUtils;
 
 /**
  * Created by evrencoskun on 10/06/2017.
@@ -19,15 +18,15 @@ import java.util.HashMap;
 public class ColumnLayoutManager extends LinearLayoutManager {
     private static final String LOG_TAG = ColumnLayoutManager.class.getSimpleName();
 
-    private HashMap<Integer, HashMap<Integer, Integer>> m_aWidthList;
+    private SparseArray<SparseArray<Integer>> m_aCachedWidthList;
 
     private ITableView m_iTableView;
-    private CellRecyclerView m_iCellRowRecyclerView;
-    private CellRecyclerView m_iColumnHeaderRecyclerView;
+    private CellRecyclerView m_iCellRowRecyclerView, m_iColumnHeaderRecyclerView;
     private ColumnHeaderLayoutManager m_jColumnHeaderLayoutManager;
     private CellLayoutManager m_iCellLayoutManager;
     private int m_nLastDx = 0;
     private boolean m_bNeedFit = false;
+
 
     public ColumnLayoutManager(Context context, ITableView p_iTableView, CellRecyclerView
             m_iCellRowRecyclerView) {
@@ -38,7 +37,7 @@ public class ColumnLayoutManager extends LinearLayoutManager {
         this.m_iCellRowRecyclerView = m_iCellRowRecyclerView;
         this.m_iCellLayoutManager = m_iTableView.getCellLayoutManager();
 
-        m_aWidthList = new HashMap<>();
+        m_aCachedWidthList = new SparseArray<>();
 
         // Set default orientation
         this.setOrientation(ColumnLayoutManager.HORIZONTAL);
@@ -61,17 +60,11 @@ public class ColumnLayoutManager extends LinearLayoutManager {
 
         if (nCacheWidth != -1 && nCacheWidth == nColumnCacheWidth) {
             // Already each of them is same width size.
-            setWidth(child, nCacheWidth);
+            TableViewUtils.setWidth(child, nCacheWidth);
         } else {
             // Need to calculate which one has the broadest width ?
-            fitWidthSize(child);
+            fitWidthSize(child, nPosition, nCacheWidth, nColumnCacheWidth);
         }
-
-        /*Log.e(LOG_TAG, "x: " + nPosition + " y: " + getRowPosition() + " nCellCacheWidth: " +
-                nCacheWidth + "" + " nColumnCacheWidth: " + nColumnCacheWidth + " scrolled x : "
-                + m_iCellRowRecyclerView.getScrolledX() + " width: " + child.getWidth() + " left " +
-                "" + "" + "" + "" + "" + ": " + child.getLeft() + " right : " + child.getRight())
-                ; */
 
         // Control all of the rows which has same column position.
         if (shouldFitColumns(nPosition)) {
@@ -88,16 +81,16 @@ public class ColumnLayoutManager extends LinearLayoutManager {
         }
     }
 
-    private boolean shouldFitColumns(int p_nPosition) {
+    private boolean shouldFitColumns(int p_nXPosition) {
         if (m_bNeedFit) {
             int nYPosition = m_iCellLayoutManager.getPosition(m_iCellRowRecyclerView);
             if (m_iCellLayoutManager.shouldFitColumns(nYPosition)) {
                 if (m_nLastDx > 0) {
-                    if (p_nPosition == findLastVisibleItemPosition()) {
+                    if (p_nXPosition == findLastVisibleItemPosition()) {
                         return true;
                     }
                 } else if (m_nLastDx < 0) {
-                    if (p_nPosition == findFirstVisibleItemPosition()) {
+                    if (p_nXPosition == findFirstVisibleItemPosition()) {
                         return true;
                     }
                 }
@@ -121,38 +114,20 @@ public class ColumnLayoutManager extends LinearLayoutManager {
         return super.scrollHorizontallyBy(dx, recycler, state);
     }
 
-    private void setWidth(View p_jView, int p_nWidth) {
-        // Change width value from params
-        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) p_jView.getLayoutParams();
-        params.width = p_nWidth;
-        p_jView.setLayoutParams(params);
 
-        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(p_nWidth, View.MeasureSpec.EXACTLY);
-        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(p_jView.getMeasuredHeight(),
-                View.MeasureSpec.EXACTLY);
-        p_jView.measure(widthMeasureSpec, heightMeasureSpec);
+    private void fitWidthSize(View child, int p_nPosition, int p_nCellCacheWidth, int
+            p_nColumnCacheWidth) {
 
-        p_jView.requestLayout();
-    }
-
-    private int getWidth(View p_jView) {
-        p_jView.measure(LinearLayout.LayoutParams.WRAP_CONTENT, View.MeasureSpec.makeMeasureSpec
-                (p_jView.getMeasuredHeight(), View.MeasureSpec.EXACTLY));
-        return p_jView.getMeasuredWidth();
-    }
-
-    private void fitWidthSize(View child) {
-        int nPosition = getPosition(child);
-        int nCellWidth = getCacheWidth(nPosition);
+        int nCellWidth = p_nCellCacheWidth;
         if (nCellWidth == -1) {
             nCellWidth = child.getMeasuredWidth(); // Alternatively, getWidth(child)
         }
 
-        if (nPosition > -1) {
-            View columnHeaderChild = m_jColumnHeaderLayoutManager.findViewByPosition(nPosition);
+        if (p_nPosition > -1) {
+            View columnHeaderChild = m_jColumnHeaderLayoutManager.findViewByPosition(p_nPosition);
             if (columnHeaderChild != null) {
 
-                int nColumnHeaderWidth = m_jColumnHeaderLayoutManager.getCacheWidth(nPosition);
+                int nColumnHeaderWidth = p_nColumnCacheWidth;
                 if (nColumnHeaderWidth == -1) {
                     nColumnHeaderWidth = columnHeaderChild.getMeasuredWidth(); // Alternatively,
                     // getWidth(columnHeaderChild)
@@ -169,19 +144,19 @@ public class ColumnLayoutManager extends LinearLayoutManager {
 
                     // Control whether column header needs to be change interns of width
                     if (nColumnHeaderWidth != columnHeaderChild.getWidth()) {
-                        setWidth(columnHeaderChild, nColumnHeaderWidth);
+                        TableViewUtils.setWidth(columnHeaderChild, nColumnHeaderWidth);
                         m_bNeedFit = true;
                     }
 
                     // Set the value to cache it for column header.
-                    m_jColumnHeaderLayoutManager.setCacheWidth(nPosition, nColumnHeaderWidth);
+                    m_jColumnHeaderLayoutManager.setCacheWidth(p_nPosition, nColumnHeaderWidth);
                 }
             }
         }
 
         // Set the width value to cache it for cell .
-        setWidth(child, nCellWidth);
-        setCacheWidth(nPosition, nCellWidth);
+        TableViewUtils.setWidth(child, nCellWidth);
+        setCacheWidth(p_nPosition, nCellWidth);
     }
 
     private int getRowPosition() {
@@ -190,18 +165,18 @@ public class ColumnLayoutManager extends LinearLayoutManager {
 
     public void setCacheWidth(int p_nPosition, int p_nWidth) {
         int nYPosition = getRowPosition();
-        HashMap<Integer, Integer> cellRowCaches = m_aWidthList.get(nYPosition);
+        SparseArray<Integer> cellRowCaches = m_aCachedWidthList.get(nYPosition);
         if (cellRowCaches == null) {
-            cellRowCaches = new HashMap<>();
+            cellRowCaches = new SparseArray<>();
         }
         cellRowCaches.put(p_nPosition, p_nWidth);
-        m_aWidthList.put(nYPosition, cellRowCaches);
+        m_aCachedWidthList.put(nYPosition, cellRowCaches);
     }
 
     public int getCacheWidth(int p_nPosition) {
         int nYPosition = getRowPosition();
 
-        HashMap<Integer, Integer> cellRowCaches = m_aWidthList.get(nYPosition);
+        SparseArray<Integer> cellRowCaches = m_aCachedWidthList.get(nYPosition);
         if (cellRowCaches != null) {
             Integer nCachedWidth = cellRowCaches.get(p_nPosition);
             if (nCachedWidth != null) {
@@ -210,6 +185,10 @@ public class ColumnLayoutManager extends LinearLayoutManager {
         }
 
         return -1;
+    }
+
+    public int getLastDx() {
+        return m_nLastDx;
     }
 
     public boolean isNeedFit() {

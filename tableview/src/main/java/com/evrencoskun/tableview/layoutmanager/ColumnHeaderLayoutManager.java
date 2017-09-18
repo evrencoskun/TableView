@@ -2,21 +2,21 @@ package com.evrencoskun.tableview.layoutmanager;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.view.View;
 
-import java.util.HashMap;
+import com.evrencoskun.tableview.util.TableViewUtils;
 
 /**
  * Created by evrencoskun on 30/07/2017.
  */
 
 public class ColumnHeaderLayoutManager extends LinearLayoutManager {
-    private HashMap<Integer, Integer> m_aWidthList;
+    private SparseArray<Integer> m_aWidthList;
 
     public ColumnHeaderLayoutManager(Context context) {
         super(context);
-        m_aWidthList = new HashMap<>();
+        m_aWidthList = new SparseArray<>();
 
         this.setOrientation(ColumnHeaderLayoutManager.HORIZONTAL);
     }
@@ -31,25 +31,13 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
     public void measureChild(View child, int widthUsed, int heightUsed) {
         int nPosition = getPosition(child);
         int nCacheWidth = getCacheWidth(nPosition);
+
+        // If the width value of the cell has already calculated, then set the value
         if (nCacheWidth != -1) {
-            setWidth(child, nCacheWidth);
+            TableViewUtils.setWidth(child, nCacheWidth);
         } else {
             super.measureChild(child, widthUsed, heightUsed);
         }
-    }
-
-    private void setWidth(View p_jView, int p_nWidth) {
-        // Change width value from params
-        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) p_jView.getLayoutParams();
-        params.width = p_nWidth;
-        p_jView.setLayoutParams(params);
-
-        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(p_nWidth, View.MeasureSpec.EXACTLY);
-        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(p_jView.getMeasuredHeight(),
-                View.MeasureSpec.EXACTLY);
-        p_jView.measure(widthMeasureSpec, heightMeasureSpec);
-
-        p_jView.requestLayout();
     }
 
 
@@ -68,5 +56,12 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
     public int getFirstItemLeft() {
         View firstColumnHeader = findViewByPosition(findFirstVisibleItemPosition());
         return firstColumnHeader.getLeft();
+    }
+
+    /**
+     * Helps to recalculate the width value of the cell that is located in given position.
+     */
+    public void removeCachedWidth(int p_nPosition) {
+        m_aWidthList.remove(p_nPosition);
     }
 }

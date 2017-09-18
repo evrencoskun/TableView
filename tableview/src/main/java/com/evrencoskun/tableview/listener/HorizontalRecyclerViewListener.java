@@ -201,14 +201,27 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
      * @see #getScrollPositionOffset()
      */
     private void renewScrollPosition(RecyclerView p_jRecyclerView) {
-        m_nScrollPosition = ((LinearLayoutManager) p_jRecyclerView.getLayoutManager())
-                .findFirstCompletelyVisibleItemPosition();
+        LinearLayoutManager layoutManager = (LinearLayoutManager) p_jRecyclerView
+                .getLayoutManager();
+        m_nScrollPosition = layoutManager.findFirstCompletelyVisibleItemPosition();
 
-        // TODO: Remove this condition after fit column process
-        if (p_jRecyclerView.getLayoutManager().findViewByPosition(m_nScrollPosition) != null) {
-            m_nScrollPositionOffset = p_jRecyclerView.getLayoutManager().findViewByPosition
-                    (m_nScrollPosition).getLeft();
+        // That means there is no completely visible Position.
+        if (m_nScrollPosition == -1) {
+            m_nScrollPosition = layoutManager.findFirstVisibleItemPosition();
+
+            // That means there is just a visible item on the screen
+            if (layoutManager.findFirstVisibleItemPosition() == layoutManager
+                    .findLastVisibleItemPosition()) {
+                // in this case we use the position which is the last & first visible item.
+            } else {
+                // That means there are 2 visible item on the screen. However, second one is not
+                // completely visible.
+                m_nScrollPosition = m_nScrollPosition + 1;
+            }
         }
+
+        m_nScrollPositionOffset = p_jRecyclerView.getLayoutManager().findViewByPosition
+                (m_nScrollPosition).getLeft();
     }
 
     /**
@@ -232,5 +245,9 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
      */
     public int getScrollPositionOffset() {
         return m_nScrollPositionOffset;
+    }
+
+    public void setScrollPositionOffset(int p_nOffset) {
+        m_nScrollPosition = p_nOffset;
     }
 }

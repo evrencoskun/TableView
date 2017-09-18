@@ -16,10 +16,8 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
 
     private static final String LOG_TAG = VerticalRecyclerViewListener.class.getSimpleName();
 
-    private CellRecyclerView m_jRowHeaderRecyclerView;
-    private CellRecyclerView m_jCellRecyclerView;
+    private CellRecyclerView m_jRowHeaderRecyclerView, m_jCellRecyclerView;
     private RecyclerView m_jLastTouchedRecyclerView;
-
 
     private boolean m_bMoved = false;
     private int m_nYPosition;

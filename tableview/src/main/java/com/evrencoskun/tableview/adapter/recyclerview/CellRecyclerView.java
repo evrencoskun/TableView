@@ -24,6 +24,8 @@ public class CellRecyclerView extends RecyclerView {
         super(context);
 
         this.setHasFixedSize(false);
+        this.setNestedScrollingEnabled(false);
+
         /*this.setItemViewCacheSize(100);
         this.setDrawingCacheEnabled(true);
         this.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);*/
