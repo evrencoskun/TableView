@@ -14,11 +14,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:layout_margin="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:gravity="center"
         android:maxLines="1"
         android:textColor="@color/cell_text_color"
-        android:textSize="12sp"
+        android:textSize="@dimen/text_size"
         tools:text="Cell Data"/>
 
 </LinearLayout>

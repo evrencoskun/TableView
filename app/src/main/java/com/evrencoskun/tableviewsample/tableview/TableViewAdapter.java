@@ -2,7 +2,6 @@ package com.evrencoskun.tableviewsample.tableview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,7 @@ import com.evrencoskun.tableviewsample.tableview.model.RowHeader;
 public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHeader, Cell> {
 
     private static final String LOG_TAG = TableViewAdapter.class.getSimpleName();
-
+    // For testing purpose
     private int m_nId = 0;
 
     public TableViewAdapter(Context p_jContext) {
@@ -37,7 +36,7 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
 
         CellViewHolder cellViewHolder = new CellViewHolder(layout);
         cellViewHolder.itemView.setId(m_nId);
-        Log.e("TableViewAdapter:", m_nId + " onCreateCellViewHolder ");
+
         m_nId++;
         return cellViewHolder;
     }
@@ -45,7 +44,7 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
     @Override
     public void onBindCellViewHolder(RecyclerView.ViewHolder holder, int p_nXPosition, int
             p_nYPosition) {
-        Cell cell = getCellItem(p_nYPosition, p_nXPosition);
+        Cell cell = getCellItem(p_nXPosition, p_nYPosition);
         if (null == holder || !(holder instanceof CellViewHolder) || cell == null) {
             return;
         }
@@ -54,16 +53,10 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
         viewHolder.cell_container.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
         viewHolder.cell_container.setTag(cell);
         viewHolder.cell_textview.setText(cell.getData());
+        // TODO: remove unnecessary code line.
         viewHolder.cell_textview.requestLayout();
         viewHolder.cell_container.requestLayout();
         viewHolder.itemView.requestLayout();
-
-        Log.e(LOG_TAG, viewHolder.itemView.getId() + " getwidth: " + viewHolder.itemView.getWidth
-                () + " m w: " + viewHolder.itemView.getMeasuredWidth() + " params w: " +
-                viewHolder.itemView.getLayoutParams().width + " getWidth(view): " + getWidth
-                (viewHolder.itemView));
-
-        //viewHolder.setIsRecyclable(false);
     }
 
     static class CellViewHolder extends RecyclerView.ViewHolder {
@@ -82,8 +75,8 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
     public RecyclerView.ViewHolder onCreateColumnHeaderViewHolder(ViewGroup parent, int viewType) {
         View layout = LayoutInflater.from(m_jContext).inflate(R.layout
                 .table_view_column_header_layout, parent, false);
-        ColumnHeaderViewHolder columnHeaderViewHolder = new ColumnHeaderViewHolder(layout);
-        return columnHeaderViewHolder;
+
+        return new ColumnHeaderViewHolder(layout);
     }
 
     @Override
@@ -96,6 +89,7 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
         columnHeaderViewHolder.column_header_container.getLayoutParams().width = LinearLayout
                 .LayoutParams.WRAP_CONTENT;
         columnHeaderViewHolder.column_header_textview.setText(columnHeader.getData());
+        // TODO: remove unnecessary code line.
         columnHeaderViewHolder.column_header_textview.requestLayout();
         columnHeaderViewHolder.column_header_container.requestLayout();
         columnHeaderViewHolder.itemView.requestLayout();
@@ -118,8 +112,8 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
     public RecyclerView.ViewHolder onCreateRowHeaderViewHolder(ViewGroup parent, int viewType) {
         View layout = LayoutInflater.from(m_jContext).inflate(R.layout
                 .table_view_row_header_layout, parent, false);
-        RowHeaderViewHolder rowHeaderViewHolder = new RowHeaderViewHolder(layout);
-        return rowHeaderViewHolder;
+
+        return new RowHeaderViewHolder(layout);
     }
 
     @Override
@@ -156,11 +150,5 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
     public int getRowHeaderItemViewType(int position) {
         // TODO:
         return 0;
-    }
-
-    private int getWidth(View p_jView) {
-        p_jView.measure(LinearLayout.LayoutParams.WRAP_CONTENT, View.MeasureSpec.makeMeasureSpec
-                (p_jView.getMeasuredHeight(), View.MeasureSpec.EXACTLY));
-        return p_jView.getMeasuredWidth();
     }
 }

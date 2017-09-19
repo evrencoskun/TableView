@@ -248,6 +248,6 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
     }
 
     public void setScrollPositionOffset(int p_nOffset) {
-        m_nScrollPosition = p_nOffset;
+        m_nScrollPositionOffset = p_nOffset;
     }
 }

@@ -59,7 +59,8 @@ public class TableView extends FrameLayout implements ITableView {
     private void initialize() {
         // initialize default size
         m_nRowHeaderWidth = (int) getResources().getDimension(R.dimen.default_row_header_width);
-        m_nColumnHeaderHeight = (int) getResources().getDimension(R.dimen.default_row_header_width);
+        m_nColumnHeaderHeight = (int) getResources().getDimension(R.dimen
+                .default_column_header_height);
 
         // Create Views
         m_jColumnHeaderRecyclerView = createColumnHeaderRecyclerView();

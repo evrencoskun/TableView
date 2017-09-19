@@ -24,7 +24,7 @@
             android:layout_marginStart="10dp"
             android:gravity="center"
             android:textColor="@color/cell_text_color"
-            android:textSize="12sp"
+            android:textSize="@dimen/text_size"
             tools:text="Header Data"/>
 
         <View
