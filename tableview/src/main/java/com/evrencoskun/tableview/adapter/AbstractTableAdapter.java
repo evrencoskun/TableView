@@ -148,13 +148,13 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
     }
 
     public C getCellItem(int p_nXPosition, int p_nYPosition) {
-        if ((m_jCellItems == null || m_jCellItems.isEmpty()) || p_nXPosition < 0 || p_nXPosition
-                >= m_jCellItems.size() || m_jCellItems.get(p_nXPosition) == null || p_nYPosition
-                < 0 || p_nYPosition >= m_jCellItems.get(p_nXPosition).size()) {
+        if ((m_jCellItems == null || m_jCellItems.isEmpty()) || p_nXPosition < 0 || p_nYPosition
+                >= m_jCellItems.size() || m_jCellItems.get(p_nYPosition) == null || p_nYPosition
+                < 0 || p_nXPosition >= m_jCellItems.get(p_nYPosition).size()) {
             return null;
         }
 
-        return m_jCellItems.get(p_nXPosition).get(p_nYPosition);
+        return m_jCellItems.get(p_nYPosition).get(p_nXPosition);
     }
 
     public final void notifyDataSetChanged() {
