@@ -15,10 +15,10 @@ dependencies {
 ```
 
 ## Features
-  - Set your own model class to displayed in a table view
-  - RowHeader and cells can scroll vertically and synchronously
-  - ColumnHeader and cells can scroll horizontally and synchronously
   - Each column width value can be calculated considering the largest one
+  - Setting your own model class to displayed in a table view easily.
+  - TableView has an click listener to listen user touch interaction for each cell.
+  
 
 ## Table of Contents
   - [How this app works](#how-this-app-works)
