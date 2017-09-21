@@ -16,6 +16,7 @@ import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
 import com.evrencoskun.tableview.listener.HorizontalRecyclerViewListener;
+import com.evrencoskun.tableview.listener.ITableViewListener;
 import com.evrencoskun.tableview.listener.VerticalRecyclerViewListener;
 
 /**
@@ -29,6 +30,7 @@ public class TableView extends FrameLayout implements ITableView {
     protected CellRecyclerView m_jRowHeaderRecyclerView;
 
     protected AbstractTableAdapter m_iTableAdapter;
+    private ITableViewListener m_iTableViewListener;
 
     private VerticalRecyclerViewListener m_jVerticalRecyclerListener;
     private HorizontalRecyclerViewListener m_jHorizontalRecyclerViewListener;
@@ -224,5 +226,14 @@ public class TableView extends FrameLayout implements ITableView {
     @Override
     public VerticalRecyclerViewListener getVerticalRecyclerViewListener() {
         return m_jVerticalRecyclerListener;
+    }
+
+    @Override
+    public ITableViewListener getTableViewListener() {
+        return m_iTableViewListener;
+    }
+
+    public void setTableViewListener(ITableViewListener p_jTableViewListener) {
+        this.m_iTableViewListener = p_jTableViewListener;
     }
 }

@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableviewsample.tableview.TableViewAdapter;
+import com.evrencoskun.tableviewsample.tableview.TableViewListener;
 import com.evrencoskun.tableviewsample.tableview.model.Cell;
 import com.evrencoskun.tableviewsample.tableview.model.ColumnHeader;
 import com.evrencoskun.tableviewsample.tableview.model.RowHeader;
@@ -27,7 +28,7 @@ import java.util.Random;
 public class MainFragment extends Fragment {
 
     public static final int COLUMN_SIZE = 100;
-    public static final int ROW_SIZE = 1000;
+    public static final int ROW_SIZE = 100;
 
     private List<RowHeader> m_jRowHeaderList;
     private List<ColumnHeader> m_jColumnHeaderList;
@@ -74,8 +75,11 @@ public class MainFragment extends Fragment {
                 .MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         tableView.setLayoutParams(tlp);
 
+        // Set TableView listener
+        tableView.setTableViewListener(new TableViewListener(getContext()));
         return tableView;
     }
+
 
     private void initData() {
         m_jRowHeaderList = new ArrayList<>();
@@ -88,8 +92,8 @@ public class MainFragment extends Fragment {
 
     private void loadData() {
         List<RowHeader> rowHeaders = getRowHeaderList();
-        List<List<Cell>> cellList =  getRandomCellList(); //getCellList();
-        List<ColumnHeader> columnHeaders =  getRandomColumnHeaderList(); //getColumnHeaderList(); //
+        List<List<Cell>> cellList = getCellList(); //getRandomCellList(); //
+        List<ColumnHeader> columnHeaders = getColumnHeaderList(); //getRandomColumnHeaderList(); //
 
         m_jRowHeaderList.addAll(rowHeaders);
         for (int i = 0; i < cellList.size(); i++) {
@@ -117,7 +121,7 @@ public class MainFragment extends Fragment {
 
         for (int i = 0; i < COLUMN_SIZE; i++) {
             String strTitle = "column " + i;
-            if (i % 3 == 0) {
+            if (i % 6 == 2) {
                 strTitle = "large column " + i;
             }
             ColumnHeader header = new ColumnHeader(i, strTitle);
@@ -147,15 +151,15 @@ public class MainFragment extends Fragment {
         List<List<Cell>> list = new ArrayList<>();
         for (int i = 0; i < ROW_SIZE; i++) {
             List<Cell> cellList = new ArrayList<>();
-            list.add(cellList);
             for (int j = 0; j < COLUMN_SIZE; j++) {
                 String strText = "cell " + j + " " + i;
-                if (j % 4 == 0) { // && i % 3 == 0
-                    strText = "large cell " + i + ".";
+                if (j % 4 == 0 && i % 5 == 0) {
+                    strText = "large cell " + j + " " + i + ".";
                 }
                 Cell cell = new Cell(j, strText);
                 cellList.add(cell);
             }
+            list.add(cellList);
         }
 
         return list;
@@ -170,7 +174,7 @@ public class MainFragment extends Fragment {
                 String strText = "cell " + j + " " + i;
                 int nRandom = new Random().nextInt();
                 if (nRandom % 2 == 0 || nRandom % 5 == 0 || nRandom == j) {
-                    strText = "large cell  " + i + getRandomString() + ".";
+                    strText = "large cell  " + j + " " + i + getRandomString() + ".";
                 }
                 Cell cell = new Cell(j, strText);
                 cellList.add(cell);

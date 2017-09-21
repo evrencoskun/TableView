@@ -91,7 +91,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         List<C> rowList = (List<C>) m_jItemList.get(p_nYPosition);
 
         CellRowRecyclerViewAdapter viewAdapter = new CellRowRecyclerViewAdapter(m_jContext,
-                rowList, m_iTableAdapter, p_nYPosition);
+                rowList, m_iTableAdapter, viewHolder.m_jRecyclerView, p_nYPosition);
         viewHolder.m_jRecyclerView.setAdapter(viewAdapter);
 
         // Add the adapter to the list

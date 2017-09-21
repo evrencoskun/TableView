@@ -171,4 +171,5 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
     public ITableView getTableView() {
         return m_iTableView;
     }
+
 }

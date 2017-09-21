@@ -2,6 +2,7 @@ package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.evrencoskun.tableview.adapter.ITableAdapter;
@@ -24,7 +25,14 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return m_iTableAdapter.onCreateColumnHeaderViewHolder(parent, viewType);
+        RecyclerView.ViewHolder viewHolder = m_iTableAdapter.onCreateColumnHeaderViewHolder
+                (parent, viewType);
+
+        // Add cell click listener
+        if (m_iTableAdapter.getTableView().getTableViewListener() != null) {
+            viewHolder.itemView.setOnClickListener(mItemAction);
+        }
+        return viewHolder;
     }
 
     @Override
@@ -36,4 +44,15 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
     public int getItemViewType(int position) {
         return m_iTableAdapter.getColumnHeaderItemViewType(position);
     }
+
+    private View.OnClickListener mItemAction = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int nXPosition = m_iTableAdapter.getTableView().getColumnHeaderRecyclerView()
+                    .getChildAdapterPosition(v);
+
+            // Callback for the TableView listener
+            m_iTableAdapter.getTableView().getTableViewListener().onColumnHeaderClicked(nXPosition);
+        }
+    };
 }

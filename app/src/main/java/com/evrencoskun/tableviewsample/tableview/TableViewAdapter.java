@@ -112,7 +112,6 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
     public RecyclerView.ViewHolder onCreateRowHeaderViewHolder(ViewGroup parent, int viewType) {
         View layout = LayoutInflater.from(m_jContext).inflate(R.layout
                 .table_view_row_header_layout, parent, false);
-
         return new RowHeaderViewHolder(layout);
     }
 

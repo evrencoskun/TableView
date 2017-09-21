@@ -8,6 +8,7 @@ import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
 import com.evrencoskun.tableview.listener.HorizontalRecyclerViewListener;
+import com.evrencoskun.tableview.listener.ITableViewListener;
 import com.evrencoskun.tableview.listener.VerticalRecyclerViewListener;
 
 /**
@@ -33,4 +34,6 @@ public interface ITableView {
     HorizontalRecyclerViewListener getHorizontalRecyclerViewListener();
 
     VerticalRecyclerViewListener getVerticalRecyclerViewListener();
+
+    ITableViewListener getTableViewListener();
 }
