@@ -17,26 +17,20 @@ dependencies {
 ```
 
 ## Features
-  - Each column width value can be calculated considering the largest one
-  - Setting your own model class to displayed in a table view easily.
-  - TableView has an click listener to listen user touch interaction for each cell.
+  - [x] Each column width value can be calculated considering the largest one
+  - [x] Setting your own model class to displayed in a table view easily.
+  - [x] TableView has an click listener to listen user touch interaction for each cell.
   
+## Communication
 
-## Table of Contents
-  - [How this app works](#how-this-app-works)
-  - [Getting started](#getting-started)
-  - [Exploring with the UI](#exploring-with-the-ui)
-  - [Using your own data](#using-your-own-data)
+- If you **need help**, use [Stack Overflow](https://stackoverflow.com/questions/tagged/tableview+android). (Tag 'TableView' and 'Android')
+- If you'd like to **ask a general question**, use [Stack Overflow](https://stackoverflow.com/questions/tagged/tableview+android).
+- If you **found a bug**, open an issue.
+- If you **have a feature request**, open an issue.
+- If you **want to contribute**, submit a pull request.
+- If you **use the control**, contact me to mention your app on this page.
 
 
-  ## How this app works
-  ...
+## License
 
-  ## Getting started
-  ...
-
-  ## Exploring with the UI
-  ...
-
-  ## Using your own data
-  ...
+TableView is released under the MIT license. See LICENSE for details.
