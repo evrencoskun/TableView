@@ -17,7 +17,7 @@ dependencies {
 ```
 
 ## Features
-  - [x] Each column width value can be calculated considering the largest one
+  - [x] Each column width value can be calculated automatically considering the largest one
   - [x] Setting your own model class to displayed in a table view easily.
   - [x] TableView has an click listener to listen user touch interaction for each cell.
   
