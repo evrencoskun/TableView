@@ -1,11 +1,13 @@
 package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
+import android.support.annotation.ColorInt;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.evrencoskun.tableview.listener.HorizontalRecyclerViewListener;
-import com.evrencoskun.tableview.listener.VerticalRecyclerViewListener;
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
+import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
 
 /**
  * Created by evrencoskun on 19/06/2017.
@@ -107,4 +109,19 @@ public class CellRecyclerView extends RecyclerView {
     public boolean isScrollOthers() {
         return !mIsHorizontalScrollListenerRemoved;
     }
+
+    public void setSelected(boolean p_bSelected, @ColorInt int p_nBackgroundColor) {
+        for (int i = 0; i < getAdapter().getItemCount(); i++) {
+            AbstractViewHolder viewHolder = (AbstractViewHolder) findViewHolderForAdapterPosition
+                    (i);
+            if (viewHolder != null) {
+                // Change background color
+                viewHolder.setBackgroundColor(p_nBackgroundColor);
+
+                // Change selection status of the view holder
+                viewHolder.setSelected(p_bSelected);
+            }
+        }
+    }
+
 }

@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.util.TableViewUtils;
 
 /**
@@ -198,4 +199,20 @@ public class ColumnLayoutManager extends LinearLayoutManager {
     public void clearNeedFit() {
         m_bNeedFit = false;
     }
+
+    public AbstractViewHolder[] getVisibleViewHolders() {
+        int nVisibleChildCount = findLastVisibleItemPosition() - findFirstVisibleItemPosition() + 1;
+        int nIndex = 0;
+
+        AbstractViewHolder[] views = new AbstractViewHolder[nVisibleChildCount];
+        for (int i = findFirstVisibleItemPosition(); i < findLastVisibleItemPosition() + 1; i++) {
+
+            views[nIndex] = (AbstractViewHolder) m_iCellRowRecyclerView
+                    .findViewHolderForAdapterPosition(i);
+
+            nIndex++;
+        }
+        return views;
+    }
+
 }

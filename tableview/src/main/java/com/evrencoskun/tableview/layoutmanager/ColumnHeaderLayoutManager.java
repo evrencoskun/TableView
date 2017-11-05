@@ -64,4 +64,22 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
     public void removeCachedWidth(int p_nPosition) {
         m_aWidthList.remove(p_nPosition);
     }
+
+
+    public void customRequestLayout() {
+        int nLeft = getFirstItemLeft();
+        int nRight;
+        for (int i = findFirstVisibleItemPosition(); i < findLastVisibleItemPosition() + 1; i++) {
+            nRight = nLeft + getCacheWidth(i);
+
+            View columnHeader = findViewByPosition(i);
+            columnHeader.setLeft(nLeft);
+            columnHeader.setRight(nRight);
+
+            layoutDecoratedWithMargins(columnHeader, columnHeader.getLeft(),
+                    columnHeader.getTop(), columnHeader.getRight(), columnHeader.getBottom());
+
+            nLeft = nRight + 1;
+        }
+    }
 }

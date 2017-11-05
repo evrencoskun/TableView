@@ -6,10 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableviewsample.R;
+import com.evrencoskun.tableviewsample.tableview.holder.CellViewHolder;
+import com.evrencoskun.tableviewsample.tableview.holder.ColumnHeaderViewHolder;
+import com.evrencoskun.tableviewsample.tableview.holder.RowHeaderViewHolder;
 import com.evrencoskun.tableviewsample.tableview.model.Cell;
 import com.evrencoskun.tableviewsample.tableview.model.ColumnHeader;
 import com.evrencoskun.tableviewsample.tableview.model.RowHeader;
@@ -35,16 +38,16 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
                 parent, false);
 
         CellViewHolder cellViewHolder = new CellViewHolder(layout);
-        cellViewHolder.itemView.setId(m_nId);
+        //cellViewHolder.itemView.setId(m_nId);
 
-        m_nId++;
+        //m_nId++;
         return cellViewHolder;
     }
 
     @Override
-    public void onBindCellViewHolder(RecyclerView.ViewHolder holder, int p_nXPosition, int
-            p_nYPosition) {
-        Cell cell = getCellItem(p_nXPosition, p_nYPosition);
+    public void onBindCellViewHolder(AbstractViewHolder holder, Object p_jValue, int
+            p_nXPosition, int p_nYPosition) {
+        Cell cell = (Cell) p_jValue;
         if (null == holder || !(holder instanceof CellViewHolder) || cell == null) {
             return;
         }
@@ -59,18 +62,6 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
         viewHolder.itemView.requestLayout();
     }
 
-    static class CellViewHolder extends RecyclerView.ViewHolder {
-
-        public final TextView cell_textview;
-        public final LinearLayout cell_container;
-
-        public CellViewHolder(View itemView) {
-            super(itemView);
-            cell_textview = (TextView) itemView.findViewById(R.id.cell_data);
-            cell_container = (LinearLayout) itemView.findViewById(R.id.cell_container);
-        }
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateColumnHeaderViewHolder(ViewGroup parent, int viewType) {
         View layout = LayoutInflater.from(m_jContext).inflate(R.layout
@@ -80,11 +71,14 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
     }
 
     @Override
-    public void onBindColumnHeaderViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ColumnHeader columnHeader = getColumnHeaderItem(position);
+    public void onBindColumnHeaderViewHolder(AbstractViewHolder holder, Object p_jValue, int
+            position) {
+        ColumnHeader columnHeader = (ColumnHeader) p_jValue;
+
         if (null == holder || !(holder instanceof ColumnHeaderViewHolder) || columnHeader == null) {
             return;
         }
+
         ColumnHeaderViewHolder columnHeaderViewHolder = (ColumnHeaderViewHolder) holder;
         columnHeaderViewHolder.column_header_container.getLayoutParams().width = LinearLayout
                 .LayoutParams.WRAP_CONTENT;
@@ -96,18 +90,6 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
 
     }
 
-    static class ColumnHeaderViewHolder extends RecyclerView.ViewHolder {
-        public final LinearLayout column_header_container;
-        public final TextView column_header_textview;
-
-        public ColumnHeaderViewHolder(View itemView) {
-            super(itemView);
-            column_header_textview = (TextView) itemView.findViewById(R.id.column_header_textView);
-            column_header_container = (LinearLayout) itemView.findViewById(R.id
-                    .column_header_container);
-        }
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateRowHeaderViewHolder(ViewGroup parent, int viewType) {
         View layout = LayoutInflater.from(m_jContext).inflate(R.layout
@@ -116,8 +98,10 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
     }
 
     @Override
-    public void onBindRowHeaderViewHolder(RecyclerView.ViewHolder holder, int position) {
-        RowHeader rowHeader = getRowHeaderItem(position);
+    public void onBindRowHeaderViewHolder(AbstractViewHolder holder, Object p_jValue, int
+            position) {
+        RowHeader rowHeader = (RowHeader) p_jValue;
+
         if (null == holder || !(holder instanceof RowHeaderViewHolder) || rowHeader == null) {
             return;
         }
@@ -125,14 +109,6 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
         rowHeaderViewHolder.row_header_textview.setText(rowHeader.getData());
     }
 
-    static class RowHeaderViewHolder extends RecyclerView.ViewHolder {
-        public final TextView row_header_textview;
-
-        public RowHeaderViewHolder(View p_jItemView) {
-            super(p_jItemView);
-            row_header_textview = (TextView) p_jItemView.findViewById(R.id.row_header_textview);
-        }
-    }
 
     @Override
     public View onCreateCornerView() {
@@ -148,6 +124,11 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
     @Override
     public int getRowHeaderItemViewType(int position) {
         // TODO:
+        return 0;
+    }
+
+    @Override
+    public int getCellItemViewType(int position) {
         return 0;
     }
 }

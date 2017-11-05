@@ -3,6 +3,7 @@ package com.evrencoskun.tableview;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.AttrRes;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -13,11 +14,15 @@ import android.widget.FrameLayout;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
-import com.evrencoskun.tableview.listener.HorizontalRecyclerViewListener;
+import com.evrencoskun.tableview.listener.itemclick.ColumnHeaderRecyclerViewItemClickListener;
+import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.ITableViewListener;
-import com.evrencoskun.tableview.listener.VerticalRecyclerViewListener;
+import com.evrencoskun.tableview.listener.itemclick.RowHeaderRecyclerViewItemClickListener;
+import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
 
 /**
  * Created by evrencoskun on 11/06/2017.
@@ -35,12 +40,21 @@ public class TableView extends FrameLayout implements ITableView {
     private VerticalRecyclerViewListener m_jVerticalRecyclerListener;
     private HorizontalRecyclerViewListener m_jHorizontalRecyclerViewListener;
 
+    private ColumnHeaderRecyclerViewItemClickListener m_jColumnHeaderRecyclerViewItemClickListener;
+    private RowHeaderRecyclerViewItemClickListener m_jRowHeaderRecyclerViewItemClickListener;
+
     private ColumnHeaderLayoutManager m_iColumnHeaderLayoutManager;
     private LinearLayoutManager m_jRowHeaderLayoutManager;
     private CellLayoutManager m_iCellLayoutManager;
 
+    private SelectionHandler m_iSelectionHandler;
+
     private int m_nRowHeaderWidth;
     private int m_nColumnHeaderHeight;
+
+    private int m_nSelectedColor;
+    private int m_nUnSelectedColor;
+    private int m_nShadowColor;
 
     public TableView(@NonNull Context context) {
         super(context);
@@ -59,10 +73,17 @@ public class TableView extends FrameLayout implements ITableView {
     }
 
     private void initialize() {
-        // initialize default size
+        // initialize default dimensions
         m_nRowHeaderWidth = (int) getResources().getDimension(R.dimen.default_row_header_width);
         m_nColumnHeaderHeight = (int) getResources().getDimension(R.dimen
                 .default_column_header_height);
+
+        // initialize default colors
+        m_nSelectedColor = ContextCompat.getColor(getContext(), R.color
+                .table_view_selected_background_color);
+        m_nUnSelectedColor = ContextCompat.getColor(getContext(), R.color.default_background_color);
+        m_nShadowColor = ContextCompat.getColor(getContext(), R.color
+                .table_view_shadow_background_color);
 
         // Create Views
         m_jColumnHeaderRecyclerView = createColumnHeaderRecyclerView();
@@ -73,6 +94,9 @@ public class TableView extends FrameLayout implements ITableView {
         addView(m_jColumnHeaderRecyclerView);
         addView(m_jRowHeaderRecyclerView);
         addView(m_jCellRecyclerView);
+
+        // Create Selection Handler
+        m_iSelectionHandler = new SelectionHandler(this);
 
         initializeListeners();
     }
@@ -89,6 +113,7 @@ public class TableView extends FrameLayout implements ITableView {
         m_jHorizontalRecyclerViewListener = new HorizontalRecyclerViewListener(this);
         // Set scroll listener to be able to scroll all rows synchrony.
         m_jColumnHeaderRecyclerView.addOnItemTouchListener(m_jHorizontalRecyclerViewListener);
+
     }
 
     protected CellRecyclerView createColumnHeaderRecyclerView() {
@@ -233,7 +258,116 @@ public class TableView extends FrameLayout implements ITableView {
         return m_iTableViewListener;
     }
 
+
     public void setTableViewListener(ITableViewListener p_jTableViewListener) {
         this.m_iTableViewListener = p_jTableViewListener;
+
+        // Remove old ones
+        if (m_jColumnHeaderRecyclerViewItemClickListener != null &&
+                m_jRowHeaderRecyclerViewItemClickListener != null) {
+
+            m_jColumnHeaderRecyclerView.removeOnItemTouchListener
+                    (m_jColumnHeaderRecyclerViewItemClickListener);
+
+            m_jRowHeaderRecyclerView.removeOnItemTouchListener
+                    (m_jRowHeaderRecyclerViewItemClickListener);
+        }
+
+        // Create item click listeners
+        m_jColumnHeaderRecyclerViewItemClickListener = new
+                ColumnHeaderRecyclerViewItemClickListener(m_jColumnHeaderRecyclerView, this);
+
+        m_jRowHeaderRecyclerViewItemClickListener = new RowHeaderRecyclerViewItemClickListener
+                (m_jRowHeaderRecyclerView, this);
+
+        // Add item click listeners for both column header & row header recyclerView
+        m_jColumnHeaderRecyclerView.addOnItemTouchListener
+                (m_jColumnHeaderRecyclerViewItemClickListener);
+        m_jRowHeaderRecyclerView.addOnItemTouchListener(m_jRowHeaderRecyclerViewItemClickListener);
+    }
+
+
+    /**
+     * Returns the index of the selected row, -1 if no row is selected.
+     */
+    public int getSelectedRow() {
+        return m_iSelectionHandler.getSelectedRowPosition();
+    }
+
+    public void setSelectedRow(int p_nYPosition) {
+        // Find the row header view holder which is located on y position.
+        AbstractViewHolder jRowViewHolder = (AbstractViewHolder) getRowHeaderRecyclerView()
+                .findViewHolderForAdapterPosition(p_nYPosition);
+
+
+        m_iSelectionHandler.setSelectedRowPosition(jRowViewHolder, p_nYPosition);
+    }
+
+    /**
+     * Returns the index of the selected column, -1 if no column is selected.
+     */
+    public int getSelectedColumn() {
+        return m_iSelectionHandler.getSelectedColumnPosition();
+    }
+
+    public void setSelectedColumn(int p_nXPosition) {
+        // Find the column view holder which is located on x position.
+        AbstractViewHolder jColumnViewHolder = (AbstractViewHolder) getColumnHeaderRecyclerView()
+                .findViewHolderForAdapterPosition(p_nXPosition);
+
+        m_iSelectionHandler.setSelectedColumnPosition(jColumnViewHolder, p_nXPosition);
+    }
+
+    public void setSelectedCell(int p_nXPosition, int p_nYPosition) {
+        // Find the cell view holder which is located on x,y position.
+        AbstractViewHolder jCellViewHolder = getCellLayoutManager().getCellViewHolder
+                (p_nXPosition, p_nYPosition);
+
+        m_iSelectionHandler.setSelectedCellPositions(jCellViewHolder, p_nXPosition, p_nYPosition);
+    }
+
+    @Override
+    public SelectionHandler getSelectionHandler() {
+        return m_iSelectionHandler;
+    }
+
+    /**
+     * This method helps to change default selected color programmatically.
+     *
+     * @param p_nSelectedColor It must be Color int.
+     */
+    public void setSelectedColor(@ColorInt int p_nSelectedColor) {
+        this.m_nSelectedColor = p_nSelectedColor;
+    }
+
+    @Override
+    public @ColorInt
+    int getSelectedColor() {
+        return m_nSelectedColor;
+    }
+
+    /**
+     * This method helps to change default unselected color programmatically.
+     *
+     * @param p_nUnSelectedColor It must be Color int.
+     */
+    public void setUnSelectedColor(@ColorInt int p_nUnSelectedColor) {
+        this.m_nUnSelectedColor = p_nUnSelectedColor;
+    }
+
+    @Override
+    public @ColorInt
+    int getUnSelectedColor() {
+        return m_nUnSelectedColor;
+    }
+
+    public void setShadowColor(@ColorInt int p_nShadowColor) {
+        this.m_nShadowColor = p_nShadowColor;
+    }
+
+    @Override
+    public @ColorInt
+    int getShadowColor() {
+        return m_nShadowColor;
     }
 }

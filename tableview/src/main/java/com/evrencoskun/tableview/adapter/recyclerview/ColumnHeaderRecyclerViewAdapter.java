@@ -2,10 +2,10 @@ package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.evrencoskun.tableview.adapter.ITableAdapter;
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 
 import java.util.List;
 
@@ -25,19 +25,15 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder viewHolder = m_iTableAdapter.onCreateColumnHeaderViewHolder
-                (parent, viewType);
-
-        // Add cell click listener
-        if (m_iTableAdapter.getTableView().getTableViewListener() != null) {
-            viewHolder.itemView.setOnClickListener(mItemAction);
-        }
-        return viewHolder;
+        return m_iTableAdapter.onCreateColumnHeaderViewHolder(parent, viewType);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        m_iTableAdapter.onBindColumnHeaderViewHolder(holder, position);
+        AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
+        Object value = getItem(position);
+
+        m_iTableAdapter.onBindColumnHeaderViewHolder(viewHolder, value, position);
     }
 
     @Override
@@ -45,14 +41,29 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
         return m_iTableAdapter.getColumnHeaderItemViewType(position);
     }
 
-    private View.OnClickListener mItemAction = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            int nXPosition = m_iTableAdapter.getTableView().getColumnHeaderRecyclerView()
-                    .getChildAdapterPosition(v);
+    @Override
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
 
-            // Callback for the TableView listener
-            m_iTableAdapter.getTableView().getTableViewListener().onColumnHeaderClicked(nXPosition);
-        }
-    };
+        boolean isSelected = m_iTableAdapter.getTableView().getSelectionHandler()
+                .isColumnSelected(viewHolder.getAdapterPosition());
+
+        // Change background color of the view considering it's selected state
+        m_iTableAdapter.getTableView().getSelectionHandler()
+                .changeColumnBackgroundColorBySelectionStatus(viewHolder.getAdapterPosition(),
+                        viewHolder);
+
+        // Change selection status
+        viewHolder.setSelected(isSelected);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
+
+        viewHolder.setBackgroundColor(m_iTableAdapter.getTableView().getUnSelectedColor());
+        viewHolder.setSelected(false);
+    }
 }
