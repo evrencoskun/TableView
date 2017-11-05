@@ -5,11 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
+import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
-import com.evrencoskun.tableview.listener.HorizontalRecyclerViewListener;
+import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.ITableViewListener;
-import com.evrencoskun.tableview.listener.VerticalRecyclerViewListener;
+import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
 
 /**
  * Created by evrencoskun on 19/06/2017.
@@ -36,4 +37,12 @@ public interface ITableView {
     VerticalRecyclerViewListener getVerticalRecyclerViewListener();
 
     ITableViewListener getTableViewListener();
+
+    SelectionHandler getSelectionHandler();
+
+    int getShadowColor();
+
+    int getSelectedColor();
+
+    int getUnSelectedColor();
 }

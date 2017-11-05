@@ -9,7 +9,8 @@ import android.view.View;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
-import com.evrencoskun.tableview.listener.HorizontalRecyclerViewListener;
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.util.TableViewUtils;
 
 /**
@@ -49,13 +50,6 @@ public class CellLayoutManager extends LinearLayoutManager {
         this.setOrientation(VERTICAL);
         //this.setMeasurementCacheEnabled(false);
         // Add new one
-    }
-
-    @Override
-    public void onLayoutCompleted(RecyclerView.State state) {
-        super.onLayoutCompleted(state);
-        // Remeasure the column header.
-        m_iColumnHeaderLayoutManager.requestLayout();
     }
 
     @Override
@@ -366,13 +360,57 @@ public class CellLayoutManager extends LinearLayoutManager {
             if (m_bNeedFit) {
                 // for the first time to populate adapter
                 if (m_jRowHeaderLayoutManager.findLastVisibleItemPosition() == nPosition) {
-                    Log.e(LOG_TAG, nPosition + " fitWidthSize populating data for the first time");
+
+                    // The below line helps to change left & right value of the each column
+                    // header views
+                    // without using requestLayout().
+                    m_iColumnHeaderLayoutManager.customRequestLayout();
+
                     fitWidthSize(false);
+                    Log.e(LOG_TAG, nPosition + " fitWidthSize populating data for the first time");
 
                     m_bNeedFit = false;
                 }
             }
         }
+    }
+
+
+    public AbstractViewHolder[] getVisibleCellViewsByRowPosition(int p_nYPosition) {
+        CellRecyclerView cellRowRecyclerView = (CellRecyclerView) m_iTableView
+                .getCellLayoutManager().findViewByPosition(p_nYPosition);
+        if (cellRowRecyclerView != null) {
+            return ((ColumnLayoutManager) cellRowRecyclerView.getLayoutManager())
+                    .getVisibleViewHolders();
+        }
+        return null;
+    }
+
+    public AbstractViewHolder[] getVisibleCellViewsByColumnPosition(int p_nXPosition) {
+        int nVisibleChildCount = findLastVisibleItemPosition() - findFirstVisibleItemPosition() + 1;
+        int nIndex = 0;
+        AbstractViewHolder[] viewHolders = new AbstractViewHolder[nVisibleChildCount];
+        for (int i = findFirstVisibleItemPosition(); i < findLastVisibleItemPosition() + 1; i++) {
+            CellRecyclerView cellRowRecyclerView = (CellRecyclerView) findViewByPosition(i);
+
+            AbstractViewHolder holder = (AbstractViewHolder) cellRowRecyclerView
+                    .findViewHolderForAdapterPosition(p_nXPosition);
+
+            viewHolders[nIndex] = holder;
+
+            nIndex++;
+        }
+        return viewHolders;
+    }
+
+    public AbstractViewHolder getCellViewHolder(int p_nXPosition, int p_nYPosition) {
+        CellRecyclerView cellRowRecyclerView = (CellRecyclerView) findViewByPosition(p_nYPosition);
+
+        if (cellRowRecyclerView != null) {
+            return (AbstractViewHolder) cellRowRecyclerView.findViewHolderForAdapterPosition
+                    (p_nXPosition);
+        }
+        return null;
     }
 
 }

@@ -2,6 +2,7 @@
 <RelativeLayout android:id="@+id/root"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
+                android:background="@color/cell_background_color"
                 android:layout_width="@dimen/row_header_width"
                 android:layout_height="@dimen/cell_height">
 
@@ -9,7 +10,6 @@
         android:id="@+id/row_header_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cell_background_color"
         android:gravity="center_vertical"
         android:orientation="vertical">
 

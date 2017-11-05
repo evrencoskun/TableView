@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.evrencoskun.tableview.TableView;
+import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableviewsample.tableview.TableViewAdapter;
 import com.evrencoskun.tableviewsample.tableview.TableViewListener;
 import com.evrencoskun.tableviewsample.tableview.model.Cell;
@@ -34,7 +35,7 @@ public class MainFragment extends Fragment {
     private List<ColumnHeader> m_jColumnHeaderList;
     private List<List<Cell>> m_jCellList;
 
-    private TableViewAdapter m_iTableViewAdapter;
+    private AbstractTableAdapter m_iTableViewAdapter;
     private TableView m_iTableView;
 
     public MainFragment() {
@@ -45,6 +46,8 @@ public class MainFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initData();
+
+        //setFullScreenMode();
     }
 
     @Override
@@ -68,6 +71,7 @@ public class MainFragment extends Fragment {
 
         // Set adapter
         m_iTableViewAdapter = new TableViewAdapter(getContext());
+        //m_iTableViewAdapter = new MDTableViewAdapter(getContext());
         tableView.setAdapter(m_iTableViewAdapter);
 
         // Set layout params
@@ -76,7 +80,7 @@ public class MainFragment extends Fragment {
         tableView.setLayoutParams(tlp);
 
         // Set TableView listener
-        tableView.setTableViewListener(new TableViewListener(getContext()));
+        tableView.setTableViewListener(new TableViewListener(tableView));
         return tableView;
     }
 
@@ -193,5 +197,15 @@ public class MainFragment extends Fragment {
         }
 
         return str;
+    }
+
+    private void setFullScreenMode() {
+        // Set full screen mode
+        this.getActivity().getWindow().getDecorView().setSystemUiVisibility(View
+                .SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View
+                .SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide
+                // nav bar
+                | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                | View.SYSTEM_UI_FLAG_IMMERSIVE);
     }
 }
