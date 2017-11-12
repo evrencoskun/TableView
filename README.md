@@ -4,7 +4,7 @@ TableView relies on a separate model object to hold and represent the data it di
 This repository also contains a **TableViewSample** that is
 designed to show you how to create your own TableView in your application.
 
-![TableView Landscape](https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/TableView-landscape.gif)
+[![TableView v0.8.2 screen shot](https://img.youtube.com/vi/Bui84mc5Xco/0.jpg)](https://www.youtube.com/watch?v=Bui84mc5Xco)
 
 ## Installation
 
@@ -12,7 +12,7 @@ To use this library in your android project, just simply add the following depen
 
 ``` 
 dependencies {
- compile 'com.evrencoskun.library:tableview:0.8.1' 
+ compile 'com.evrencoskun.library:tableview:0.8.2' 
 }
 ```
 
@@ -21,6 +21,9 @@ dependencies {
   - [x] Setting your own model class to displayed in a table view easily.
   - [x] TableView has an click listener to listen user touch interaction for each cell.
   
+## Documentation
+Coming soon.. 
+
 ## Communication
 
 - If you **need help**, use [Stack Overflow](https://stackoverflow.com/questions/tagged/tableview+android). (Tag 'TableView' and 'Android')
