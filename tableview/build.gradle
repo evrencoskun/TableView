@@ -38,7 +38,7 @@ publish {
     userOrg = 'evrencoskun'//user name of bintray.com
     groupId = 'com.evrencoskun.library'//jcenter's url
     artifactId = 'tableview'//project name
-    publishVersion = '0.8.1'//version code
+    publishVersion = '0.8.2'//version code
     desc = 'TableView is a powerful Android library for displaying complex data structures and rendering tabular data composed of rows, columns and cells.'
     website = 'https://github.com/evrencoskun/TableView'//website
 }

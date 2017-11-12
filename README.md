@@ -4,7 +4,8 @@ TableView relies on a separate model object to hold and represent the data it di
 This repository also contains a **TableViewSample** that is
 designed to show you how to create your own TableView in your application.
 
-[![TableView v0.8.2 screen shot](https://img.youtube.com/vi/Bui84mc5Xco/0.jpg)](https://www.youtube.com/watch?v=Bui84mc5Xco)
+[![TableView v0.8.2 screen shot](https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/tableview-0_8_2_screenshot.png)](https://www.youtube.com/watch?v=Bui84mc5Xco)
+
 
 ## Installation
 
