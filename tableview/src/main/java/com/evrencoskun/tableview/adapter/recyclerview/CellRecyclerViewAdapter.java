@@ -63,6 +63,9 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
 
         if (iTableView != null) {
+            // To get better performance for fixed size TableView
+            jRecyclerView.setHasFixedSize(iTableView.hasFixedWidth());
+
             // set touch m_iHorizontalListener to scroll synchronously
             if (m_iHorizontalListener == null) {
                 m_iHorizontalListener = iTableView.getHorizontalRecyclerViewListener();
@@ -123,11 +126,11 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
         SelectionHandler selectionHandler = m_iTableAdapter.getTableView().getSelectionHandler();
 
-        int nXPosition = selectionHandler.getSelectedColumnPosition();
-        if (nXPosition != SelectionHandler.UNSELECTED_POSITION && selectionHandler
-                .getSelectedRowPosition() == SelectionHandler.UNSELECTED_POSITION) {
+        if (selectionHandler.isAnyColumnSelected()) {
+
             AbstractViewHolder cellViewHolder = (AbstractViewHolder) ((CellRowViewHolder) holder)
-                    .m_jRecyclerView.findViewHolderForAdapterPosition(nXPosition);
+                    .m_jRecyclerView.findViewHolderForAdapterPosition(selectionHandler
+                            .getSelectedColumnPosition());
 
             if (cellViewHolder != null) {
                 cellViewHolder.setBackgroundColor(m_iTableAdapter.getTableView().getSelectedColor
@@ -135,6 +138,10 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
                 cellViewHolder.setSelected(true);
 
             }
+        } else if (selectionHandler.isRowSelected(holder.getAdapterPosition())) {
+
+            viewHolder.m_jRecyclerView.setSelected(true, m_iTableAdapter.getTableView()
+                    .getSelectedColor());
         }
 
     }
@@ -151,6 +158,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
     @Override
     public void onViewRecycled(RecyclerView.ViewHolder holder) {
         super.onViewRecycled(holder);
+
         CellRowViewHolder viewHolder = (CellRowViewHolder) holder;
         // ScrolledX should be cleared at that time. Because we need to prepare each
         // recyclerView
