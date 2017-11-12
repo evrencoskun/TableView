@@ -48,11 +48,22 @@ public class ColumnLayoutManager extends LinearLayoutManager {
     public void measureChildWithMargins(View child, int widthUsed, int heightUsed) {
         super.measureChildWithMargins(child, widthUsed, heightUsed);
 
+        // If has fixed width is true, than calculation of the column width is not necessary.
+        if (m_iTableView.hasFixedWidth()) {
+            return;
+        }
+
         measureChild(child, widthUsed, heightUsed);
     }
 
     @Override
     public void measureChild(View child, int widthUsed, int heightUsed) {
+        // If has fixed width is true, than calculation of the column width is not necessary.
+        if (m_iTableView.hasFixedWidth()) {
+            super.measureChild(child, widthUsed, heightUsed);
+            return;
+        }
+
         int nPosition = getPosition(child);
 
         // Get cached width size of column and cell

@@ -172,6 +172,7 @@ public class SelectionHandler {
         changeVisibleCellViewsBackgroundForColumn(m_nSelectedColumnPosition, true);
 
         m_iTableView.getRowHeaderRecyclerView().setSelected(false, m_iTableView.getShadowColor());
+
     }
 
     private void unselectedColumnHeader() {
@@ -206,6 +207,11 @@ public class SelectionHandler {
         return (getSelectedColumnPosition() == p_nXPosition && getSelectedRowPosition() !=
                 UNSELECTED_POSITION) || (getSelectedColumnPosition() == UNSELECTED_POSITION &&
                 getSelectedRowPosition() != UNSELECTED_POSITION);
+    }
+
+    public boolean isAnyColumnSelected() {
+        return (getSelectedColumnPosition() != SelectionHandler.UNSELECTED_POSITION &&
+                getSelectedRowPosition() == SelectionHandler.UNSELECTED_POSITION);
     }
 
     private void changeVisibleCellViewsBackgroundForRow(int p_nYPosition, boolean p_bIsSelected) {

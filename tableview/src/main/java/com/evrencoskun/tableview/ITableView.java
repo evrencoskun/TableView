@@ -8,8 +8,8 @@ import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
-import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.ITableViewListener;
+import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
 
 /**
@@ -19,6 +19,8 @@ import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
 public interface ITableView {
 
     void addView(View child, ViewGroup.LayoutParams params);
+
+    boolean hasFixedWidth();
 
     CellRecyclerView getCellRecyclerView();
 

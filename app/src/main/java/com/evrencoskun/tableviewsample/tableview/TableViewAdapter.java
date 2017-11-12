@@ -24,8 +24,6 @@ import com.evrencoskun.tableviewsample.tableview.model.RowHeader;
 public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHeader, Cell> {
 
     private static final String LOG_TAG = TableViewAdapter.class.getSimpleName();
-    // For testing purpose
-    private int m_nId = 0;
 
     public TableViewAdapter(Context p_jContext) {
         super(p_jContext);
@@ -36,12 +34,7 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
     public RecyclerView.ViewHolder onCreateCellViewHolder(ViewGroup parent, int viewType) {
         View layout = LayoutInflater.from(m_jContext).inflate(R.layout.table_view_cell_layout,
                 parent, false);
-
-        CellViewHolder cellViewHolder = new CellViewHolder(layout);
-        //cellViewHolder.itemView.setId(m_nId);
-
-        //m_nId++;
-        return cellViewHolder;
+        return new CellViewHolder(layout);
     }
 
     @Override
@@ -56,10 +49,9 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
         viewHolder.cell_container.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
         viewHolder.cell_container.setTag(cell);
         viewHolder.cell_textview.setText(cell.getData());
-        // TODO: remove unnecessary code line.
+
+        // It is necessary to remeasure itself.
         viewHolder.cell_textview.requestLayout();
-        viewHolder.cell_container.requestLayout();
-        viewHolder.itemView.requestLayout();
     }
 
     @Override
@@ -83,11 +75,9 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
         columnHeaderViewHolder.column_header_container.getLayoutParams().width = LinearLayout
                 .LayoutParams.WRAP_CONTENT;
         columnHeaderViewHolder.column_header_textview.setText(columnHeader.getData());
-        // TODO: remove unnecessary code line.
-        columnHeaderViewHolder.column_header_textview.requestLayout();
-        columnHeaderViewHolder.column_header_container.requestLayout();
-        columnHeaderViewHolder.itemView.requestLayout();
 
+        // It is necessary to remeasure itself.
+        columnHeaderViewHolder.column_header_textview.requestLayout();
     }
 
     @Override

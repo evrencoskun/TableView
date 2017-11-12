@@ -87,5 +87,4 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
         viewHolder.setSelected(false);
     }
 
-
 }

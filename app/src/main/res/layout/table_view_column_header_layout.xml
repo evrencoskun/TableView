@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <LinearLayout
     android:id="@+id/column_header_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -33,7 +31,5 @@
             android:layout_gravity="bottom"
             android:background="@color/header_line_color"/>
     </FrameLayout>
-
-
 </LinearLayout>
 

@@ -1,6 +1,7 @@
 package com.evrencoskun.tableview;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
@@ -18,10 +19,10 @@ import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
-import com.evrencoskun.tableview.listener.itemclick.ColumnHeaderRecyclerViewItemClickListener;
-import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.ITableViewListener;
+import com.evrencoskun.tableview.listener.itemclick.ColumnHeaderRecyclerViewItemClickListener;
 import com.evrencoskun.tableview.listener.itemclick.RowHeaderRecyclerViewItemClickListener;
+import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
 
 /**
@@ -56,34 +57,66 @@ public class TableView extends FrameLayout implements ITableView {
     private int m_nUnSelectedColor;
     private int m_nShadowColor;
 
+    private boolean m_bIsFixedWidth;
+
     public TableView(@NonNull Context context) {
         super(context);
+        initialDefaultValues(null);
         initialize();
     }
 
     public TableView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        initialDefaultValues(attrs);
         initialize();
     }
 
     public TableView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int
             defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initialDefaultValues(null);
         initialize();
     }
 
-    private void initialize() {
-        // initialize default dimensions
+    private void initialDefaultValues(AttributeSet attrs) {
+        // Dimensions
         m_nRowHeaderWidth = (int) getResources().getDimension(R.dimen.default_row_header_width);
         m_nColumnHeaderHeight = (int) getResources().getDimension(R.dimen
                 .default_column_header_height);
 
-        // initialize default colors
+        // Colors
         m_nSelectedColor = ContextCompat.getColor(getContext(), R.color
                 .table_view_selected_background_color);
         m_nUnSelectedColor = ContextCompat.getColor(getContext(), R.color.default_background_color);
         m_nShadowColor = ContextCompat.getColor(getContext(), R.color
                 .table_view_shadow_background_color);
+
+        if (attrs == null) {
+            // That means TableView is created programmatically.
+            return;
+        }
+
+        // Get values from xml attributes
+        TypedArray a = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable
+                .TableView, 0, 0);
+        try {
+            // Dimensions
+            m_nRowHeaderWidth = (int) a.getDimension(R.styleable.TableView_row_header_width,
+                    m_nRowHeaderWidth);
+            m_nColumnHeaderHeight = (int) a.getDimension(R.styleable
+                    .TableView_column_header_height, m_nColumnHeaderHeight);
+
+            // Colors
+            m_nSelectedColor = a.getColor(R.styleable.TableView_selected_color, m_nSelectedColor);
+            m_nUnSelectedColor = a.getColor(R.styleable.TableView_unselected_color,
+                    m_nUnSelectedColor);
+            m_nShadowColor = a.getColor(R.styleable.TableView_shadow_color, m_nShadowColor);
+        } finally {
+            a.recycle();
+        }
+    }
+
+    private void initialize() {
 
         // Create Views
         m_jColumnHeaderRecyclerView = createColumnHeaderRecyclerView();
@@ -204,6 +237,18 @@ public class TableView extends FrameLayout implements ITableView {
     }
 
     @Override
+    public boolean hasFixedWidth() {
+        return m_bIsFixedWidth;
+    }
+
+    public void setHasFixedWidth(boolean p_bHasFixedWidth) {
+        this.m_bIsFixedWidth = p_bHasFixedWidth;
+
+        // RecyclerView has also the same control to provide better performance.
+        m_jColumnHeaderRecyclerView.setHasFixedSize(p_bHasFixedWidth);
+    }
+
+    @Override
     public CellRecyclerView getCellRecyclerView() {
         return m_jCellRecyclerView;
     }
@@ -221,7 +266,7 @@ public class TableView extends FrameLayout implements ITableView {
     @Override
     public ColumnHeaderLayoutManager getColumnHeaderLayoutManager() {
         if (m_iColumnHeaderLayoutManager == null) {
-            m_iColumnHeaderLayoutManager = new ColumnHeaderLayoutManager(getContext());
+            m_iColumnHeaderLayoutManager = new ColumnHeaderLayoutManager(getContext(), this);
         }
         return m_iColumnHeaderLayoutManager;
     }

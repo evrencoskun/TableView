@@ -322,6 +322,12 @@ public class CellLayoutManager extends LinearLayoutManager {
     public void measureChildWithMargins(View child, int widthUsed, int heightUsed) {
         super.measureChildWithMargins(child, widthUsed, heightUsed);
 
+        // If has fixed width is true, than calculation of the column width is not necessary.
+        if (m_iTableView.hasFixedWidth()) {
+            super.measureChildWithMargins(child, widthUsed, heightUsed);
+            return;
+        }
+
         int nPosition = getPosition(child);
 
         ColumnLayoutManager childLayoutManager = (ColumnLayoutManager) ((CellRecyclerView) child)
@@ -373,17 +379,6 @@ public class CellLayoutManager extends LinearLayoutManager {
                 }
             }
         }
-    }
-
-
-    public AbstractViewHolder[] getVisibleCellViewsByRowPosition(int p_nYPosition) {
-        CellRecyclerView cellRowRecyclerView = (CellRecyclerView) m_iTableView
-                .getCellLayoutManager().findViewByPosition(p_nYPosition);
-        if (cellRowRecyclerView != null) {
-            return ((ColumnLayoutManager) cellRowRecyclerView.getLayoutManager())
-                    .getVisibleViewHolders();
-        }
-        return null;
     }
 
     public AbstractViewHolder[] getVisibleCellViewsByColumnPosition(int p_nXPosition) {
