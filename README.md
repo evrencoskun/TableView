@@ -23,7 +23,57 @@ dependencies {
   - [x] TableView has an click listener to listen user touch interaction for each cell.
   
 ## Documentation
-Coming soon.. 
+
+### XML 
+
+Basically, you can create your own TableView on your xml layout files just like you do for any android view.
+
+``` 
+<com.evrencoskun.tableview.TableView
+    android:id="@+id/content_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+```
+
+### List of Default Constants
+
+Constants            | Value Type      | Explanation
+---------------------|-----------------|------------
+column_header_height | Dimension       | Even if it's name is column header height, This value is taken into consideration for all cells, column headers and row Headers height. 
+row_header_width     | Dimension       | Unlike Cells  and Column headers, width of Row Headers is constant. So this static value uses for this purpose.
+selected_color       | Color int       | Selected background color of Cells / Row Headers / Column Headers
+unselected_color     | Color int       | Default background color of Cells / Row Headers / Column Headers
+shadow_color         | Color int       | When a cell view is selected, both the column header and the row header which are located on x and y position of Cell view are colored to this value.
+
+
+As default constants can be set programmatically, it can be set by also using  xml attributes of TableView like this;
+
+``` 
+<com.evrencoskun.tableview.TableView
+    android:id="@+id/content_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    
+    app:column_header_height="@dimen/column_header_height"
+    app:row_header_width="@dimen/row_header_width"
+    app:selected_color="@color/selected_background_color"
+    app:shadow_color="@color/shadow_background_color"
+    app:unselected_color="@color/unselected_background_color"
+/>
+```
+**Note:** To be able use these attributes on xml side, below **xmlns:** line should be added on root view. Otherwise, android studio gives you compile error.
+
+``` 
+xmlns:app="http://schemas.android.com/apk/res-auto"
+```
+
+### Programmatically 
+
+```
+TableView tableView = new TableView(getContext());
+```
+
+to be continued.. 
 
 ## Communication
 
