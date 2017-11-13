@@ -26,8 +26,6 @@ dependencies {
 
 ### XML 
 
-Basically, you can create your own TableView on your xml layout files just like you do for any android view.
-
 ``` 
 <com.evrencoskun.tableview.TableView
     android:id="@+id/content_container"
