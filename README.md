@@ -59,7 +59,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 Constants            |  Type           | Explanation
 ---------------------|-----------------|------------
 column_header_height | Dimension       | Even if it's name is column header height, This value is taken into consideration for all cells, column headers and row Headers height. 
-row_header_width     | Dimension       | Unlike Cells  and Column headers, width of Row Headers is constant. So this static value uses for this purpose.
+row_header_width     | Dimension       | Unlike Cells  and Column headers, width of Row Headers is constant. So this value uses for this purpose.
 selected_color       | Color int       | Selected background color of Cells / Row Headers / Column Headers
 unselected_color     | Color int       | Default background color of Cells / Row Headers / Column Headers
 shadow_color         | Color int       | When a cell view is selected, both the column header and the row header which are located on x and y position of Cell view are colored to this value.
@@ -75,12 +75,12 @@ to be continued..
 
 ## Communication
 
-- If you **need help**, use [Stack Overflow](https://stackoverflow.com/questions/tagged/tableview+android). (Tag 'TableView' and 'Android')
-- If you'd like to **ask a general question**, use [Stack Overflow](https://stackoverflow.com/questions/tagged/tableview+android).
-- If you **found a bug**, open an issue.
-- If you **have a feature request**, open an issue.
-- If you **want to contribute**, submit a pull request.
-- If you **use the control**, contact me to mention your app on this page.
+- If you **need help**, please use [Stack Overflow](https://stackoverflow.com/questions/tagged/tableview+android). (Tag 'TableView' and 'Android')
+- If you'd like to **ask a general question**, please use [Stack Overflow](https://stackoverflow.com/questions/tagged/tableview+android).
+- If you **found a bug**, please open an issue.
+- If you **have a feature request**, please open an issue.
+- If you **want to contribute**, please submit a pull request.
+- If you **use the control**, please contact me to mention your app on this page.
 
 
 ## License
