@@ -1,4 +1,4 @@
-[![TableView Logo ](https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/logo.png)]
+![Image](https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/logo.png)
 
 # TableView for Android
 TableView is a powerful Android library for displaying complex data structures and rendering tabular data composed of rows, columns and cells. 
