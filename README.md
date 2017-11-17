@@ -1,3 +1,5 @@
+[![TableView Logo ](https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/logo.png)]
+
 # TableView for Android
 TableView is a powerful Android library for displaying complex data structures and rendering tabular data composed of rows, columns and cells. 
 TableView relies on a separate model object to hold and represent the data it displays.
@@ -71,7 +73,38 @@ shadow_color         | Color int       | When a cell view is selected, both the 
 TableView tableView = new TableView(getContext());
 ```
 
+###  Implement your item on TableView 
+ To be able show your items on TableView, you must follow the below steps.
+
+####  1. Create your TableViewAdapter
+ Firstly, you must create your TableViewAdapter class which extends from ```AbstractTableAdapter``` class. 
+ AbstractTableAdapter class wants 3 different lists which represent respectively; ColumnHeader, RowHeader and Cell views model.
+
+ For example; 
+ 
+ we need 3 list items which represent cells, column headers and row headers from these model classes.
+
+     private List<MyRowHeaderModel> mRowHeaderList;
+     private List<MyColumnHeaderModel> mColumnHeaderList;
+     private List<List<MyCellModel>> mCellList;
+    
+ For these model classes, Your TableViewAdapter class should be created like this;
+      
+     public class MyTableViewAdapter extends AbstractTableAdapter<MyColumnHeaderModel, MyRowHeaderModel, MyCellModel> {
+          ....
+    
+    }
+    
+ ``` AbstractTableAdapter``` class has some abstract methods that you must fill them. 
+ 
+ > If you familiar with RecyclerView,
+ these methods will familiar to you as well. Because TableView comes from three powerful & talented RecyclerViews.
+    
+
 to be continued.. 
+
+
+
 
 ## Communication
 
