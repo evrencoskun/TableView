@@ -76,7 +76,7 @@ TableView tableView = new TableView(getContext());
  To be able show your items on TableView, you must follow the below steps.
 
 ####  1. Create your TableViewAdapter
- Firstly, you must create your TableViewAdapter class which extends from ```AbstractTableAdapter``` class. 
+ Firstly, you must create your custom TableView Adapter  which extends from ```AbstractTableAdapter``` class. 
  ```AbstractTableAdapter``` class wants 3 different lists which represent respectively; ColumnHeader, RowHeader and Cell views model.
 
  For example; 
@@ -87,7 +87,7 @@ TableView tableView = new TableView(getContext());
      private List<MyColumnHeaderModel> mColumnHeaderList;
      private List<List<MyCellModel>> mCellList;
     
- For these lists, Your TableViewAdapter class should be created like this;
+ For these lists, Your custom TableView Adapter should be created like this;
       
      public class MyTableViewAdapter extends AbstractTableAdapter<MyColumnHeaderModel, MyRowHeaderModel, MyCellModel> {
           ....
@@ -99,6 +99,61 @@ TableView tableView = new TableView(getContext());
  > If you familiar with RecyclerView,
  these methods will familiar to you as well. Because TableView comes from three powerful & talented RecyclerViews.
     
+ **onCreateCellViewHolder :** That is where you create your custom Cell ViewHolder.
+
+ Assume that your Cell ViewHolder xml layout like this. 
+ In res/layout folder, let's give a name like  ```my_TableView_cell_layout.xml ```
+ 
+     <?xml version="1.0" encoding="utf-8"?>
+     <LinearLayout
+         xmlns:android="http://schemas.android.com/apk/res/android"
+         xmlns:tools="http://schemas.android.com/tools"
+         android:layout_width="wrap_content"
+         android:layout_height="@dimen/cell_height"
+         android:background="@color/cell_background_color"
+         android:orientation="vertical">
+     
+     
+         <TextView
+             android:id="@+id/cell_data"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_gravity="center_vertical"
+             android:layout_marginStart="10dp"
+             android:layout_marginEnd="10dp"
+             android:gravity="center"
+             android:maxLines="1"
+             android:textColor="@color/cell_text_color"
+             android:textSize="@dimen/text_size"
+             />
+     
+     </LinearLayout>
+ 
+ 
+ Let's create simple ViewHolder. However, **Don't forget** This ViewHolder must be extended from ```AbstractViewHolder``` which has some protected methods to help you on selection.
+
+     class MyCellViewHolder extends AbstractViewHolder {
+     
+         public final TextView cell_textview;
+     
+         public CellViewHolder(View itemView) {
+             super(itemView);
+             cell_textview = (TextView) itemView.findViewById(R.id.cell_data);
+         }
+     }
+
+ Now Let's fill ```onCreateCellViewHolder``` method like this;  
+ 
+    @Override
+    public RecyclerView.ViewHolder onCreateCellViewHolder(ViewGroup parent, int viewType) {
+        // Getting custome Cell View Layout from xml 
+        View layout = LayoutInflater.from(m_jContext).inflate(R.layout.my_TableView_cell_layout,
+                parent, false);
+                
+        // And creating our custom CellViewHolder
+        return new MyCellViewHolder(layout);
+    }
+
 
 to be continued.. 
 
