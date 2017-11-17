@@ -77,17 +77,17 @@ TableView tableView = new TableView(getContext());
 
 ####  1. Create your TableViewAdapter
  Firstly, you must create your TableViewAdapter class which extends from ```AbstractTableAdapter``` class. 
- AbstractTableAdapter class wants 3 different lists which represent respectively; ColumnHeader, RowHeader and Cell views model.
+ ```AbstractTableAdapter``` class wants 3 different lists which represent respectively; ColumnHeader, RowHeader and Cell views model.
 
  For example; 
  
- we need 3 list items which represent cells, column headers and row headers from these model classes.
+ Assume that we have 3 below list items.
 
      private List<MyRowHeaderModel> mRowHeaderList;
      private List<MyColumnHeaderModel> mColumnHeaderList;
      private List<List<MyCellModel>> mCellList;
     
- For these model classes, Your TableViewAdapter class should be created like this;
+ For these lists, Your TableViewAdapter class should be created like this;
       
      public class MyTableViewAdapter extends AbstractTableAdapter<MyColumnHeaderModel, MyRowHeaderModel, MyCellModel> {
           ....
