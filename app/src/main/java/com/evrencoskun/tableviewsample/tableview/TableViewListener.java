@@ -22,6 +22,47 @@ public class TableViewListener implements ITableViewListener {
 
     }
 
+    /**
+     * Called when user click any cell item.
+     *
+     * @param p_jCellView  : Clicked Cell ViewHolder.
+     * @param p_nXPosition : X (Column) position of Clicked Cell item.
+     * @param p_nYPosition : Y (Row) position of Clicked Cell item.
+     */
+    @Override
+    public void onCellClicked(@NonNull RecyclerView.ViewHolder p_jCellView, int p_nXPosition, int
+            p_nYPosition) {
+        // Do want you want.
+        showToast("Cell " + p_nXPosition + " " + p_nYPosition + " has been clicked.");
+    }
+
+    /**
+     * Called when user click any column header item.
+     *
+     * @param p_jColumnHeaderView : Clicked Column Header ViewHolder.
+     * @param p_nXPosition        : X (Column) position of Clicked Column Header item.
+     */
+    @Override
+    public void onColumnHeaderClicked(@NonNull RecyclerView.ViewHolder p_jColumnHeaderView, int
+            p_nXPosition) {
+        // Do want you want.
+        showToast("Column header  " + p_nXPosition + " has been clicked.");
+    }
+
+    /**
+     * Called when user click any Row Header item.
+     *
+     * @param p_jRowHeaderView : Clicked Row Header ViewHolder.
+     * @param p_nYPosition     : Y (Row) position of Clicked Row Header item.
+     */
+    @Override
+    public void onRowHeaderClicked(@NonNull RecyclerView.ViewHolder p_jRowHeaderView, int
+            p_nYPosition) {
+        // Do want you want.
+
+        showToast("Row header " + p_nYPosition + " has been clicked.");
+    }
+
 
     private void showToast(String p_strMessage) {
         if (m_jToast == null) {
@@ -31,24 +72,4 @@ public class TableViewListener implements ITableViewListener {
         m_jToast.setText(p_strMessage);
         m_jToast.show();
     }
-
-    @Override
-    public void onCellClicked(@NonNull RecyclerView.ViewHolder p_jCellView, int p_nXPosition, int
-            p_nYPosition) {
-        showToast("Cell " + p_nXPosition + " " + p_nYPosition + " has been clicked.");
-    }
-
-
-    @Override
-    public void onColumnHeaderClicked(@NonNull RecyclerView.ViewHolder p_jColumnHeaderView, int
-            p_nXPosition) {
-        showToast("Column header  " + p_nXPosition + " has been clicked.");
-    }
-
-    @Override
-    public void onRowHeaderClicked(@NonNull RecyclerView.ViewHolder p_jRowHeaderView, int
-            p_nYPosition) {
-        showToast("Row header " + p_nYPosition + " has been clicked.");
-    }
-
 }
