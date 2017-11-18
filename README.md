@@ -1,4 +1,4 @@
-![Image](https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/Logo-6.png)
+![Image](https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/Logo-7.png)
 # TableView for Android
 TableView is a powerful Android library for displaying complex data structures and rendering tabular data composed of rows, columns and cells. 
 TableView relies on a separate model object to hold and represent the data it displays.
@@ -24,9 +24,11 @@ dependencies {
   - [x] Setting your own model class to displayed in a table view easily.
   - [x] TableView has an click listener to listen user touch interaction for each cell.
   
-## Documentation
 
-### XML 
+##  Implement your item on TableView 
+
+###  1. Create your TableView
+#### XML 
 
 ``` 
 <com.evrencoskun.tableview.TableView
@@ -58,7 +60,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 
 
 
-### Programmatically 
+#### Programmatically 
 
 ```
 TableView tableView = new TableView(getContext());
@@ -66,10 +68,7 @@ TableView tableView = new TableView(getContext());
 
 
 
-##  Implement your item on TableView 
-
-
-###  1. Create your TableViewAdapter
+###  2. Create your TableViewAdapter
  Firstly, you must create your custom TableView Adapter  which extends from ```AbstractTableAdapter``` class. 
  ```AbstractTableAdapter``` class wants 3 different lists which represent respectively; ColumnHeader, RowHeader and Cell views model.
 
@@ -315,7 +314,7 @@ TableView tableView = new TableView(getContext());
  }
 ```
  
-###  2. Set the Adapter to the TableView
+###  3. Set the Adapter to the TableView
  
  > ```AbstractTableAdapter``` class wants 3 different lists which represent respectively; ColumnHeader, RowHeader and Cell views model.
 
@@ -341,7 +340,7 @@ Setting datas using our TableView adapter like this;
    
  ```
  
- ###  3. Set Click listener to the TableView
+ ###  4. Set Click listener to the TableView
  
  ```java
  public class MyTableViewListener implements ITableViewListener {
