@@ -78,11 +78,12 @@ TableView tableView = new TableView(getContext());
  To be able show your items on TableView, you must follow the below steps.
 
 
+
 ####  1. Create your TableViewAdapter
  Firstly, you must create your custom TableView Adapter  which extends from ```AbstractTableAdapter``` class. 
  ```AbstractTableAdapter``` class wants 3 different lists which represent respectively; ColumnHeader, RowHeader and Cell views model.
 
- For example; 
+ **For example;** 
  
  
  Assume that we have 3 below list items.
