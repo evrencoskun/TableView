@@ -72,14 +72,18 @@ shadow_color         | Color int       | When a cell view is selected, both the 
 TableView tableView = new TableView(getContext());
 ```
 
+
+
 ###  Implement your item on TableView 
  To be able show your items on TableView, you must follow the below steps.
+
 
 ####  1. Create your TableViewAdapter
  Firstly, you must create your custom TableView Adapter  which extends from ```AbstractTableAdapter``` class. 
  ```AbstractTableAdapter``` class wants 3 different lists which represent respectively; ColumnHeader, RowHeader and Cell views model.
 
  For example; 
+ 
  
  Assume that we have 3 below list items.
 
@@ -94,12 +98,18 @@ TableView tableView = new TableView(getContext());
     
     }
     
+    
  ``` AbstractTableAdapter``` class has some abstract methods that you must fill them. 
+ 
  
  > If you familiar with RecyclerView,
  these methods will familiar to you as well. Because TableView comes from three powerful & talented RecyclerViews.
-    
- **onCreateCellViewHolder :** That is where you create your custom Cell ViewHolder.
+ 
+ 
+ 
+ **onCreateCellViewHolder :** That is where you create your custom Cell ViewHolder. This method is called when 
+ Cell RecyclerView of the TableView needs a new RecyclerView.ViewHolder of the given type to represent an item.
+
 
  Assume that your Cell ViewHolder xml layout like this. 
  In res/layout folder, let's give a name like  ```my_TableView_cell_layout.xml ```
@@ -130,7 +140,9 @@ TableView tableView = new TableView(getContext());
      </LinearLayout>
  
  
+ 
  Let's create simple ViewHolder. However, **Don't forget** This ViewHolder must be extended from ```AbstractViewHolder``` which has some protected methods to help you on selection.
+
 
      class MyCellViewHolder extends AbstractViewHolder {
      
@@ -142,7 +154,9 @@ TableView tableView = new TableView(getContext());
          }
      }
 
+
  Now Let's fill ```onCreateCellViewHolder``` method like this;  
+ 
  
     @Override
     public RecyclerView.ViewHolder onCreateCellViewHolder(ViewGroup parent, int viewType) {
@@ -150,9 +164,40 @@ TableView tableView = new TableView(getContext());
         View layout = LayoutInflater.from(m_jContext).inflate(R.layout.my_TableView_cell_layout,
                 parent, false);
                 
-        // And creating our custom CellViewHolder
+        // And creating sample custom CellViewHolder
         return new MyCellViewHolder(layout);
     }
+
+
+**onBindCellViewHolder :** That is where you set Cell View Model data to your custom Cell ViewHolder. This method is Called by Cell RecyclerView of the TableView to display the data at the specified position.
+This method gives you everything you need about a cell item. 
+
+Parameter    |      Type                              | Explanation
+-------------|----------------------------------------|-----------------------------------------------------------------------------------------------
+holder       |  AbstractViewHolder (MyCellViewHolder) | This is one of ```MyCellViewHolder``` that was created on ```onCreateCellViewHolder``` method.
+pValue       |  Object (MyCellModel)                  | This is the cell view model located on this position.
+pXPosition   |  int                                   | This is the X (Column) position of the cell item.
+pYPosition   |  int                                   | This is the Y (Row) position of the cell item.
+
+
+    @Override
+    public void onBindCellViewHolder(AbstractViewHolder holder, Object pValue, int
+            pXPosition, int pYPosition) {
+            
+        MyCellModel cell = (MyCellModel) pValue;
+
+        MyCellViewHolder viewHolder = (MyCellViewHolder) holder;
+        viewHolder.cell_textview.setText(cell.getData());
+
+        // If your TableView should have auto resize for cells & columns.
+        // Then you should consider the below lines. Otherwise, you can ignore them.
+        
+        // It is necessary to remeasure itself 
+        viewHolder.ItemView.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        viewHolder.cell_textview.requestLayout();
+    }
+
+
 
 
 to be continued.. 
