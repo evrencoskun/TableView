@@ -75,8 +75,6 @@ TableView tableView = new TableView(getContext());
 
 
 ###  Implement your item on TableView 
- To be able show your items on TableView, you must follow the below steps.
-
 
 
 ####  1. Create your TableViewAdapter
