@@ -1,4 +1,4 @@
-![Image](https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/Logo-5.png)
+![Image](https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/Logo-6.png)
 # TableView for Android
 TableView is a powerful Android library for displaying complex data structures and rendering tabular data composed of rows, columns and cells. 
 TableView relies on a separate model object to hold and represent the data it displays.
@@ -56,15 +56,6 @@ As default constants can be set programmatically, it can be set by also using  x
 xmlns:app="http://schemas.android.com/apk/res-auto"
 ```
 
-### List of Default Constants
-
-Constants            |  Type           | Explanation
----------------------|-----------------|------------
-column_header_height | Dimension       | Even if it's name is column header height, This value is taken into consideration for all cells, column headers and row Headers height. 
-row_header_width     | Dimension       | Unlike Cells  and Column headers, width of Row Headers is constant. So this value uses for this purpose.
-selected_color       | Color int       | Selected background color of Cells / Row Headers / Column Headers
-unselected_color     | Color int       | Default background color of Cells / Row Headers / Column Headers
-shadow_color         | Color int       | When a cell view is selected, both the column header and the row header which are located on x and y position of Cell view are colored to this value.
 
 
 ### Programmatically 
@@ -75,10 +66,10 @@ TableView tableView = new TableView(getContext());
 
 
 
-###  Implement your item on TableView 
+##  Implement your item on TableView 
 
 
-####  1. Create your TableViewAdapter
+###  1. Create your TableViewAdapter
  Firstly, you must create your custom TableView Adapter  which extends from ```AbstractTableAdapter``` class. 
  ```AbstractTableAdapter``` class wants 3 different lists which represent respectively; ColumnHeader, RowHeader and Cell views model.
 
@@ -324,7 +315,7 @@ TableView tableView = new TableView(getContext());
  }
 ```
  
-####  2. Set the Adapter to the TableView
+###  2. Set the Adapter to the TableView
  
  > ```AbstractTableAdapter``` class wants 3 different lists which represent respectively; ColumnHeader, RowHeader and Cell views model.
 
@@ -350,7 +341,7 @@ Setting datas using our TableView adapter like this;
    
  ```
  
- ####  3. Set Click listener to the TableView
+ ###  3. Set Click listener to the TableView
  
  ```java
  public class MyTableViewListener implements ITableViewListener {
