@@ -103,6 +103,7 @@ TableView tableView = new TableView(getContext());
  ``` AbstractTableAdapter``` class has some abstract methods that you must fill them. 
  
  
+ 
  > If you familiar with RecyclerView,
  these methods will familiar to you as well. Because TableView comes from three powerful & talented RecyclerViews.
  
@@ -182,8 +183,7 @@ pYPosition   |  int                                   | This is the Y (Row) posi
 
 
     @Override
-    public void onBindCellViewHolder(AbstractViewHolder holder, Object pValue, int
-            pXPosition, int pYPosition) {
+    public void onBindCellViewHolder(AbstractViewHolder holder, Object pValue, int pXPosition, int pYPosition) {
             
         MyCellModel cell = (MyCellModel) pValue;
 
