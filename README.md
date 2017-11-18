@@ -162,7 +162,7 @@ TableView tableView = new TableView(getContext());
  
     @Override
     public RecyclerView.ViewHolder onCreateCellViewHolder(ViewGroup parent, int viewType) {
-        // Getting custome Cell View Layout from xml 
+        // Getting custome Cell View xml Layout from resources 
         View layout = LayoutInflater.from(m_jContext).inflate(R.layout.my_TableView_cell_layout,
                 parent, false);
                 
