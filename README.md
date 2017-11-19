@@ -4,7 +4,7 @@ TableView is a powerful Android library for displaying complex data structures a
 TableView relies on a separate model object to hold and represent the data it displays. This repository also contains a sample app that is
 designed to show you how to create your own TableView in your application.
 
-
+# TableView for Android
 #### Video 
 
 [![TableView v0.8.2 screen shot](https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/tableview-0_8_2_screenshot.png)](https://www.youtube.com/watch?v=Bui84mc5Xco)
