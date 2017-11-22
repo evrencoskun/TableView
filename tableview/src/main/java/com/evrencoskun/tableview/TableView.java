@@ -58,6 +58,7 @@ public class TableView extends FrameLayout implements ITableView {
     private int m_nShadowColor;
 
     private boolean m_bIsFixedWidth;
+    private boolean m_bIgnoreSelectionColors;
 
     public TableView(@NonNull Context context) {
         super(context);
@@ -246,6 +247,15 @@ public class TableView extends FrameLayout implements ITableView {
 
         // RecyclerView has also the same control to provide better performance.
         m_jColumnHeaderRecyclerView.setHasFixedSize(p_bHasFixedWidth);
+    }
+
+    @Override
+    public boolean IsIgnoreSelectionColors() {
+        return m_bIgnoreSelectionColors;
+    }
+
+    public void setIgnoreSelectionColors(boolean p_bIsIgnore) {
+        this.m_bIgnoreSelectionColors = p_bIsIgnore;
     }
 
     @Override

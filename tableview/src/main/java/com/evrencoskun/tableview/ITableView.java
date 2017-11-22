@@ -22,6 +22,8 @@ public interface ITableView {
 
     boolean hasFixedWidth();
 
+    boolean IsIgnoreSelectionColors();
+
     CellRecyclerView getCellRecyclerView();
 
     CellRecyclerView getColumnHeaderRecyclerView();
