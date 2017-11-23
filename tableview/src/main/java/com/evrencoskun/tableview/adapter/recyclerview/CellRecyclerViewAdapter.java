@@ -133,15 +133,18 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
                             .getSelectedColumnPosition());
 
             if (cellViewHolder != null) {
-                cellViewHolder.setBackgroundColor(m_iTableAdapter.getTableView().getSelectedColor
-                        ());
+                // Control to ignore selection color
+                if (!m_iTableAdapter.getTableView().IsIgnoreSelectionColors()) {
+                    cellViewHolder.setBackgroundColor(m_iTableAdapter.getTableView().getSelectedColor
+                            ());
+                }
                 cellViewHolder.setSelected(true);
 
             }
         } else if (selectionHandler.isRowSelected(holder.getAdapterPosition())) {
 
             viewHolder.m_jRecyclerView.setSelected(true, m_iTableAdapter.getTableView()
-                    .getSelectedColor());
+                    .getSelectedColor(), m_iTableAdapter.getTableView().IsIgnoreSelectionColors());
         }
 
     }
@@ -152,7 +155,8 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
         // Clear selection status of the view holder
         ((CellRowViewHolder) holder).m_jRecyclerView.setSelected(false, m_iTableAdapter
-                .getTableView().getUnSelectedColor());
+                .getTableView().getUnSelectedColor(), m_iTableAdapter.getTableView()
+                .IsIgnoreSelectionColors());
     }
 
     @Override

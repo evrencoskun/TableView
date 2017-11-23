@@ -120,7 +120,6 @@ public class SelectionHandler {
     }
 
     private void selectedCellView() {
-        int nSelectedColor = m_iTableView.getSelectedColor();
         int nShadowColor = m_iTableView.getShadowColor();
 
 

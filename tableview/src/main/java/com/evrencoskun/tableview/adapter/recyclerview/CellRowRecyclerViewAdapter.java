@@ -65,11 +65,15 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
         boolean isSelected = m_iTableAdapter.getTableView().getSelectionHandler().isCellSelected
                 (holder.getAdapterPosition(), m_nYPosition);
 
-        // Change the background color of the view considering selected row/cell position.
-        if (isSelected) {
-            viewHolder.setBackgroundColor(m_iTableAdapter.getTableView().getSelectedColor());
-        } else {
-            viewHolder.setBackgroundColor(m_iTableAdapter.getTableView().getUnSelectedColor());
+        // Control to ignore selection color
+        if (!m_iTableAdapter.getTableView().IsIgnoreSelectionColors()) {
+
+            // Change the background color of the view considering selected row/cell position.
+            if (isSelected) {
+                viewHolder.setBackgroundColor(m_iTableAdapter.getTableView().getSelectedColor());
+            } else {
+                viewHolder.setBackgroundColor(m_iTableAdapter.getTableView().getUnSelectedColor());
+            }
         }
 
         // Change selection status
@@ -82,8 +86,12 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
 
         AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
 
-        // Clear selection status of the view holder
-        viewHolder.setBackgroundColor(m_iTableAdapter.getTableView().getUnSelectedColor());
+        // Control to ignore selection color
+        if (!m_iTableAdapter.getTableView().IsIgnoreSelectionColors()) {
+            // Clear selection status of the view holder
+            viewHolder.setBackgroundColor(m_iTableAdapter.getTableView().getUnSelectedColor());
+        }
+
         viewHolder.setSelected(false);
     }
 

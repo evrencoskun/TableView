@@ -110,13 +110,17 @@ public class CellRecyclerView extends RecyclerView {
         return !mIsHorizontalScrollListenerRemoved;
     }
 
-    public void setSelected(boolean p_bSelected, @ColorInt int p_nBackgroundColor) {
+    public void setSelected(boolean p_bSelected, @ColorInt int p_nBackgroundColor, boolean
+            p_bIsIgnoreSelectionColors) {
         for (int i = 0; i < getAdapter().getItemCount(); i++) {
             AbstractViewHolder viewHolder = (AbstractViewHolder) findViewHolderForAdapterPosition
                     (i);
             if (viewHolder != null) {
-                // Change background color
-                viewHolder.setBackgroundColor(p_nBackgroundColor);
+
+                if (!p_bIsIgnoreSelectionColors) {
+                    // Change background color
+                    viewHolder.setBackgroundColor(p_nBackgroundColor);
+                }
 
                 // Change selection status of the view holder
                 viewHolder.setSelected(p_bSelected);

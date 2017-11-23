@@ -49,10 +49,14 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
         boolean isSelected = m_iTableAdapter.getTableView().getSelectionHandler()
                 .isColumnSelected(viewHolder.getAdapterPosition());
 
-        // Change background color of the view considering it's selected state
-        m_iTableAdapter.getTableView().getSelectionHandler()
-                .changeColumnBackgroundColorBySelectionStatus(viewHolder.getAdapterPosition(),
-                        viewHolder);
+        // Control to ignore selection color
+        if (!m_iTableAdapter.getTableView().IsIgnoreSelectionColors()) {
+
+            // Change background color of the view considering it's selected state
+            m_iTableAdapter.getTableView().getSelectionHandler()
+                    .changeColumnBackgroundColorBySelectionStatus(viewHolder.getAdapterPosition()
+                            , viewHolder);
+        }
 
         // Change selection status
         viewHolder.setSelected(isSelected);

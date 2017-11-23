@@ -49,9 +49,13 @@ public class RowHeaderRecyclerViewAdapter<RH> extends AbstractRecyclerViewAdapte
         boolean isSelected = m_iTableAdapter.getTableView().getSelectionHandler().isRowSelected
                 (holder.getAdapterPosition());
 
-        // Change background color of the view considering it's selected state
-        m_iTableAdapter.getTableView().getSelectionHandler()
-                .changeRowBackgroundColorBySelectionStatus(holder.getAdapterPosition(), viewHolder);
+        // Control to ignore selection color
+        if (!m_iTableAdapter.getTableView().IsIgnoreSelectionColors()) {
+            // Change background color of the view considering it's selected state
+            m_iTableAdapter.getTableView().getSelectionHandler()
+                    .changeRowBackgroundColorBySelectionStatus(holder.getAdapterPosition(),
+                            viewHolder);
+        }
 
         // Change selection status
         viewHolder.setSelected(isSelected);
@@ -62,7 +66,11 @@ public class RowHeaderRecyclerViewAdapter<RH> extends AbstractRecyclerViewAdapte
         super.onViewDetachedFromWindow(holder);
         AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
 
-        viewHolder.setBackgroundColor(m_iTableAdapter.getTableView().getUnSelectedColor());
+        // Control to ignore selection color
+        if (!m_iTableAdapter.getTableView().IsIgnoreSelectionColors()) {
+            viewHolder.setBackgroundColor(m_iTableAdapter.getTableView().getUnSelectedColor());
+        }
+
         viewHolder.setSelected(false);
     }
 }
