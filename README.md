@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/logoo-4.png" >
+    <img src="https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/Logoo-4.png" >
     <h2>TableView For Android</h2>
     <p align="center">
         <p>TableView is a powerful Android library for displaying complex data structures and rendering tabular data composed of rows, columns and cells.</p>
