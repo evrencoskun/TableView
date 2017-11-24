@@ -1,6 +1,6 @@
 <div align="center">
     <img src="https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/logoo-3.png" >
-    <h2>TableView</h2>
+    <h2>TableView for Android</h2>
     <p align="center">
         <p>TableView is a powerful Android library for displaying complex data structures and rendering tabular data composed of rows, columns and cells.</p>
         <a href="https://www.youtube.com/watch?v=Bui84mc5Xco">
@@ -11,7 +11,7 @@
 
 
 <p align="center">
-      <img src=".TableView-landscape.gif">
+      <img src="https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/TableView-landscape.gif">
 </p>
 
 ## Installation
