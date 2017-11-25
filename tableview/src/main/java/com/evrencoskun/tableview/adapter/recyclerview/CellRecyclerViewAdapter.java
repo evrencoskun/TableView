@@ -135,8 +135,8 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
             if (cellViewHolder != null) {
                 // Control to ignore selection color
                 if (!m_iTableAdapter.getTableView().IsIgnoreSelectionColors()) {
-                    cellViewHolder.setBackgroundColor(m_iTableAdapter.getTableView().getSelectedColor
-                            ());
+                    cellViewHolder.setBackgroundColor(m_iTableAdapter.getTableView()
+                            .getSelectedColor());
                 }
                 cellViewHolder.setSelected(true);
 

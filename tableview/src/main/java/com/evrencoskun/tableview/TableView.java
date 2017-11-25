@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+import com.evrencoskun.tableview.handler.ColumnSortHandler;
 import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
@@ -24,6 +25,7 @@ import com.evrencoskun.tableview.listener.itemclick.ColumnHeaderRecyclerViewItem
 import com.evrencoskun.tableview.listener.itemclick.RowHeaderRecyclerViewItemClickListener;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
+import com.evrencoskun.tableview.sort.SortOrder;
 
 /**
  * Created by evrencoskun on 11/06/2017.
@@ -49,6 +51,7 @@ public class TableView extends FrameLayout implements ITableView {
     private CellLayoutManager m_iCellLayoutManager;
 
     private SelectionHandler m_iSelectionHandler;
+    private ColumnSortHandler m_iColumnSortHandler;
 
     private int m_nRowHeaderWidth;
     private int m_nColumnHeaderHeight;
@@ -129,8 +132,9 @@ public class TableView extends FrameLayout implements ITableView {
         addView(m_jRowHeaderRecyclerView);
         addView(m_jCellRecyclerView);
 
-        // Create Selection Handler
+        // Create Handlers
         m_iSelectionHandler = new SelectionHandler(this);
+        m_iColumnSortHandler = new ColumnSortHandler(this);
 
         initializeListeners();
     }
@@ -339,6 +343,10 @@ public class TableView extends FrameLayout implements ITableView {
         m_jColumnHeaderRecyclerView.addOnItemTouchListener
                 (m_jColumnHeaderRecyclerViewItemClickListener);
         m_jRowHeaderRecyclerView.addOnItemTouchListener(m_jRowHeaderRecyclerViewItemClickListener);
+    }
+
+    public void sortColumn(int p_nColumnPosition, SortOrder p_eSortOrder) {
+        m_iColumnSortHandler.sort(p_nColumnPosition, p_eSortOrder);
     }
 
 

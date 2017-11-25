@@ -37,10 +37,22 @@ public abstract class AbstractRecyclerViewAdapter<T> extends RecyclerView.Adapte
         return m_jItemList.size();
     }
 
+    public List<T> getItems() {
+        return m_jItemList;
+    }
+
     public void setItems(List<T> p_jItemList) {
         m_jItemList = new ArrayList<>(p_jItemList);
 
         this.notifyDataSetChanged();
+    }
+
+    public void setItems(List<T> p_jItemList, boolean p_bNotifyDataSet) {
+        m_jItemList = new ArrayList<>(p_jItemList);
+
+        if (p_bNotifyDataSet) {
+            this.notifyDataSetChanged();
+        }
     }
 
     public T getItem(int position) {
