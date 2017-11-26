@@ -24,7 +24,7 @@ To use this library in your android project, just simply add the following depen
 
 ``` 
 dependencies {
- compile 'com.evrencoskun.library:tableview:0.8.2' 
+ compile 'com.evrencoskun.library:tableview:0.8.3' 
 }
 ```
 
@@ -399,6 +399,20 @@ Setting the listener to the TableView
 
 ```java
 tableView.setTableViewListener(new MyTableViewListener());
+``` 
+
+## Advanced
+
+To ignore column width calculation for better performance, the below line can be used.
+  
+```java
+tableView.setHasFixedWidth(false);
+``` 
+
+To ignore setting selection colors that are displayed by user interaction, the below line can be used.
+
+```java
+tableView.setIgnoreSelectionColors(false);
 ``` 
 
 ## Article
