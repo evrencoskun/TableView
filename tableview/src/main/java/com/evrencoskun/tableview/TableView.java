@@ -132,9 +132,8 @@ public class TableView extends FrameLayout implements ITableView {
         addView(m_jRowHeaderRecyclerView);
         addView(m_jCellRecyclerView);
 
-        // Create Handlers
+        // Create Selection Handler
         m_iSelectionHandler = new SelectionHandler(this);
-        m_iColumnSortHandler = new ColumnSortHandler(this);
 
         initializeListeners();
     }
@@ -237,6 +236,9 @@ public class TableView extends FrameLayout implements ITableView {
             }
             if (m_jCellRecyclerView != null) {
                 m_jCellRecyclerView.setAdapter(m_iTableAdapter.getCellRecyclerViewAdapter());
+
+                // Create Sort Handler
+                m_iColumnSortHandler = new ColumnSortHandler(this);
             }
         }
     }
@@ -348,7 +350,6 @@ public class TableView extends FrameLayout implements ITableView {
     public void sortColumn(int p_nColumnPosition, SortOrder p_eSortOrder) {
         m_iColumnSortHandler.sort(p_nColumnPosition, p_eSortOrder);
     }
-
 
     /**
      * Returns the index of the selected row, -1 if no row is selected.

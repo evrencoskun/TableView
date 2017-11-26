@@ -11,6 +11,7 @@ import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
 import com.evrencoskun.tableview.listener.ITableViewListener;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
+import com.evrencoskun.tableview.sort.SortOrder;
 
 /**
  * Created by evrencoskun on 19/06/2017.
@@ -49,4 +50,6 @@ public interface ITableView {
     int getSelectedColor();
 
     int getUnSelectedColor();
+
+    void sortColumn(int p_nColumnPosition, SortOrder p_eSortOrder);
 }
