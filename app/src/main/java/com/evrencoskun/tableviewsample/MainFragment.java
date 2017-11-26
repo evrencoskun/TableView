@@ -71,7 +71,6 @@ public class MainFragment extends Fragment {
 
         // Set adapter
         m_iTableViewAdapter = new TableViewAdapter(getContext());
-        //m_iTableViewAdapter = new MDTableViewAdapter(getContext());
         tableView.setAdapter(m_iTableViewAdapter);
 
         // Set layout params
@@ -113,7 +112,7 @@ public class MainFragment extends Fragment {
     private List<RowHeader> getRowHeaderList() {
         List<RowHeader> list = new ArrayList<>();
         for (int i = 0; i < ROW_SIZE; i++) {
-            RowHeader header = new RowHeader(i, "row " + i);
+            RowHeader header = new RowHeader(String.valueOf(i), "row " + i);
             list.add(header);
         }
 
@@ -128,7 +127,7 @@ public class MainFragment extends Fragment {
             if (i % 6 == 2) {
                 strTitle = "large column " + i;
             }
-            ColumnHeader header = new ColumnHeader(i, strTitle);
+            ColumnHeader header = new ColumnHeader(String.valueOf(i), strTitle);
             list.add(header);
         }
 
@@ -144,7 +143,8 @@ public class MainFragment extends Fragment {
             if (nRandom % 4 == 0 || nRandom % 3 == 0 || nRandom == i) {
                 strTitle = "large column " + i;
             }
-            ColumnHeader header = new ColumnHeader(i, strTitle);
+
+            ColumnHeader header = new ColumnHeader(String.valueOf(i), strTitle);
             list.add(header);
         }
 
@@ -160,7 +160,9 @@ public class MainFragment extends Fragment {
                 if (j % 4 == 0 && i % 5 == 0) {
                     strText = "large cell " + j + " " + i + ".";
                 }
-                Cell cell = new Cell(j, strText);
+                String strID = j + "-" + i;
+
+                Cell cell = new Cell(strID, strText);
                 cellList.add(cell);
             }
             list.add(cellList);
@@ -180,7 +182,10 @@ public class MainFragment extends Fragment {
                 if (nRandom % 2 == 0 || nRandom % 5 == 0 || nRandom == j) {
                     strText = "large cell  " + j + " " + i + getRandomString() + ".";
                 }
-                Cell cell = new Cell(j, strText);
+
+                String strID = j + "-" + i;
+
+                Cell cell = new Cell(strID, strText);
                 cellList.add(cell);
             }
         }

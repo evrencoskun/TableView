@@ -6,29 +6,29 @@ package com.evrencoskun.tableviewsample.tableview.model;
 
 public class Cell {
 
-    private long m_nId;
-    private String m_nData;
+    private String m_strId;
+    private String m_strData;
 
-    public Cell(long p_nId) {
-        this(p_nId, "");
+    public Cell(String p_strId) {
+        this.m_strId = p_strId;
+        this.m_strData = "";
     }
 
-    public Cell(long p_nId, String p_strData) {
-        this.m_nId = p_nId;
-        this.m_nData = p_strData;
+    public Cell(String p_strId, String p_strData) {
+        this.m_strId = p_strId;
+        this.m_strData = p_strData;
     }
 
-    public long getId() {
-        return m_nId;
+    public String getId() {
+        return m_strId;
     }
 
     public String getData() {
-        return m_nData;
+        return m_strData;
     }
 
     public void setData(String p_strData) {
-        m_nData = p_strData;
+        m_strData = p_strData;
     }
-
 }
 

@@ -6,12 +6,12 @@ package com.evrencoskun.tableviewsample.tableview.model;
 
 public class ColumnHeader extends Cell {
 
-    public ColumnHeader(int p_nId) {
-        super(p_nId);
+    public ColumnHeader(String p_strId) {
+        super(p_strId);
     }
 
-    public ColumnHeader(int p_nId, String p_strData) {
-        super(p_nId, p_strData);
+    public ColumnHeader(String p_strId, String p_strData) {
+        super(p_strId, p_strData);
     }
 }
 
