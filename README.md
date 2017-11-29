@@ -6,7 +6,7 @@
            TableView relies on a separate model object to hold and represent the data it displays. This repository also contains a sample app that is
            designed to show you how to create your own TableView in your application.</p>
         <a href="https://www.youtube.com/watch?v=Bui84mc5Xco">
-            <b>Demo video »</b>
+            <b>Demo Full video »</b>
         </a>
     </p>
 </div>
