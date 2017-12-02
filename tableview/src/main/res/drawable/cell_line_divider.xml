@@ -4,5 +4,5 @@
     <size
         android:width="1px"
         android:height="1px"/>
-    <solid android:color="@color/cell_line_color"/>
+    <solid android:color="@color/table_view_default_separator_color"/>
 </shape>

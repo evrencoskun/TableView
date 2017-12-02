@@ -29,7 +29,7 @@ public class CellRecyclerViewItemClickListener extends AbstractItemClickListener
         // Get interacted view from x,y coordinate.
         View childView = view.findChildViewUnder(e.getX(), e.getY());
 
-        if (childView != null && m_jListener != null && m_jGestureDetector.onTouchEvent(e)) {
+        if (childView != null && m_jGestureDetector.onTouchEvent(e)) {
             // Find the view holder
             AbstractViewHolder holder = (AbstractViewHolder) m_jRecyclerView.getChildViewHolder
                     (childView);
@@ -46,8 +46,11 @@ public class CellRecyclerViewItemClickListener extends AbstractItemClickListener
                 m_iSelectionHandler.setSelectedCellPositions(holder, nXPosition, nYPosition);
             }
 
-            // Call ITableView listener for item click
-            m_jListener.onCellClicked(holder, nXPosition, nYPosition);
+            if (m_jListener != null) {
+                // Call ITableView listener for item click
+                m_jListener.onCellClicked(holder, nXPosition, nYPosition);
+            }
+
             return true;
         }
         return false;

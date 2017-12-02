@@ -24,7 +24,7 @@ public class RowHeaderRecyclerViewItemClickListener extends AbstractItemClickLis
         // Get interacted view from x,y coordinate.
         View childView = view.findChildViewUnder(e.getX(), e.getY());
 
-        if (childView != null && m_jListener != null && m_jGestureDetector.onTouchEvent(e)) {
+        if (childView != null && m_jGestureDetector.onTouchEvent(e)) {
             // Find the view holder
             AbstractViewHolder holder = (AbstractViewHolder) m_jRecyclerView.getChildViewHolder
                     (childView);
@@ -36,8 +36,10 @@ public class RowHeaderRecyclerViewItemClickListener extends AbstractItemClickLis
                 m_iSelectionHandler.setSelectedRowPosition(holder, nYPosition);
             }
 
-            // Call ITableView listener for item click
-            m_jListener.onRowHeaderClicked(holder, nYPosition);
+            if (m_jListener != null) {
+                // Call ITableView listener for item click
+                m_jListener.onRowHeaderClicked(holder, nYPosition);
+            }
             return true;
         }
         return false;

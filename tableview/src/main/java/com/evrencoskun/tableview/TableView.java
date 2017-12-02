@@ -90,10 +90,11 @@ public class TableView extends FrameLayout implements ITableView {
 
         // Colors
         m_nSelectedColor = ContextCompat.getColor(getContext(), R.color
-                .table_view_selected_background_color);
-        m_nUnSelectedColor = ContextCompat.getColor(getContext(), R.color.default_background_color);
+                .table_view_default_selected_background_color);
+        m_nUnSelectedColor = ContextCompat.getColor(getContext(), R.color
+                .table_view_default_unselected_background_color);
         m_nShadowColor = ContextCompat.getColor(getContext(), R.color
-                .table_view_shadow_background_color);
+                .table_view_default_shadow_background_color);
 
         if (attrs == null) {
             // That means TableView is created programmatically.
@@ -139,6 +140,8 @@ public class TableView extends FrameLayout implements ITableView {
     }
 
     protected void initializeListeners() {
+
+        // --- Listeners to help Scroll synchronously ---
         // It handles Vertical scroll listener
         m_jVerticalRecyclerListener = new VerticalRecyclerViewListener(this);
 
@@ -150,6 +153,19 @@ public class TableView extends FrameLayout implements ITableView {
         m_jHorizontalRecyclerViewListener = new HorizontalRecyclerViewListener(this);
         // Set scroll listener to be able to scroll all rows synchrony.
         m_jColumnHeaderRecyclerView.addOnItemTouchListener(m_jHorizontalRecyclerViewListener);
+
+
+        // --- Listeners to help item clicks ---
+        // Create item click listeners
+        m_jColumnHeaderRecyclerViewItemClickListener = new
+                ColumnHeaderRecyclerViewItemClickListener(m_jColumnHeaderRecyclerView, this);
+        m_jRowHeaderRecyclerViewItemClickListener = new RowHeaderRecyclerViewItemClickListener
+                (m_jRowHeaderRecyclerView, this);
+
+        // Add item click listeners for both column header & row header recyclerView
+        m_jColumnHeaderRecyclerView.addOnItemTouchListener
+                (m_jColumnHeaderRecyclerViewItemClickListener);
+        m_jRowHeaderRecyclerView.addOnItemTouchListener(m_jRowHeaderRecyclerViewItemClickListener);
 
     }
 
@@ -322,29 +338,6 @@ public class TableView extends FrameLayout implements ITableView {
 
     public void setTableViewListener(ITableViewListener p_jTableViewListener) {
         this.m_iTableViewListener = p_jTableViewListener;
-
-        // Remove old ones
-        if (m_jColumnHeaderRecyclerViewItemClickListener != null &&
-                m_jRowHeaderRecyclerViewItemClickListener != null) {
-
-            m_jColumnHeaderRecyclerView.removeOnItemTouchListener
-                    (m_jColumnHeaderRecyclerViewItemClickListener);
-
-            m_jRowHeaderRecyclerView.removeOnItemTouchListener
-                    (m_jRowHeaderRecyclerViewItemClickListener);
-        }
-
-        // Create item click listeners
-        m_jColumnHeaderRecyclerViewItemClickListener = new
-                ColumnHeaderRecyclerViewItemClickListener(m_jColumnHeaderRecyclerView, this);
-
-        m_jRowHeaderRecyclerViewItemClickListener = new RowHeaderRecyclerViewItemClickListener
-                (m_jRowHeaderRecyclerView, this);
-
-        // Add item click listeners for both column header & row header recyclerView
-        m_jColumnHeaderRecyclerView.addOnItemTouchListener
-                (m_jColumnHeaderRecyclerViewItemClickListener);
-        m_jRowHeaderRecyclerView.addOnItemTouchListener(m_jRowHeaderRecyclerViewItemClickListener);
     }
 
     public void sortColumn(int p_nColumnPosition, SortOrder p_eSortOrder) {
@@ -434,4 +427,6 @@ public class TableView extends FrameLayout implements ITableView {
     int getShadowColor() {
         return m_nShadowColor;
     }
+
+
 }

@@ -73,11 +73,9 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
             jRecyclerView.addOnItemTouchListener(m_iHorizontalListener);
 
-            if (iTableView.getTableViewListener() != null) {
-                // Add Item click listener for cell views
-                jRecyclerView.addOnItemTouchListener(new CellRecyclerViewItemClickListener
-                        (jRecyclerView, iTableView));
-            }
+            // Add Item click listener for cell views
+            jRecyclerView.addOnItemTouchListener(new CellRecyclerViewItemClickListener
+                    (jRecyclerView, iTableView));
 
             // Set the Column layout manager that helps the fit width of the cell and column header
             // and it also helps to locate the scroll position of the horizontal recyclerView

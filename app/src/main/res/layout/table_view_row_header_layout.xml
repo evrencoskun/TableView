@@ -20,7 +20,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
-            android:textColor="@color/cell_text_color"
+            android:textColor="@color/table_view_default_text_color"
             android:textSize="@dimen/text_size"
             tools:text="Row Data"/>
 
@@ -29,6 +29,6 @@
     <View
         android:layout_width="1px"
         android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:background="@color/header_line_color"/>
 </RelativeLayout>
