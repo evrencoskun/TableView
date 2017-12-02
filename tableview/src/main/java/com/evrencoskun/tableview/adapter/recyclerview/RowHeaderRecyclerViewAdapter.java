@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import com.evrencoskun.tableview.adapter.ITableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
 
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class RowHeaderRecyclerViewAdapter<RH> extends AbstractRecyclerViewAdapte
         }
 
         // Change selection status
-        viewHolder.setSelected(isSelected);
+        viewHolder.setSelected(isSelected ? SelectionState.SELECTED : SelectionState.UNSELECTED);
     }
 
     @Override
@@ -71,6 +72,6 @@ public class RowHeaderRecyclerViewAdapter<RH> extends AbstractRecyclerViewAdapte
             viewHolder.setBackgroundColor(m_iTableAdapter.getTableView().getUnSelectedColor());
         }
 
-        viewHolder.setSelected(false);
+        viewHolder.setSelected(SelectionState.UNSELECTED);
     }
 }

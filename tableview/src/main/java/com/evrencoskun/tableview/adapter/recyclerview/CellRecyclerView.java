@@ -110,8 +110,8 @@ public class CellRecyclerView extends RecyclerView {
         return !mIsHorizontalScrollListenerRemoved;
     }
 
-    public void setSelected(boolean p_bSelected, @ColorInt int p_nBackgroundColor, boolean
-            p_bIsIgnoreSelectionColors) {
+    public void setSelected(AbstractViewHolder.SelectionState p_eSelected, @ColorInt int
+            p_nBackgroundColor, boolean p_bIsIgnoreSelectionColors) {
         for (int i = 0; i < getAdapter().getItemCount(); i++) {
             AbstractViewHolder viewHolder = (AbstractViewHolder) findViewHolderForAdapterPosition
                     (i);
@@ -123,7 +123,7 @@ public class CellRecyclerView extends RecyclerView {
                 }
 
                 // Change selection status of the view holder
-                viewHolder.setSelected(p_bSelected);
+                viewHolder.setSelected(p_eSelected);
             }
         }
     }

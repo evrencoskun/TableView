@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.ITableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
 import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.layoutmanager.ColumnLayoutManager;
 import com.evrencoskun.tableview.listener.itemclick.CellRecyclerViewItemClickListener;
@@ -129,12 +130,12 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
                     cellViewHolder.setBackgroundColor(m_iTableAdapter.getTableView()
                             .getSelectedColor());
                 }
-                cellViewHolder.setSelected(true);
+                cellViewHolder.setSelected(SelectionState.SELECTED);
 
             }
         } else if (selectionHandler.isRowSelected(holder.getAdapterPosition())) {
 
-            viewHolder.m_jRecyclerView.setSelected(true, m_iTableAdapter.getTableView()
+            viewHolder.m_jRecyclerView.setSelected(SelectionState.SELECTED, m_iTableAdapter.getTableView()
                     .getSelectedColor(), m_iTableAdapter.getTableView().isIgnoreSelectionColors());
         }
 
@@ -145,7 +146,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         super.onViewDetachedFromWindow(holder);
 
         // Clear selection status of the view holder
-        ((CellRowViewHolder) holder).m_jRecyclerView.setSelected(false, m_iTableAdapter
+        ((CellRowViewHolder) holder).m_jRecyclerView.setSelected(SelectionState.UNSELECTED, m_iTableAdapter
                 .getTableView().getUnSelectedColor(), m_iTableAdapter.getTableView()
                 .isIgnoreSelectionColors());
     }
