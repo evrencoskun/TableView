@@ -108,7 +108,7 @@ public class SelectionHandler {
 
         // Change background color of the column headers to be shown as a shadow.
         m_iTableView.getColumnHeaderRecyclerView().setSelected(false, m_iTableView.getShadowColor
-                (), true);
+                (), false);
     }
 
     private void unselectedRowHeader() {
@@ -116,7 +116,7 @@ public class SelectionHandler {
 
         // Change background color of the column headers to be shown as a normal.
         m_iTableView.getColumnHeaderRecyclerView().setSelected(false, m_iTableView
-                .getUnSelectedColor(), true);
+                .getUnSelectedColor(), false);
     }
 
     private void selectedCellView() {
@@ -170,7 +170,8 @@ public class SelectionHandler {
     private void selectedColumnHeader() {
         changeVisibleCellViewsBackgroundForColumn(m_nSelectedColumnPosition, true);
 
-        m_iTableView.getRowHeaderRecyclerView().setSelected(false, m_iTableView.getShadowColor(), true);
+        m_iTableView.getRowHeaderRecyclerView().setSelected(false, m_iTableView.getShadowColor(),
+                false);
 
     }
 
@@ -178,7 +179,7 @@ public class SelectionHandler {
         changeVisibleCellViewsBackgroundForColumn(m_nSelectedColumnPosition, false);
 
         m_iTableView.getRowHeaderRecyclerView().setSelected(false, m_iTableView
-                .getUnSelectedColor(), true);
+                .getUnSelectedColor(), false);
     }
 
     public boolean isCellSelected(int p_nXPosition, int p_nYPosition) {
@@ -224,7 +225,8 @@ public class SelectionHandler {
             return;
         }
 
-        recyclerView.setSelected(p_bIsSelected, p_bIsSelected ? nSelectedColor : nUnSelectedColor, true);
+        recyclerView.setSelected(p_bIsSelected, p_bIsSelected ? nSelectedColor :
+                nUnSelectedColor, false);
     }
 
     private void changeVisibleCellViewsBackgroundForColumn(int p_nXPosition, boolean
@@ -236,9 +238,7 @@ public class SelectionHandler {
                 .getVisibleCellViewsByColumnPosition(p_nXPosition);
 
         if (visibleCellViews != null) {
-            for (int i = 0; i < visibleCellViews.length; i++) {
-                AbstractViewHolder viewHolder = visibleCellViews[i];
-
+            for (AbstractViewHolder viewHolder : visibleCellViews) {
                 if (viewHolder != null) {
                     // Get each view container of the cell view and set unselected color.
                     viewHolder.setBackgroundColor(p_bIsSelected ? nSelectedColor :
