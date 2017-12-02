@@ -1,15 +1,11 @@
 package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.evrencoskun.tableview.ITableView;
-import com.evrencoskun.tableview.R;
 import com.evrencoskun.tableview.adapter.ITableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.handler.SelectionHandler;
@@ -32,7 +28,6 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
     private ITableAdapter m_iTableAdapter;
 
-    private final DividerItemDecoration m_jCellItemDecoration;
     private HorizontalRecyclerViewListener m_iHorizontalListener;
 
     // This is for testing purpose
@@ -45,9 +40,6 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
         // Initialize the array
         m_jAdapterList = new ArrayList<>();
-
-        // Create Item decoration
-        m_jCellItemDecoration = createCellItemDecoration();
     }
 
     @Override
@@ -58,9 +50,10 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         // Create a RecyclerView as a Row of the CellRecyclerView
         final CellRecyclerView jRecyclerView = new CellRecyclerView(m_jContext);
 
-        // Add divider
-        jRecyclerView.addItemDecoration(m_jCellItemDecoration);
-
+        if (iTableView.isShowHorizontalSeparators()) {
+            // Add divider
+            jRecyclerView.addItemDecoration(iTableView.getHorizontalItemDecoration());
+        }
 
         if (iTableView != null) {
             // To get better performance for fixed size TableView
@@ -132,7 +125,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
             if (cellViewHolder != null) {
                 // Control to ignore selection color
-                if (!m_iTableAdapter.getTableView().IsIgnoreSelectionColors()) {
+                if (!m_iTableAdapter.getTableView().isIgnoreSelectionColors()) {
                     cellViewHolder.setBackgroundColor(m_iTableAdapter.getTableView()
                             .getSelectedColor());
                 }
@@ -142,7 +135,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         } else if (selectionHandler.isRowSelected(holder.getAdapterPosition())) {
 
             viewHolder.m_jRecyclerView.setSelected(true, m_iTableAdapter.getTableView()
-                    .getSelectedColor(), m_iTableAdapter.getTableView().IsIgnoreSelectionColors());
+                    .getSelectedColor(), m_iTableAdapter.getTableView().isIgnoreSelectionColors());
         }
 
     }
@@ -154,7 +147,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         // Clear selection status of the view holder
         ((CellRowViewHolder) holder).m_jRecyclerView.setSelected(false, m_iTableAdapter
                 .getTableView().getUnSelectedColor(), m_iTableAdapter.getTableView()
-                .IsIgnoreSelectionColors());
+                .isIgnoreSelectionColors());
     }
 
     @Override
@@ -176,16 +169,6 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
             m_jRecyclerView = (CellRecyclerView) itemView;
         }
     }
-
-    private DividerItemDecoration createCellItemDecoration() {
-        Drawable mDivider = ContextCompat.getDrawable(m_jContext, R.drawable.cell_line_divider);
-
-        DividerItemDecoration jItemDecoration = new DividerItemDecoration(m_jContext,
-                DividerItemDecoration.HORIZONTAL);
-        jItemDecoration.setDrawable(mDivider);
-        return jItemDecoration;
-    }
-
 
     public void notifyCellDataSetChanged() {
         if (m_jAdapterList != null) {

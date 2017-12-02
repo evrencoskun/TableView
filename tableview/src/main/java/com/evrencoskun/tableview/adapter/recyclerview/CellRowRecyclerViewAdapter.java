@@ -66,7 +66,7 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
                 (holder.getAdapterPosition(), m_nYPosition);
 
         // Control to ignore selection color
-        if (!m_iTableAdapter.getTableView().IsIgnoreSelectionColors()) {
+        if (!m_iTableAdapter.getTableView().isIgnoreSelectionColors()) {
 
             // Change the background color of the view considering selected row/cell position.
             if (isSelected) {
@@ -87,7 +87,7 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
         AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
 
         // Control to ignore selection color
-        if (!m_iTableAdapter.getTableView().IsIgnoreSelectionColors()) {
+        if (!m_iTableAdapter.getTableView().isIgnoreSelectionColors()) {
             // Clear selection status of the view holder
             viewHolder.setBackgroundColor(m_iTableAdapter.getTableView().getUnSelectedColor());
         }

@@ -2,6 +2,7 @@ package com.evrencoskun.tableview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
@@ -50,6 +51,9 @@ public class TableView extends FrameLayout implements ITableView {
     private LinearLayoutManager m_jRowHeaderLayoutManager;
     private CellLayoutManager m_iCellLayoutManager;
 
+    private DividerItemDecoration m_jVerticalItemDecoration;
+    private DividerItemDecoration m_jHorizontalItemDecoration;
+
     private SelectionHandler m_iSelectionHandler;
     private ColumnSortHandler m_iColumnSortHandler;
 
@@ -59,9 +63,12 @@ public class TableView extends FrameLayout implements ITableView {
     private int m_nSelectedColor;
     private int m_nUnSelectedColor;
     private int m_nShadowColor;
+    private int m_nSeparatorColor = -1;
 
     private boolean m_bIsFixedWidth;
     private boolean m_bIgnoreSelectionColors;
+    private boolean m_bShowHorizontalSeparators = true;
+    private boolean m_bShowVerticalSeparators = true;
 
     public TableView(@NonNull Context context) {
         super(context);
@@ -116,6 +123,15 @@ public class TableView extends FrameLayout implements ITableView {
             m_nUnSelectedColor = a.getColor(R.styleable.TableView_unselected_color,
                     m_nUnSelectedColor);
             m_nShadowColor = a.getColor(R.styleable.TableView_shadow_color, m_nShadowColor);
+            m_nSeparatorColor = a.getColor(R.styleable.TableView_separator_color, ContextCompat
+                    .getColor(getContext(), R.color.table_view_default_separator_color));
+
+            // Booleans
+            m_bShowVerticalSeparators = a.getBoolean(R.styleable
+                    .TableView_show_vertical_separator, m_bShowVerticalSeparators);
+            m_bShowHorizontalSeparators = a.getBoolean(R.styleable
+                    .TableView_show_horizontal_separator, m_bShowHorizontalSeparators);
+
         } finally {
             a.recycle();
         }
@@ -181,8 +197,11 @@ public class TableView extends FrameLayout implements ITableView {
         layoutParams.leftMargin = m_nRowHeaderWidth;
         recyclerView.setLayoutParams(layoutParams);
 
-        // Add vertical item decoration to display column line
-        recyclerView.addItemDecoration(createItemDecoration(DividerItemDecoration.HORIZONTAL));
+        if (isShowHorizontalSeparators()) {
+            // Add vertical item decoration to display column line
+            recyclerView.addItemDecoration(getHorizontalItemDecoration());
+        }
+
         return recyclerView;
     }
 
@@ -197,8 +216,11 @@ public class TableView extends FrameLayout implements ITableView {
         layoutParams.topMargin = m_nColumnHeaderHeight;
         recyclerView.setLayoutParams(layoutParams);
 
-        // Add vertical item decoration to display row line
-        recyclerView.addItemDecoration(createItemDecoration(DividerItemDecoration.VERTICAL));
+
+        if (isShowVerticalSeparators()) {
+            // Add vertical item decoration to display row line
+            recyclerView.addItemDecoration(getVerticalItemDecoration());
+        }
 
         return recyclerView;
     }
@@ -219,18 +241,11 @@ public class TableView extends FrameLayout implements ITableView {
         layoutParams.topMargin = m_nColumnHeaderHeight;
         recyclerView.setLayoutParams(layoutParams);
 
-        // Add vertical item decoration to display row line on center recycler view
-        recyclerView.addItemDecoration(createItemDecoration(DividerItemDecoration.VERTICAL));
+        if (isShowVerticalSeparators()) {
+            // Add vertical item decoration to display row line on center recycler view
+            recyclerView.addItemDecoration(getVerticalItemDecoration());
+        }
         return recyclerView;
-    }
-
-    private DividerItemDecoration createItemDecoration(int orientation) {
-        Drawable mDivider = ContextCompat.getDrawable(getContext(), R.drawable.cell_line_divider);
-
-        DividerItemDecoration jItemDecoration = new DividerItemDecoration(getContext(),
-                orientation);
-        jItemDecoration.setDrawable(mDivider);
-        return jItemDecoration;
     }
 
 
@@ -272,12 +287,29 @@ public class TableView extends FrameLayout implements ITableView {
     }
 
     @Override
-    public boolean IsIgnoreSelectionColors() {
+    public boolean isIgnoreSelectionColors() {
         return m_bIgnoreSelectionColors;
     }
 
     public void setIgnoreSelectionColors(boolean p_bIsIgnore) {
         this.m_bIgnoreSelectionColors = p_bIsIgnore;
+    }
+
+    @Override
+    public boolean isShowHorizontalSeparators() {
+        return m_bShowHorizontalSeparators;
+    }
+
+    public void setShowHorizontalSeparators(boolean p_bShowSeparators) {
+        this.m_bShowHorizontalSeparators = p_bShowSeparators;
+    }
+
+    public boolean isShowVerticalSeparators() {
+        return m_bShowVerticalSeparators;
+    }
+
+    public void setShowVerticalSeparators(boolean p_bShowSeparators) {
+        this.m_bShowVerticalSeparators = p_bShowSeparators;
     }
 
     @Override
@@ -388,6 +420,36 @@ public class TableView extends FrameLayout implements ITableView {
         return m_iSelectionHandler;
     }
 
+    @Override
+    public DividerItemDecoration getHorizontalItemDecoration() {
+        if (m_jHorizontalItemDecoration == null) {
+            m_jHorizontalItemDecoration = createItemDecoration(DividerItemDecoration.HORIZONTAL);
+        }
+        return m_jHorizontalItemDecoration;
+    }
+
+    private DividerItemDecoration getVerticalItemDecoration() {
+        if (m_jVerticalItemDecoration == null) {
+            m_jVerticalItemDecoration = createItemDecoration(DividerItemDecoration.VERTICAL);
+        }
+        return m_jVerticalItemDecoration;
+    }
+
+    private DividerItemDecoration createItemDecoration(int orientation) {
+        Drawable mDivider = ContextCompat.getDrawable(getContext(), R.drawable.cell_line_divider);
+
+        // That means; There is a custom separator color from user.
+        if (m_nSeparatorColor != -1) {
+            // Change its color
+            mDivider.setColorFilter(m_nSeparatorColor, PorterDuff.Mode.SRC_ATOP);
+        }
+
+        DividerItemDecoration jItemDecoration = new DividerItemDecoration(getContext(),
+                orientation);
+        jItemDecoration.setDrawable(mDivider);
+        return jItemDecoration;
+    }
+
     /**
      * This method helps to change default selected color programmatically.
      *
@@ -427,6 +489,4 @@ public class TableView extends FrameLayout implements ITableView {
     int getShadowColor() {
         return m_nShadowColor;
     }
-
-
 }

@@ -42,7 +42,7 @@ public class CellRecyclerViewItemClickListener extends AbstractItemClickListener
             int nYPosition = adapter.getYPosition();
 
             // Control to ignore selection color
-            if (!m_iTableView.IsIgnoreSelectionColors()) {
+            if (!m_iTableView.isIgnoreSelectionColors()) {
                 m_iSelectionHandler.setSelectedCellPositions(holder, nXPosition, nYPosition);
             }
 

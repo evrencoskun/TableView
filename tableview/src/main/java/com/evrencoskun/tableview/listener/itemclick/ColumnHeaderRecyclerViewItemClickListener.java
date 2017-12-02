@@ -33,7 +33,7 @@ public class ColumnHeaderRecyclerViewItemClickListener extends AbstractItemClick
             int nXPosition = holder.getAdapterPosition();
 
             // Control to ignore selection color
-            if (!m_iTableView.IsIgnoreSelectionColors()) {
+            if (!m_iTableView.isIgnoreSelectionColors()) {
                 m_iSelectionHandler.setSelectedColumnPosition(holder, nXPosition);
             }
 

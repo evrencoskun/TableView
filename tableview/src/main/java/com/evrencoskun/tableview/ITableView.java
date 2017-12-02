@@ -1,5 +1,6 @@
 package com.evrencoskun.tableview;
 
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,9 @@ public interface ITableView {
 
     boolean hasFixedWidth();
 
-    boolean IsIgnoreSelectionColors();
+    boolean isIgnoreSelectionColors();
+
+    boolean isShowHorizontalSeparators();
 
     CellRecyclerView getCellRecyclerView();
 
@@ -44,6 +47,8 @@ public interface ITableView {
     ITableViewListener getTableViewListener();
 
     SelectionHandler getSelectionHandler();
+
+    DividerItemDecoration getHorizontalItemDecoration();
 
     int getShadowColor();
 
