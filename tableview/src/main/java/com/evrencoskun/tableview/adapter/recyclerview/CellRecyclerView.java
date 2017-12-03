@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
 
@@ -110,8 +111,8 @@ public class CellRecyclerView extends RecyclerView {
         return !mIsHorizontalScrollListenerRemoved;
     }
 
-    public void setSelected(AbstractViewHolder.SelectionState p_eSelected, @ColorInt int
-            p_nBackgroundColor, boolean p_bIsIgnoreSelectionColors) {
+    public void setSelected(SelectionState p_eSelected, @ColorInt int p_nBackgroundColor, boolean
+            p_bIsIgnoreSelectionColors) {
         for (int i = 0; i < getAdapter().getItemCount(); i++) {
             AbstractViewHolder viewHolder = (AbstractViewHolder) findViewHolderForAdapterPosition
                     (i);
