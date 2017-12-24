@@ -5,8 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.evrencoskun.tableview.adapter.ITableAdapter;
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractSorterViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
+import com.evrencoskun.tableview.sort.ColumnSortHelper;
+import com.evrencoskun.tableview.sort.SortState;
 
 import java.util.List;
 
@@ -16,7 +19,9 @@ import java.util.List;
 
 public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAdapter<CH> {
     private static final String LOG_TAG = ColumnHeaderRecyclerViewAdapter.class.getSimpleName();
+
     private ITableAdapter m_iTableAdapter;
+    private ColumnSortHelper mColumnSortHelper;
 
     public ColumnHeaderRecyclerViewAdapter(Context context, List<CH> p_jItemList, ITableAdapter
             p_iTableAdapter) {
@@ -60,6 +65,17 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
 
         // Change selection status
         viewHolder.setSelected(selectionState);
+
+        // Control whether the TableView is sortable or not.
+        if (m_iTableAdapter.getTableView().isSortable()) {
+            if (viewHolder instanceof AbstractSorterViewHolder) {
+                // Get its sorting state
+                SortState state = getColumnSortHelper().getSortingStatus(viewHolder
+                        .getAdapterPosition());
+                // Fire onSortingStatusChanged
+                ((AbstractSorterViewHolder) viewHolder).onSortingStatusChanged(state);
+            }
+        }
     }
 
     @Override
@@ -70,4 +86,14 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
         viewHolder.setBackgroundColor(m_iTableAdapter.getTableView().getUnSelectedColor());
         viewHolder.setSelected(SelectionState.UNSELECTED);
     }
+
+    public ColumnSortHelper getColumnSortHelper() {
+        if (mColumnSortHelper == null) {
+            // It helps to store sorting state of column headers
+            this.mColumnSortHelper = new ColumnSortHelper(m_iTableAdapter.getTableView()
+                    .getColumnHeaderLayoutManager());
+        }
+        return mColumnSortHelper;
+    }
+
 }

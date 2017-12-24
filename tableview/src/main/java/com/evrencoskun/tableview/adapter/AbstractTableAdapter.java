@@ -158,6 +158,17 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
         return m_jCellItems.get(p_nYPosition).get(p_nXPosition);
     }
 
+    public void removeRow(int p_nYPosition) {
+        m_iCellRecyclerViewAdapter.deleteItem(p_nYPosition);
+        m_iRowHeaderRecyclerViewAdapter.deleteItem(p_nYPosition);
+    }
+
+    public void addRow(int p_nYPosition, RH p_jRowHeaderItem, List<C> p_jCellItems) {
+        m_iCellRecyclerViewAdapter.addItem(p_nYPosition, p_jCellItems);
+        m_iRowHeaderRecyclerViewAdapter.addItem(p_nYPosition, p_jRowHeaderItem);
+    }
+
+
     public final void notifyDataSetChanged() {
         m_iColumnHeaderRecyclerViewAdapter.notifyDataSetChanged();
         m_iRowHeaderRecyclerViewAdapter.notifyDataSetChanged();

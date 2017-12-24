@@ -19,6 +19,7 @@ import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.handler.ColumnSortHandler;
 import com.evrencoskun.tableview.handler.SelectionHandler;
+import com.evrencoskun.tableview.handler.VisibilityHandler;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
 import com.evrencoskun.tableview.listener.ITableViewListener;
@@ -26,7 +27,7 @@ import com.evrencoskun.tableview.listener.itemclick.ColumnHeaderRecyclerViewItem
 import com.evrencoskun.tableview.listener.itemclick.RowHeaderRecyclerViewItemClickListener;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
-import com.evrencoskun.tableview.sort.SortOrder;
+import com.evrencoskun.tableview.sort.SortState;
 
 /**
  * Created by evrencoskun on 11/06/2017.
@@ -56,6 +57,7 @@ public class TableView extends FrameLayout implements ITableView {
 
     private SelectionHandler m_iSelectionHandler;
     private ColumnSortHandler m_iColumnSortHandler;
+    private VisibilityHandler m_iVisibilityHandler;
 
     private int m_nRowHeaderWidth;
     private int m_nColumnHeaderHeight;
@@ -69,6 +71,8 @@ public class TableView extends FrameLayout implements ITableView {
     private boolean m_bIgnoreSelectionColors;
     private boolean m_bShowHorizontalSeparators = true;
     private boolean m_bShowVerticalSeparators = true;
+    private boolean m_bIsSortable = false;
+    private boolean m_bIsRowHiddingSupported = false;
 
     public TableView(@NonNull Context context) {
         super(context);
@@ -149,8 +153,9 @@ public class TableView extends FrameLayout implements ITableView {
         addView(m_jRowHeaderRecyclerView);
         addView(m_jCellRecyclerView);
 
-        // Create Selection Handler
+        // Create Handlers
         m_iSelectionHandler = new SelectionHandler(this);
+        m_iVisibilityHandler = new VisibilityHandler(this);
 
         initializeListeners();
     }
@@ -300,6 +305,11 @@ public class TableView extends FrameLayout implements ITableView {
         return m_bShowHorizontalSeparators;
     }
 
+    @Override
+    public boolean isSortable() {
+        return m_bIsSortable;
+    }
+
     public void setShowHorizontalSeparators(boolean p_bShowSeparators) {
         this.m_bShowHorizontalSeparators = p_bShowSeparators;
     }
@@ -372,8 +382,43 @@ public class TableView extends FrameLayout implements ITableView {
         this.m_iTableViewListener = p_jTableViewListener;
     }
 
-    public void sortColumn(int p_nColumnPosition, SortOrder p_eSortOrder) {
-        m_iColumnSortHandler.sort(p_nColumnPosition, p_eSortOrder);
+    @Override
+    public void sortColumn(int p_nColumnPosition, SortState p_eSortState) {
+        m_bIsSortable = true;
+        m_iColumnSortHandler.sort(p_nColumnPosition, p_eSortState);
+    }
+
+    @Override
+    public void remeasureColumnWidth(int column) {
+        // Remove calculated width value to be ready for recalculation.
+        getColumnHeaderLayoutManager().removeCachedWidth(column);
+        // Recalculate of the width values of the columns
+        getCellLayoutManager().fitWidthSize(column, false);
+    }
+
+    @Override
+    public SortState getSortingStatus(int column) {
+        return m_iColumnSortHandler.getSortingStatus(column);
+    }
+
+    @Override
+    public void showRow(int row) {
+        m_iVisibilityHandler.showRow(row);
+    }
+
+    @Override
+    public void hideRow(int row) {
+        m_iVisibilityHandler.hideRow(row);
+    }
+
+    @Override
+    public boolean isRowHidingSupported() {
+        return m_bIsRowHiddingSupported;
+    }
+
+    @Override
+    public void showAllHiddenRows() {
+        m_iVisibilityHandler.showAllHiddenRows();
     }
 
     /**

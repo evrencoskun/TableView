@@ -15,6 +15,13 @@ public interface ITableViewListener {
     void onColumnHeaderClicked(@NonNull RecyclerView.ViewHolder p_jColumnHeaderView, int
             p_nXPosition);
 
+    void onColumnHeaderLongPressed(@NonNull RecyclerView.ViewHolder p_jColumnHeaderView, int
+            p_nXPosition);
+
     void onRowHeaderClicked(@NonNull RecyclerView.ViewHolder p_jRowHeaderView, int p_nYPosition);
+
+    void onRowHeaderLongPressed(@NonNull RecyclerView.ViewHolder p_jRowHeaderView, int
+            p_nYPosition);
+
 
 }

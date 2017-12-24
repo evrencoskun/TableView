@@ -63,6 +63,28 @@ public abstract class AbstractRecyclerViewAdapter<T> extends RecyclerView.Adapte
         return m_jItemList.get(position);
     }
 
+    public void deleteItem(int position) {
+        if (position != RecyclerView.NO_POSITION) {
+            m_jItemList.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    public void addItem(int position, T item) {
+        if (position != RecyclerView.NO_POSITION && item != null) {
+            m_jItemList.add(position, item);
+            notifyItemInserted(position);
+        }
+    }
+
+    public void changeItem(int position, T item) {
+        if (position != RecyclerView.NO_POSITION && item != null) {
+            m_jItemList.set(position, item);
+            notifyItemChanged(position);
+        }
+    }
+
+
     @Override
     public int getItemViewType(int position) {
         return 1;

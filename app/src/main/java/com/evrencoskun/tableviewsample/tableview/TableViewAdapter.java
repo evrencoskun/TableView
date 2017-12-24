@@ -75,7 +75,7 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
 
         // Get the holder to update cell item text
         CellViewHolder viewHolder = (CellViewHolder) holder;
-        viewHolder.cell_textview.setText(cell.getData());
+        viewHolder.cell_textview.setText(String.valueOf(cell.getData()));
 
         // If your TableView should have auto resize for cells & columns.
         // Then you should consider the below lines. Otherwise, you can ignore them.
@@ -103,7 +103,7 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
                 .table_view_column_header_layout, parent, false);
 
         // Create a ColumnHeader ViewHolder
-        return new ColumnHeaderViewHolder(layout);
+        return new ColumnHeaderViewHolder(layout, getTableView());
     }
 
     /**
@@ -128,15 +128,7 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
 
         // Get the holder to update cell item text
         ColumnHeaderViewHolder columnHeaderViewHolder = (ColumnHeaderViewHolder) holder;
-        columnHeaderViewHolder.column_header_textview.setText(columnHeader.getData());
-
-        // If your TableView should have auto resize for cells & columns.
-        // Then you should consider the below lines. Otherwise, you can ignore them.
-
-        // It is necessary to remeasure itself.
-        columnHeaderViewHolder.column_header_container.getLayoutParams().width = LinearLayout
-                .LayoutParams.WRAP_CONTENT;
-        columnHeaderViewHolder.column_header_textview.requestLayout();
+        columnHeaderViewHolder.setColumnHeader(columnHeader);
     }
 
     /**
@@ -182,7 +174,7 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
 
         // Get the holder to update row header item text
         RowHeaderViewHolder rowHeaderViewHolder = (RowHeaderViewHolder) holder;
-        rowHeaderViewHolder.row_header_textview.setText(rowHeader.getData());
+        rowHeaderViewHolder.row_header_textview.setText(String.valueOf(rowHeader.getData()));
     }
 
 

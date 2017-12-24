@@ -10,12 +10,14 @@ import java.util.List;
 
 public class ColumnSortCallback extends DiffUtil.Callback {
 
-    private List<List<ITableViewComparator>> m_jOldCellItems;
-    private List<List<ITableViewComparator>> m_jNewCellItems;
+    private static final String LOG_TAG = ColumnSortCallback.class.getSimpleName();
+
+    private List<List<ISortableModel>> m_jOldCellItems;
+    private List<List<ISortableModel>> m_jNewCellItems;
     private int m_nColumnPosition;
 
-    public ColumnSortCallback(List<List<ITableViewComparator>> p_jOldCellItems,
-                              List<List<ITableViewComparator>> p_jNewCellItems, int
+    public ColumnSortCallback(List<List<ISortableModel>> p_jOldCellItems,
+                              List<List<ISortableModel>> p_jNewCellItems, int
                                       p_nColumnPosition) {
         this.m_jOldCellItems = p_jOldCellItems;
         this.m_jNewCellItems = p_jNewCellItems;
@@ -39,8 +41,9 @@ public class ColumnSortCallback extends DiffUtil.Callback {
             if (m_jOldCellItems.get(oldItemPosition).size() > m_nColumnPosition &&
                     m_jNewCellItems.get(newItemPosition).size() > m_nColumnPosition) {
                 // Compare ids
-                return m_jOldCellItems.get(oldItemPosition).get(m_nColumnPosition).getId().equals
-                        (m_jNewCellItems.get(newItemPosition).get(m_nColumnPosition).getId());
+                String oldId = m_jOldCellItems.get(oldItemPosition).get(m_nColumnPosition).getId();
+                String newId = m_jNewCellItems.get(newItemPosition).get(m_nColumnPosition).getId();
+                return oldId.equals(newId);
             }
         }
         return false;
@@ -53,9 +56,9 @@ public class ColumnSortCallback extends DiffUtil.Callback {
             if (m_jOldCellItems.get(oldItemPosition).size() > m_nColumnPosition &&
                     m_jNewCellItems.get(newItemPosition).size() > m_nColumnPosition) {
                 // Compare contents
-                return m_jOldCellItems.get(oldItemPosition).get(m_nColumnPosition).getContent()
-                        .equals(m_jNewCellItems.get(newItemPosition).get(m_nColumnPosition)
-                                .getContent());
+                Object oldContent = m_jOldCellItems.get(oldItemPosition).get(m_nColumnPosition).getContent();
+                Object newContent = m_jNewCellItems.get(newItemPosition).get(m_nColumnPosition).getContent();
+                return oldContent.equals(newContent);
             }
         }
         return false;

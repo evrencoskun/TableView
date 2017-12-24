@@ -12,7 +12,7 @@ import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
 import com.evrencoskun.tableview.listener.ITableViewListener;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
-import com.evrencoskun.tableview.sort.SortOrder;
+import com.evrencoskun.tableview.sort.SortState;
 
 /**
  * Created by evrencoskun on 19/06/2017.
@@ -27,6 +27,10 @@ public interface ITableView {
     boolean isIgnoreSelectionColors();
 
     boolean isShowHorizontalSeparators();
+
+    boolean isSortable();
+
+    boolean isRowHidingSupported();
 
     CellRecyclerView getCellRecyclerView();
 
@@ -50,11 +54,21 @@ public interface ITableView {
 
     DividerItemDecoration getHorizontalItemDecoration();
 
+    SortState getSortingStatus(int column);
+
+    void showRow(int row);
+
+    void hideRow(int row);
+
+    void showAllHiddenRows();
+
     int getShadowColor();
 
     int getSelectedColor();
 
     int getUnSelectedColor();
 
-    void sortColumn(int p_nColumnPosition, SortOrder p_eSortOrder);
+    void sortColumn(int p_nColumnPosition, SortState p_eSortState);
+
+    void remeasureColumnWidth(int column);
 }

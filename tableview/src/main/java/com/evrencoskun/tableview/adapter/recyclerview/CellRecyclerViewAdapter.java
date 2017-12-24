@@ -1,6 +1,7 @@
 package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,8 +136,9 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
             }
         } else if (selectionHandler.isRowSelected(holder.getAdapterPosition())) {
 
-            viewHolder.m_jRecyclerView.setSelected(SelectionState.SELECTED, m_iTableAdapter.getTableView()
-                    .getSelectedColor(), m_iTableAdapter.getTableView().isIgnoreSelectionColors());
+            viewHolder.m_jRecyclerView.setSelected(SelectionState.SELECTED, m_iTableAdapter
+                    .getTableView().getSelectedColor(), m_iTableAdapter.getTableView()
+                    .isIgnoreSelectionColors());
         }
 
     }
@@ -146,9 +148,9 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         super.onViewDetachedFromWindow(holder);
 
         // Clear selection status of the view holder
-        ((CellRowViewHolder) holder).m_jRecyclerView.setSelected(SelectionState.UNSELECTED, m_iTableAdapter
-                .getTableView().getUnSelectedColor(), m_iTableAdapter.getTableView()
-                .isIgnoreSelectionColors());
+        ((CellRowViewHolder) holder).m_jRecyclerView.setSelected(SelectionState.UNSELECTED,
+                m_iTableAdapter.getTableView().getUnSelectedColor(), m_iTableAdapter.getTableView
+                        ().isIgnoreSelectionColors());
     }
 
     @Override
@@ -182,4 +184,19 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
             }
         }
     }
+
+    public List<RecyclerView.Adapter> getCellRowAdapterList() {
+        return m_jAdapterList;
+    }
+
+    public void dispatchUpdatesTo(DiffUtil.DiffResult p_jResults) {
+        for (int i = 0; i < m_jAdapterList.size(); i++) {
+            RecyclerView.Adapter cellRowAdapter = m_jAdapterList.get(i);
+            p_jResults.dispatchUpdatesTo(cellRowAdapter);
+        }
+
+        p_jResults.dispatchUpdatesTo(this);
+
+    }
+
 }

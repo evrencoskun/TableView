@@ -37,9 +37,9 @@ public class ColumnHeaderRecyclerViewItemClickListener extends AbstractItemClick
                 m_iSelectionHandler.setSelectedColumnPosition(holder, nXPosition);
             }
 
-            if (m_jListener != null) {
+            if (getTableViewListener() != null) {
                 // Call ITableView listener for item click
-                m_jListener.onColumnHeaderClicked(holder, nXPosition);
+                getTableViewListener().onColumnHeaderClicked(holder, nXPosition);
             }
 
             return true;
@@ -56,12 +56,12 @@ public class ColumnHeaderRecyclerViewItemClickListener extends AbstractItemClick
         // Get interacted view from x,y coordinate.
         View child = m_jRecyclerView.findChildViewUnder(e.getX(), e.getY());
 
-        if (child != null && m_jListener != null) {
+        if (child != null && getTableViewListener() != null) {
             // Find the view holder
             RecyclerView.ViewHolder holder = m_jRecyclerView.getChildViewHolder(child);
 
             // Call ITableView listener for long click
-            //m_jListener.onColumnHeaderLongPressed(holder, holder.getAdapterPosition());
+            getTableViewListener().onColumnHeaderLongPressed(holder, holder.getAdapterPosition());
         }
     }
 }

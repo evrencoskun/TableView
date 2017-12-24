@@ -95,7 +95,8 @@ public class MainFragment extends Fragment {
 
     private void loadData() {
         List<RowHeader> rowHeaders = getRowHeaderList();
-        List<List<Cell>> cellList = getCellList(); //getRandomCellList(); //
+        List<List<Cell>> cellList = getCellListForSorting(); // getCellList();
+        // getRandomCellList(); //
         List<ColumnHeader> columnHeaders = getColumnHeaderList(); //getRandomColumnHeaderList(); //
 
         m_jRowHeaderList.addAll(rowHeaders);
@@ -170,6 +171,32 @@ public class MainFragment extends Fragment {
 
         return list;
     }
+
+    private List<List<Cell>> getCellListForSorting() {
+        List<List<Cell>> list = new ArrayList<>();
+        for (int i = 0; i < ROW_SIZE; i++) {
+            List<Cell> cellList = new ArrayList<>();
+            for (int j = 0; j < COLUMN_SIZE; j++) {
+                Object strText = "cell " + j + " " + i;
+
+                if (j == 0) {
+                    strText = i;
+                } else if (j == 1) {
+                    int nRandom = new Random().nextInt();
+                    strText = nRandom;
+                }
+
+                String strID = j + "-" + i;
+
+                Cell cell = new Cell(strID, strText);
+                cellList.add(cell);
+            }
+            list.add(cellList);
+        }
+
+        return list;
+    }
+
 
     private List<List<Cell>> getRandomCellList() {
         List<List<Cell>> list = new ArrayList<>();

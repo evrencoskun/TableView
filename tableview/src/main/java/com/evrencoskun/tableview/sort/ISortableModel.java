@@ -1,14 +1,12 @@
 package com.evrencoskun.tableview.sort;
 
-import java.util.Comparator;
-
 /**
  * Created by evrencoskun on 24.11.2017.
  */
 
-public interface ITableViewComparator extends Comparator {
+public interface ISortableModel {
 
     String getId();
 
-    String getContent();
+    Object getContent();
 }

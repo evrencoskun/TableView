@@ -3,10 +3,13 @@ package com.evrencoskun.tableviewsample.tableview;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Toast;
 
 import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.listener.ITableViewListener;
+import com.evrencoskun.tableviewsample.tableview.holder.ColumnHeaderViewHolder;
+import com.evrencoskun.tableviewsample.tableview.popup.ColumnHeaderLongPressPopup;
 
 /**
  * Created by evrencoskun on 21/09/2017.
@@ -16,10 +19,11 @@ public class TableViewListener implements ITableViewListener {
 
     private Toast m_jToast;
     private Context m_jContext;
+    private TableView m_jTableView;
 
     public TableViewListener(TableView p_jTableView) {
         this.m_jContext = p_jTableView.getContext();
-
+        this.m_jTableView = p_jTableView;
     }
 
     /**
@@ -32,7 +36,7 @@ public class TableViewListener implements ITableViewListener {
     @Override
     public void onCellClicked(@NonNull RecyclerView.ViewHolder p_jCellView, int p_nXPosition, int
             p_nYPosition) {
-        // Do want you want.
+        // Do what you want.
         showToast("Cell " + p_nXPosition + " " + p_nYPosition + " has been clicked.");
     }
 
@@ -45,8 +49,21 @@ public class TableViewListener implements ITableViewListener {
     @Override
     public void onColumnHeaderClicked(@NonNull RecyclerView.ViewHolder p_jColumnHeaderView, int
             p_nXPosition) {
-        // Do want you want.
+        // Do what you want.
         showToast("Column header  " + p_nXPosition + " has been clicked.");
+    }
+
+    @Override
+    public void onColumnHeaderLongPressed(@NonNull RecyclerView.ViewHolder p_jColumnHeaderView,
+                                          int p_nXPosition) {
+
+        if (p_jColumnHeaderView != null && p_jColumnHeaderView instanceof ColumnHeaderViewHolder) {
+            // Create Long Press Popup
+            ColumnHeaderLongPressPopup popup = new ColumnHeaderLongPressPopup(
+                    (ColumnHeaderViewHolder) p_jColumnHeaderView, m_jTableView);
+            // Show
+            popup.show();
+        }
     }
 
     /**
@@ -58,9 +75,16 @@ public class TableViewListener implements ITableViewListener {
     @Override
     public void onRowHeaderClicked(@NonNull RecyclerView.ViewHolder p_jRowHeaderView, int
             p_nYPosition) {
-        // Do want you want.
+        // Do what you want.
+
 
         showToast("Row header " + p_nYPosition + " has been clicked.");
+    }
+
+    @Override
+    public void onRowHeaderLongPressed(@NonNull RecyclerView.ViewHolder p_jRowHeaderView, int
+            p_nYPosition) {
+
     }
 
 
@@ -71,5 +95,17 @@ public class TableViewListener implements ITableViewListener {
 
         m_jToast.setText(p_strMessage);
         m_jToast.show();
+    }
+
+
+    private void changeRowVisibility(int p_nYPosition, boolean p_bIsVisible) {
+        View rowHeaderItemView = m_jTableView.getRowHeaderRecyclerView()
+                .findViewHolderForAdapterPosition(p_nYPosition).itemView;
+        rowHeaderItemView.setVisibility(p_bIsVisible ? View.VISIBLE : View.GONE);
+
+        View cellRowView = m_jTableView.getCellRecyclerView().findViewHolderForAdapterPosition
+                (p_nYPosition).itemView;
+
+
     }
 }

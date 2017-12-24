@@ -1,20 +1,21 @@
 package com.evrencoskun.tableviewsample.tableview.model;
 
+import com.evrencoskun.tableview.sort.ISortableModel;
+
 /**
  * Created by evrencoskun on 11/06/2017.
  */
 
-public class Cell {
+public class Cell implements ISortableModel {
 
     private String m_strId;
-    private String m_strData;
+    private Object m_strData;
 
     public Cell(String p_strId) {
         this.m_strId = p_strId;
-        this.m_strData = "";
     }
 
-    public Cell(String p_strId, String p_strData) {
+    public Cell(String p_strId, Object p_strData) {
         this.m_strId = p_strId;
         this.m_strData = p_strData;
     }
@@ -23,7 +24,13 @@ public class Cell {
         return m_strId;
     }
 
-    public String getData() {
+    @Override
+    public Object getContent() {
+        return m_strData;
+    }
+
+
+    public Object getData() {
         return m_strData;
     }
 

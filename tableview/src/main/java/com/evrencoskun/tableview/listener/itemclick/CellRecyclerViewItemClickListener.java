@@ -46,9 +46,9 @@ public class CellRecyclerViewItemClickListener extends AbstractItemClickListener
                 m_iSelectionHandler.setSelectedCellPositions(holder, nXPosition, nYPosition);
             }
 
-            if (m_jListener != null) {
+            if (getTableViewListener() != null) {
                 // Call ITableView listener for item click
-                m_jListener.onCellClicked(holder, nXPosition, nYPosition);
+                getTableViewListener().onCellClicked(holder, nXPosition, nYPosition);
             }
 
             return true;
@@ -57,6 +57,11 @@ public class CellRecyclerViewItemClickListener extends AbstractItemClickListener
     }
 
     protected void longPressAction(MotionEvent e) {
+        // Ignore this action for now;
+        if (true) {
+            return;
+        }
+
         // Consume the action for the time when either the cell row recyclerView or
         // the cell recyclerView is scrolling.
         if ((m_jRecyclerView.getScrollState() != RecyclerView.SCROLL_STATE_IDLE) ||
@@ -68,7 +73,7 @@ public class CellRecyclerViewItemClickListener extends AbstractItemClickListener
         // Get interacted view from x,y coordinate.
         View child = m_jRecyclerView.findChildViewUnder(e.getX(), e.getY());
 
-        if (child != null && m_jListener != null) {
+        if (child != null && getTableViewListener() != null) {
             // Find the view holder
             RecyclerView.ViewHolder holder = m_jRecyclerView.getChildViewHolder(child);
 

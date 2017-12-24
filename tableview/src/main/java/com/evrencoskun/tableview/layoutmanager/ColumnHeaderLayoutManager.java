@@ -6,6 +6,7 @@ import android.util.SparseArray;
 import android.view.View;
 
 import com.evrencoskun.tableview.ITableView;
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.util.TableViewUtils;
 
 /**
@@ -96,5 +97,25 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
 
             nLeft = nRight + 1;
         }
+    }
+
+    public AbstractViewHolder[] getVisibleViewHolders() {
+        int nVisibleChildCount = findLastVisibleItemPosition() - findFirstVisibleItemPosition() + 1;
+        int nIndex = 0;
+
+        AbstractViewHolder[] views = new AbstractViewHolder[nVisibleChildCount];
+        for (int i = findFirstVisibleItemPosition(); i < findLastVisibleItemPosition() + 1; i++) {
+
+            views[nIndex] = (AbstractViewHolder) m_iTableView.getColumnHeaderRecyclerView()
+                    .findViewHolderForAdapterPosition(i);
+
+            nIndex++;
+        }
+        return views;
+    }
+
+    public AbstractViewHolder getViewHolder(int pXPosition) {
+        return (AbstractViewHolder) m_iTableView.getColumnHeaderRecyclerView()
+                .findViewHolderForAdapterPosition(pXPosition);
     }
 }

@@ -14,7 +14,7 @@ import com.evrencoskun.tableview.listener.ITableViewListener;
  */
 
 public abstract class AbstractItemClickListener implements RecyclerView.OnItemTouchListener {
-    protected ITableViewListener m_jListener;
+    private ITableViewListener m_jListener;
     protected GestureDetector m_jGestureDetector;
     protected CellRecyclerView m_jRecyclerView;
     protected SelectionHandler m_iSelectionHandler;
@@ -23,7 +23,6 @@ public abstract class AbstractItemClickListener implements RecyclerView.OnItemTo
     public AbstractItemClickListener(CellRecyclerView p_jRecyclerView, ITableView p_iTableView) {
         this.m_jRecyclerView = p_jRecyclerView;
         this.m_iTableView = p_iTableView;
-        this.m_jListener = p_iTableView.getTableViewListener();
         this.m_iSelectionHandler = p_iTableView.getSelectionHandler();
 
         m_jGestureDetector = new GestureDetector(m_jRecyclerView.getContext(), new
@@ -36,8 +35,7 @@ public abstract class AbstractItemClickListener implements RecyclerView.OnItemTo
             @Override
             public void onLongPress(MotionEvent e) {
                 //TODO: long press implementation should have done.
-                // Ignore for now;
-                //longPressAction(e);
+                longPressAction(e);
             }
         });
     }
@@ -53,6 +51,13 @@ public abstract class AbstractItemClickListener implements RecyclerView.OnItemTo
     @Override
     public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {}
 
+
+    protected ITableViewListener getTableViewListener() {
+        if (m_jListener == null) {
+            m_jListener = m_iTableView.getTableViewListener();
+        }
+        return m_jListener;
+    }
 
     abstract protected boolean clickAction(RecyclerView view, MotionEvent e);
 

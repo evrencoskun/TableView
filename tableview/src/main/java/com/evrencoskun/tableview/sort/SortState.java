@@ -4,7 +4,7 @@ package com.evrencoskun.tableview.sort;
  * Created by evrencoskun on 25.11.2017.
  */
 
-public enum  SortOrder {
+public enum SortState {
 
     /**
      * Enumeration value indicating the items are sorted in increasing order.
