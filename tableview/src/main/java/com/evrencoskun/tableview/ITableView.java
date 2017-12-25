@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
@@ -71,4 +72,6 @@ public interface ITableView {
     void sortColumn(int p_nColumnPosition, SortState p_eSortState);
 
     void remeasureColumnWidth(int column);
+
+    AbstractTableAdapter getAdapter();
 }

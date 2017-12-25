@@ -169,6 +169,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
     }
 
 
+
     public final void notifyDataSetChanged() {
         m_iColumnHeaderRecyclerViewAdapter.notifyDataSetChanged();
         m_iRowHeaderRecyclerViewAdapter.notifyDataSetChanged();

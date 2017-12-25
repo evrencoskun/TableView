@@ -397,6 +397,11 @@ public class TableView extends FrameLayout implements ITableView {
     }
 
     @Override
+    public AbstractTableAdapter getAdapter() {
+        return m_iTableAdapter;
+    }
+
+    @Override
     public SortState getSortingStatus(int column) {
         return m_iColumnSortHandler.getSortingStatus(column);
     }
