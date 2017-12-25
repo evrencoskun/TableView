@@ -57,6 +57,8 @@ public interface ITableView {
 
     SortState getSortingStatus(int column);
 
+    void clearHiddenRowList();
+
     void showRow(int row);
 
     void hideRow(int row);

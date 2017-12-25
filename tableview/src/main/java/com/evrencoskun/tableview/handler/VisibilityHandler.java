@@ -1,13 +1,10 @@
 package com.evrencoskun.tableview.handler;
 
-import android.view.View;
+import android.util.Log;
+import android.util.SparseArray;
 
 import com.evrencoskun.tableview.ITableView;
-import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
-import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
-import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,27 +12,40 @@ import java.util.List;
  */
 
 public class VisibilityHandler {
+    private static final String LOG_TAG = VisibilityHandler.class.getSimpleName();
 
     private ITableView mTableView;
-    private List<Integer> mHideRowList = new ArrayList<>();
-    private CellRecyclerView mRowHeaderRecyclerView, mCellRecyclerView;
-    private AbstractTableAdapter mTableViewAdapter;
+    private SparseArray<Row> mHideRowList = new SparseArray<>();
+
 
     public VisibilityHandler(ITableView pTableView) {
         this.mTableView = pTableView;
-        this.mCellRecyclerView = pTableView.getCellRecyclerView();
-        this.mRowHeaderRecyclerView = pTableView.getRowHeaderRecyclerView();
-        this.mTableViewAdapter = pTableView.getAdapter();
     }
 
     public void hideRow(int pYPosition) {
-        mHideRowList.add(pYPosition);
-        changeRowVisibility(pYPosition, false);
+        // add row the list
+        mHideRowList.put(pYPosition, getRowValueFromPosition(pYPosition));
+
+        // remove row model from adapter
+        mTableView.getAdapter().removeRow(pYPosition);
     }
 
     public void showRow(int pYPosition) {
-        if (mHideRowList.indexOf(pYPosition) > -1) {
-            changeRowVisibility(pYPosition, true);
+        showRow(pYPosition, true);
+    }
+
+    private void showRow(int pYPosition, boolean p_bRemoveFromList) {
+        Row hiddenRow = mHideRowList.get(pYPosition);
+
+        if (hiddenRow != null) {
+            // add row model to the adapter
+            mTableView.getAdapter().addRow(pYPosition, hiddenRow.getRowHeaderModel(), hiddenRow
+                    .getCellModelList());
+        } else {
+            Log.e(LOG_TAG, "This row is already visible.");
+        }
+
+        if (p_bRemoveFromList) {
             mHideRowList.remove(pYPosition);
         }
     }
@@ -44,28 +54,14 @@ public class VisibilityHandler {
         mHideRowList.clear();
     }
 
+
     public void showAllHiddenRows() {
         for (int i = 0; i < mHideRowList.size(); i++) {
-            int nYPosition = mHideRowList.get(i);
-            changeRowVisibility(nYPosition, true);
+            int nYPosition = mHideRowList.keyAt(i);
+            showRow(nYPosition, false);
         }
 
         clearHideRowList();
-    }
-
-    private void changeRowVisibility(int p_nYPosition, boolean p_bIsVisible) {
-        // Row Header
-        AbstractViewHolder rowHeaderViewHolder = (AbstractViewHolder) mRowHeaderRecyclerView
-                .findViewHolderForAdapterPosition(p_nYPosition);
-
-        // Cell View
-        AbstractViewHolder cellViewHolder = (AbstractViewHolder) mCellRecyclerView
-                .findViewHolderForAdapterPosition(p_nYPosition);
-
-        if (rowHeaderViewHolder != null && cellViewHolder != null) {
-            rowHeaderViewHolder.itemView.setVisibility(p_bIsVisible ? View.VISIBLE : View.GONE);
-            cellViewHolder.itemView.setVisibility(p_bIsVisible ? View.VISIBLE : View.GONE);
-        }
     }
 
     class Row {
@@ -92,5 +88,13 @@ public class VisibilityHandler {
         }
 
 
+    }
+
+    private Row getRowValueFromPosition(int row) {
+
+        Object rowHeaderModel = mTableView.getAdapter().getRowHeaderItem(row);
+        List<Object> cellModelList = (List<Object>) mTableView.getAdapter().getCellRowItem(row);
+
+        return new Row(row, rowHeaderModel, cellModelList);
     }
 }
