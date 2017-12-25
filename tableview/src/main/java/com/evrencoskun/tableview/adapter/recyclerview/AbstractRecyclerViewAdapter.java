@@ -70,6 +70,17 @@ public abstract class AbstractRecyclerViewAdapter<T> extends RecyclerView.Adapte
         }
     }
 
+    public void deleteItemRange(int positionStart, int itemCount) {
+        if (m_jItemList.size() > positionStart + itemCount) {
+            for (int i = positionStart; i < positionStart + itemCount + 1; i++) {
+                if (i != RecyclerView.NO_POSITION) {
+                    m_jItemList.remove(i);
+                }
+            }
+            notifyItemRangeRemoved(positionStart, itemCount);
+        }
+    }
+
     public void addItem(int position, T item) {
         if (position != RecyclerView.NO_POSITION && item != null) {
             m_jItemList.add(position, item);
@@ -77,10 +88,32 @@ public abstract class AbstractRecyclerViewAdapter<T> extends RecyclerView.Adapte
         }
     }
 
+    public void addItemRange(int positionStart, int itemCount, List<T> items) {
+        if (m_jItemList.size() > positionStart + itemCount && items != null) {
+            for (int i = positionStart; i < positionStart + itemCount + 1; i++) {
+                if (i != RecyclerView.NO_POSITION) {
+                    m_jItemList.add(i, items.get(i));
+                }
+            }
+            notifyItemRangeInserted(positionStart, itemCount);
+        }
+    }
+
     public void changeItem(int position, T item) {
         if (position != RecyclerView.NO_POSITION && item != null) {
             m_jItemList.set(position, item);
             notifyItemChanged(position);
+        }
+    }
+
+    public void changeItemRange(int positionStart, int itemCount, List<T> items) {
+        if (m_jItemList.size() > positionStart + itemCount && items != null) {
+            for (int i = positionStart; i < positionStart + itemCount + 1; i++) {
+                if (i != RecyclerView.NO_POSITION) {
+                    m_jItemList.set(i, items.get(i));
+                }
+            }
+            notifyItemRangeChanged(positionStart, itemCount);
         }
     }
 
