@@ -183,7 +183,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
         m_iRowHeaderRecyclerViewAdapter.addItemRange(p_nYPositionStart, p_nItemCount,
                 p_jRowHeaderItem);
     }
-    
+
     public void changeRowHeaderItem(int p_nYPosition, RH p_jRowHeaderModel) {
         m_iRowHeaderRecyclerViewAdapter.changeItem(p_nYPosition, p_jRowHeaderModel);
     }
