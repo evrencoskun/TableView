@@ -78,14 +78,6 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
         }
     }
 
-    @Override
-    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
-        AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
-
-        viewHolder.setBackgroundColor(m_iTableAdapter.getTableView().getUnSelectedColor());
-        viewHolder.setSelected(SelectionState.UNSELECTED);
-    }
 
     public ColumnSortHelper getColumnSortHelper() {
         if (mColumnSortHelper == null) {

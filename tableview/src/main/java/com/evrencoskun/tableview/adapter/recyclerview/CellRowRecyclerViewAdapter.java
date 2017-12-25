@@ -80,20 +80,4 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
         // Change selection status
         viewHolder.setSelected(selectionState);
     }
-
-    @Override
-    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
-
-        AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
-
-        // Control to ignore selection color
-        if (!m_iTableAdapter.getTableView().isIgnoreSelectionColors()) {
-            // Clear selection status of the view holder
-            viewHolder.setBackgroundColor(m_iTableAdapter.getTableView().getUnSelectedColor());
-        }
-
-        viewHolder.setSelected(SelectionState.UNSELECTED);
-    }
-
 }
