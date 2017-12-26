@@ -72,7 +72,6 @@ public class TableView extends FrameLayout implements ITableView {
     private boolean m_bShowHorizontalSeparators = true;
     private boolean m_bShowVerticalSeparators = true;
     private boolean m_bIsSortable = false;
-    private boolean m_bIsRowHiddingSupported = false;
 
     public TableView(@NonNull Context context) {
         super(context);
@@ -414,11 +413,6 @@ public class TableView extends FrameLayout implements ITableView {
     @Override
     public void hideRow(int row) {
         m_iVisibilityHandler.hideRow(row);
-    }
-
-    @Override
-    public boolean isRowHidingSupported() {
-        return m_bIsRowHiddingSupported;
     }
 
     @Override

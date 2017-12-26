@@ -31,8 +31,6 @@ public interface ITableView {
 
     boolean isSortable();
 
-    boolean isRowHidingSupported();
-
     CellRecyclerView getCellRecyclerView();
 
     CellRecyclerView getColumnHeaderRecyclerView();
