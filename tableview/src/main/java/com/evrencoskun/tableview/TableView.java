@@ -425,6 +425,11 @@ public class TableView extends FrameLayout implements ITableView {
         m_iVisibilityHandler.clearHideRowList();
     }
 
+    @Override
+    public boolean isRowVisible(int row) {
+        return m_iVisibilityHandler.isRowVisible(row);
+    }
+
     /**
      * Returns the index of the selected row, -1 if no row is selected.
      */

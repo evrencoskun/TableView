@@ -31,6 +31,8 @@ public interface ITableView {
 
     boolean isSortable();
 
+    boolean isRowVisible(int row);
+
     CellRecyclerView getCellRecyclerView();
 
     CellRecyclerView getColumnHeaderRecyclerView();

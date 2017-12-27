@@ -90,6 +90,10 @@ public class VisibilityHandler {
 
     }
 
+    public boolean isRowVisible(int row) {
+        return mHideRowList.get(row) == null;
+    }
+
     private Row getRowValueFromPosition(int row) {
 
         Object rowHeaderModel = mTableView.getAdapter().getRowHeaderItem(row);
