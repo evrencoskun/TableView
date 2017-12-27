@@ -3,7 +3,6 @@ package com.evrencoskun.tableviewsample.tableview;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.Toast;
 
 import com.evrencoskun.tableview.TableView;
@@ -95,17 +94,5 @@ public class TableViewListener implements ITableViewListener {
 
         m_jToast.setText(p_strMessage);
         m_jToast.show();
-    }
-
-
-    private void changeRowVisibility(int p_nYPosition, boolean p_bIsVisible) {
-        View rowHeaderItemView = m_jTableView.getRowHeaderRecyclerView()
-                .findViewHolderForAdapterPosition(p_nYPosition).itemView;
-        rowHeaderItemView.setVisibility(p_bIsVisible ? View.VISIBLE : View.GONE);
-
-        View cellRowView = m_jTableView.getCellRecyclerView().findViewHolderForAdapterPosition
-                (p_nYPosition).itemView;
-
-
     }
 }

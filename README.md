@@ -5,7 +5,7 @@
         <p>TableView is a powerful Android library for displaying complex data structures and rendering tabular data composed of rows, columns and cells. 
            TableView relies on a separate model object to hold and represent the data it displays. This repository also contains a sample app that is
            designed to show you how to create your own TableView in your application.</p>
-        <a href="https://www.youtube.com/watch?v=Bui84mc5Xco">
+        <a href="https://youtu.be/1DWFIqrqrPk">
             <b>Demo Full video »</b>
         </a>
     </p>
@@ -13,8 +13,8 @@
 
 
 <p align="center">
-    <a href="https://www.youtube.com/watch?v=Bui84mc5Xco">
-      <img src="https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/TableView-landscape.gif">
+    <a href="https://youtu.be/1DWFIqrqrPk">
+      <img src="https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/TableView-0_8_5_1.gif">
     </a>
 </p>
 
@@ -24,7 +24,7 @@ To use this library in your android project, just simply add the following depen
 
 ``` 
 dependencies {
- compile 'com.evrencoskun.library:tableview:0.8.3' 
+ compile 'com.evrencoskun.library:tableview:0.8.5.1' 
 }
 ```
 
@@ -32,7 +32,8 @@ dependencies {
   - [x] Each column width value can be calculated automatically considering the largest one
   - [x] Setting your own model class to displayed in a table view easily.
   - [x] TableView has an click listener to listen user touch interaction for each cell.
-  - [x] TableView columns can be sorted ascendingly or descendingly. (WORK-IN-PROGRESS)
+  - [x] TableView columns can be sorted ascendingly or descendingly. (NEW)
+  - [x] Hiding & Showing the row is pretty easy.
   
 
 ##  Implement your item on TableView 
@@ -414,6 +415,12 @@ To ignore setting selection colors that are displayed by user interaction, the b
 ```java
 tableView.setIgnoreSelectionColors(false);
 ``` 
+
+## Sample Apps
+
+- <a href="https://github.com/evrencoskun/TableViewSample2"> TableViewSample 2 </a>
+- ..
+
 
 ## Article
 
