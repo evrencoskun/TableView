@@ -28,22 +28,22 @@
   
   
 ## What's new 
-0.8.5.1 version has been release. You can check new implementations of TableView on <a href="https://github.com/evrencoskun/TableView/releases/tag/v0.8.5.1">release page.</a> 
+You can check new implementations of TableView on <a href="https://github.com/evrencoskun/TableView/releases/tag/v0.8.5.1">release page.</a> 
 
   
 ## Table of Contents
   - [Installation](#Installation)
   - [Implement your item on TableView](#Implement your item on TableView)
-    - [1. Create your TableView](#Create your TableView)
+    - [1. Create your TableView](#1. Create your TableView)
        - [XML](#XML)
        - [Programmatically](#Programmatically)
-    - [2. Create your TableViewAdapter](#Create your TableViewAdapter)
-    - [3. Set the Adapter to the TableView](#Set the Adapter to the TableView)
-    - [4. Set Click listener to the TableView](#Set Click listener to the TableView)   
+    - [2. Create your TableViewAdapter](#2. Create your TableViewAdapter)
+    - [3. Set the Adapter to the TableView](#3. Set the Adapter to the TableView)
+    - [4. Set Click listener to the TableView](#4. Set Click listener to the TableView)   
   - [Sorting](#Sorting)
-    - [1. ISortableModel to your Cell Model](#ISortableModel to your Cell Model)
-    - [2. AbstractSorterViewHolder to your Column Header ViewHolder](#AbstractSorterViewHolder to your Column Header ViewHolder)
-    - [3. Helper methods for sorting process](#Helper methods for sorting process)
+    - [1. ISortableModel to your Cell Model](#1. ISortableModel to your Cell Model)
+    - [2. AbstractSorterViewHolder to your Column Header ViewHolder](#2. AbstractSorterViewHolder to your Column Header ViewHolder)
+    - [3. Helper methods for sorting process](#3. Helper methods for sorting process)
   - [Advanced](#Advanced)
   - [Sample Apps](#Sample Apps)
   - [Articles](#Articles)
