@@ -33,13 +33,13 @@ You can check new implementations of TableView on <a href="https://github.com/ev
   
 ## Table of Contents
   - [Installation](#Installation)
-  - [Implement your item on TableView](##Implement your item on TableView)
-    - [1. Create your TableView](#Create your TableView)
+  - [Implement your item on TableView](##  Implement your item on TableView)
+    - [1. Create your TableView](###  1. Create your TableView)
        - [XML](#XML)
        - [Programmatically](#Programmatically)
-    - [2. Create your TableViewAdapter](#Create your TableViewAdapter)
-    - [3. Set the Adapter to the TableView](#Set the Adapter to the TableView)
-    - [4. Set Click listener to the TableView](#Set Click listener to the TableView)   
+    - [2. Create your TableViewAdapter](###  2. Create your TableViewAdapter)
+    - [3. Set the Adapter to the TableView](###  Set the Adapter to the TableView)
+    - [4. Set Click listener to the TableView](###  Set Click listener to the TableView)   
   - [Sorting](#Sorting)
     - [1. ISortableModel to your Cell Model](#ISortableModel to your Cell Model)
     - [2. AbstractSorterViewHolder to your Column Header ViewHolder](#AbstractSorterViewHolder to your Column Header ViewHolder)
