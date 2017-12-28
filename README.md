@@ -18,6 +18,39 @@
     </a>
 </p>
 
+
+## Features
+  - [x] Each column width value can be calculated automatically considering the largest one
+  - [x] Setting your own model class to displayed in a table view easily.
+  - [x] TableView has an click listener to listen user touch interaction for each cell.
+  - [x] TableView columns can be sorted ascendingly or descendingly. (*NEW*)
+  - [x] Hiding & Showing the row is pretty easy. (*NEW*)
+  
+  
+## What's new 
+0.8.5.1 version has been release. You can check new implementations of TableView on <a href="https://github.com/evrencoskun/TableView/releases/tag/v0.8.5.1">release page.</a> 
+
+  
+## Table of Contents
+  - [Installation](#Installation)
+  - [Implement your item on TableView](#Implement your item on TableView)
+    - [1. Create your TableView](#Create your TableView)
+       - [XML](#XML)
+       - [Programmatically](#Programmatically)
+    - [2. Create your TableViewAdapter](#Create your TableViewAdapter)
+    - [3. Set the Adapter to the TableView](#Set the Adapter to the TableView)
+    - [4. Set Click listener to the TableView](#Set Click listener to the TableView)   
+  - [Sorting](#Sorting)
+    - [1. ISortableModel to your Cell Model](#ISortableModel to your Cell Model)
+    - [2. AbstractSorterViewHolder to your Column Header ViewHolder](#AbstractSorterViewHolder to your Column Header ViewHolder)
+    - [3. Helper methods for sorting process](#Helper methods for sorting process)
+  - [Advanced](#Advanced)
+  - [Sample Apps](#Sample Apps)
+  - [Articles](#Articles)
+  - [Communication](#Communication)
+  - [License](#License)
+
+
 ## Installation
 
 To use this library in your android project, just simply add the following dependency into your build.gradle
@@ -27,14 +60,6 @@ dependencies {
  compile 'com.evrencoskun.library:tableview:0.8.5.1' 
 }
 ```
-
-## Features
-  - [x] Each column width value can be calculated automatically considering the largest one
-  - [x] Setting your own model class to displayed in a table view easily.
-  - [x] TableView has an click listener to listen user touch interaction for each cell.
-  - [x] TableView columns can be sorted ascendingly or descendingly. (NEW)
-  - [x] Hiding & Showing the row is pretty easy.
-  
 
 ##  Implement your item on TableView 
 
@@ -455,7 +480,11 @@ AbstractSorterViewHolder helps to listen to change of sorting actions. So you ca
 ```
 
 
-to be continued
+###  3. Helper methods for sorting process
+
+Several helper methods have been inserted on TableView. These are;
+- ```javasortColumn(int p_nColumnPosition, SortState p_eSortState)``` : To sort
+- ```javaSortState getSortingStatus(int column)``` : To get current state of the column
 
 ## Advanced
 
@@ -471,10 +500,21 @@ To ignore setting selection colors that are displayed by user interaction, the b
 tableView.setIgnoreSelectionColors(false);
 ``` 
 
+To show or hide separators of the TableView, you can simply use these helper methods.
+
+```java
+setShowHorizontalSeparators(boolean p_bShowSeparators)
+```
+
+```java
+setShowVerticalSeparators(boolean p_bShowSeparators)
+```
+
 ## Sample Apps
 
+- This repository has an Sample Application of TableView.
 - <a href="https://github.com/evrencoskun/TableViewSample2"> TableViewSample 2 </a>
-- ..
+- (contact me to mention your app on this page)
 
 
 ## Article
