@@ -402,6 +402,61 @@ Setting the listener to the TableView
 tableView.setTableViewListener(new MyTableViewListener());
 ``` 
 
+##  Sorting
+
+TableView has a sorting functionality with 0.8.5.1 version. TableView does not store or copy the data in its TableModel;
+instead it maintains a map from the row indexes of the view to the row indexes of the model. 
+
+###  1. ISortableModel to your Cell Model 
+
+To be able use this feature on your TableView. You have to implement ISortableModel to your Cell Model. This interface
+wants two method from your cell model. These are ;areItemsTheSame
+
+- ```java String getId()``` : To compare sorted items ordered by normal items in terms of  "are Items The Same"
+- ```java Object getContent()``` : To compare sorted items ordered by normal items in terms of  "are Contents The Same"
+
+As you seen getContent value returns Object. TableView controls the type of the object. And It sorts by considering to the type of class.
+So you can sort any type of value. Such as; 
+
+- Number
+- String
+- Date
+- Boolean
+- Comparable
+
+###  2. AbstractSorterViewHolder to your Column Header ViewHolder
+ 
+AbstractSorterViewHolder helps to listen to change of sorting actions. So you can do whatever you want on any sorting state.
+
+- ```java onSortingStatusChanged(SortState pSortState)``` : It will be called each sorting process. *Note*: It will also calls every recycling process as well.
+- ```java SortState getSortState()``` : It gives current Sorting state.
+
+```java
+    /**
+     * Enumeration value indicating the items are sorted in increasing order.
+     * For example, the set <code>1, 4, 0</code> sorted in
+     * <code>ASCENDING</code> order is <code>0, 1, 4</code>.
+     */
+     ASCENDING,
+
+    /**
+     * Enumeration value indicating the items are sorted in decreasing order.
+     * For example, the set <code>1, 4, 0</code> sorted in
+     * <code>DESCENDING</code> order is <code>4, 1, 0</code>.
+     */
+    DESCENDING,
+
+    /**
+     * Enumeration value indicating the items are unordered.
+     * For example, the set <code>1, 4, 0</code> in
+     * <code>UNSORTED</code> order is <code>1, 4, 0</code>.
+     */
+    UNSORTED
+```
+
+
+to be continued
+
 ## Advanced
 
 To ignore column width calculation for better performance, the below line can be used.
