@@ -33,7 +33,7 @@ You can check new implementations of TableView on <a href="https://github.com/ev
   
 ## Table of Contents
   - [Installation](#Installation)
-  - [Implement your item on TableView](#Implement your item on TableView)
+  - [Implement your item on TableView](##Implement your item on TableView)
     - [1. Create your TableView](#Create your TableView)
        - [XML](#XML)
        - [Programmatically](#Programmatically)
@@ -44,7 +44,7 @@ You can check new implementations of TableView on <a href="https://github.com/ev
     - [1. ISortableModel to your Cell Model](#ISortableModel to your Cell Model)
     - [2. AbstractSorterViewHolder to your Column Header ViewHolder](#AbstractSorterViewHolder to your Column Header ViewHolder)
     - [3. Helper methods for sorting process](#Helper methods for sorting process)
-  - [Advanced](#Advanced)
+  - [Advanced Usage](#Advanced Usage)
   - [Sample Apps](#Sample Apps)
   - [Articles](#Articles)
   - [Communication](#Communication)
@@ -486,7 +486,7 @@ Several helper methods have been inserted on TableView. These are;
 - ```javasortColumn(int p_nColumnPosition, SortState p_eSortState)``` : To sort
 - ```javaSortState getSortingStatus(int column)``` : To get current state of the column
 
-## Advanced
+## Advanced Usage
 
 To ignore column width calculation for better performance, the below line can be used.
   
