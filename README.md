@@ -44,7 +44,7 @@ You can check new implementations of TableView on <a href="https://github.com/ev
     1. [ISortableModel to your Cell Model](#ISortableModel to your Cell Model)
     2. [AbstractSorterViewHolder to your Column Header ViewHolder](#AbstractSorterViewHolder to your Column Header ViewHolder)
     3. [Helper methods for sorting process](#Helper methods for sorting process)
-  - [Advanced Usage](#Advanced Usage)
+  - [Advanced Usage](##Advanced Usage)
   - [Sample Apps](#Sample Apps)
   - [Articles](#Articles)
   - [Communication](#Communication)
