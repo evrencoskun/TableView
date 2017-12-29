@@ -33,18 +33,18 @@ You can check new implementations of TableView on <a href="https://github.com/ev
   
 ## Table of Contents
   - [Installation](#Installation)
-  - [Implement your item on TableView](#Implement your item on TableView)
-    1. [Create your TableView](#Create your TableView)
+  - [Implement your item on TableView](#implement-your-item-on-tableview)
+    - [1. Create your TableView](#1-Create your TableView)
        - [XML](#XML)
        - [Programmatically](#Programmatically)
-    2. [Create your TableViewAdapter](#Create your TableViewAdapter)
-    3. [Set the Adapter to the TableView](#Set the Adapter to the TableView)
-    4. [Set Click listener to the TableView](#Set Click listener to the TableView)   
-  - [Sorting](#Sorting)
-    1. [ISortableModel to your Cell Model](#ISortableModel to your Cell Model)
-    2. [AbstractSorterViewHolder to your Column Header ViewHolder](#AbstractSorterViewHolder to your Column Header ViewHolder)
-    3. [Helper methods for sorting process](#Helper methods for sorting process)
-  - [Advanced Usage](##Advanced Usage)
+    - [2. Create your TableViewAdapter](#2-Create your TableViewAdapter)
+    - [3. Set the Adapter to the TableView](#3-Set the Adapter to the TableView)
+    - [4. Set Click listener to the TableView](#4-Set Click listener to the TableView)   
+  - [Sorting](#sorting)
+    - [1. ISortableModel to your Cell Model](#1-ISortableModel to your Cell Model)
+    - [2. AbstractSorterViewHolder to your Column Header ViewHolder](#2-AbstractSorterViewHolder to your Column Header ViewHolder)
+    - [3. Helper methods for sorting process](#3-Helper methods for sorting process)
+  - [Advanced Usage](#Advanced Usage)
   - [Sample Apps](#Sample Apps)
   - [Articles](#Articles)
   - [Communication](#Communication)
@@ -63,7 +63,7 @@ dependencies {
 
 ## Implement your item on TableView 
 
-###1. Create your TableView
+### 1-Create your TableView
 #### XML 
 
 ``` 
@@ -104,7 +104,7 @@ TableView tableView = new TableView(getContext());
 
 
 
-### 2. Create your TableViewAdapter
+### 2-Create your TableViewAdapter
  Firstly, you must create your custom TableView Adapter  which extends from ```AbstractTableAdapter``` class. 
  ```AbstractTableAdapter``` class wants 3 different lists which represent respectively; ColumnHeader, RowHeader and Cell views model.
 
@@ -350,7 +350,7 @@ TableView tableView = new TableView(getContext());
  }
 ```
  
-### 3. Set the Adapter to the TableView
+### 3-Set the Adapter to the TableView
  
  > ```AbstractTableAdapter``` class wants 3 different lists which represent respectively; ColumnHeader, RowHeader and Cell views model.
 
@@ -376,7 +376,7 @@ Setting datas using our TableView adapter like this;
    
  ```
  
- ### 4. Set Click listener to the TableView
+ ### 4-Set Click listener to the TableView
  
  ```java
  public class MyTableViewListener implements ITableViewListener {
@@ -432,7 +432,7 @@ tableView.setTableViewListener(new MyTableViewListener());
 TableView has a sorting functionality with 0.8.5.1 version. TableView does not store or copy the data in its TableModel;
 instead it maintains a map from the row indexes of the view to the row indexes of the model. 
 
-### 1. ISortableModel to your Cell Model 
+### 1-ISortableModel to your Cell Model 
 
 To be able use this feature on your TableView. You have to implement ISortableModel to your Cell Model. This interface
 wants two method from your cell model. These are ;areItemsTheSame
@@ -449,7 +449,7 @@ So you can sort any type of value. Such as;
 - Boolean
 - Comparable
 
-### 2. AbstractSorterViewHolder to your Column Header ViewHolder
+### 2-AbstractSorterViewHolder to your Column Header ViewHolder
  
 AbstractSorterViewHolder helps to listen to change of sorting actions. So you can do whatever you want on any sorting state.
 
@@ -480,7 +480,7 @@ AbstractSorterViewHolder helps to listen to change of sorting actions. So you ca
 ```
 
 
-### 3. Helper methods for sorting process
+### 3-Helper methods for sorting process
 
 Several helper methods have been inserted on TableView. These are;
 - ```javasortColumn(int p_nColumnPosition, SortState p_eSortState)``` : To sort
