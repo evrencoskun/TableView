@@ -63,7 +63,7 @@ dependencies {
 
 ## Implement your item on TableView 
 
-### 1. Create your TableView
+###1. Create your TableView
 #### XML 
 
 ``` 
