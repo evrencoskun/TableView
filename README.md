@@ -44,8 +44,8 @@ You can check new implementations of TableView on <a href="https://github.com/ev
     - [1. ISortableModel to your Cell Model](#1-isortablemodel-to-your-cell-model)
     - [2. AbstractSorterViewHolder to your Column Header ViewHolder](#2-abstractsorterviewholder-to-your-column-header-viewholder)
     - [3. Helper methods for sorting process](#3-helper-methods-for-sorting-process)
-  - [Change your TableView model](#change-your-tableView-model)
-  - [Hiding & Showing the Row](#hiding-&-showing-the-row)
+  - [Change your TableView model](#change-your-tableview-model)
+  - [Hiding & Showing the Row](#hiding--showing-the-row)
   - [Advanced Usage](#advanced-usage)
   - [Sample Apps](#sample-apps)
   - [Articles](#Articles)
@@ -517,6 +517,12 @@ With 0.8.5.1 version, hiding and showing any of row is pretty easy for TableView
 
 
 ## Advanced Usage
+
+To recalculate the desired column. Sample app shows also its usage as well.
+
+```java
+remeasureColumnWidth(int column);
+``` 
 
 To ignore column width calculation for better performance, the below line can be used.
   
