@@ -14,7 +14,7 @@
 
 <p align="center">
     <a href="https://youtu.be/1DWFIqrqrPk">
-      <img src="https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/TableView-0_8_5_1.gif">
+      <img src="https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/TableView-0_8_5_1_2.gif">
     </a>
 </p>
 
