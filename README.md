@@ -407,6 +407,19 @@ Setting datas using our TableView adapter like this;
              p_nXPosition) {
          // Do want you want.
      }
+     
+     /**
+      * Called when user click any column header item.
+      *                   
+      * @param p_jColumnHeaderView : Long pressed Column Header ViewHolder.
+      * @param p_nXPosition        : X (Column) position of Clicked Column Header item.
+      * @version 0.8.5.1
+      */
+     @Override
+     public void onColumnHeaderLongPressed(@NonNull RecyclerView.ViewHolder p_jColumnHeaderView, int
+              p_nXPosition) {
+          // Do want you want.
+     }
  
      /**
       * Called when user click any Row Header item.
@@ -419,6 +432,21 @@ Setting datas using our TableView adapter like this;
              p_nYPosition) {
          // Do want you want.
  
+     }
+     
+     
+     /**
+      * Called when user click any Row Header item.
+      *
+      * @param p_jRowHeaderView : Long pressed Row Header ViewHolder.
+      * @param p_nYPosition     : Y (Row) position of Clicked Row Header item.
+      * @version 0.8.5.1
+      */
+     @Override
+     public void onRowHeaderLongPressed(@NonNull RecyclerView.ViewHolder p_jRowHeaderView, int
+              p_nYPosition) {
+          // Do want you want.
+  
      }
 }
 ```
