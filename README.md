@@ -28,15 +28,15 @@
   
   
 ## What's new 
-You can check new implementations of TableView on <a href="https://github.com/evrencoskun/TableView/releases/tag/v0.8.5.1">release page.</a> 
+You can check new implementations of TableView on <a href="https://github.com/evrencoskun/TableView/releases">release page.</a> 
 
   
 ## Table of Contents
-  - [Installation](#Installation)
+  - [Installation](#installation)
   - [Implement your item on TableView](#implement-your-item-on-tableview)
     - [1. Create your TableView](#1-create-your-tableview)
-       - [XML](#XML)
-       - [Programmatically](#Programmatically)
+       - [XML](#xml)
+       - [Programmatically](#programmatically)
     - [2. Create your TableViewAdapter](#2-create-your-tableviewadapter)
     - [3. Set the Adapter to the TableView](#3-set-the-adapter-to-the-tableview)
     - [4. Set Click listener to the TableView](#4-set-click-listener-to-the-tableview)   
@@ -44,11 +44,13 @@ You can check new implementations of TableView on <a href="https://github.com/ev
     - [1. ISortableModel to your Cell Model](#1-isortablemodel-to-your-cell-model)
     - [2. AbstractSorterViewHolder to your Column Header ViewHolder](#2-abstractsorterviewholder-to-your-column-header-viewholder)
     - [3. Helper methods for sorting process](#3-helper-methods-for-sorting-process)
+  - [Change your TableView model](#change-your-tableView-model)
+  - [Hiding & Showing the Row](#hiding-&-showing-the-row)
   - [Advanced Usage](#advanced-usage)
   - [Sample Apps](#sample-apps)
   - [Articles](#Articles)
-  - [Communication](#Communication)
-  - [License](#License)
+  - [Communication](#communication)
+  - [License](#license)
 
 
 ## Installation
@@ -483,8 +485,36 @@ AbstractSorterViewHolder helps to listen to change of sorting actions. So you ca
 ### 3. Helper methods for sorting process
 
 Several helper methods have been inserted on TableView. These are;
-- ```javasortColumn(int p_nColumnPosition, SortState p_eSortState)``` : To sort
-- ```javaSortState getSortingStatus(int column)``` : To get current state of the column
+- ```java sortColumn(int p_nColumnPosition, SortState p_eSortState)``` : To sort
+- ```java SortState getSortingStatus(int column)``` : To get current state of the column
+
+## Change your TableView model 
+
+TableView has some helper functions to change desired cell item model easily with 0.8.5.1 version. These are;
+
+- ```java addRow(int p_nYPosition, YourRowHeaderModel p_jRowHeaderItem, List<YourCellItemModel> p_jCellItems)```
+- ```java addRowRange(int p_nYPositionStart, int p_nItemCount, List<YourRowHeaderModel> p_jRowHeaderItem, List<List<YourCellItemModel>> p_jCellItems))```
+- ```java removeRow(int p_nYPosition)``` 
+- ```java removeRowRange(int p_nYPositionStart, int p_nItemCount)``` 
+- ```java changeRowHeaderItem(int p_nYPosition, YourRowHeaderModel p_jRowHeaderModel)``` 
+- ```java changeRowHeaderItemRange(int p_nYPositionStart, int p_nItemCount, List<YourRowHeaderModel>p_jRowHeaderModelList)``` 
+- ```java changeCellItem(int p_nXPosition, int p_nYPosition, YourCellItemModel p_jCellModel)``` 
+- ```java changeColumnHeader(int p_nXPosition, YourColumnHeaderModel p_jColumnHeaderModel)``` 
+- ```java changeColumnHeaderRange(int p_nXPositionStart, int p_nItemCount, List<YourColumnHeaderModel>p_jColumnHeaderModelList)``` 
+
+*Note:* <a href="https://github.com/evrencoskun/TableViewSample2"> TableViewSample 2 </a> app shows also usage of these helper methods.
+
+
+## Hiding & Showing the Row
+
+With 0.8.5.1 version, hiding and showing any of row is pretty easy for TableView.  For that several helper methods have been insereted on TableView. 
+
+- ```java showRow(int row)``` : To show the row
+- ```java hideRow(int row)``` : To Hide the row
+- ```java showAllHiddenRows()``` : To show all hidden rows
+- ```java clearHiddenRowList()``` : TableView store a map that contains all hidden rows. This method for the time that is necessary to clear the list. 
+- ```java isRowVisible(int row)``` : To check state of row
+
 
 ## Advanced Usage
 
