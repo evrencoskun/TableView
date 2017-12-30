@@ -11,8 +11,6 @@
     </p>
 </div>
 
-[![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-TableView-green.svg?style=flat )]( https://android-arsenal.com/details/1/6606 )
-
 <p align="center">
     <a href="https://youtu.be/1DWFIqrqrPk">
       <img src="https://raw.githubusercontent.com/evrencoskun/TableViewSample/master/TableView-0_8_5_1_2.gif">
