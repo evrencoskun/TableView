@@ -11,6 +11,7 @@
     </p>
 </div>
 
+[![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-TableView-green.svg?style=flat )]( https://android-arsenal.com/details/1/6606 )
 
 <p align="center">
     <a href="https://youtu.be/1DWFIqrqrPk">
@@ -115,8 +116,8 @@ TableView tableView = new TableView(getContext());
  ```java
  public class MyTableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHeader, Cell> {
   
-     public MyTableViewAdapter(Context p_jContext) {
-         super(p_jContext);
+     public MyTableViewAdapter(Context pContext) {
+         super(pContext);
  
      }
  
@@ -162,17 +163,17 @@ TableView tableView = new TableView(getContext());
       * @param holder       : This is one of your cell ViewHolders that was created on
       *                     ```onCreateCellViewHolder``` method. In this example we have created
       *                     "MyCellViewHolder" holder.
-      * @param p_jValue     : This is the cell view model located on this X and Y position. In this
+      * @param pValue     : This is the cell view model located on this X and Y position. In this
       *                     example, the model class is "Cell".
-      * @param p_nXPosition : This is the X (Column) position of the cell item.
-      * @param p_nYPosition : This is the Y (Row) position of the cell item.
+      * @param pXPosition : This is the X (Column) position of the cell item.
+      * @param pYPosition : This is the Y (Row) position of the cell item.
       *
       * @see #onCreateCellViewHolder(ViewGroup, int);
       */
      @Override
-     public void onBindCellViewHolder(AbstractViewHolder holder, Object p_jValue, int 
-             p_nXPosition, int p_nYPosition) {
-         Cell cell = (Cell) p_jValue;
+     public void onBindCellViewHolder(AbstractViewHolder holder, Object pValue, int 
+             pXPosition, int pYPosition) {
+         Cell cell = (Cell) pValue;
  
          // Get the holder to update cell item text
          MyCellViewHolder viewHolder = (MyCellViewHolder) holder;
@@ -231,16 +232,16 @@ TableView tableView = new TableView(getContext());
       * @param holder   : This is one of your column header ViewHolders that was created on
       *                 ```onCreateColumnHeaderViewHolder``` method. In this example we have created
       *                 "MyColumnHeaderViewHolder" holder.
-      * @param p_jValue : This is the column header view model located on this X position. In this
+      * @param pValue : This is the column header view model located on this X position. In this
       *                 example, the model class is "ColumnHeader".
       * @param position : This is the X (Column) position of the column header item.
       *
       * @see #onCreateColumnHeaderViewHolder(ViewGroup, int) ;
       */
      @Override
-     public void onBindColumnHeaderViewHolder(AbstractViewHolder holder, Object p_jValue, int 
+     public void onBindColumnHeaderViewHolder(AbstractViewHolder holder, Object pValue, int 
              position) {
-         ColumnHeader columnHeader = (ColumnHeader) p_jValue;
+         ColumnHeader columnHeader = (ColumnHeader) pValue;
  
          // Get the holder to update cell item text
          MyColumnHeaderViewHolder columnHeaderViewHolder = (MyColumnHeaderViewHolder) holder;
@@ -300,16 +301,16 @@ TableView tableView = new TableView(getContext());
       * @param holder   : This is one of your row header ViewHolders that was created on
       *                 ```onCreateRowHeaderViewHolder``` method. In this example we have created
       *                 "MyRowHeaderViewHolder" holder.
-      * @param p_jValue : This is the row header view model located on this Y position. In this
+      * @param pValue : This is the row header view model located on this Y position. In this
       *                 example, the model class is "RowHeader".
       * @param position : This is the Y (row) position of the row header item.
       *
       * @see #onCreateRowHeaderViewHolder(ViewGroup, int) ;
       */
      @Override
-     public void onBindRowHeaderViewHolder(AbstractViewHolder holder, Object p_jValue, int 
+     public void onBindRowHeaderViewHolder(AbstractViewHolder holder, Object pValue, int 
              position) {
-         RowHeader rowHeader = (RowHeader) p_jValue;
+         RowHeader rowHeader = (RowHeader) pValue;
  
          // Get the holder to update row header item text
          MyRowHeaderViewHolder rowHeaderViewHolder = (MyRowHeaderViewHolder) holder;
@@ -324,7 +325,7 @@ TableView tableView = new TableView(getContext());
      }
  
      @Override
-     public int getColumnHeaderItemViewType(int position) {
+     public int getColumnHeaderItemViewType(int pXPosition) {
          // The unique ID for this type of column header item
          // If you have different items for Cell View by X (Column) position, 
          // then you should fill this method to be able create different 
@@ -386,50 +387,50 @@ Setting datas using our TableView adapter like this;
      /**
       * Called when user click any cell item.
       *
-      * @param p_jCellView  : Clicked Cell ViewHolder.
-      * @param p_nXPosition : X (Column) position of Clicked Cell item.
-      * @param p_nYPosition : Y (Row) position of Clicked Cell item.
+      * @param pCellView  : Clicked Cell ViewHolder.
+      * @param pXPosition : X (Column) position of Clicked Cell item.
+      * @param pYPosition : Y (Row) position of Clicked Cell item.
       */
      @Override
-     public void onCellClicked(@NonNull RecyclerView.ViewHolder p_jCellView, int p_nXPosition, int
-             p_nYPosition) {
+     public void onCellClicked(@NonNull RecyclerView.ViewHolder pCellView, int pXPosition, int
+             pYPosition) {
          // Do want you want.
      }
  
      /**
       * Called when user click any column header item.
       *
-      * @param p_jColumnHeaderView : Clicked Column Header ViewHolder.
-      * @param p_nXPosition        : X (Column) position of Clicked Column Header item.
+      * @param pColumnHeaderView : Clicked Column Header ViewHolder.
+      * @param pXPosition        : X (Column) position of Clicked Column Header item.
       */
      @Override
-     public void onColumnHeaderClicked(@NonNull RecyclerView.ViewHolder p_jColumnHeaderView, int
-             p_nXPosition) {
+     public void onColumnHeaderClicked(@NonNull RecyclerView.ViewHolder pColumnHeaderView, int
+             pXPosition) {
          // Do want you want.
      }
      
      /**
       * Called when user click any column header item.
       *                   
-      * @param p_jColumnHeaderView : Long pressed Column Header ViewHolder.
-      * @param p_nXPosition        : X (Column) position of Clicked Column Header item.
+      * @param pColumnHeaderView : Long pressed Column Header ViewHolder.
+      * @param pXPosition        : X (Column) position of Clicked Column Header item.
       * @version 0.8.5.1
       */
      @Override
-     public void onColumnHeaderLongPressed(@NonNull RecyclerView.ViewHolder p_jColumnHeaderView, int
-              p_nXPosition) {
+     public void onColumnHeaderLongPressed(@NonNull RecyclerView.ViewHolder pColumnHeaderView, int
+              pXPosition) {
           // Do want you want.
      }
  
      /**
       * Called when user click any Row Header item.
       *
-      * @param p_jRowHeaderView : Clicked Row Header ViewHolder.
-      * @param p_nYPosition     : Y (Row) position of Clicked Row Header item.
+      * @param pRowHeaderView : Clicked Row Header ViewHolder.
+      * @param pYPosition     : Y (Row) position of Clicked Row Header item.
       */
      @Override
-     public void onRowHeaderClicked(@NonNull RecyclerView.ViewHolder p_jRowHeaderView, int
-             p_nYPosition) {
+     public void onRowHeaderClicked(@NonNull RecyclerView.ViewHolder pRowHeaderView, int
+             pYPosition) {
          // Do want you want.
  
      }
@@ -438,13 +439,13 @@ Setting datas using our TableView adapter like this;
      /**
       * Called when user click any Row Header item.
       *
-      * @param p_jRowHeaderView : Long pressed Row Header ViewHolder.
-      * @param p_nYPosition     : Y (Row) position of Clicked Row Header item.
+      * @param pRowHeaderView : Long pressed Row Header ViewHolder.
+      * @param pYPosition     : Y (Row) position of Clicked Row Header item.
       * @version 0.8.5.1
       */
      @Override
-     public void onRowHeaderLongPressed(@NonNull RecyclerView.ViewHolder p_jRowHeaderView, int
-              p_nYPosition) {
+     public void onRowHeaderLongPressed(@NonNull RecyclerView.ViewHolder pRowHeaderView, int
+              pYPosition) {
           // Do want you want.
   
      }
@@ -513,22 +514,22 @@ AbstractSorterViewHolder helps to listen to change of sorting actions. So you ca
 ### 3. Helper methods for sorting process
 
 Several helper methods have been inserted on TableView. These are;
-- ```java sortColumn(int p_nColumnPosition, SortState p_eSortState)``` : To sort
+- ```java sortColumn(int pColumnPosition, SortState pSortState)``` : To sort
 - ```java SortState getSortingStatus(int column)``` : To get current state of the column
 
 ## Change your TableView model 
 
 TableView has some helper functions to change desired cell item model easily with 0.8.5.1 version. These are;
 
-- ```java addRow(int p_nYPosition, YourRowHeaderModel p_jRowHeaderItem, List<YourCellItemModel> p_jCellItems)```
-- ```java addRowRange(int p_nYPositionStart, int p_nItemCount, List<YourRowHeaderModel> p_jRowHeaderItem, List<List<YourCellItemModel>> p_jCellItems))```
-- ```java removeRow(int p_nYPosition)``` 
-- ```java removeRowRange(int p_nYPositionStart, int p_nItemCount)``` 
-- ```java changeRowHeaderItem(int p_nYPosition, YourRowHeaderModel p_jRowHeaderModel)``` 
-- ```java changeRowHeaderItemRange(int p_nYPositionStart, int p_nItemCount, List<YourRowHeaderModel>p_jRowHeaderModelList)``` 
-- ```java changeCellItem(int p_nXPosition, int p_nYPosition, YourCellItemModel p_jCellModel)``` 
-- ```java changeColumnHeader(int p_nXPosition, YourColumnHeaderModel p_jColumnHeaderModel)``` 
-- ```java changeColumnHeaderRange(int p_nXPositionStart, int p_nItemCount, List<YourColumnHeaderModel>p_jColumnHeaderModelList)``` 
+- ```java addRow(int pYPosition, YourRowHeaderModel pRowHeaderItem, List<YourCellItemModel> pCellItems)```
+- ```java addRowRange(int pYPositionStart, int pItemCount, List<YourRowHeaderModel> pRowHeaderItem, List<List<YourCellItemModel>> pCellItems))```
+- ```java removeRow(int pYPosition)``` 
+- ```java removeRowRange(int pYPositionStart, int pItemCount)``` 
+- ```java changeRowHeaderItem(int pYPosition, YourRowHeaderModel pRowHeaderModel)``` 
+- ```java changeRowHeaderItemRange(int pYPositionStart, int pItemCount, List<YourRowHeaderModel>pRowHeaderModelList)``` 
+- ```java changeCellItem(int pXPosition, int pYPosition, YourCellItemModel pCellModel)``` 
+- ```java changeColumnHeader(int pXPosition, YourColumnHeaderModel pColumnHeaderModel)``` 
+- ```java changeColumnHeaderRange(int pXPositionStart, int pItemCount, List<YourColumnHeaderModel>pColumnHeaderModelList)``` 
 
 *Note:* <a href="https://github.com/evrencoskun/TableViewSample2"> TableViewSample 2 </a> app shows also usage of these helper methods.
 
@@ -567,11 +568,11 @@ tableView.setIgnoreSelectionColors(false);
 To show or hide separators of the TableView, you can simply use these helper methods.
 
 ```java
-setShowHorizontalSeparators(boolean p_bShowSeparators)
+setShowHorizontalSeparators(boolean pShowSeparators)
 ```
 
 ```java
-setShowVerticalSeparators(boolean p_bShowSeparators)
+setShowVerticalSeparators(boolean pShowSeparators)
 ```
 
 ## Sample Apps
