@@ -464,7 +464,7 @@ instead it maintains a map from the row indexes of the view to the row indexes o
 ### 1. ISortableModel to your Cell Model 
 
 To be able use this feature on your TableView. You have to implement ISortableModel to your Cell Model. This interface
-wants two method from your cell model. These are ;areItemsTheSame
+wants two methods from your cell model. These are ;
 
 - ```java String getId()``` : To compare sorted items ordered by normal items in terms of  "are Items The Same"
 - ```java Object getContent()``` : To compare sorted items ordered by normal items in terms of  "are Contents The Same"
@@ -482,8 +482,10 @@ So you can sort any type of value. Such as;
  
 AbstractSorterViewHolder helps to listen to change of sorting actions. So you can do whatever you want on any sorting state.
 
-- ```java onSortingStatusChanged(SortState pSortState)``` : It will be called each sorting process. *Note*: It will also calls every recycling process as well.
+- ```java onSortingStatusChanged(SortState pSortState)``` : It will be called each sorting process. *Note* : It will be also called every recycling process.
 - ```java SortState getSortState()``` : It gives current Sorting state.
+
+#### Sorting States
 
 ```java
     /**
