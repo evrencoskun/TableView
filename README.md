@@ -5,6 +5,8 @@
         <p>TableView is a powerful Android library for displaying complex data structures and rendering tabular data composed of rows, columns and cells. 
            TableView relies on a separate model object to hold and represent the data it displays. This repository also contains a sample app that is
            designed to show you how to create your own TableView in your application.</p>
+        <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#15a4fa', 'R6R37LU8');kofiwidget2.draw();</script>
+        
         <a href="https://youtu.be/1DWFIqrqrPk">
             <b>Demo Full video »</b>
         </a>
