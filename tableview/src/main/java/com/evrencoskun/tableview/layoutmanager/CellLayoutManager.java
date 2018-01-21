@@ -120,7 +120,7 @@ public class CellLayoutManager extends LinearLayoutManager {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    fitWidthSize2();
+                    fitWidthSize2(true);
                 }
             });
         }
@@ -229,23 +229,51 @@ public class CellLayoutManager extends LinearLayoutManager {
      * Alternative method of fitWidthSize().
      * The main difference is this method works after main thread draw the ui components.
      */
-    private void fitWidthSize2() {
+    public void fitWidthSize2(boolean scrollingLeft) {
+        // The below line helps to change left & right value of the each column
+        // header views
+        // without using requestLayout().
+        m_iColumnHeaderLayoutManager.customRequestLayout();
+
+        // Get the right scroll position information from Column header RecyclerView
+        int columnHeaderScrollPosition = m_iTableView.getColumnHeaderRecyclerView().getScrolledX();
+        int columnHeaderOffset = m_iColumnHeaderLayoutManager.getFirstItemLeft();
+        int columnHeaderFirstItem = m_iColumnHeaderLayoutManager.findFirstVisibleItemPosition();
+
+        // Fit all visible columns widths
         for (int i = m_iColumnHeaderLayoutManager.findFirstVisibleItemPosition(); i <
                 m_iColumnHeaderLayoutManager.findLastVisibleItemPosition() + 1; i++) {
-            fitSize2(i);
+
+            fitSize2(i, scrollingLeft, columnHeaderScrollPosition, columnHeaderOffset,
+                    columnHeaderFirstItem);
         }
 
         m_bNeedSetLeft = false;
     }
 
-    private void fitSize2(int p_nPosition) {
+    private void fitSize2(int p_nPosition, boolean scrollingLeft, int columnHeaderScrollPosition,
+                          int columnHeaderOffset, int columnHeaderFirstItem) {
         int nColumnCacheWidth = m_iColumnHeaderLayoutManager.getCacheWidth(p_nPosition);
         View column = m_iColumnHeaderLayoutManager.findViewByPosition(p_nPosition);
+
 
         if (column != null) {
             // Loop for all rows which are visible.
             for (int j = findFirstVisibleItemPosition(); j < findLastVisibleItemPosition() + 1;
                  j++) {
+
+                // Get CellRowRecyclerView
+                CellRecyclerView child = (CellRecyclerView) findViewByPosition(j);
+
+                // Checking Scroll position is necessary. Because, even if they have same width
+                // values, their scroll positions can be different.
+                if (!scrollingLeft && columnHeaderScrollPosition != child.getScrolledX()) {
+
+                    // Column Header RecyclerView has the right scroll position. So, considering it
+                    ((LinearLayoutManager) child.getLayoutManager()).scrollToPositionWithOffset
+                            (columnHeaderFirstItem, columnHeaderOffset);
+                }
+
                 fit2(p_nPosition, j, nColumnCacheWidth, column);
             }
         }
@@ -367,12 +395,7 @@ public class CellLayoutManager extends LinearLayoutManager {
                 // for the first time to populate adapter
                 if (m_jRowHeaderLayoutManager.findLastVisibleItemPosition() == nPosition) {
 
-                    // The below line helps to change left & right value of the each column
-                    // header views
-                    // without using requestLayout().
-                    m_iColumnHeaderLayoutManager.customRequestLayout();
-
-                    fitWidthSize(false);
+                    fitWidthSize2(false);
                     Log.e(LOG_TAG, nPosition + " fitWidthSize populating data for the first time");
 
                     m_bNeedFit = false;
