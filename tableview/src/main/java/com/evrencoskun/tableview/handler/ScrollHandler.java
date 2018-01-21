@@ -2,6 +2,7 @@ package com.evrencoskun.tableview.handler;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
@@ -24,6 +25,12 @@ public class ScrollHandler {
     }
 
     public void scrollToColumnPosition(int columnPosition) {
+        // TableView is not on screen yet.
+        if (!((View) mTableView).isShown()) {
+            // Change default value of the listener
+            mTableView.getHorizontalRecyclerViewListener().setScrollPosition(columnPosition);
+        }
+
         // Column Header should be scrolled firstly because of fitting column width process.
         scrollColumnHeader(columnPosition);
         scrollCellHorizontally(columnPosition);

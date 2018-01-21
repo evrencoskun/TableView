@@ -250,4 +250,11 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
     public void setScrollPositionOffset(int p_nOffset) {
         m_nScrollPositionOffset = p_nOffset;
     }
+
+   /**
+   * To change default scroll position that is before TableView is not populated.
+    */
+    public void setScrollPosition(int position){
+        this.m_nScrollPosition = position;
+    }
 }
