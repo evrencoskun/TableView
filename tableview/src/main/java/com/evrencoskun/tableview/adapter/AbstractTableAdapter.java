@@ -177,21 +177,18 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
         m_iRowHeaderRecyclerViewAdapter.addItem(p_nYPosition, p_jRowHeaderItem);
     }
 
-    public void addRowRange(int p_nYPositionStart, int p_nItemCount, List<RH> p_jRowHeaderItem,
-                            List<List<C>> p_jCellItems) {
-        m_iCellRecyclerViewAdapter.addItemRange(p_nYPositionStart, p_nItemCount, p_jCellItems);
-        m_iRowHeaderRecyclerViewAdapter.addItemRange(p_nYPositionStart, p_nItemCount,
-                p_jRowHeaderItem);
+    public void addRowRange(int p_nYPositionStart, List<RH> p_jRowHeaderItem, List<List<C>>
+            p_jCellItems) {
+        m_iRowHeaderRecyclerViewAdapter.addItemRange(p_nYPositionStart, p_jRowHeaderItem);
+        m_iCellRecyclerViewAdapter.addItemRange(p_nYPositionStart, p_jCellItems);
     }
 
     public void changeRowHeaderItem(int p_nYPosition, RH p_jRowHeaderModel) {
         m_iRowHeaderRecyclerViewAdapter.changeItem(p_nYPosition, p_jRowHeaderModel);
     }
 
-    public void changeRowHeaderItemRange(int p_nYPositionStart, int p_nItemCount, List<RH>
-            p_jRowHeaderModelList) {
-        m_iRowHeaderRecyclerViewAdapter.changeItemRange(p_nYPositionStart, p_nItemCount,
-                p_jRowHeaderModelList);
+    public void changeRowHeaderItemRange(int p_nYPositionStart, List<RH> p_jRowHeaderModelList) {
+        m_iRowHeaderRecyclerViewAdapter.changeItemRange(p_nYPositionStart, p_jRowHeaderModelList);
     }
 
     public void changeCellItem(int p_nXPosition, int p_nYPosition, C p_jCellModel) {
@@ -208,9 +205,8 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
         m_iColumnHeaderRecyclerViewAdapter.changeItem(p_nXPosition, p_jColumnHeaderModel);
     }
 
-    public void changeColumnHeaderRange(int p_nXPositionStart, int p_nItemCount, List<CH>
-            p_jColumnHeaderModelList) {
-        m_iColumnHeaderRecyclerViewAdapter.changeItemRange(p_nXPositionStart, p_nItemCount,
+    public void changeColumnHeaderRange(int p_nXPositionStart, List<CH> p_jColumnHeaderModelList) {
+        m_iColumnHeaderRecyclerViewAdapter.changeItemRange(p_nXPositionStart,
                 p_jColumnHeaderModelList);
     }
 
