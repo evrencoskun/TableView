@@ -1,5 +1,6 @@
 package com.evrencoskun.tableview.handler;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.evrencoskun.tableview.ITableView;
@@ -13,19 +14,24 @@ import com.evrencoskun.tableview.layoutmanager.ColumnLayoutManager;
 public class ScrollHandler {
 
     private ITableView mTableView;
+    private CellLayoutManager mCellLayoutManager;
+    private LinearLayoutManager mRowHeaderLayoutManager;
 
     public ScrollHandler(ITableView tableView) {
         this.mTableView = tableView;
+        this.mCellLayoutManager = tableView.getCellLayoutManager();
+        this.mRowHeaderLayoutManager = tableView.getRowHeaderLayoutManager();
     }
 
     public void scrollToColumnPosition(int columnPosition) {
-        scrollCellHorizontally(columnPosition);
+        // Column Header should be scrolled firstly because of fitting column width process.
         scrollColumnHeader(columnPosition);
+        scrollCellHorizontally(columnPosition);
     }
 
     public void scrollToRowPosition(int rowPosition) {
-        mTableView.getCellLayoutManager().scrollToPosition(rowPosition);
-        mTableView.getRowHeaderLayoutManager().scrollToPosition(rowPosition);
+        mRowHeaderLayoutManager.scrollToPosition(rowPosition);
+        mCellLayoutManager.scrollToPosition(rowPosition);
     }
 
 
