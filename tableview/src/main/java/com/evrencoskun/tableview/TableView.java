@@ -18,6 +18,7 @@ import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.handler.ColumnSortHandler;
+import com.evrencoskun.tableview.handler.ScrollHandler;
 import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.handler.VisibilityHandler;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
@@ -55,9 +56,10 @@ public class TableView extends FrameLayout implements ITableView {
     private DividerItemDecoration m_jVerticalItemDecoration;
     private DividerItemDecoration m_jHorizontalItemDecoration;
 
-    private SelectionHandler m_iSelectionHandler;
+    private SelectionHandler mSelectionHandler;
     private ColumnSortHandler m_iColumnSortHandler;
     private VisibilityHandler m_iVisibilityHandler;
+    private ScrollHandler mScrollHandler;
 
     private int m_nRowHeaderWidth;
     private int m_nColumnHeaderHeight;
@@ -153,8 +155,9 @@ public class TableView extends FrameLayout implements ITableView {
         addView(m_jCellRecyclerView);
 
         // Create Handlers
-        m_iSelectionHandler = new SelectionHandler(this);
+        mSelectionHandler = new SelectionHandler(this);
         m_iVisibilityHandler = new VisibilityHandler(this);
+        mScrollHandler = new ScrollHandler(this);
 
         initializeListeners();
     }
@@ -406,6 +409,16 @@ public class TableView extends FrameLayout implements ITableView {
     }
 
     @Override
+    public void scrollToColumnPosition(int column) {
+        mScrollHandler.scrollToColumnPosition(column);
+    }
+
+    @Override
+    public void scrollToRowPosition(int row) {
+        mScrollHandler.scrollToRowPosition(row);
+    }
+
+    @Override
     public void showRow(int row) {
         m_iVisibilityHandler.showRow(row);
     }
@@ -434,7 +447,7 @@ public class TableView extends FrameLayout implements ITableView {
      * Returns the index of the selected row, -1 if no row is selected.
      */
     public int getSelectedRow() {
-        return m_iSelectionHandler.getSelectedRowPosition();
+        return mSelectionHandler.getSelectedRowPosition();
     }
 
     public void setSelectedRow(int p_nYPosition) {
@@ -443,14 +456,14 @@ public class TableView extends FrameLayout implements ITableView {
                 .findViewHolderForAdapterPosition(p_nYPosition);
 
 
-        m_iSelectionHandler.setSelectedRowPosition(jRowViewHolder, p_nYPosition);
+        mSelectionHandler.setSelectedRowPosition(jRowViewHolder, p_nYPosition);
     }
 
     /**
      * Returns the index of the selected column, -1 if no column is selected.
      */
     public int getSelectedColumn() {
-        return m_iSelectionHandler.getSelectedColumnPosition();
+        return mSelectionHandler.getSelectedColumnPosition();
     }
 
     public void setSelectedColumn(int p_nXPosition) {
@@ -458,7 +471,7 @@ public class TableView extends FrameLayout implements ITableView {
         AbstractViewHolder jColumnViewHolder = (AbstractViewHolder) getColumnHeaderRecyclerView()
                 .findViewHolderForAdapterPosition(p_nXPosition);
 
-        m_iSelectionHandler.setSelectedColumnPosition(jColumnViewHolder, p_nXPosition);
+        mSelectionHandler.setSelectedColumnPosition(jColumnViewHolder, p_nXPosition);
     }
 
     public void setSelectedCell(int p_nXPosition, int p_nYPosition) {
@@ -466,12 +479,12 @@ public class TableView extends FrameLayout implements ITableView {
         AbstractViewHolder jCellViewHolder = getCellLayoutManager().getCellViewHolder
                 (p_nXPosition, p_nYPosition);
 
-        m_iSelectionHandler.setSelectedCellPositions(jCellViewHolder, p_nXPosition, p_nYPosition);
+        mSelectionHandler.setSelectedCellPositions(jCellViewHolder, p_nXPosition, p_nYPosition);
     }
 
     @Override
     public SelectionHandler getSelectionHandler() {
-        return m_iSelectionHandler;
+        return mSelectionHandler;
     }
 
     @Override

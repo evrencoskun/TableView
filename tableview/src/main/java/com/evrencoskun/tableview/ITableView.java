@@ -57,6 +57,10 @@ public interface ITableView {
 
     SortState getSortingStatus(int column);
 
+    void scrollToColumnPosition(int column);
+
+    void scrollToRowPosition(int row);
+
     void clearHiddenRowList();
 
     void showRow(int row);
