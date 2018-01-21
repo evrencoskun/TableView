@@ -23,6 +23,7 @@ import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.handler.VisibilityHandler;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
+import com.evrencoskun.tableview.listener.ColumnHeaderLayoutChangeListener;
 import com.evrencoskun.tableview.listener.ITableViewListener;
 import com.evrencoskun.tableview.listener.itemclick.ColumnHeaderRecyclerViewItemClickListener;
 import com.evrencoskun.tableview.listener.itemclick.RowHeaderRecyclerViewItemClickListener;
@@ -35,6 +36,8 @@ import com.evrencoskun.tableview.sort.SortState;
  */
 
 public class TableView extends FrameLayout implements ITableView {
+
+    private static final String LOG_TAG = TableView.class.getSimpleName();
 
     protected CellRecyclerView m_jCellRecyclerView;
     protected CellRecyclerView m_jColumnHeaderRecyclerView;
@@ -189,6 +192,11 @@ public class TableView extends FrameLayout implements ITableView {
         m_jColumnHeaderRecyclerView.addOnItemTouchListener
                 (m_jColumnHeaderRecyclerViewItemClickListener);
         m_jRowHeaderRecyclerView.addOnItemTouchListener(m_jRowHeaderRecyclerViewItemClickListener);
+
+
+        //Add Layout change listener to Column Header recyclerView to detect changing size
+        m_jColumnHeaderRecyclerView.addOnLayoutChangeListener(new
+                ColumnHeaderLayoutChangeListener(this));
 
     }
 

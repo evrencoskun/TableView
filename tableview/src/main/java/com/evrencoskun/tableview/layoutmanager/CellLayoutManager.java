@@ -13,6 +13,8 @@ import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.util.TableViewUtils;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
 /**
  * Created by evrencoskun on 24/06/2017.
  */
@@ -429,6 +431,15 @@ public class CellLayoutManager extends LinearLayoutManager {
                     (p_nXPosition);
         }
         return null;
+    }
+
+    public void remeasureAllChild() {
+        for (int j = 0; j < getChildCount(); j++) {
+            CellRecyclerView recyclerView = (CellRecyclerView) getChildAt(j);
+
+            recyclerView.getLayoutParams().width = WRAP_CONTENT;
+            recyclerView.requestLayout();
+        }
     }
 
 }
