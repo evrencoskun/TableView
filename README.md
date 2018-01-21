@@ -59,7 +59,7 @@ To use this library in your android project, just simply add the following depen
 
 ``` 
 dependencies {
- compile 'com.evrencoskun.library:tableview:0.8.5.1' 
+ compile 'com.evrencoskun.library:tableview:0.8.5.4' 
 }
 ```
 
@@ -523,14 +523,14 @@ Several helper methods have been inserted on TableView. These are;
 TableView has some helper functions to change desired cell item model easily with 0.8.5.1 version. These are;
 
 - ```java addRow(int pYPosition, YourRowHeaderModel pRowHeaderItem, List<YourCellItemModel> pCellItems)```
-- ```java addRowRange(int pYPositionStart, int pItemCount, List<YourRowHeaderModel> pRowHeaderItem, List<List<YourCellItemModel>> pCellItems))```
+- ```java addRowRange(int pYPositionStart, List<YourRowHeaderModel> pRowHeaderItem, List<List<YourCellItemModel>> pCellItems))```
 - ```java removeRow(int pYPosition)``` 
 - ```java removeRowRange(int pYPositionStart, int pItemCount)``` 
 - ```java changeRowHeaderItem(int pYPosition, YourRowHeaderModel pRowHeaderModel)``` 
-- ```java changeRowHeaderItemRange(int pYPositionStart, int pItemCount, List<YourRowHeaderModel>pRowHeaderModelList)``` 
+- ```java changeRowHeaderItemRange(int pYPositionStart, List<YourRowHeaderModel>pRowHeaderModelList)``` 
 - ```java changeCellItem(int pXPosition, int pYPosition, YourCellItemModel pCellModel)``` 
 - ```java changeColumnHeader(int pXPosition, YourColumnHeaderModel pColumnHeaderModel)``` 
-- ```java changeColumnHeaderRange(int pXPositionStart, int pItemCount, List<YourColumnHeaderModel>pColumnHeaderModelList)``` 
+- ```java changeColumnHeaderRange(int pXPositionStart, List<YourColumnHeaderModel>pColumnHeaderModelList)``` 
 
 *Note:* <a href="https://github.com/evrencoskun/TableViewSample2"> TableViewSample 2 </a> app shows also usage of these helper methods.
 
@@ -574,6 +574,16 @@ setShowHorizontalSeparators(boolean pShowSeparators)
 
 ```java
 setShowVerticalSeparators(boolean pShowSeparators)
+```
+
+There are 2 new helper methods to scroll desired column or row position programmatically.
+
+```java
+scrollToColumnPosition(int column)
+```
+
+```java
+scrollToRowPosition(int row)
 ```
 
 ## Sample Apps
