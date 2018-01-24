@@ -148,7 +148,7 @@ TableView tableView = new TableView(getContext());
      @Override
      public RecyclerView.ViewHolder onCreateCellViewHolder(ViewGroup parent, int viewType) {
          // Get cell xml layout 
-         View layout = LayoutInflater.from(m_jContext).inflate(R.layout.my_cell_layout,
+         View layout = LayoutInflater.from(context).inflate(R.layout.my_cell_layout,
                  parent, false);
          // Create a Custom ViewHolder for a Cell item.
          return new MyCellViewHolder(layout);
@@ -215,7 +215,7 @@ TableView tableView = new TableView(getContext());
      public RecyclerView.ViewHolder onCreateColumnHeaderViewHolder(ViewGroup parent, int viewType) {
  
          // Get Column Header xml Layout
-         View layout = LayoutInflater.from(m_jContext).inflate(R.layout
+         View layout = LayoutInflater.from(context).inflate(R.layout
                  .table_view_column_header_layout, parent, false);
  
          // Create a ColumnHeader ViewHolder
@@ -284,7 +284,7 @@ TableView tableView = new TableView(getContext());
      public RecyclerView.ViewHolder onCreateRowHeaderViewHolder(ViewGroup parent, int viewType) {
  
          // Get Row Header xml Layout
-         View layout = LayoutInflater.from(m_jContext).inflate(R.layout
+         View layout = LayoutInflater.from(context).inflate(R.layout
                  .table_view_row_header_layout, parent, false);
  
          // Create a Row Header ViewHolder
@@ -320,7 +320,7 @@ TableView tableView = new TableView(getContext());
      @Override
      public View onCreateCornerView() {
          // Get Corner xml layout
-         return LayoutInflater.from(m_jContext).inflate(R.layout.table_view_corner_layout, null);
+         return LayoutInflater.from(context).inflate(R.layout.table_view_corner_layout, null);
      }
  
      @Override
@@ -393,7 +393,7 @@ Setting datas using our TableView adapter like this;
      @Override
      public void onCellClicked(@NonNull RecyclerView.ViewHolder pCellView, int pXPosition, int
              pYPosition) {
-         // Do want you want.
+         // Do what you want.
      }
  
      /**
@@ -405,7 +405,7 @@ Setting datas using our TableView adapter like this;
      @Override
      public void onColumnHeaderClicked(@NonNull RecyclerView.ViewHolder pColumnHeaderView, int
              pXPosition) {
-         // Do want you want.
+         // Do what you want.
      }
      
      /**
@@ -418,7 +418,7 @@ Setting datas using our TableView adapter like this;
      @Override
      public void onColumnHeaderLongPressed(@NonNull RecyclerView.ViewHolder pColumnHeaderView, int
               pXPosition) {
-          // Do want you want.
+          // Do what you want.
      }
  
      /**
@@ -430,7 +430,7 @@ Setting datas using our TableView adapter like this;
      @Override
      public void onRowHeaderClicked(@NonNull RecyclerView.ViewHolder pRowHeaderView, int
              pYPosition) {
-         // Do want you want.
+         // Do what you want.
  
      }
      
@@ -445,7 +445,7 @@ Setting datas using our TableView adapter like this;
      @Override
      public void onRowHeaderLongPressed(@NonNull RecyclerView.ViewHolder pRowHeaderView, int
               pYPosition) {
-          // Do want you want.
+          // Do what you want.
   
      }
 }
