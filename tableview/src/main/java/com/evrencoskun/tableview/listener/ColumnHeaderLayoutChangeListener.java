@@ -24,7 +24,7 @@ public class ColumnHeaderLayoutChangeListener implements View.OnLayoutChangeList
 
 
     @Override
-    public void onLayoutChange((View v, int left, int top, int right, int bottom, int oldLeft,
+    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft,
                                int oldTop, int oldRight, int oldBottom) {
         int newWidth = right - left;
         int oldWidth = oldRight - oldLeft;
