@@ -11,7 +11,6 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.evrencoskun.tableview.TableView;
-import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableviewsample.tableview.TableViewAdapter;
 import com.evrencoskun.tableviewsample.tableview.TableViewListener;
 import com.evrencoskun.tableviewsample.tableview.model.Cell;
@@ -35,7 +34,7 @@ public class MainFragment extends Fragment {
     private List<ColumnHeader> m_jColumnHeaderList;
     private List<List<Cell>> m_jCellList;
 
-    private AbstractTableAdapter m_iTableViewAdapter;
+    private TableViewAdapter m_iTableViewAdapter;
     private TableView m_iTableView;
 
     public MainFragment() {
@@ -80,6 +79,10 @@ public class MainFragment extends Fragment {
 
         // Set TableView listener
         tableView.setTableViewListener(new TableViewListener(tableView));
+
+        //Setting ghost columns to hide
+        m_iTableViewAdapter.setGhostColumns("HiddenColumn");
+
         return tableView;
     }
 
@@ -123,6 +126,9 @@ public class MainFragment extends Fragment {
     private List<ColumnHeader> getColumnHeaderList() {
         List<ColumnHeader> list = new ArrayList<>();
 
+        //Ghost column
+        list.add(new ColumnHeader("HiddenColumnId", "HiddenColumn"));
+
         for (int i = 0; i < COLUMN_SIZE; i++) {
             String strTitle = "column " + i;
             if (i % 6 == 2) {
@@ -131,6 +137,7 @@ public class MainFragment extends Fragment {
             ColumnHeader header = new ColumnHeader(String.valueOf(i), strTitle);
             list.add(header);
         }
+
 
         return list;
     }

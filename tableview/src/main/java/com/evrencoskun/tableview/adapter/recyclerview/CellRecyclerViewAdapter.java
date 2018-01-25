@@ -38,6 +38,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
     public CellRecyclerViewAdapter(Context context, List<C> p_jItemList, ITableAdapter
             p_iTableAdapter) {
         super(context, p_jItemList);
+
         this.m_iTableAdapter = p_iTableAdapter;
 
         // Initialize the array
@@ -50,7 +51,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         ITableView iTableView = m_iTableAdapter.getTableView();
 
         // Create a RecyclerView as a Row of the CellRecyclerView
-        final CellRecyclerView jRecyclerView = new CellRecyclerView(m_jContext);
+        final CellRecyclerView jRecyclerView = new CellRecyclerView(mContext);
 
         if (iTableView.isShowHorizontalSeparators()) {
             // Add divider
@@ -75,7 +76,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
             // Set the Column layout manager that helps the fit width of the cell and column header
             // and it also helps to locate the scroll position of the horizontal recyclerView
             // which is row recyclerView
-            ColumnLayoutManager layoutManager = new ColumnLayoutManager(m_jContext, iTableView,
+            ColumnLayoutManager layoutManager = new ColumnLayoutManager(mContext, iTableView,
                     jRecyclerView);
             jRecyclerView.setLayoutManager(layoutManager);
 
@@ -96,9 +97,9 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
         CellRowViewHolder viewHolder = (CellRowViewHolder) holder;
         // Set adapter to the RecyclerView
-        List<C> rowList = (List<C>) m_jItemList.get(p_nYPosition);
+        List<C> rowList = (List<C>) mItemList.get(p_nYPosition);
 
-        CellRowRecyclerViewAdapter viewAdapter = new CellRowRecyclerViewAdapter(m_jContext,
+        CellRowRecyclerViewAdapter viewAdapter = new CellRowRecyclerViewAdapter(mContext,
                 rowList, m_iTableAdapter, p_nYPosition);
         viewHolder.m_jRecyclerView.setAdapter(viewAdapter);
 
