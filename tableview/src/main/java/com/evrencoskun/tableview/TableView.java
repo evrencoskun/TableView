@@ -23,8 +23,8 @@ import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.handler.VisibilityHandler;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
-import com.evrencoskun.tableview.listener.ColumnHeaderLayoutChangeListener;
 import com.evrencoskun.tableview.listener.ITableViewListener;
+import com.evrencoskun.tableview.listener.TableViewLayoutChangeListener;
 import com.evrencoskun.tableview.listener.itemclick.ColumnHeaderRecyclerViewItemClickListener;
 import com.evrencoskun.tableview.listener.itemclick.RowHeaderRecyclerViewItemClickListener;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
@@ -194,9 +194,13 @@ public class TableView extends FrameLayout implements ITableView {
         m_jRowHeaderRecyclerView.addOnItemTouchListener(m_jRowHeaderRecyclerViewItemClickListener);
 
 
-        //Add Layout change listener to Column Header recyclerView to detect changing size
-        m_jColumnHeaderRecyclerView.addOnLayoutChangeListener(new
-                ColumnHeaderLayoutChangeListener(this));
+        // Add Layout change listener both of Column Header  & Cell recyclerView to detect
+        // changing size
+        // For some case, it is pretty necessary.
+        TableViewLayoutChangeListener layoutChangeListener = new TableViewLayoutChangeListener
+                (this);
+        m_jColumnHeaderRecyclerView.addOnLayoutChangeListener(layoutChangeListener);
+        m_jCellRecyclerView.addOnLayoutChangeListener(layoutChangeListener);
 
     }
 
