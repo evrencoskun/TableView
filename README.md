@@ -545,6 +545,16 @@ With 0.8.5.1 version, hiding and showing any of row is pretty easy for TableView
 - ```java clearHiddenRowList()``` : TableView store a map that contains all hidden rows. This method for the time that is necessary to clear the list. 
 - ```java isRowVisible(int row)``` : To check state of row
 
+## Hiding Columns (Ghost Columns)
+
+1. Implement your ColumnHeader Model from `GhostableColumn`
+2. Use `AbstractTableAdapterWithGhostableColumns` in place of `AbstractTableAdapter`
+
+Finally
+
+- `setGhostColumns(String[] columnsToHide)` : To hide columns
+
+NOTE: Call `setGhostColumns()` Before calling `setAllItems` method.
 
 ## Advanced Usage
 

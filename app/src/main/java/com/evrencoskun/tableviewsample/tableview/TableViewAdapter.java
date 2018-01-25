@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
+import com.evrencoskun.tableview.adapter.AbstractTableAdapterWithGhostableColumns;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableviewsample.R;
 import com.evrencoskun.tableviewsample.tableview.holder.CellViewHolder;
@@ -23,7 +24,7 @@ import com.evrencoskun.tableviewsample.tableview.model.RowHeader;
  * This is a sample of custom TableView Adapter.
  */
 
-public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHeader, Cell> {
+public class TableViewAdapter extends AbstractTableAdapterWithGhostableColumns<ColumnHeader, RowHeader, Cell> {
 
     private static final String LOG_TAG = TableViewAdapter.class.getSimpleName();
 

@@ -78,11 +78,10 @@ public class ColumnHeaderLongPressPopup extends PopupMenu implements PopupMenu
 
         switch (menuItem.getItemId()) {
             case ASCENDING:
-                //m_iTableView.sortColumn(mXPosition, SortState.ASCENDING);
-                m_iTableView.
+                m_iTableView.sortColumn(mXPosition, SortState.ASCENDING);
                 break;
             case DESCENDING:
-                //m_iTableView.sortColumn(mXPosition, SortState.DESCENDING);
+                m_iTableView.sortColumn(mXPosition, SortState.DESCENDING);
                 break;
         }
 
