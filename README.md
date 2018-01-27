@@ -46,6 +46,7 @@ You can check new implementations of TableView on <a href="https://github.com/ev
     - [3. Helper methods for sorting process](#3-helper-methods-for-sorting-process)
   - [Change your TableView model](#change-your-tableview-model)
   - [Hiding & Showing the Row](#hiding--showing-the-row)
+  - [Hiding & Showing the Column](#hiding--showing-the-column)
   - [Advanced Usage](#advanced-usage)
   - [Sample Apps](#sample-apps)
   - [Articles](#Articles)
@@ -59,7 +60,7 @@ To use this library in your android project, just simply add the following depen
 
 ``` 
 dependencies {
- compile 'com.evrencoskun.library:tableview:0.8.5.4' 
+ compile 'com.evrencoskun.library:tableview:0.8.5.5' 
 }
 ```
 
@@ -537,13 +538,23 @@ TableView has some helper functions to change desired cell item model easily wit
 
 ## Hiding & Showing the Row
 
-With 0.8.5.1 version, hiding and showing any of row is pretty easy for TableView.  For that several helper methods have been insereted on TableView. 
+With 0.8.5.1 version, hiding and showing any of row is pretty easy for TableView.  For that several helper methods have been inserted on TableView. 
 
 - ```java showRow(int row)``` : To show the row
 - ```java hideRow(int row)``` : To Hide the row
 - ```java showAllHiddenRows()``` : To show all hidden rows
 - ```java clearHiddenRowList()``` : TableView store a map that contains all hidden rows. This method for the time that is necessary to clear the list. 
 - ```java isRowVisible(int row)``` : To check state of row
+
+## Hiding & Showing the Column
+
+With 0.8.5.5 version, hiding and showing any of column is pretty easy for TableView.  For that several helper methods have been inserted on TableView. 
+
+- ```java showColumn(int column)``` : To show the column
+- ```java hideColumn(int column)``` : To Hide the column
+- ```java showAllHiddenColumns()``` : To show all hidden columns
+- ```java clearHiddenColumnList()``` : TableView store a map that contains all hidden columns. This method for the time that is necessary to clear the list. 
+- ```java isColumnVisible(int column)``` : To check state of column
 
 
 ## Advanced Usage
