@@ -1,7 +1,6 @@
 package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,7 @@ import com.evrencoskun.tableview.adapter.ITableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
 import com.evrencoskun.tableview.handler.SelectionHandler;
+import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnLayoutManager;
 import com.evrencoskun.tableview.listener.itemclick.CellRecyclerViewItemClickListener;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
@@ -26,8 +26,6 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
     private static final String LOG_TAG = CellRecyclerViewAdapter.class.getSimpleName();
 
-    private List<RecyclerView.Adapter> m_jAdapterList;
-
     private ITableAdapter m_iTableAdapter;
 
     private HorizontalRecyclerViewListener m_iHorizontalListener;
@@ -39,9 +37,6 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
             p_iTableAdapter) {
         super(context, p_jItemList);
         this.m_iTableAdapter = p_iTableAdapter;
-
-        // Initialize the array
-        m_jAdapterList = new ArrayList<>();
     }
 
     @Override
@@ -50,7 +45,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         ITableView iTableView = m_iTableAdapter.getTableView();
 
         // Create a RecyclerView as a Row of the CellRecyclerView
-        final CellRecyclerView jRecyclerView = new CellRecyclerView(m_jContext);
+        final CellRecyclerView jRecyclerView = new CellRecyclerView(mContext);
 
         if (iTableView.isShowHorizontalSeparators()) {
             // Add divider
@@ -75,7 +70,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
             // Set the Column layout manager that helps the fit width of the cell and column header
             // and it also helps to locate the scroll position of the horizontal recyclerView
             // which is row recyclerView
-            ColumnLayoutManager layoutManager = new ColumnLayoutManager(m_jContext, iTableView,
+            ColumnLayoutManager layoutManager = new ColumnLayoutManager(mContext, iTableView,
                     jRecyclerView);
             jRecyclerView.setLayoutManager(layoutManager);
 
@@ -96,14 +91,11 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
         CellRowViewHolder viewHolder = (CellRowViewHolder) holder;
         // Set adapter to the RecyclerView
-        List<C> rowList = (List<C>) m_jItemList.get(p_nYPosition);
+        List<C> rowList = (List<C>) mItemList.get(p_nYPosition);
 
-        CellRowRecyclerViewAdapter viewAdapter = new CellRowRecyclerViewAdapter(m_jContext,
+        CellRowRecyclerViewAdapter viewAdapter = new CellRowRecyclerViewAdapter(mContext,
                 rowList, m_iTableAdapter, p_nYPosition);
         viewHolder.m_jRecyclerView.setAdapter(viewAdapter);
-
-        // Add the adapter to the list
-        m_jAdapterList.add(viewAdapter);
     }
 
     @Override
@@ -115,7 +107,6 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         ((ColumnLayoutManager) viewHolder.m_jRecyclerView.getLayoutManager())
                 .scrollToPositionWithOffset(m_iHorizontalListener.getScrollPosition(),
                         m_iHorizontalListener.getScrollPositionOffset());
-
 
         SelectionHandler selectionHandler = m_iTableAdapter.getTableView().getSelectionHandler();
 
@@ -174,29 +165,103 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
     }
 
     public void notifyCellDataSetChanged() {
-        if (m_jAdapterList != null) {
-            if (m_jAdapterList.isEmpty()) {
-                notifyDataSetChanged();
-            } else {
-                for (RecyclerView.Adapter adapter : m_jAdapterList) {
-                    adapter.notifyDataSetChanged();
-                }
+        CellRecyclerView[] visibleRecyclerViews = m_iTableAdapter.getTableView()
+                .getCellLayoutManager().getVisibleCellRowRecyclerViews();
+
+        if (visibleRecyclerViews.length > 0) {
+            for (CellRecyclerView cellRowRecyclerView : visibleRecyclerViews) {
+                cellRowRecyclerView.getAdapter().notifyDataSetChanged();
+            }
+        } else {
+            notifyDataSetChanged();
+        }
+
+    }
+
+
+    /**
+     * This method helps to get cell item model that is located on given column position.
+     *
+     * @param columnPosition
+     */
+    public List<C> getColumnItems(int columnPosition) {
+        List<C> cellItems = new ArrayList<>();
+
+        for (int i = 0; i < mItemList.size(); i++) {
+            List<C> rowList = (List<C>) mItemList.get(i);
+
+            if (rowList.size() > columnPosition) {
+                cellItems.add(rowList.get(columnPosition));
             }
         }
+
+        return cellItems;
     }
 
-    public List<RecyclerView.Adapter> getCellRowAdapterList() {
-        return m_jAdapterList;
-    }
 
-    public void dispatchUpdatesTo(DiffUtil.DiffResult p_jResults) {
-        for (int i = 0; i < m_jAdapterList.size(); i++) {
-            RecyclerView.Adapter cellRowAdapter = m_jAdapterList.get(i);
-            p_jResults.dispatchUpdatesTo(cellRowAdapter);
+    public void removeColumnItems(int column) {
+
+        // Firstly, remove columns from visible recyclerViews.
+        // To be able provide removing animation, we need to notify just for given column position.
+        CellRecyclerView[] visibleRecyclerViews = m_iTableAdapter.getTableView()
+                .getCellLayoutManager().getVisibleCellRowRecyclerViews();
+
+        for (CellRecyclerView cellRowRecyclerView : visibleRecyclerViews) {
+            ((AbstractRecyclerViewAdapter) cellRowRecyclerView.getAdapter()).deleteItem(column);
         }
 
-        p_jResults.dispatchUpdatesTo(this);
 
+        // Lets change the model list silently
+        // Create a new list which the column is already removed.
+        List<List<C>> cellItems = new ArrayList<>();
+        for (int i = 0; i < mItemList.size(); i++) {
+            List<C> rowList = new ArrayList<>((List<C>) mItemList.get(i));
+
+            if (rowList.size() > column) {
+                rowList.remove(column);
+            }
+
+            cellItems.add(rowList);
+        }
+
+        // Change data without notifying. Because we already did for visible recyclerViews.
+        setItems((List<C>) cellItems, false);
+    }
+
+    public void addColumnItems(int column, List<C> pCellItems) {
+        // It should be same size with exist model list.
+        if (pCellItems.size() != mItemList.size() || pCellItems.contains(null)) {
+            return;
+        }
+
+        // Firstly, add columns from visible recyclerViews.
+        // To be able provide removing animation, we need to notify just for given column position.
+        CellLayoutManager layoutManager = m_iTableAdapter.getTableView().getCellLayoutManager();
+        for (int i = layoutManager.findFirstVisibleItemPosition(); i < layoutManager
+                .findLastVisibleItemPosition() + 1; i++) {
+            // Get the cell row recyclerView that is located on i position
+            RecyclerView cellRowRecyclerView = (RecyclerView) layoutManager.findViewByPosition(i);
+
+            // Add the item using its adapter.
+            ((AbstractRecyclerViewAdapter) cellRowRecyclerView.getAdapter()).addItem(column,
+                    pCellItems.get(i));
+        }
+
+
+        // Lets change the model list silently
+        List<List<C>> cellItems = new ArrayList<>();
+        for (int i = 0; i < mItemList.size(); i++) {
+            List<C> rowList = new ArrayList<>((List<C>) mItemList.get(i));
+
+            if (rowList.size() > column) {
+                rowList.add(column, pCellItems.get(i));
+            }
+
+            cellItems.add(rowList);
+        }
+
+        // Change data without notifying. Because we already did for visible recyclerViews.
+        setItems((List<C>) cellItems, false);
     }
 
 }

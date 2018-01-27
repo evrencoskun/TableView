@@ -442,4 +442,17 @@ public class CellLayoutManager extends LinearLayoutManager {
         }
     }
 
+    public CellRecyclerView[] getVisibleCellRowRecyclerViews() {
+        int nLength = findLastVisibleItemPosition() - findFirstVisibleItemPosition() + 1;
+        CellRecyclerView[] recyclerViews = new CellRecyclerView[nLength];
+
+        int index = 0;
+        for (int i = findFirstVisibleItemPosition(); i < findLastVisibleItemPosition() + 1; i++) {
+            recyclerViews[index] = (CellRecyclerView) findViewByPosition(i);
+            index++;
+        }
+
+        return recyclerViews;
+    }
+
 }

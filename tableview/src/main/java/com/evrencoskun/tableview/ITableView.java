@@ -31,8 +31,6 @@ public interface ITableView {
 
     boolean isSortable();
 
-    boolean isRowVisible(int row);
-
     CellRecyclerView getCellRecyclerView();
 
     CellRecyclerView getColumnHeaderRecyclerView();
@@ -61,13 +59,25 @@ public interface ITableView {
 
     void scrollToRowPosition(int row);
 
-    void clearHiddenRowList();
-
     void showRow(int row);
 
     void hideRow(int row);
 
+    boolean isRowVisible(int row);
+
     void showAllHiddenRows();
+
+    void clearHiddenRowList();
+
+    void showColumn(int column);
+
+    void hideColumn(int column);
+
+    boolean isColumnVisible(int column);
+
+    void showAllHiddenColumns();
+
+    void clearHiddenColumnList();
 
     int getShadowColor();
 

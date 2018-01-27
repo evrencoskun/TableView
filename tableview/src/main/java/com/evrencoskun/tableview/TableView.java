@@ -451,6 +451,31 @@ public class TableView extends FrameLayout implements ITableView {
     }
 
     @Override
+    public void showColumn(int column) {
+        m_iVisibilityHandler.showColumn(column);
+    }
+
+    @Override
+    public void hideColumn(int column) {
+        m_iVisibilityHandler.hideColumn(column);
+    }
+
+    @Override
+    public boolean isColumnVisible(int column) {
+        return m_iVisibilityHandler.isColumnVisible(column);
+    }
+
+    @Override
+    public void showAllHiddenColumns() {
+        m_iVisibilityHandler.showAllHiddenColumns();
+    }
+
+    @Override
+    public void clearHiddenColumnList() {
+        m_iVisibilityHandler.clearHideColumnList();
+    }
+
+    @Override
     public boolean isRowVisible(int row) {
         return m_iVisibilityHandler.isRowVisible(row);
     }
