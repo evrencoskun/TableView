@@ -9,6 +9,7 @@ import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.listener.ITableViewListener;
 import com.evrencoskun.tableviewsample.tableview.holder.ColumnHeaderViewHolder;
 import com.evrencoskun.tableviewsample.tableview.popup.ColumnHeaderLongPressPopup;
+import com.evrencoskun.tableviewsample.tableview.popup.RowHeaderLongPressPopup;
 
 /**
  * Created by evrencoskun on 21/09/2017.
@@ -84,6 +85,13 @@ public class TableViewListener implements ITableViewListener {
     public void onRowHeaderLongPressed(@NonNull RecyclerView.ViewHolder p_jRowHeaderView, int
             p_nYPosition) {
 
+        if (p_jRowHeaderView != null) {
+            // Create Long Press Popup
+            RowHeaderLongPressPopup popup = new RowHeaderLongPressPopup(p_jRowHeaderView,
+                    m_jTableView);
+            // Show
+            popup.show();
+        }
     }
 
 

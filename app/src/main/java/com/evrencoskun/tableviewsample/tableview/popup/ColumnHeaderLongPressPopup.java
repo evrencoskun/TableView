@@ -18,10 +18,13 @@ public class ColumnHeaderLongPressPopup extends PopupMenu implements PopupMenu
         .OnMenuItemClickListener {
     private static final String LOG_TAG = ColumnHeaderLongPressPopup.class.getSimpleName();
 
-    // Sort states
+    // Menu Item constants
     private static final int ASCENDING = 1;
     private static final int DESCENDING = 2;
-    private static final int CLEAR = 3;
+    private static final int HIDE_ROW = 3;
+    private static final int SHOW_ROW = 4;
+    private static final int SCROLL_ROW = 5;
+
 
     private ColumnHeaderViewHolder m_iViewHolder;
     private ITableView m_iTableView;
@@ -53,6 +56,10 @@ public class ColumnHeaderLongPressPopup extends PopupMenu implements PopupMenu
     private void createMenuItem() {
         this.getMenu().add(Menu.NONE, ASCENDING, 0, mContext.getString(R.string.sort_ascending));
         this.getMenu().add(Menu.NONE, DESCENDING, 1, mContext.getString(R.string.sort_descending));
+        this.getMenu().add(Menu.NONE, HIDE_ROW, 2, mContext.getString(R.string.hiding_row_sample));
+        this.getMenu().add(Menu.NONE, SHOW_ROW, 3, mContext.getString(R.string.showing_row_sample));
+        this.getMenu().add(Menu.NONE, SCROLL_ROW, 4, mContext.getString(R.string
+                .scroll_to_row_position));
         // add new one ...
 
     }
@@ -78,16 +85,23 @@ public class ColumnHeaderLongPressPopup extends PopupMenu implements PopupMenu
 
         switch (menuItem.getItemId()) {
             case ASCENDING:
-                //m_iTableView.sortColumn(mXPosition, SortState.ASCENDING);
-                m_iTableView.
+                m_iTableView.sortColumn(mXPosition, SortState.ASCENDING);
+
                 break;
             case DESCENDING:
-                //m_iTableView.sortColumn(mXPosition, SortState.DESCENDING);
+                m_iTableView.sortColumn(mXPosition, SortState.DESCENDING);
                 break;
-        }
+            case HIDE_ROW:
+                m_iTableView.hideRow(5);
+                break;
+            case SHOW_ROW:
+                m_iTableView.showRow(5);
+                break;
+            case SCROLL_ROW:
+                m_iTableView.scrollToRowPosition(5);
+                break;
 
-        // Recalculate of the width values of the columns
-        m_iTableView.remeasureColumnWidth(mXPosition);
+        }
         return true;
     }
 
