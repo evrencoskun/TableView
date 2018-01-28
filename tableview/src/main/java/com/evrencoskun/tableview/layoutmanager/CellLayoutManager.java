@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2018. Evren Coşkun
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
 package com.evrencoskun.tableview.layoutmanager;
 
 import android.content.Context;
@@ -23,26 +40,26 @@ public class CellLayoutManager extends LinearLayoutManager {
     private static final String LOG_TAG = CellLayoutManager.class.getSimpleName();
     private static final int IGNORE_LEFT = -99999;
 
-    private ColumnHeaderLayoutManager m_iColumnHeaderLayoutManager;
-    private LinearLayoutManager m_jRowHeaderLayoutManager;
+    private ColumnHeaderLayoutManager mColumnHeaderLayoutManager;
+    private LinearLayoutManager mRowHeaderLayoutManager;
 
-    private CellRecyclerView m_iRowHeaderRecyclerView;
-    private CellRecyclerView m_iCellRecyclerView;
+    private CellRecyclerView mRowHeaderRecyclerView;
+    private CellRecyclerView mCellRecyclerView;
 
-    private HorizontalRecyclerViewListener m_iHorizontalListener;
-    private ITableView m_iTableView;
+    private HorizontalRecyclerViewListener mHorizontalListener;
+    private ITableView mTableView;
 
-    private int m_nLastDy = 0;
-    private boolean m_bNeedSetLeft = false;
-    private boolean m_bNeedFit = false;
+    private int mLastDy = 0;
+    private boolean mNeedSetLeft;
+    private boolean mNeedFit;
 
-    public CellLayoutManager(Context context, ITableView p_iTableView) {
+    public CellLayoutManager(Context context, ITableView tableView) {
         super(context);
-        this.m_iCellRecyclerView = p_iTableView.getCellRecyclerView();
-        this.m_iColumnHeaderLayoutManager = p_iTableView.getColumnHeaderLayoutManager();
-        this.m_jRowHeaderLayoutManager = p_iTableView.getRowHeaderLayoutManager();
-        this.m_iRowHeaderRecyclerView = p_iTableView.getRowHeaderRecyclerView();
-        this.m_iTableView = p_iTableView;
+        this.mCellRecyclerView = tableView.getCellRecyclerView();
+        this.mColumnHeaderLayoutManager = tableView.getColumnHeaderLayoutManager();
+        this.mRowHeaderLayoutManager = tableView.getRowHeaderLayoutManager();
+        this.mRowHeaderRecyclerView = tableView.getRowHeaderRecyclerView();
+        this.mTableView = tableView;
 
         initialize();
     }
@@ -59,30 +76,30 @@ public class CellLayoutManager extends LinearLayoutManager {
         super.onAttachedToWindow(view);
 
         // initialize the instances
-        if (m_iCellRecyclerView == null) {
-            m_iCellRecyclerView = m_iTableView.getCellRecyclerView();
+        if (mCellRecyclerView == null) {
+            mCellRecyclerView = mTableView.getCellRecyclerView();
         }
 
-        if (m_iHorizontalListener == null) {
-            m_iHorizontalListener = m_iTableView.getHorizontalRecyclerViewListener();
+        if (mHorizontalListener == null) {
+            mHorizontalListener = mTableView.getHorizontalRecyclerViewListener();
         }
     }
 
     @Override
     public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler, RecyclerView.State
             state) {
-        if (m_iRowHeaderRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE &&
-                !m_iRowHeaderRecyclerView.isScrollOthers()) {
+        if (mRowHeaderRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE &&
+                !mRowHeaderRecyclerView.isScrollOthers()) {
             // CellRecyclerViews should be scrolled after the RowHeaderRecyclerView.
             // Because it is one of the main compared criterion to make each columns fit.
-            m_iRowHeaderRecyclerView.scrollBy(0, dy);
+            mRowHeaderRecyclerView.scrollBy(0, dy);
         }
 
-        int nScroll = super.scrollVerticallyBy(dy, recycler, state);
+        int scroll = super.scrollVerticallyBy(dy, recycler, state);
 
         // It is important to determine right position to fit all columns which are the same y pos.
-        m_nLastDy = dy;
-        return nScroll;
+        mLastDy = dy;
+        return scroll;
     }
 
     @Override
@@ -90,7 +107,7 @@ public class CellLayoutManager extends LinearLayoutManager {
         super.onScrollStateChanged(state);
         if (state == RecyclerView.SCROLL_STATE_IDLE) {
             // It is important to set it 0 to be able to know which direction is being scrolled
-            m_nLastDy = 0;
+            mLastDy = 0;
         }
     }
 
@@ -99,24 +116,24 @@ public class CellLayoutManager extends LinearLayoutManager {
      * This method helps to fit all columns which are displayed on screen.
      * Especially it will be called when TableView is scrolled on vertically.
      */
-    public void fitWidthSize(boolean p_nScrollingUp) {
-        int nLeft = m_iColumnHeaderLayoutManager.getFirstItemLeft();
-        for (int i = m_iColumnHeaderLayoutManager.findFirstVisibleItemPosition(); i <
-                m_iColumnHeaderLayoutManager.findLastVisibleItemPosition() + 1; i++) {
-            nLeft = fitSize(i, nLeft, p_nScrollingUp);
+    public void fitWidthSize(boolean scrollingUp) {
+        int left = mColumnHeaderLayoutManager.getFirstItemLeft();
+        for (int i = mColumnHeaderLayoutManager.findFirstVisibleItemPosition(); i <
+                mColumnHeaderLayoutManager.findLastVisibleItemPosition() + 1; i++) {
+            left = fitSize(i, left, scrollingUp);
         }
 
-        m_bNeedSetLeft = false;
+        mNeedSetLeft = false;
     }
 
     /**
      * This method helps to fit a column. it will be called when TableView is scrolled on
      * horizontally.
      */
-    public void fitWidthSize(int p_nPosition, boolean p_bScrollingLeft) {
-        fitSize(p_nPosition, IGNORE_LEFT, false);
+    public void fitWidthSize(int position, boolean scrollingLeft) {
+        fitSize(position, IGNORE_LEFT, false);
 
-        if (m_bNeedSetLeft & p_bScrollingLeft) {
+        if (mNeedSetLeft & scrollingLeft) {
             // Works just like invoke later of swing utils.
             Handler handler = new Handler();
             handler.post(new Runnable() {
@@ -129,102 +146,101 @@ public class CellLayoutManager extends LinearLayoutManager {
     }
 
 
-    private int fitSize(int p_nPosition, int p_nLeft, boolean p_nScrollingUp) {
-        int nCellRight = -1;
+    private int fitSize(int position, int left, boolean scrollingUp) {
+        int cellRight = -1;
 
-        int nColumnCacheWidth = m_iColumnHeaderLayoutManager.getCacheWidth(p_nPosition);
-        View column = m_iColumnHeaderLayoutManager.findViewByPosition(p_nPosition);
+        int columnCacheWidth = mColumnHeaderLayoutManager.getCacheWidth(position);
+        View column = mColumnHeaderLayoutManager.findViewByPosition(position);
 
         if (column != null) {
             // Determine default right
-            nCellRight = column.getLeft() + nColumnCacheWidth + 1;
+            cellRight = column.getLeft() + columnCacheWidth + 1;
 
-            if (p_nScrollingUp) {
+            if (scrollingUp) {
                 // Loop reverse order
                 for (int i = findLastVisibleItemPosition(); i >= findFirstVisibleItemPosition();
                      i--) {
-                    nCellRight = fit(p_nPosition, i, p_nLeft, nCellRight, nColumnCacheWidth);
+                    cellRight = fit(position, i, left, cellRight, columnCacheWidth);
                 }
             } else {
                 // Loop for all rows which are visible.
                 for (int j = findFirstVisibleItemPosition(); j < findLastVisibleItemPosition() +
                         1; j++) {
-                    nCellRight = fit(p_nPosition, j, p_nLeft, nCellRight, nColumnCacheWidth);
+                    cellRight = fit(position, j, left, cellRight, columnCacheWidth);
                 }
             }
         }
-        return nCellRight;
+        return cellRight;
     }
 
-    private int fit(int p_nXPosition, int p_nYPosition, int p_nLeft, int p_nRight, int
-            p_nColumnCachedWidth) {
-        CellRecyclerView child = (CellRecyclerView) findViewByPosition(p_nYPosition);
+    private int fit(int xPosition, int yPosition, int left, int right, int columnCachedWidth) {
+        CellRecyclerView child = (CellRecyclerView) findViewByPosition(yPosition);
 
         if (child != null) {
             ColumnLayoutManager childLayoutManager = (ColumnLayoutManager) child.getLayoutManager();
 
-            int nCellCacheWidth = childLayoutManager.getCacheWidth(p_nXPosition);
-            View cell = childLayoutManager.findViewByPosition(p_nXPosition);
+            int cellCacheWidth = childLayoutManager.getCacheWidth(xPosition);
+            View cell = childLayoutManager.findViewByPosition(xPosition);
 
             // Control whether the cell needs to be fitted by column header or not.
             if (cell != null) {
 
-                if (nCellCacheWidth != p_nColumnCachedWidth || m_bNeedSetLeft) {
+                if (cellCacheWidth != columnCachedWidth || mNeedSetLeft) {
 
                     // This is just for setting width value
-                    if (nCellCacheWidth != p_nColumnCachedWidth) {
-                        nCellCacheWidth = p_nColumnCachedWidth;
-                        TableViewUtils.setWidth(cell, nCellCacheWidth);
-                        childLayoutManager.setCacheWidth(p_nXPosition, nCellCacheWidth);
+                    if (cellCacheWidth != columnCachedWidth) {
+                        cellCacheWidth = columnCachedWidth;
+                        TableViewUtils.setWidth(cell, cellCacheWidth);
+                        childLayoutManager.setCacheWidth(xPosition, cellCacheWidth);
                     }
 
                     // Even if the cached values are same, the left & right value wouldn't change.
-                    // m_bNeedSetLeftValue & the below lines for it.
-                    if (p_nLeft != IGNORE_LEFT && cell.getLeft() != p_nLeft) {
+                    // mNeedSetLeft & the below lines for it.
+                    if (left != IGNORE_LEFT && cell.getLeft() != left) {
 
                         // Calculate scroll distance
-                        int nScrollX = Math.max(cell.getLeft(), p_nLeft) - Math.min(cell.getLeft
-                                (), p_nLeft);
+                        int scrollX = Math.max(cell.getLeft(), left) - Math.min(cell.getLeft(),
+                                left);
 
-                        cell.setLeft(p_nLeft);
+                        cell.setLeft(left);
 
                         // It shouldn't be scroll horizontally and the problem is gotten just for
                         // first visible item.
-                        if (m_iHorizontalListener.getScrollPositionOffset() > 0 && p_nXPosition
-                                == childLayoutManager.findFirstVisibleItemPosition() &&
-                                m_iCellRecyclerView.getScrollState() != RecyclerView
+                        if (mHorizontalListener.getScrollPositionOffset() > 0 && xPosition ==
+                                childLayoutManager.findFirstVisibleItemPosition() &&
+                                mCellRecyclerView.getScrollState() != RecyclerView
                                         .SCROLL_STATE_IDLE) { //
 
 
-                            m_iHorizontalListener.setScrollPositionOffset(m_iHorizontalListener
-                                    .getScrollPositionOffset() + nScrollX);
-                            childLayoutManager.scrollToPositionWithOffset(m_iHorizontalListener
-                                    .getScrollPosition(), m_iHorizontalListener
+                            mHorizontalListener.setScrollPositionOffset(mHorizontalListener
+                                    .getScrollPositionOffset() + scrollX);
+                            childLayoutManager.scrollToPositionWithOffset(mHorizontalListener
+                                    .getScrollPosition(), mHorizontalListener
                                     .getScrollPositionOffset());
                         }
                     }
 
-                    if (cell.getWidth() != nCellCacheWidth) {
-                        if (p_nLeft != IGNORE_LEFT) {
+                    if (cell.getWidth() != cellCacheWidth) {
+                        if (left != IGNORE_LEFT) {
                             // TODO: + 1 is for decoration item. It should be gotten from a
                             // generic method  of layoutManager
                             // Set right
-                            p_nRight = cell.getLeft() + nCellCacheWidth + 1;
-                            cell.setRight(p_nRight);
+                            right = cell.getLeft() + cellCacheWidth + 1;
+                            cell.setRight(right);
 
                             childLayoutManager.layoutDecoratedWithMargins(cell, cell.getLeft(),
                                     cell.getTop(), cell.getRight(), cell.getBottom());
                         }
 
-                        m_bNeedSetLeft = true;
+                        mNeedSetLeft = true;
                     }
                 }
             }
         } else {
-            Log.e(LOG_TAG, " x: " + p_nXPosition + " y: " + p_nYPosition + " child is null. " +
+            Log.e(LOG_TAG, " x: " + xPosition + " y: " + yPosition + " child is null. " +
                     "Because first visible item position is  " + findFirstVisibleItemPosition());
         }
-        return p_nRight;
+        return right;
     }
 
     /**
@@ -235,28 +251,28 @@ public class CellLayoutManager extends LinearLayoutManager {
         // The below line helps to change left & right value of the each column
         // header views
         // without using requestLayout().
-        m_iColumnHeaderLayoutManager.customRequestLayout();
+        mColumnHeaderLayoutManager.customRequestLayout();
 
         // Get the right scroll position information from Column header RecyclerView
-        int columnHeaderScrollPosition = m_iTableView.getColumnHeaderRecyclerView().getScrolledX();
-        int columnHeaderOffset = m_iColumnHeaderLayoutManager.getFirstItemLeft();
-        int columnHeaderFirstItem = m_iColumnHeaderLayoutManager.findFirstVisibleItemPosition();
+        int columnHeaderScrollPosition = mTableView.getColumnHeaderRecyclerView().getScrolledX();
+        int columnHeaderOffset = mColumnHeaderLayoutManager.getFirstItemLeft();
+        int columnHeaderFirstItem = mColumnHeaderLayoutManager.findFirstVisibleItemPosition();
 
         // Fit all visible columns widths
-        for (int i = m_iColumnHeaderLayoutManager.findFirstVisibleItemPosition(); i <
-                m_iColumnHeaderLayoutManager.findLastVisibleItemPosition() + 1; i++) {
+        for (int i = mColumnHeaderLayoutManager.findFirstVisibleItemPosition(); i <
+                mColumnHeaderLayoutManager.findLastVisibleItemPosition() + 1; i++) {
 
             fitSize2(i, scrollingLeft, columnHeaderScrollPosition, columnHeaderOffset,
                     columnHeaderFirstItem);
         }
 
-        m_bNeedSetLeft = false;
+        mNeedSetLeft = false;
     }
 
-    private void fitSize2(int p_nPosition, boolean scrollingLeft, int columnHeaderScrollPosition,
+    private void fitSize2(int position, boolean scrollingLeft, int columnHeaderScrollPosition,
                           int columnHeaderOffset, int columnHeaderFirstItem) {
-        int nColumnCacheWidth = m_iColumnHeaderLayoutManager.getCacheWidth(p_nPosition);
-        View column = m_iColumnHeaderLayoutManager.findViewByPosition(p_nPosition);
+        int columnCacheWidth = mColumnHeaderLayoutManager.getCacheWidth(position);
+        View column = mColumnHeaderLayoutManager.findViewByPosition(position);
 
 
         if (column != null) {
@@ -276,46 +292,45 @@ public class CellLayoutManager extends LinearLayoutManager {
                             (columnHeaderFirstItem, columnHeaderOffset);
                 }
 
-                fit2(p_nPosition, j, nColumnCacheWidth, column);
+                fit2(position, j, columnCacheWidth, column);
             }
         }
     }
 
-    private void fit2(int p_nXPosition, int p_nYPosition, int p_nColumnCachedWidth, View
-            p_jColumn) {
-        CellRecyclerView child = (CellRecyclerView) findViewByPosition(p_nYPosition);
+    private void fit2(int xPosition, int yPosition, int columnCachedWidth, View column) {
+        CellRecyclerView child = (CellRecyclerView) findViewByPosition(yPosition);
         if (child != null) {
             ColumnLayoutManager childLayoutManager = (ColumnLayoutManager) child.getLayoutManager();
 
-            int nCellCacheWidth = childLayoutManager.getCacheWidth(p_nXPosition);
-            View cell = childLayoutManager.findViewByPosition(p_nXPosition);
+            int cellCacheWidth = childLayoutManager.getCacheWidth(xPosition);
+            View cell = childLayoutManager.findViewByPosition(xPosition);
 
             // Control whether the cell needs to be fitted by column header or not.
             if (cell != null) {
 
-                if (nCellCacheWidth != p_nColumnCachedWidth || m_bNeedSetLeft) {
+                if (cellCacheWidth != columnCachedWidth || mNeedSetLeft) {
 
                     // This is just for setting width value
-                    if (nCellCacheWidth != p_nColumnCachedWidth) {
-                        nCellCacheWidth = p_nColumnCachedWidth;
-                        TableViewUtils.setWidth(cell, nCellCacheWidth);
-                        childLayoutManager.setCacheWidth(p_nXPosition, nCellCacheWidth);
+                    if (cellCacheWidth != columnCachedWidth) {
+                        cellCacheWidth = columnCachedWidth;
+                        TableViewUtils.setWidth(cell, cellCacheWidth);
+                        childLayoutManager.setCacheWidth(xPosition, cellCacheWidth);
                     }
 
                     // The left & right values of Column header can be considered. Because this
                     // method will be worked
                     // after drawing process of main thread.
-                    if (p_jColumn.getLeft() != cell.getLeft() || p_jColumn.getRight() != cell
-                            .getRight()) {
+                    if (column.getLeft() != cell.getLeft() || column.getRight() != cell.getRight
+                            ()) {
                         // TODO: + 1 is for decoration item. It should be gotten from a generic
                         // method  of layoutManager
                         // Set right & left values
-                        cell.setLeft(p_jColumn.getLeft());
-                        cell.setRight(p_jColumn.getRight() + 1);
+                        cell.setLeft(column.getLeft());
+                        cell.setRight(column.getRight() + 1);
                         childLayoutManager.layoutDecoratedWithMargins(cell, cell.getLeft(), cell
                                 .getTop(), cell.getRight(), cell.getBottom());
 
-                        m_bNeedSetLeft = true;
+                        mNeedSetLeft = true;
                     }
                 }
             }
@@ -323,22 +338,22 @@ public class CellLayoutManager extends LinearLayoutManager {
     }
 
 
-    public boolean shouldFitColumns(int p_nYPosition) {
+    public boolean shouldFitColumns(int yPosition) {
 
         // Scrolling horizontally
-        if (m_iCellRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
-            CellRecyclerView cellRecyclerView = (CellRecyclerView) findViewByPosition(p_nYPosition);
+        if (mCellRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
+            CellRecyclerView cellRecyclerView = (CellRecyclerView) findViewByPosition(yPosition);
             if (!cellRecyclerView.isScrollOthers()) {
 
-                int nLastVisiblePosition = findLastVisibleItemPosition();
+                int lastVisiblePosition = findLastVisibleItemPosition();
                 CellRecyclerView lastCellRecyclerView = (CellRecyclerView) findViewByPosition
-                        (nLastVisiblePosition);
+                        (lastVisiblePosition);
 
                 if (lastCellRecyclerView != null) {
-                    if (p_nYPosition == nLastVisiblePosition) {
+                    if (yPosition == lastVisiblePosition) {
                         return true;
-                    } else if (lastCellRecyclerView.isScrollOthers() && p_nYPosition ==
-                            nLastVisiblePosition - 1) {
+                    } else if (lastCellRecyclerView.isScrollOthers() && yPosition ==
+                            lastVisiblePosition - 1) {
                         return true;
                     }
                 }
@@ -353,27 +368,27 @@ public class CellLayoutManager extends LinearLayoutManager {
         super.measureChildWithMargins(child, widthUsed, heightUsed);
 
         // If has fixed width is true, than calculation of the column width is not necessary.
-        if (m_iTableView.hasFixedWidth()) {
+        if (mTableView.hasFixedWidth()) {
             super.measureChildWithMargins(child, widthUsed, heightUsed);
             return;
         }
 
-        int nPosition = getPosition(child);
+        int position = getPosition(child);
 
         ColumnLayoutManager childLayoutManager = (ColumnLayoutManager) ((CellRecyclerView) child)
                 .getLayoutManager();
 
         // the below codes should be worked when it is scrolling vertically
-        if (m_iCellRecyclerView.getScrollState() != RecyclerView.SCROLL_STATE_IDLE) {
+        if (mCellRecyclerView.getScrollState() != RecyclerView.SCROLL_STATE_IDLE) {
             if (childLayoutManager.isNeedFit()) {
 
                 // Scrolling up
-                if (m_nLastDy < 0) {
-                    Log.e(LOG_TAG, nPosition + " fitWidthSize all vertically up");
+                if (mLastDy < 0) {
+                    Log.e(LOG_TAG, position + " fitWidthSize all vertically up");
                     fitWidthSize(true);
                 } else {
                     // Scrolling down
-                    Log.e(LOG_TAG, nPosition + " fitWidthSize all vertically down");
+                    Log.e(LOG_TAG, position + " fitWidthSize all vertically down");
                     fitWidthSize(false);
                 }
                 // all columns have been fitted.
@@ -383,52 +398,52 @@ public class CellLayoutManager extends LinearLayoutManager {
             // That means,populating for the first time like fetching all data to display.
             // It shouldn't be worked when it is scrolling horizontally ."getLastDx() == 0"
             // control for it.
-        } else if (m_iCellRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE &&
+        } else if (mCellRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE &&
                 childLayoutManager.getLastDx() == 0) {
 
             if (childLayoutManager.isNeedFit()) {
-                m_bNeedFit = true;
+                mNeedFit = true;
 
                 // all columns have been fitted.
                 childLayoutManager.clearNeedFit();
             }
 
-            if (m_bNeedFit) {
+            if (mNeedFit) {
                 // for the first time to populate adapter
-                if (m_jRowHeaderLayoutManager.findLastVisibleItemPosition() == nPosition) {
+                if (mRowHeaderLayoutManager.findLastVisibleItemPosition() == position) {
 
                     fitWidthSize2(false);
-                    Log.e(LOG_TAG, nPosition + " fitWidthSize populating data for the first time");
+                    Log.e(LOG_TAG, position + " fitWidthSize populating data for the first time");
 
-                    m_bNeedFit = false;
+                    mNeedFit = false;
                 }
             }
         }
     }
 
-    public AbstractViewHolder[] getVisibleCellViewsByColumnPosition(int p_nXPosition) {
-        int nVisibleChildCount = findLastVisibleItemPosition() - findFirstVisibleItemPosition() + 1;
-        int nIndex = 0;
-        AbstractViewHolder[] viewHolders = new AbstractViewHolder[nVisibleChildCount];
+    public AbstractViewHolder[] getVisibleCellViewsByColumnPosition(int xPosition) {
+        int visibleChildCount = findLastVisibleItemPosition() - findFirstVisibleItemPosition() + 1;
+        int index = 0;
+        AbstractViewHolder[] viewHolders = new AbstractViewHolder[visibleChildCount];
         for (int i = findFirstVisibleItemPosition(); i < findLastVisibleItemPosition() + 1; i++) {
             CellRecyclerView cellRowRecyclerView = (CellRecyclerView) findViewByPosition(i);
 
             AbstractViewHolder holder = (AbstractViewHolder) cellRowRecyclerView
-                    .findViewHolderForAdapterPosition(p_nXPosition);
+                    .findViewHolderForAdapterPosition(xPosition);
 
-            viewHolders[nIndex] = holder;
+            viewHolders[index] = holder;
 
-            nIndex++;
+            index++;
         }
         return viewHolders;
     }
 
-    public AbstractViewHolder getCellViewHolder(int p_nXPosition, int p_nYPosition) {
-        CellRecyclerView cellRowRecyclerView = (CellRecyclerView) findViewByPosition(p_nYPosition);
+    public AbstractViewHolder getCellViewHolder(int xPosition, int yPosition) {
+        CellRecyclerView cellRowRecyclerView = (CellRecyclerView) findViewByPosition(yPosition);
 
         if (cellRowRecyclerView != null) {
             return (AbstractViewHolder) cellRowRecyclerView.findViewHolderForAdapterPosition
-                    (p_nXPosition);
+                    (xPosition);
         }
         return null;
     }
@@ -443,8 +458,8 @@ public class CellLayoutManager extends LinearLayoutManager {
     }
 
     public CellRecyclerView[] getVisibleCellRowRecyclerViews() {
-        int nLength = findLastVisibleItemPosition() - findFirstVisibleItemPosition() + 1;
-        CellRecyclerView[] recyclerViews = new CellRecyclerView[nLength];
+        int length = findLastVisibleItemPosition() - findFirstVisibleItemPosition() + 1;
+        CellRecyclerView[] recyclerViews = new CellRecyclerView[length];
 
         int index = 0;
         for (int i = findFirstVisibleItemPosition(); i < findLastVisibleItemPosition() + 1; i++) {

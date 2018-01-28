@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2018. Evren Coşkun
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
 package com.evrencoskun.tableview.layoutmanager;
 
 import android.content.Context;
@@ -14,13 +31,13 @@ import com.evrencoskun.tableview.util.TableViewUtils;
  */
 
 public class ColumnHeaderLayoutManager extends LinearLayoutManager {
-    private SparseArray<Integer> m_aWidthList;
-    private ITableView m_iTableView;
+    private SparseArray<Integer> mCachedWidthList;
+    private ITableView mTableView;
 
-    public ColumnHeaderLayoutManager(Context context, ITableView p_iTableView) {
+    public ColumnHeaderLayoutManager(Context context, ITableView tableView) {
         super(context);
-        m_aWidthList = new SparseArray<>();
-        m_iTableView = p_iTableView;
+        mCachedWidthList = new SparseArray<>();
+        mTableView = tableView;
 
         this.setOrientation(ColumnHeaderLayoutManager.HORIZONTAL);
     }
@@ -30,7 +47,7 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
         super.measureChildWithMargins(child, widthUsed, heightUsed);
 
         // If has fixed width is true, than calculation of the column width is not necessary.
-        if (m_iTableView.hasFixedWidth()) {
+        if (mTableView.hasFixedWidth()) {
             return;
         }
 
@@ -40,31 +57,31 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
     @Override
     public void measureChild(View child, int widthUsed, int heightUsed) {
         // If has fixed width is true, than calculation of the column width is not necessary.
-        if (m_iTableView.hasFixedWidth()) {
+        if (mTableView.hasFixedWidth()) {
             super.measureChild(child, widthUsed, heightUsed);
             return;
         }
 
-        int nPosition = getPosition(child);
-        int nCacheWidth = getCacheWidth(nPosition);
+        int position = getPosition(child);
+        int cacheWidth = getCacheWidth(position);
 
         // If the width value of the cell has already calculated, then set the value
-        if (nCacheWidth != -1) {
-            TableViewUtils.setWidth(child, nCacheWidth);
+        if (cacheWidth != -1) {
+            TableViewUtils.setWidth(child, cacheWidth);
         } else {
             super.measureChild(child, widthUsed, heightUsed);
         }
     }
 
 
-    public void setCacheWidth(int p_nPosition, int p_nWidth) {
-        m_aWidthList.put(p_nPosition, p_nWidth);
+    public void setCacheWidth(int position, int width) {
+        mCachedWidthList.put(position, width);
     }
 
-    public int getCacheWidth(int p_nPosition) {
-        Integer nCachedWidth = m_aWidthList.get(p_nPosition);
-        if (nCachedWidth != null) {
-            return m_aWidthList.get(p_nPosition);
+    public int getCacheWidth(int position) {
+        Integer cachedWidth = mCachedWidthList.get(position);
+        if (cachedWidth != null) {
+            return mCachedWidthList.get(position);
         }
         return -1;
     }
@@ -77,45 +94,45 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
     /**
      * Helps to recalculate the width value of the cell that is located in given position.
      */
-    public void removeCachedWidth(int p_nPosition) {
-        m_aWidthList.remove(p_nPosition);
+    public void removeCachedWidth(int position) {
+        mCachedWidthList.remove(position);
     }
 
 
     public void customRequestLayout() {
-        int nLeft = getFirstItemLeft();
-        int nRight;
+        int left = getFirstItemLeft();
+        int right;
         for (int i = findFirstVisibleItemPosition(); i < findLastVisibleItemPosition() + 1; i++) {
-            nRight = nLeft + getCacheWidth(i);
+            right = left + getCacheWidth(i);
 
             View columnHeader = findViewByPosition(i);
-            columnHeader.setLeft(nLeft);
-            columnHeader.setRight(nRight);
+            columnHeader.setLeft(left);
+            columnHeader.setRight(right);
 
             layoutDecoratedWithMargins(columnHeader, columnHeader.getLeft(), columnHeader.getTop
                     (), columnHeader.getRight(), columnHeader.getBottom());
 
-            nLeft = nRight + 1;
+            left = right + 1;
         }
     }
 
     public AbstractViewHolder[] getVisibleViewHolders() {
-        int nVisibleChildCount = findLastVisibleItemPosition() - findFirstVisibleItemPosition() + 1;
-        int nIndex = 0;
+        int visibleChildCount = findLastVisibleItemPosition() - findFirstVisibleItemPosition() + 1;
+        int index = 0;
 
-        AbstractViewHolder[] views = new AbstractViewHolder[nVisibleChildCount];
+        AbstractViewHolder[] views = new AbstractViewHolder[visibleChildCount];
         for (int i = findFirstVisibleItemPosition(); i < findLastVisibleItemPosition() + 1; i++) {
 
-            views[nIndex] = (AbstractViewHolder) m_iTableView.getColumnHeaderRecyclerView()
+            views[index] = (AbstractViewHolder) mTableView.getColumnHeaderRecyclerView()
                     .findViewHolderForAdapterPosition(i);
 
-            nIndex++;
+            index++;
         }
         return views;
     }
 
-    public AbstractViewHolder getViewHolder(int pXPosition) {
-        return (AbstractViewHolder) m_iTableView.getColumnHeaderRecyclerView()
-                .findViewHolderForAdapterPosition(pXPosition);
+    public AbstractViewHolder getViewHolder(int xPosition) {
+        return (AbstractViewHolder) mTableView.getColumnHeaderRecyclerView()
+                .findViewHolderForAdapterPosition(xPosition);
     }
 }

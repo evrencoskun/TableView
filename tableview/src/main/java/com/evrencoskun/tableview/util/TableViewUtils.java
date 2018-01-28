@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2018. Evren Coşkun
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
 package com.evrencoskun.tableview.util;
 
 import android.support.v7.widget.RecyclerView;
@@ -14,27 +31,27 @@ public class TableViewUtils {
     /**
      * Helps to force width value before calling requestLayout by the system.
      */
-    public static void setWidth(View p_jView, int p_nWidth) {
+    public static void setWidth(View view, int width) {
         // Change width value from params
-        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) p_jView.getLayoutParams();
-        params.width = p_nWidth;
-        p_jView.setLayoutParams(params);
+        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
+        params.width = width;
+        view.setLayoutParams(params);
 
-        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(p_nWidth, View.MeasureSpec.EXACTLY);
-        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(p_jView.getMeasuredHeight(),
+        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY);
+        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(view.getMeasuredHeight(),
                 View.MeasureSpec.EXACTLY);
-        p_jView.measure(widthMeasureSpec, heightMeasureSpec);
+        view.measure(widthMeasureSpec, heightMeasureSpec);
 
-        p_jView.requestLayout();
+        view.requestLayout();
     }
 
     /**
      * Gets the exact width value before the view drawing by main thread.
      */
-    public static int getWidth(View p_jView) {
-        p_jView.measure(LinearLayout.LayoutParams.WRAP_CONTENT, View.MeasureSpec.makeMeasureSpec
-                (p_jView.getMeasuredHeight(), View.MeasureSpec.EXACTLY));
-        return p_jView.getMeasuredWidth();
+    public static int getWidth(View view) {
+        view.measure(LinearLayout.LayoutParams.WRAP_CONTENT, View.MeasureSpec.makeMeasureSpec
+                (view.getMeasuredHeight(), View.MeasureSpec.EXACTLY));
+        return view.getMeasuredWidth();
     }
 
 }

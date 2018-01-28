@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2018. Evren Coşkun
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
 package com.evrencoskun.tableview.adapter;
 
 import android.content.Context;
@@ -18,227 +35,226 @@ import java.util.List;
 
 public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
 
-    private int m_nRowHeaderWidth;
-    private int m_nColumnHeaderHeight;
+    private int mRowHeaderWidth;
+    private int mColumnHeaderHeight;
 
-    protected Context m_jContext;
-    private ColumnHeaderRecyclerViewAdapter m_iColumnHeaderRecyclerViewAdapter;
-    private RowHeaderRecyclerViewAdapter m_iRowHeaderRecyclerViewAdapter;
-    private CellRecyclerViewAdapter m_iCellRecyclerViewAdapter;
-    private View m_jCornerView;
+    protected Context mContext;
+    private ColumnHeaderRecyclerViewAdapter mColumnHeaderRecyclerViewAdapter;
+    private RowHeaderRecyclerViewAdapter mRowHeaderRecyclerViewAdapter;
+    private CellRecyclerViewAdapter mCellRecyclerViewAdapter;
+    private View mCornerView;
 
-    protected List<CH> m_jColumnHeaderItems;
-    protected List<RH> m_jRowHeaderItems;
-    protected List<List<C>> m_jCellItems;
+    protected List<CH> mColumnHeaderItems;
+    protected List<RH> mRowHeaderItems;
+    protected List<List<C>> mCellItems;
 
-    private ITableView m_iTableView;
+    private ITableView mTableView;
 
-    public AbstractTableAdapter(Context p_jContext) {
-        m_jContext = p_jContext;
+    public AbstractTableAdapter(Context context) {
+        mContext = context;
         initialize();
     }
 
     private void initialize() {
         // Create Column header RecyclerView Adapter
-        m_iColumnHeaderRecyclerViewAdapter = new ColumnHeaderRecyclerViewAdapter(m_jContext,
-                m_jColumnHeaderItems, this);
+        mColumnHeaderRecyclerViewAdapter = new ColumnHeaderRecyclerViewAdapter(mContext,
+                mColumnHeaderItems, this);
 
         // Create Row Header RecyclerView Adapter
-        m_iRowHeaderRecyclerViewAdapter = new RowHeaderRecyclerViewAdapter(m_jContext,
-                m_jRowHeaderItems, this);
+        mRowHeaderRecyclerViewAdapter = new RowHeaderRecyclerViewAdapter(mContext,
+                mRowHeaderItems, this);
 
         // Create Cell RecyclerView Adapter
-        m_iCellRecyclerViewAdapter = new CellRecyclerViewAdapter(m_jContext, m_jCellItems, this);
+        mCellRecyclerViewAdapter = new CellRecyclerViewAdapter(mContext, mCellItems, this);
     }
 
-    public void setColumnHeaderItems(List<CH> p_jColumnHeaderItems) {
-        if (p_jColumnHeaderItems == null) {
+    public void setColumnHeaderItems(List<CH> columnHeaderItems) {
+        if (columnHeaderItems == null) {
             return;
         }
 
-        m_jColumnHeaderItems = p_jColumnHeaderItems;
+        mColumnHeaderItems = columnHeaderItems;
 
         // Set the items to the adapter
-        m_iColumnHeaderRecyclerViewAdapter.setItems(m_jColumnHeaderItems);
+        mColumnHeaderRecyclerViewAdapter.setItems(mColumnHeaderItems);
     }
 
-    public void setRowHeaderItems(List<RH> p_jRowHeaderItems) {
-        if (p_jRowHeaderItems == null) {
+    public void setRowHeaderItems(List<RH> rowHeaderItems) {
+        if (rowHeaderItems == null) {
             return;
         }
 
-        m_jRowHeaderItems = p_jRowHeaderItems;
+        mRowHeaderItems = rowHeaderItems;
 
         // Set the items to the adapter
-        m_iRowHeaderRecyclerViewAdapter.setItems(m_jRowHeaderItems);
+        mRowHeaderRecyclerViewAdapter.setItems(mRowHeaderItems);
     }
 
-    public void setCellItems(List<List<C>> p_jCellItems) {
-        if (p_jCellItems == null) {
+    public void setCellItems(List<List<C>> cellItems) {
+        if (cellItems == null) {
             return;
         }
 
-        m_jCellItems = p_jCellItems;
+        mCellItems = cellItems;
 
         // Set the items to the adapter
-        m_iCellRecyclerViewAdapter.setItems(m_jCellItems);
+        mCellRecyclerViewAdapter.setItems(mCellItems);
     }
 
-    public void setAllItems(List<CH> p_jColumnHeaderItems, List<RH> p_jRowHeaderItems,
-                            List<List<C>> p_jCellItems) {
+    public void setAllItems(List<CH> columnHeaderItems, List<RH> rowHeaderItems, List<List<C>>
+            cellItems) {
         // Set all items
-        setColumnHeaderItems(p_jColumnHeaderItems);
-        setRowHeaderItems(p_jRowHeaderItems);
-        setCellItems(p_jCellItems);
+        setColumnHeaderItems(columnHeaderItems);
+        setRowHeaderItems(rowHeaderItems);
+        setCellItems(cellItems);
 
         // Control corner view
-        if ((p_jColumnHeaderItems != null && !p_jColumnHeaderItems.isEmpty()) &&
-                (p_jRowHeaderItems != null && !p_jRowHeaderItems.isEmpty()) && (p_jCellItems !=
-                null && !p_jCellItems.isEmpty()) && m_iTableView != null && m_jCornerView == null) {
+        if ((columnHeaderItems != null && !columnHeaderItems.isEmpty()) && (rowHeaderItems !=
+                null && !rowHeaderItems.isEmpty()) && (cellItems != null && !cellItems.isEmpty())
+                && mTableView != null && mCornerView == null) {
 
             // Create corner view
-            m_jCornerView = onCreateCornerView();
-            m_iTableView.addView(m_jCornerView, new FrameLayout.LayoutParams(m_nRowHeaderWidth,
-                    m_nColumnHeaderHeight));
-        } else if (m_jCornerView != null) {
+            mCornerView = onCreateCornerView();
+            mTableView.addView(mCornerView, new FrameLayout.LayoutParams(mRowHeaderWidth,
+                    mColumnHeaderHeight));
+        } else if (mCornerView != null) {
 
             // Change corner view visibility
-            if (p_jRowHeaderItems != null && !p_jRowHeaderItems.isEmpty()) {
-                m_jCornerView.setVisibility(View.GONE);
+            if (rowHeaderItems != null && !rowHeaderItems.isEmpty()) {
+                mCornerView.setVisibility(View.GONE);
             } else {
-                m_jCornerView.setVisibility(View.VISIBLE);
+                mCornerView.setVisibility(View.VISIBLE);
             }
         }
     }
 
 
     public ColumnHeaderRecyclerViewAdapter getColumnHeaderRecyclerViewAdapter() {
-        return m_iColumnHeaderRecyclerViewAdapter;
+        return mColumnHeaderRecyclerViewAdapter;
     }
 
     public RowHeaderRecyclerViewAdapter getRowHeaderRecyclerViewAdapter() {
-        return m_iRowHeaderRecyclerViewAdapter;
+        return mRowHeaderRecyclerViewAdapter;
     }
 
     public CellRecyclerViewAdapter getCellRecyclerViewAdapter() {
-        return m_iCellRecyclerViewAdapter;
+        return mCellRecyclerViewAdapter;
     }
 
-    public void setRowHeaderWidth(int p_nRowHeaderWidth) {
-        this.m_nRowHeaderWidth = p_nRowHeaderWidth;
+    public void setRowHeaderWidth(int rowHeaderWidth) {
+        this.mRowHeaderWidth = rowHeaderWidth;
     }
 
-    public void setColumnHeaderHeight(int p_nColumnHeaderHeight) {
-        this.m_nColumnHeaderHeight = p_nColumnHeaderHeight;
+    public void setColumnHeaderHeight(int columnHeaderHeight) {
+        this.mColumnHeaderHeight = columnHeaderHeight;
     }
 
-    public CH getColumnHeaderItem(int p_nPosition) {
-        if ((m_jColumnHeaderItems == null || m_jColumnHeaderItems.isEmpty()) || p_nPosition < 0
-                || p_nPosition >= m_jColumnHeaderItems.size()) {
+    public CH getColumnHeaderItem(int position) {
+        if ((mColumnHeaderItems == null || mColumnHeaderItems.isEmpty()) || position < 0 ||
+                position >= mColumnHeaderItems.size()) {
             return null;
         }
-        return m_jColumnHeaderItems.get(p_nPosition);
+        return mColumnHeaderItems.get(position);
     }
 
-    public RH getRowHeaderItem(int p_nPosition) {
-        if ((m_jRowHeaderItems == null || m_jRowHeaderItems.isEmpty()) || p_nPosition < 0 ||
-                p_nPosition >= m_jRowHeaderItems.size()) {
+    public RH getRowHeaderItem(int position) {
+        if ((mRowHeaderItems == null || mRowHeaderItems.isEmpty()) || position < 0 || position >=
+                mRowHeaderItems.size()) {
             return null;
         }
-        return m_jRowHeaderItems.get(p_nPosition);
+        return mRowHeaderItems.get(position);
     }
 
-    public C getCellItem(int p_nXPosition, int p_nYPosition) {
-        if ((m_jCellItems == null || m_jCellItems.isEmpty()) || p_nXPosition < 0 || p_nYPosition
-                >= m_jCellItems.size() || m_jCellItems.get(p_nYPosition) == null || p_nYPosition
-                < 0 || p_nXPosition >= m_jCellItems.get(p_nYPosition).size()) {
+    public C getCellItem(int columnPosition, int rowPosition) {
+        if ((mCellItems == null || mCellItems.isEmpty()) || columnPosition < 0 || rowPosition >=
+                mCellItems.size() || mCellItems.get(rowPosition) == null || rowPosition < 0 ||
+                columnPosition >= mCellItems.get(rowPosition).size()) {
             return null;
         }
 
-        return m_jCellItems.get(p_nYPosition).get(p_nXPosition);
+        return mCellItems.get(rowPosition).get(columnPosition);
     }
 
-    public List<C> getCellRowItems(int p_nYPosition) {
-        return (List<C>) m_iCellRecyclerViewAdapter.getItem(p_nYPosition);
+    public List<C> getCellRowItems(int rowPosition) {
+        return (List<C>) mCellRecyclerViewAdapter.getItem(rowPosition);
     }
 
-    public void removeRow(int p_nYPosition) {
-        m_iCellRecyclerViewAdapter.deleteItem(p_nYPosition);
-        m_iRowHeaderRecyclerViewAdapter.deleteItem(p_nYPosition);
+    public void removeRow(int rowPosition) {
+        mCellRecyclerViewAdapter.deleteItem(rowPosition);
+        mRowHeaderRecyclerViewAdapter.deleteItem(rowPosition);
     }
 
-    public void removeRowRange(int p_nYPositionStart, int p_nItemCount) {
-        m_iCellRecyclerViewAdapter.deleteItemRange(p_nYPositionStart, p_nItemCount);
-        m_iRowHeaderRecyclerViewAdapter.deleteItemRange(p_nYPositionStart, p_nItemCount);
+    public void removeRowRange(int rowPositionStart, int itemCount) {
+        mCellRecyclerViewAdapter.deleteItemRange(rowPositionStart, itemCount);
+        mRowHeaderRecyclerViewAdapter.deleteItemRange(rowPositionStart, itemCount);
     }
 
-    public void addRow(int p_nYPosition, RH p_jRowHeaderItem, List<C> p_jCellItems) {
-        m_iCellRecyclerViewAdapter.addItem(p_nYPosition, p_jCellItems);
-        m_iRowHeaderRecyclerViewAdapter.addItem(p_nYPosition, p_jRowHeaderItem);
+    public void addRow(int rowPosition, RH rowHeaderItem, List<C> cellItems) {
+        mCellRecyclerViewAdapter.addItem(rowPosition, cellItems);
+        mRowHeaderRecyclerViewAdapter.addItem(rowPosition, rowHeaderItem);
     }
 
-    public void addRowRange(int p_nYPositionStart, List<RH> p_jRowHeaderItem, List<List<C>>
-            p_jCellItems) {
-        m_iRowHeaderRecyclerViewAdapter.addItemRange(p_nYPositionStart, p_jRowHeaderItem);
-        m_iCellRecyclerViewAdapter.addItemRange(p_nYPositionStart, p_jCellItems);
+    public void addRowRange(int rowPositionStart, List<RH> rowHeaderItem, List<List<C>> cellItems) {
+        mRowHeaderRecyclerViewAdapter.addItemRange(rowPositionStart, rowHeaderItem);
+        mCellRecyclerViewAdapter.addItemRange(rowPositionStart, cellItems);
     }
 
-    public void changeRowHeaderItem(int p_nYPosition, RH p_jRowHeaderModel) {
-        m_iRowHeaderRecyclerViewAdapter.changeItem(p_nYPosition, p_jRowHeaderModel);
+    public void changeRowHeaderItem(int rowPosition, RH rowHeaderModel) {
+        mRowHeaderRecyclerViewAdapter.changeItem(rowPosition, rowHeaderModel);
     }
 
-    public void changeRowHeaderItemRange(int p_nYPositionStart, List<RH> p_jRowHeaderModelList) {
-        m_iRowHeaderRecyclerViewAdapter.changeItemRange(p_nYPositionStart, p_jRowHeaderModelList);
+    public void changeRowHeaderItemRange(int rowPositionStart, List<RH> rowHeaderModelList) {
+        mRowHeaderRecyclerViewAdapter.changeItemRange(rowPositionStart, rowHeaderModelList);
     }
 
-    public void changeCellItem(int p_nXPosition, int p_nYPosition, C p_jCellModel) {
-        List<C> cellItems = (List<C>) m_iCellRecyclerViewAdapter.getItem(p_nYPosition);
-        if (cellItems != null && cellItems.size() > p_nXPosition) {
+    public void changeCellItem(int columnPosition, int rowPosition, C cellModel) {
+        List<C> cellItems = (List<C>) mCellRecyclerViewAdapter.getItem(rowPosition);
+        if (cellItems != null && cellItems.size() > columnPosition) {
             // Update cell row items.
-            cellItems.set(p_nXPosition, p_jCellModel);
+            cellItems.set(columnPosition, cellModel);
 
-            m_iCellRecyclerViewAdapter.changeItem(p_nYPosition, cellItems);
+            mCellRecyclerViewAdapter.changeItem(rowPosition, cellItems);
         }
     }
 
-    public void changeColumnHeader(int p_nXPosition, CH p_jColumnHeaderModel) {
-        m_iColumnHeaderRecyclerViewAdapter.changeItem(p_nXPosition, p_jColumnHeaderModel);
+    public void changeColumnHeader(int columnPosition, CH columnHeaderModel) {
+        mColumnHeaderRecyclerViewAdapter.changeItem(columnPosition, columnHeaderModel);
     }
 
-    public void changeColumnHeaderRange(int p_nXPositionStart, List<CH> p_jColumnHeaderModelList) {
-        m_iColumnHeaderRecyclerViewAdapter.changeItemRange(p_nXPositionStart,
-                p_jColumnHeaderModelList);
+    public void changeColumnHeaderRange(int columnPositionStart, List<CH> columnHeaderModelList) {
+        mColumnHeaderRecyclerViewAdapter.changeItemRange(columnPositionStart,
+                columnHeaderModelList);
     }
 
 
-    public List<C> getCellColumnItems(int p_nXPosition) {
-        return m_iCellRecyclerViewAdapter.getColumnItems(p_nXPosition);
+    public List<C> getCellColumnItems(int columnPosition) {
+        return mCellRecyclerViewAdapter.getColumnItems(columnPosition);
     }
 
-    public void removeColumn(int p_nXPosition) {
-        m_iColumnHeaderRecyclerViewAdapter.deleteItem(p_nXPosition);
-        m_iCellRecyclerViewAdapter.removeColumnItems(p_nXPosition);
+    public void removeColumn(int columnPosition) {
+        mColumnHeaderRecyclerViewAdapter.deleteItem(columnPosition);
+        mCellRecyclerViewAdapter.removeColumnItems(columnPosition);
     }
 
-    public void addColumn(int p_nXPosition, CH p_jColumnHeaderItem, List<C> p_jCellItems) {
-        m_iColumnHeaderRecyclerViewAdapter.addItem(p_nXPosition, p_jColumnHeaderItem);
-        m_iCellRecyclerViewAdapter.addColumnItems(p_nXPosition, p_jCellItems);
+    public void addColumn(int columnPosition, CH columnHeaderItem, List<C> cellItems) {
+        mColumnHeaderRecyclerViewAdapter.addItem(columnPosition, columnHeaderItem);
+        mCellRecyclerViewAdapter.addColumnItems(columnPosition, cellItems);
     }
 
 
     public final void notifyDataSetChanged() {
-        m_iColumnHeaderRecyclerViewAdapter.notifyDataSetChanged();
-        m_iRowHeaderRecyclerViewAdapter.notifyDataSetChanged();
-        m_iCellRecyclerViewAdapter.notifyCellDataSetChanged();
+        mColumnHeaderRecyclerViewAdapter.notifyDataSetChanged();
+        mRowHeaderRecyclerViewAdapter.notifyDataSetChanged();
+        mCellRecyclerViewAdapter.notifyCellDataSetChanged();
     }
 
-    public void setTableView(TableView p_iTableView) {
-        m_iTableView = p_iTableView;
+    public void setTableView(TableView tableView) {
+        mTableView = tableView;
     }
 
     @Override
     public ITableView getTableView() {
-        return m_iTableView;
+        return mTableView;
     }
 
 }

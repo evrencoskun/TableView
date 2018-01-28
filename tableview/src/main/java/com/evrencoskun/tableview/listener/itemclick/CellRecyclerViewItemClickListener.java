@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2018. Evren Coşkun
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
 package com.evrencoskun.tableview.listener.itemclick;
 
 import android.support.v7.widget.RecyclerView;
@@ -16,12 +33,11 @@ import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 public class CellRecyclerViewItemClickListener extends AbstractItemClickListener {
     private static final String LOG_TAG = CellRecyclerViewItemClickListener.class.getSimpleName();
 
-    private CellRecyclerView m_iCellRecyclerView;
+    private CellRecyclerView mCellRecyclerView;
 
-    public CellRecyclerViewItemClickListener(CellRecyclerView p_jRecyclerView, ITableView
-            p_iTableView) {
-        super(p_jRecyclerView, p_iTableView);
-        this.m_iCellRecyclerView = p_iTableView.getCellRecyclerView();
+    public CellRecyclerViewItemClickListener(CellRecyclerView recyclerView, ITableView tableView) {
+        super(recyclerView, tableView);
+        this.mCellRecyclerView = tableView.getCellRecyclerView();
     }
 
     @Override
@@ -29,26 +45,26 @@ public class CellRecyclerViewItemClickListener extends AbstractItemClickListener
         // Get interacted view from x,y coordinate.
         View childView = view.findChildViewUnder(e.getX(), e.getY());
 
-        if (childView != null && m_jGestureDetector.onTouchEvent(e)) {
+        if (childView != null && mGestureDetector.onTouchEvent(e)) {
             // Find the view holder
-            AbstractViewHolder holder = (AbstractViewHolder) m_jRecyclerView.getChildViewHolder
+            AbstractViewHolder holder = (AbstractViewHolder) mRecyclerView.getChildViewHolder
                     (childView);
 
             // Get y position from adapter
-            CellRowRecyclerViewAdapter adapter = (CellRowRecyclerViewAdapter) m_jRecyclerView
+            CellRowRecyclerViewAdapter adapter = (CellRowRecyclerViewAdapter) mRecyclerView
                     .getAdapter();
 
-            int nXPosition = holder.getAdapterPosition();
-            int nYPosition = adapter.getYPosition();
+            int column = holder.getAdapterPosition();
+            int row = adapter.getYPosition();
 
             // Control to ignore selection color
-            if (!m_iTableView.isIgnoreSelectionColors()) {
-                m_iSelectionHandler.setSelectedCellPositions(holder, nXPosition, nYPosition);
+            if (!mTableView.isIgnoreSelectionColors()) {
+                mSelectionHandler.setSelectedCellPositions(holder, column, row);
             }
 
             if (getTableViewListener() != null) {
                 // Call ITableView listener for item click
-                getTableViewListener().onCellClicked(holder, nXPosition, nYPosition);
+                getTableViewListener().onCellClicked(holder, column, row);
             }
 
             return true;
@@ -64,21 +80,21 @@ public class CellRecyclerViewItemClickListener extends AbstractItemClickListener
 
         // Consume the action for the time when either the cell row recyclerView or
         // the cell recyclerView is scrolling.
-        if ((m_jRecyclerView.getScrollState() != RecyclerView.SCROLL_STATE_IDLE) ||
-                (m_iCellRecyclerView.getScrollState() != RecyclerView.SCROLL_STATE_IDLE) ||
-                m_jRecyclerView.isScrollOthers()) {
+        if ((mRecyclerView.getScrollState() != RecyclerView.SCROLL_STATE_IDLE) ||
+                (mCellRecyclerView.getScrollState() != RecyclerView.SCROLL_STATE_IDLE) ||
+                mRecyclerView.isScrollOthers()) {
             return;
         }
 
         // Get interacted view from x,y coordinate.
-        View child = m_jRecyclerView.findChildViewUnder(e.getX(), e.getY());
+        View child = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
 
         if (child != null && getTableViewListener() != null) {
             // Find the view holder
-            RecyclerView.ViewHolder holder = m_jRecyclerView.getChildViewHolder(child);
+            RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(child);
 
             // Get y position from adapter
-            CellRowRecyclerViewAdapter adapter = (CellRowRecyclerViewAdapter) m_jRecyclerView
+            CellRowRecyclerViewAdapter adapter = (CellRowRecyclerViewAdapter) mRecyclerView
                     .getAdapter();
 
             // Call ITableView listener for long click

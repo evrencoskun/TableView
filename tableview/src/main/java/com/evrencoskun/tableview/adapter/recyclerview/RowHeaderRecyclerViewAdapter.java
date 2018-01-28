@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2018. Evren Coşkun
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
 package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
@@ -16,17 +33,17 @@ import java.util.List;
 
 public class RowHeaderRecyclerViewAdapter<RH> extends AbstractRecyclerViewAdapter<RH> {
 
-    private ITableAdapter m_iTableAdapter;
+    private ITableAdapter mTableAdapter;
 
-    public RowHeaderRecyclerViewAdapter(Context context, List<RH> p_jItemList, ITableAdapter
-            p_iTableAdapter) {
-        super(context, p_jItemList);
-        this.m_iTableAdapter = p_iTableAdapter;
+    public RowHeaderRecyclerViewAdapter(Context context, List<RH> itemList, ITableAdapter
+            tableAdapter) {
+        super(context, itemList);
+        this.mTableAdapter = tableAdapter;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return m_iTableAdapter.onCreateRowHeaderViewHolder(parent, viewType);
+        return mTableAdapter.onCreateRowHeaderViewHolder(parent, viewType);
     }
 
     @Override
@@ -34,12 +51,12 @@ public class RowHeaderRecyclerViewAdapter<RH> extends AbstractRecyclerViewAdapte
         AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
         Object value = getItem(position);
 
-        m_iTableAdapter.onBindRowHeaderViewHolder(viewHolder, value, position);
+        mTableAdapter.onBindRowHeaderViewHolder(viewHolder, value, position);
     }
 
     @Override
     public int getItemViewType(int position) {
-        return m_iTableAdapter.getRowHeaderItemViewType(position);
+        return mTableAdapter.getRowHeaderItemViewType(position);
     }
 
     @Override
@@ -47,14 +64,14 @@ public class RowHeaderRecyclerViewAdapter<RH> extends AbstractRecyclerViewAdapte
         super.onViewAttachedToWindow(holder);
         AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
 
-        SelectionState selectionState = m_iTableAdapter.getTableView().getSelectionHandler()
+        SelectionState selectionState = mTableAdapter.getTableView().getSelectionHandler()
                 .getRowSelectionState(holder.getAdapterPosition());
 
 
         // Control to ignore selection color
-        if (!m_iTableAdapter.getTableView().isIgnoreSelectionColors()) {
+        if (!mTableAdapter.getTableView().isIgnoreSelectionColors()) {
             // Change background color of the view considering it's selected state
-            m_iTableAdapter.getTableView().getSelectionHandler()
+            mTableAdapter.getTableView().getSelectionHandler()
                     .changeRowBackgroundColorBySelectionStatus(viewHolder, selectionState);
         }
 

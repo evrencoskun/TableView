@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2018. Evren Coşkun
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
 package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
@@ -18,20 +35,20 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
 
     private static final String LOG_TAG = CellRowRecyclerViewAdapter.class.getSimpleName();
 
-    private int m_nYPosition;
-    private ITableAdapter m_iTableAdapter;
+    private int mYPosition;
+    private ITableAdapter mTableAdapter;
 
-    public CellRowRecyclerViewAdapter(Context context, List p_jItemList, ITableAdapter
-            p_iTableAdapter, int p_nYPosition) {
-        super(context, p_jItemList);
-        this.m_nYPosition = p_nYPosition;
-        this.m_iTableAdapter = p_iTableAdapter;
+    public CellRowRecyclerViewAdapter(Context context, List itemList, ITableAdapter
+            p_iTableAdapter, int yPosition) {
+        super(context, itemList);
+        this.mYPosition = yPosition;
+        this.mTableAdapter = p_iTableAdapter;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (m_iTableAdapter != null) {
-            AbstractViewHolder viewHolder = (AbstractViewHolder) m_iTableAdapter
+        if (mTableAdapter != null) {
+            AbstractViewHolder viewHolder = (AbstractViewHolder) mTableAdapter
                     .onCreateCellViewHolder(parent, viewType);
 
             return viewHolder;
@@ -40,22 +57,22 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int p_nXPosition) {
-        if (m_iTableAdapter != null) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int xPosition) {
+        if (mTableAdapter != null) {
             AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
-            Object value = getItem(p_nXPosition);
+            Object value = getItem(xPosition);
 
-            m_iTableAdapter.onBindCellViewHolder(viewHolder, value, p_nXPosition, m_nYPosition);
+            mTableAdapter.onBindCellViewHolder(viewHolder, value, xPosition, mYPosition);
         }
     }
 
     public int getYPosition() {
-        return m_nYPosition;
+        return mYPosition;
     }
 
     @Override
     public int getItemViewType(int position) {
-        return m_iTableAdapter.getCellItemViewType(position);
+        return mTableAdapter.getCellItemViewType(position);
     }
 
     @Override
@@ -63,17 +80,17 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
         super.onViewAttachedToWindow(holder);
         AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
 
-        SelectionState selectionState = m_iTableAdapter.getTableView().getSelectionHandler()
-                .getCellSelectionState(holder.getAdapterPosition(), m_nYPosition);
+        SelectionState selectionState = mTableAdapter.getTableView().getSelectionHandler()
+                .getCellSelectionState(holder.getAdapterPosition(), mYPosition);
 
         // Control to ignore selection color
-        if (!m_iTableAdapter.getTableView().isIgnoreSelectionColors()) {
+        if (!mTableAdapter.getTableView().isIgnoreSelectionColors()) {
 
             // Change the background color of the view considering selected row/cell position.
             if (selectionState == SelectionState.SELECTED) {
-                viewHolder.setBackgroundColor(m_iTableAdapter.getTableView().getSelectedColor());
+                viewHolder.setBackgroundColor(mTableAdapter.getTableView().getSelectedColor());
             } else {
-                viewHolder.setBackgroundColor(m_iTableAdapter.getTableView().getUnSelectedColor());
+                viewHolder.setBackgroundColor(mTableAdapter.getTableView().getUnSelectedColor());
             }
         }
 

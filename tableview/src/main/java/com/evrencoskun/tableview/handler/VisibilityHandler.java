@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2018. Evren Coşkun
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
 package com.evrencoskun.tableview.handler;
 
 import android.util.Log;
@@ -19,35 +36,35 @@ public class VisibilityHandler {
     private SparseArray<Column> mHideColumnList = new SparseArray<>();
 
 
-    public VisibilityHandler(ITableView pTableView) {
-        this.mTableView = pTableView;
+    public VisibilityHandler(ITableView tableView) {
+        this.mTableView = tableView;
     }
 
-    public void hideRow(int pYPosition) {
+    public void hideRow(int row) {
         // add row the list
-        mHideRowList.put(pYPosition, getRowValueFromPosition(pYPosition));
+        mHideRowList.put(row, getRowValueFromPosition(row));
 
         // remove row model from adapter
-        mTableView.getAdapter().removeRow(pYPosition);
+        mTableView.getAdapter().removeRow(row);
     }
 
-    public void showRow(int pYPosition) {
-        showRow(pYPosition, true);
+    public void showRow(int row) {
+        showRow(row, true);
     }
 
-    private void showRow(int pYPosition, boolean p_bRemoveFromList) {
-        Row hiddenRow = mHideRowList.get(pYPosition);
+    private void showRow(int row, boolean removeFromList) {
+        Row hiddenRow = mHideRowList.get(row);
 
         if (hiddenRow != null) {
             // add row model to the adapter
-            mTableView.getAdapter().addRow(pYPosition, hiddenRow.getRowHeaderModel(), hiddenRow
+            mTableView.getAdapter().addRow(row, hiddenRow.getRowHeaderModel(), hiddenRow
                     .getCellModelList());
         } else {
             Log.e(LOG_TAG, "This row is already visible.");
         }
 
-        if (p_bRemoveFromList) {
-            mHideRowList.remove(pYPosition);
+        if (removeFromList) {
+            mHideRowList.remove(row);
         }
     }
 
@@ -58,8 +75,8 @@ public class VisibilityHandler {
 
     public void showAllHiddenRows() {
         for (int i = 0; i < mHideRowList.size(); i++) {
-            int nYPosition = mHideRowList.keyAt(i);
-            showRow(nYPosition, false);
+            int row = mHideRowList.keyAt(i);
+            showRow(row, false);
         }
 
         clearHideRowList();
@@ -82,7 +99,7 @@ public class VisibilityHandler {
         showColumn(column, true);
     }
 
-    private void showColumn(int column, boolean p_bRemoveFromList) {
+    private void showColumn(int column, boolean removeFromList) {
         Column hiddenColumn = mHideColumnList.get(column);
 
         if (hiddenColumn != null) {
@@ -93,7 +110,7 @@ public class VisibilityHandler {
             Log.e(LOG_TAG, "This column is already visible.");
         }
 
-        if (p_bRemoveFromList) {
+        if (removeFromList) {
             mHideColumnList.remove(column);
         }
     }
@@ -104,8 +121,8 @@ public class VisibilityHandler {
 
     public void showAllHiddenColumns() {
         for (int i = 0; i < mHideColumnList.size(); i++) {
-            int nXPosition = mHideColumnList.keyAt(i);
-            showColumn(nXPosition, false);
+            int column = mHideColumnList.keyAt(i);
+            showColumn(column, false);
         }
 
         clearHideColumnList();
@@ -121,10 +138,10 @@ public class VisibilityHandler {
         private Object mRowHeaderModel;
         private List<Object> mCellModelList;
 
-        public Row(int pYPosition, Object pRowHeaderModel, List<Object> pCellModelList) {
-            this.mYPosition = pYPosition;
-            this.mRowHeaderModel = pRowHeaderModel;
-            this.mCellModelList = pCellModelList;
+        public Row(int row, Object rowHeaderModel, List<Object> cellModelList) {
+            this.mYPosition = row;
+            this.mRowHeaderModel = rowHeaderModel;
+            this.mCellModelList = cellModelList;
         }
 
         public int getYPosition() {
@@ -146,10 +163,10 @@ public class VisibilityHandler {
         private Object mColumnHeaderModel;
         private List<Object> mCellModelList;
 
-        public Column(int pYPosition, Object pColumnHeaderModel, List<Object> pCellModelList) {
-            this.mYPosition = pYPosition;
-            this.mColumnHeaderModel = pColumnHeaderModel;
-            this.mCellModelList = pCellModelList;
+        public Column(int yPosition, Object columnHeaderModel, List<Object> cellModelList) {
+            this.mYPosition = yPosition;
+            this.mColumnHeaderModel = columnHeaderModel;
+            this.mCellModelList = cellModelList;
         }
 
         public int getYPosition() {

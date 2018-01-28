@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2018. Evren Coşkun
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
 package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
@@ -17,8 +34,8 @@ import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
 public class CellRecyclerView extends RecyclerView {
     private static final String LOG_TAG = CellRecyclerView.class.getSimpleName();
 
-    private int m_nScrolledX = 0;
-    private int m_nScrolledY = 0;
+    private int mScrolledX = 0;
+    private int mScrolledY = 0;
 
     private boolean mIsHorizontalScrollListenerRemoved = true;
     private boolean mIsVerticalScrollListenerRemoved = true;
@@ -35,22 +52,22 @@ public class CellRecyclerView extends RecyclerView {
 
     @Override
     public void onScrolled(int dx, int dy) {
-        m_nScrolledX += dx;
-        m_nScrolledY += dy;
+        mScrolledX += dx;
+        mScrolledY += dy;
 
         super.onScrolled(dx, dy);
     }
 
 
     public int getScrolledX() {
-        return m_nScrolledX;
+        return mScrolledX;
     }
 
     public void clearScrolledX() {
-        m_nScrolledX = 0;
+        mScrolledX = 0;
     }
 
-    public int getScrolledY() { return m_nScrolledY; }
+    public int getScrolledY() { return mScrolledY; }
 
 
     @Override
@@ -111,20 +128,20 @@ public class CellRecyclerView extends RecyclerView {
         return !mIsHorizontalScrollListenerRemoved;
     }
 
-    public void setSelected(SelectionState p_eSelected, @ColorInt int p_nBackgroundColor, boolean
-            p_bIsIgnoreSelectionColors) {
+    public void setSelected(SelectionState selectionState, @ColorInt int backgroundColor, boolean
+            ignoreSelectionColors) {
         for (int i = 0; i < getAdapter().getItemCount(); i++) {
             AbstractViewHolder viewHolder = (AbstractViewHolder) findViewHolderForAdapterPosition
                     (i);
             if (viewHolder != null) {
 
-                if (!p_bIsIgnoreSelectionColors) {
+                if (!ignoreSelectionColors) {
                     // Change background color
-                    viewHolder.setBackgroundColor(p_nBackgroundColor);
+                    viewHolder.setBackgroundColor(backgroundColor);
                 }
 
                 // Change selection status of the view holder
-                viewHolder.setSelected(p_eSelected);
+                viewHolder.setSelected(selectionState);
             }
         }
     }

@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2018. Evren Coşkun
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
 package com.evrencoskun.tableview.sort;
 
 import android.support.v7.util.DiffUtil;
@@ -12,37 +29,36 @@ public class ColumnSortCallback extends DiffUtil.Callback {
 
     private static final String LOG_TAG = ColumnSortCallback.class.getSimpleName();
 
-    private List<List<ISortableModel>> m_jOldCellItems;
-    private List<List<ISortableModel>> m_jNewCellItems;
-    private int m_nColumnPosition;
+    private List<List<ISortableModel>> mOldCellItems;
+    private List<List<ISortableModel>> mNewCellItems;
+    private int mColumnPosition;
 
-    public ColumnSortCallback(List<List<ISortableModel>> p_jOldCellItems,
-                              List<List<ISortableModel>> p_jNewCellItems, int
-                                      p_nColumnPosition) {
-        this.m_jOldCellItems = p_jOldCellItems;
-        this.m_jNewCellItems = p_jNewCellItems;
-        this.m_nColumnPosition = p_nColumnPosition;
+    public ColumnSortCallback(List<List<ISortableModel>> oldCellItems, List<List<ISortableModel>>
+            newCellItems, int column) {
+        this.mOldCellItems = oldCellItems;
+        this.mNewCellItems = newCellItems;
+        this.mColumnPosition = column;
     }
 
     @Override
     public int getOldListSize() {
-        return m_jOldCellItems.size();
+        return mOldCellItems.size();
     }
 
     @Override
     public int getNewListSize() {
-        return m_jNewCellItems.size();
+        return mNewCellItems.size();
     }
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
         // Control for precaution from IndexOutOfBoundsException
-        if (m_jOldCellItems.size() > oldItemPosition && m_jNewCellItems.size() > newItemPosition) {
-            if (m_jOldCellItems.get(oldItemPosition).size() > m_nColumnPosition &&
-                    m_jNewCellItems.get(newItemPosition).size() > m_nColumnPosition) {
+        if (mOldCellItems.size() > oldItemPosition && mNewCellItems.size() > newItemPosition) {
+            if (mOldCellItems.get(oldItemPosition).size() > mColumnPosition && mNewCellItems.get
+                    (newItemPosition).size() > mColumnPosition) {
                 // Compare ids
-                String oldId = m_jOldCellItems.get(oldItemPosition).get(m_nColumnPosition).getId();
-                String newId = m_jNewCellItems.get(newItemPosition).get(m_nColumnPosition).getId();
+                String oldId = mOldCellItems.get(oldItemPosition).get(mColumnPosition).getId();
+                String newId = mNewCellItems.get(newItemPosition).get(mColumnPosition).getId();
                 return oldId.equals(newId);
             }
         }
@@ -52,12 +68,14 @@ public class ColumnSortCallback extends DiffUtil.Callback {
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
         // Control for precaution from IndexOutOfBoundsException
-        if (m_jOldCellItems.size() > oldItemPosition && m_jNewCellItems.size() > newItemPosition) {
-            if (m_jOldCellItems.get(oldItemPosition).size() > m_nColumnPosition &&
-                    m_jNewCellItems.get(newItemPosition).size() > m_nColumnPosition) {
+        if (mOldCellItems.size() > oldItemPosition && mNewCellItems.size() > newItemPosition) {
+            if (mOldCellItems.get(oldItemPosition).size() > mColumnPosition && mNewCellItems.get
+                    (newItemPosition).size() > mColumnPosition) {
                 // Compare contents
-                Object oldContent = m_jOldCellItems.get(oldItemPosition).get(m_nColumnPosition).getContent();
-                Object newContent = m_jNewCellItems.get(newItemPosition).get(m_nColumnPosition).getContent();
+                Object oldContent = mOldCellItems.get(oldItemPosition).get(mColumnPosition)
+                        .getContent();
+                Object newContent = mNewCellItems.get(newItemPosition).get(mColumnPosition)
+                        .getContent();
                 return oldContent.equals(newContent);
             }
         }

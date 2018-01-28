@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2018. Evren Coşkun
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
 package com.evrencoskun.tableviewsample.tableview.model;
 
 import com.evrencoskun.tableview.sort.ISortableModel;
@@ -8,34 +25,34 @@ import com.evrencoskun.tableview.sort.ISortableModel;
 
 public class Cell implements ISortableModel {
 
-    private String m_strId;
-    private Object m_strData;
+    private String mId;
+    private Object mData;
 
-    public Cell(String p_strId) {
-        this.m_strId = p_strId;
+    public Cell(String id) {
+        this.mId = id;
     }
 
-    public Cell(String p_strId, Object p_strData) {
-        this.m_strId = p_strId;
-        this.m_strData = p_strData;
+    public Cell(String id, Object data) {
+        this.mId = id;
+        this.mData = data;
     }
 
     public String getId() {
-        return m_strId;
+        return mId;
     }
 
     @Override
     public Object getContent() {
-        return m_strData;
+        return mData;
     }
 
 
     public Object getData() {
-        return m_strData;
+        return mData;
     }
 
-    public void setData(String p_strData) {
-        m_strData = p_strData;
+    public void setData(String data) {
+        mData = data;
     }
 }
 
