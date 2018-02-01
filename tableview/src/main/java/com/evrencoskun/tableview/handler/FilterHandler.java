@@ -92,7 +92,6 @@ public class FilterHandler<T> {
         diffRowResult.dispatchUpdatesTo(mRowHeaderRecyclerViewAdapter);
     }
 
-    @SuppressWarnings("unchecked")
     public void filter(String filter) {
         filter(-1, filter);
     }
