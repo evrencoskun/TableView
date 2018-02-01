@@ -21,6 +21,7 @@ package com.evrencoskun.tableviewsample;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -154,6 +155,8 @@ public class MainFragment extends Fragment {
             String title = "column " + i;
             if (i % 6 == 2) {
                 title = "large column " + i;
+            } else if (i == 3) {
+                title = "mood";
             }
             ColumnHeader header = new ColumnHeader(String.valueOf(i), title);
             list.add(header);
@@ -212,17 +215,26 @@ public class MainFragment extends Fragment {
             for (int j = 0; j < COLUMN_SIZE; j++) {
                 Object text = "cell " + j + " " + i;
 
+                final int random = new Random().nextInt();
                 if (j == 0) {
                     text = i;
                 } else if (j == 1) {
-                    int random = new Random().nextInt();
                     text = random;
+                } else if (j == 3) {
+                    text = random % 2 == 0 ?
+                            ContextCompat.getDrawable(getActivity(), R.drawable.ic_happy) :
+                            ContextCompat.getDrawable(getActivity(), R.drawable.ic_sad);
                 }
 
                 // Create dummy id.
                 String id = j + "-" + i;
 
-                Cell cell = new Cell(id, text);
+                Cell cell;
+                if (j == 3) {
+                    cell = new Cell(id, text, random % 2 == 0 ? "happy" : "sad");
+                } else {
+                    cell = new Cell(id, text);
+                }
                 cellList.add(cell);
             }
             list.add(cellList);
@@ -291,5 +303,13 @@ public class MainFragment extends Fragment {
         }
 
         return str;
+    }
+
+    public void filterTable(String filter) {
+        mTableView.filter(filter);
+    }
+
+    public void filterTableForMood(String filter) {
+        mTableView.filterColumn(3, filter);
     }
 }

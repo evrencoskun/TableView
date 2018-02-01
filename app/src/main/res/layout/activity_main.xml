@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2018. Evren Coşkun
   ~
   ~  Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,16 +15,40 @@
   ~
   -->
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_line"
     android:focusableInTouchMode="true">
 
+    <LinearLayout
+        android:id="@+id/search_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <EditText
+            android:id="@+id/query_string"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="70"
+            android:inputType="textNoSuggestions" />
+
+        <Spinner
+            android:id="@+id/mood_spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="30"
+            android:background="@android:color/transparent"
+            android:entries="@array/moods" />
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/activity_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/search_field" />
 
 </RelativeLayout>
