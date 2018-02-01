@@ -36,6 +36,7 @@ import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.handler.ColumnSortHandler;
 import com.evrencoskun.tableview.handler.ScrollHandler;
+import com.evrencoskun.tableview.handler.FilterHandler;
 import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.handler.VisibilityHandler;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
@@ -80,6 +81,7 @@ public class TableView extends FrameLayout implements ITableView {
     private ColumnSortHandler mColumnSortHandler;
     private VisibilityHandler mVisibilityHandler;
     private ScrollHandler mScrollHandler;
+    private FilterHandler mFilterHandler;
 
     private int mRowHeaderWidth;
     private int mColumnHeaderHeight;
@@ -304,6 +306,9 @@ public class TableView extends FrameLayout implements ITableView {
 
                 // Create Sort Handler
                 mColumnSortHandler = new ColumnSortHandler(this);
+
+                // Create Search Handler
+                mFilterHandler = new FilterHandler(this);
             }
         }
     }
@@ -428,6 +433,16 @@ public class TableView extends FrameLayout implements ITableView {
     @Override
     public AbstractTableAdapter getAdapter() {
         return mTableAdapter;
+    }
+
+    @Override
+    public void filterColumn(int columnPosition, String filter) {
+        mFilterHandler.filter(columnPosition, filter);
+    }
+
+    @Override
+    public void filter(String filter) {
+        mFilterHandler.filter(filter);
     }
 
     @Override
