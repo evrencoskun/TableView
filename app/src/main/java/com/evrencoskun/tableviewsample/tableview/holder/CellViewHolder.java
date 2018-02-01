@@ -18,6 +18,7 @@
 package com.evrencoskun.tableviewsample.tableview.holder;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,10 +33,12 @@ public class CellViewHolder extends AbstractViewHolder {
 
     public final TextView cell_textview;
     public final LinearLayout cell_container;
+    public final ImageView cell_image;
 
     public CellViewHolder(View itemView) {
         super(itemView);
         cell_textview = (TextView) itemView.findViewById(R.id.cell_data);
         cell_container = (LinearLayout) itemView.findViewById(R.id.cell_container);
+        cell_image = (ImageView) itemView.findViewById(R.id.cell_image);
     }
 }

@@ -19,18 +19,69 @@ package com.evrencoskun.tableviewsample;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 public class MainActivity extends AppCompatActivity {
+
+    private MainFragment mainFragment;
+    private EditText searchField;
+    private Spinner moodFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mainFragment = new MainFragment();
+        searchField = findViewById(R.id.query_string);
+        moodFilter = findViewById(R.id.mood_spinner);
+        searchField.addTextChangedListener(onSearchTextChange);
+        moodFilter.setOnItemSelectedListener(onMoodSelectedListener);
+
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().add(R.id.activity_container, new
-                    MainFragment(), MainFragment.class.getSimpleName()).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.activity_container,
+                    mainFragment, mainFragment.getClass().getSimpleName()).commit();
         }
 
     }
+
+    @Override
+    protected void onDestroy() {
+        mainFragment.onDestroy();
+        super.onDestroy();
+    }
+
+    private TextWatcher onSearchTextChange = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            mainFragment.filterTable(String.valueOf(s));
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
+    private AdapterView.OnItemSelectedListener onMoodSelectedListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            mainFragment.filterTableForMood(parent.getItemAtPosition(position).toString());
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
 }

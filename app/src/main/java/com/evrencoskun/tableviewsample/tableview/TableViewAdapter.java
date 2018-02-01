@@ -18,6 +18,7 @@
 package com.evrencoskun.tableviewsample.tableview;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,7 +92,14 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
 
         // Get the holder to update cell item text
         CellViewHolder viewHolder = (CellViewHolder) holder;
-        viewHolder.cell_textview.setText(String.valueOf(cell.getData()));
+
+        if (cell.getData() instanceof Drawable) {
+            viewHolder.cell_textview.setVisibility(View.GONE);
+            viewHolder.cell_image.setVisibility(View.VISIBLE);
+            viewHolder.cell_image.setImageDrawable((Drawable) cell.getData());
+        } else {
+            viewHolder.cell_textview.setText(String.valueOf(cell.getData()));
+        }
 
         // If your TableView should have auto resize for cells & columns.
         // Then you should consider the below lines. Otherwise, you can ignore them.

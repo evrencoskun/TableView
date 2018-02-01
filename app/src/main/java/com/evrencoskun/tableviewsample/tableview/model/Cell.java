@@ -17,16 +17,26 @@
 
 package com.evrencoskun.tableviewsample.tableview.model;
 
+import com.evrencoskun.tableview.filter.IFilterableModel;
 import com.evrencoskun.tableview.sort.ISortableModel;
 
 /**
  * Created by evrencoskun on 11/06/2017.
  */
 
-public class Cell implements ISortableModel {
+public class Cell implements ISortableModel, IFilterableModel {
 
     private String mId;
     private Object mData;
+    private String mFilterKeyword;
+
+    public String getFilterKeyword() {
+        return mFilterKeyword;
+    }
+
+    public void setFilterKeyword(String filterKeyword) {
+        this.mFilterKeyword = filterKeyword;
+    }
 
     public Cell(String id) {
         this.mId = id;
@@ -35,6 +45,13 @@ public class Cell implements ISortableModel {
     public Cell(String id, Object data) {
         this.mId = id;
         this.mData = data;
+        this.mFilterKeyword = String.valueOf(data);
+    }
+
+    public Cell(String id, Object data, String filterKeyword) {
+        this.mId = id;
+        this.mData = data;
+        this.mFilterKeyword = filterKeyword;
     }
 
     public String getId() {
@@ -53,6 +70,11 @@ public class Cell implements ISortableModel {
 
     public void setData(String data) {
         mData = data;
+    }
+
+    @Override
+    public String getFilterableKeyword() {
+        return mFilterKeyword;
     }
 }
 

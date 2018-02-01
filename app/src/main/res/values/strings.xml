@@ -28,4 +28,9 @@
     <string name="scroll_to_column_position">Scroll to 15. column position</string>
     <string name="scroll_to_row_position">Scroll to 5. row position</string>
     <string name="show_hide_the_column">Showing / Hiding 1. column</string>
+    <string-array name="moods">
+        <item></item>
+        <item>Happy</item>
+        <item>Sad</item>
+    </string-array>
 </resources>

@@ -107,4 +107,19 @@ public interface ITableView {
     void remeasureColumnWidth(int column);
 
     AbstractTableAdapter getAdapter();
+
+    /**
+     * Filters a column for an entry and displays all rows with the filtered column item.
+     *
+     * @param columnPosition The column to be searched.
+     * @param filter         The filter string.
+     */
+    void filterColumn(int columnPosition, String filter);
+
+    /**
+     * Filters the whole table and displays all rows containing the filter string.
+     *
+     * @param filter The query string.
+     */
+    void filter(String filter);
 }

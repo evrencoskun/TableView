@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2018. Evren Coşkun
   ~
   ~  Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,13 +15,14 @@
   ~
   -->
 
-<LinearLayout
-    android:id="@+id/cell_container"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cell_container"
     android:layout_width="wrap_content"
     android:layout_height="@dimen/cell_height"
     android:background="@color/cell_background_color"
+    android:gravity="center"
     android:orientation="vertical">
 
 
@@ -31,13 +31,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
         android:gravity="center"
         android:maxLines="1"
         android:textColor="@color/table_view_default_text_color"
         android:textSize="@dimen/text_size"
-        tools:text="Cell Data"/>
+        android:visibility="visible"
+        tools:text="Cell Data" />
+
+    <ImageView
+        android:id="@+id/cell_image"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:contentDescription="@string/app_name"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_happy" />
 
 </LinearLayout>
 
