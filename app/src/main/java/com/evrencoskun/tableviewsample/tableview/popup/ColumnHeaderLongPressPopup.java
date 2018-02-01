@@ -41,8 +41,6 @@ public class ColumnHeaderLongPressPopup extends PopupMenu implements PopupMenu
     private static final int HIDE_ROW = 3;
     private static final int SHOW_ROW = 4;
     private static final int SCROLL_ROW = 5;
-    private static final int SEARCH_COLUMN = 6;
-    private static final int SEARCH_ALL = 7;
 
 
     private ColumnHeaderViewHolder mViewHolder;
@@ -78,8 +76,6 @@ public class ColumnHeaderLongPressPopup extends PopupMenu implements PopupMenu
         this.getMenu().add(Menu.NONE, SHOW_ROW, 3, mContext.getString(R.string.showing_row_sample));
         this.getMenu().add(Menu.NONE, SCROLL_ROW, 4, mContext.getString(R.string
                 .scroll_to_row_position));
-        this.getMenu().add(Menu.NONE, SEARCH_COLUMN, 5, mContext.getString(R.string.search_this_column));
-        this.getMenu().add(Menu.NONE, SEARCH_ALL, 5, mContext.getString(R.string.search_all_items));
         // add new one ...
 
     }
@@ -120,13 +116,6 @@ public class ColumnHeaderLongPressPopup extends PopupMenu implements PopupMenu
             case SCROLL_ROW:
                 mTableView.scrollToRowPosition(5);
                 break;
-            case SEARCH_COLUMN:
-                // TODO search column
-                break;
-            case SEARCH_ALL:
-                // TODO search all items
-                break;
-
         }
         return true;
     }
