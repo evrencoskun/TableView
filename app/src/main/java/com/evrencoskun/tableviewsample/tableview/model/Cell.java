@@ -1,33 +1,41 @@
 package com.evrencoskun.tableviewsample.tableview.model;
 
+import com.evrencoskun.tableview.sort.ISortableModel;
+
 /**
  * Created by evrencoskun on 11/06/2017.
  */
 
-public class Cell {
+public class Cell implements ISortableModel {
 
-    private long m_nId;
-    private String m_nData;
+    private String m_strId;
+    private Object m_strData;
 
-    public Cell(long p_nId) {
-        this(p_nId, "");
+    public Cell(String p_strId) {
+        this.m_strId = p_strId;
     }
 
-    public Cell(long p_nId, String p_strData) {
-        this.m_nId = p_nId;
-        this.m_nData = p_strData;
+    public Cell(String p_strId, Object p_strData) {
+        this.m_strId = p_strId;
+        this.m_strData = p_strData;
     }
 
-    public long getId() {
-        return m_nId;
+    public String getId() {
+        return m_strId;
     }
 
-    public String getData() {
-        return m_nData;
+    @Override
+    public Object getContent() {
+        return m_strData;
+    }
+
+
+    public Object getData() {
+        return m_strData;
     }
 
     public void setData(String p_strData) {
-        m_nData = p_strData;
+        m_strData = p_strData;
     }
 }
 

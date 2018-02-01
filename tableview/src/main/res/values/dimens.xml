@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="default_row_header_width">56dp</dimen>
-    <dimen name="default_column_header_header">56dp</dimen>
+    <dimen name="default_row_header_width">55dp</dimen>
+    <dimen name="default_column_header_height">55dp</dimen>
 </resources>
