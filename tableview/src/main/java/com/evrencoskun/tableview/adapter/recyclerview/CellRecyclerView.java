@@ -1,11 +1,14 @@
 package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
+import android.support.annotation.ColorInt;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.evrencoskun.tableview.ITableView;
-import com.evrencoskun.tableview.listener.CellRecyclerViewListener;
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
+import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
+import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
 
 /**
  * Created by evrencoskun on 19/06/2017.
@@ -15,52 +18,84 @@ public class CellRecyclerView extends RecyclerView {
     private static final String LOG_TAG = CellRecyclerView.class.getSimpleName();
 
     private int m_nScrolledX = 0;
-    private ITableView m_jTableView;
-    private boolean mIsScrollListenerRemoved = true;
+    private int m_nScrolledY = 0;
 
-    public CellRecyclerView(Context context, ITableView p_jTableView) {
+    private boolean mIsHorizontalScrollListenerRemoved = true;
+    private boolean mIsVerticalScrollListenerRemoved = true;
+
+    public CellRecyclerView(Context context) {
         super(context);
-        this.m_jTableView = p_jTableView;
 
-    }
-
-    @Override
-    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-        super.onScrollChanged(l, t, oldl, oldt);
+        this.setHasFixedSize(false);
+        this.setNestedScrollingEnabled(false);
+        /*this.setItemViewCacheSize(100);
+        this.setDrawingCacheEnabled(true);
+        this.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);*/
     }
 
     @Override
     public void onScrolled(int dx, int dy) {
         m_nScrolledX += dx;
+        m_nScrolledY += dy;
+
         super.onScrolled(dx, dy);
-        //Log.e(LOG_TAG, "index : " + getIndex(this) + " x : " + dx + " " +
-        //mIsScrollListenerRemoved + " " + this);
     }
+
 
     public int getScrolledX() {
         return m_nScrolledX;
     }
 
+    public void clearScrolledX() {
+        m_nScrolledX = 0;
+    }
+
+    public int getScrolledY() { return m_nScrolledY; }
+
 
     @Override
     public void addOnScrollListener(OnScrollListener listener) {
-        if (!(listener instanceof CellRecyclerViewListener)) {
-            super.addOnScrollListener(listener);
-        } else if (listener instanceof CellRecyclerViewListener && mIsScrollListenerRemoved) {
-            mIsScrollListenerRemoved = false;
+        if (listener instanceof HorizontalRecyclerViewListener) {
+            if (mIsHorizontalScrollListenerRemoved) {
+                mIsHorizontalScrollListenerRemoved = false;
+                super.addOnScrollListener(listener);
+            } else {
+                // Do not let add the listener
+                Log.w(LOG_TAG, "mIsHorizontalScrollListenerRemoved has been tried to add itself "
+                        + "before remove the old one");
+            }
+        } else if (listener instanceof VerticalRecyclerViewListener) {
+            if (mIsVerticalScrollListenerRemoved) {
+                mIsVerticalScrollListenerRemoved = false;
+                super.addOnScrollListener(listener);
+            } else {
+                // Do not let add the listener
+                Log.w(LOG_TAG, "mIsVerticalScrollListenerRemoved has been tried to add itself " +
+                        "before remove the old one");
+            }
+        } else {
             super.addOnScrollListener(listener);
         }
     }
 
     @Override
     public void removeOnScrollListener(OnScrollListener listener) {
-        if (listener instanceof CellRecyclerViewListener) {
-            if (mIsScrollListenerRemoved) {
+        if (listener instanceof HorizontalRecyclerViewListener) {
+            if (mIsHorizontalScrollListenerRemoved) {
                 // Do not let remove the listener
-                Log.e(LOG_TAG, "CellRecyclerViewListener has been tried to remove itself before "
-                        + "add new " + "one");
+                Log.e(LOG_TAG, "HorizontalRecyclerViewListener has been tried to remove " +
+                        "itself before add new one");
             } else {
-                mIsScrollListenerRemoved = true;
+                mIsHorizontalScrollListenerRemoved = true;
+                super.removeOnScrollListener(listener);
+            }
+        } else if (listener instanceof VerticalRecyclerViewListener) {
+            if (mIsVerticalScrollListenerRemoved) {
+                // Do not let remove the listener
+                Log.e(LOG_TAG, "mIsVerticalScrollListenerRemoved has been tried to remove " +
+                        "itself before add new one");
+            } else {
+                mIsVerticalScrollListenerRemoved = true;
                 super.removeOnScrollListener(listener);
             }
         } else {
@@ -68,20 +103,30 @@ public class CellRecyclerView extends RecyclerView {
         }
     }
 
-    public boolean isScrollListenerRemoved() {
-        return mIsScrollListenerRemoved;
+    public boolean isHorizontalScrollListenerRemoved() {
+        return mIsHorizontalScrollListenerRemoved;
     }
 
+    public boolean isScrollOthers() {
+        return !mIsHorizontalScrollListenerRemoved;
+    }
 
-    private int getIndex(RecyclerView rv) {
-        for (int i = 0; i < m_jTableView.getCellRecyclerView().getLayoutManager().getChildCount()
-                ; i++) {
-            RecyclerView child = (RecyclerView) m_jTableView.getCellRecyclerView()
-                    .getLayoutManager().getChildAt(i);
-            if (child == rv) {
-                return i;
+    public void setSelected(SelectionState p_eSelected, @ColorInt int p_nBackgroundColor, boolean
+            p_bIsIgnoreSelectionColors) {
+        for (int i = 0; i < getAdapter().getItemCount(); i++) {
+            AbstractViewHolder viewHolder = (AbstractViewHolder) findViewHolderForAdapterPosition
+                    (i);
+            if (viewHolder != null) {
+
+                if (!p_bIsIgnoreSelectionColors) {
+                    // Change background color
+                    viewHolder.setBackgroundColor(p_nBackgroundColor);
+                }
+
+                // Change selection status of the view holder
+                viewHolder.setSelected(p_eSelected);
             }
         }
-        return -1;
     }
+
 }

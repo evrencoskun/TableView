@@ -6,42 +6,21 @@
     android:layout_width="wrap_content"
     android:layout_height="@dimen/cell_height"
     android:background="@color/cell_background_color"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
-    <FrameLayout
+
+    <TextView
+        android:id="@+id/cell_data"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cell_background_color"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/cell_data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="1"
-            android:textColor="@color/cell_text_color"
-            android:textSize="11sp"
-            tools:text="Cell Data"/>
-
-        <View
-            android:layout_width="1px"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:background="@color/cell_line_color"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_gravity="bottom"
-            android:background="@color/cell_line_color"/>
-    </FrameLayout>
-
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/table_view_default_text_color"
+        android:textSize="@dimen/text_size"
+        tools:text="Cell Data"/>
 
 </LinearLayout>
 

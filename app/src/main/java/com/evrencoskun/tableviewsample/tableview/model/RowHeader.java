@@ -6,11 +6,11 @@ package com.evrencoskun.tableviewsample.tableview.model;
 
 public class RowHeader extends Cell {
 
-    public RowHeader(int p_nId) {
-        super(p_nId);
+    public RowHeader(String p_strId) {
+        super(p_strId);
     }
 
-    public RowHeader(int p_nId, String p_strData) {
-        super(p_nId, p_strData);
+    public RowHeader(String p_strId, String p_strData) {
+        super(p_strId, p_strData);
     }
 }

@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.evrencoskun.tableview.adapter.ITableAdapter;
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
 
 import java.util.List;
 
@@ -29,11 +31,35 @@ public class RowHeaderRecyclerViewAdapter<RH> extends AbstractRecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        m_iTableAdapter.onBindRowHeaderViewHolder(holder, position);
+        AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
+        Object value = getItem(position);
+
+        m_iTableAdapter.onBindRowHeaderViewHolder(viewHolder, value, position);
     }
 
     @Override
     public int getItemViewType(int position) {
         return m_iTableAdapter.getRowHeaderItemViewType(position);
     }
+
+    @Override
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
+
+        SelectionState selectionState = m_iTableAdapter.getTableView().getSelectionHandler()
+                .getRowSelectionState(holder.getAdapterPosition());
+
+
+        // Control to ignore selection color
+        if (!m_iTableAdapter.getTableView().isIgnoreSelectionColors()) {
+            // Change background color of the view considering it's selected state
+            m_iTableAdapter.getTableView().getSelectionHandler()
+                    .changeRowBackgroundColorBySelectionStatus(viewHolder, selectionState);
+        }
+
+        // Change selection status
+        viewHolder.setSelected(selectionState);
+    }
+
 }

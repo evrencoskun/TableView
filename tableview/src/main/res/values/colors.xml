@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="cell_line_color">#ebebeb</color>
-    <color name="cell_color">#ffffff</color>
-    <color name="cell_text_color">#1f1f1f</color>
-    <color name="default_background_line_color">#E7E7E7</color>
-    <color name="default_background_color">#FF99DCD7</color>
-    <color name="header_line_color">@android:color/holo_red_light</color>
+    <color name="table_view_default_text_color">#0a0a0a</color>
+    <color name="table_view_default_separator_color">#E7E7E7</color>
+    <color name="table_view_default_unselected_background_color">#ffffff</color>
+    <color name="table_view_default_selected_background_color">#fada65</color>
+    <color name="table_view_default_shadow_background_color">#f2f2f2</color>
 </resources>

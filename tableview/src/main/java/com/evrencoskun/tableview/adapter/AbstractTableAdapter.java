@@ -17,6 +17,7 @@ import java.util.List;
  */
 
 public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
+
     private int m_nRowHeaderWidth;
     private int m_nColumnHeaderHeight;
 
@@ -39,21 +40,15 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
 
     private void initialize() {
         // Create Column header RecyclerView Adapter
-        if (m_jColumnHeaderItems != null) {
-            m_iColumnHeaderRecyclerViewAdapter = new ColumnHeaderRecyclerViewAdapter(m_jContext,
-                    m_jColumnHeaderItems, this);
-        }
+        m_iColumnHeaderRecyclerViewAdapter = new ColumnHeaderRecyclerViewAdapter(m_jContext,
+                m_jColumnHeaderItems, this);
+
         // Create Row Header RecyclerView Adapter
-        if (m_jRowHeaderItems != null) {
-            m_iRowHeaderRecyclerViewAdapter = new RowHeaderRecyclerViewAdapter(m_jContext,
-                    m_jRowHeaderItems, this);
-        }
+        m_iRowHeaderRecyclerViewAdapter = new RowHeaderRecyclerViewAdapter(m_jContext,
+                m_jRowHeaderItems, this);
 
         // Create Cell RecyclerView Adapter
-        if (m_jCellItems != null) {
-            m_iCellRecyclerViewAdapter = new CellRecyclerViewAdapter(m_jContext, m_jCellItems,
-                    this);
-        }
+        m_iCellRecyclerViewAdapter = new CellRecyclerViewAdapter(m_jContext, m_jCellItems, this);
     }
 
     public void setColumnHeaderItems(List<CH> p_jColumnHeaderItems) {
@@ -154,13 +149,65 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
     }
 
     public C getCellItem(int p_nXPosition, int p_nYPosition) {
-        if ((m_jCellItems == null || m_jCellItems.isEmpty()) || p_nXPosition < 0 || p_nXPosition
-                >= m_jCellItems.size() || m_jCellItems.get(p_nXPosition) == null || p_nYPosition
-                < 0 || p_nYPosition >= m_jCellItems.get(p_nXPosition).size()) {
+        if ((m_jCellItems == null || m_jCellItems.isEmpty()) || p_nXPosition < 0 || p_nYPosition
+                >= m_jCellItems.size() || m_jCellItems.get(p_nYPosition) == null || p_nYPosition
+                < 0 || p_nXPosition >= m_jCellItems.get(p_nYPosition).size()) {
             return null;
         }
 
-        return m_jCellItems.get(p_nXPosition).get(p_nYPosition);
+        return m_jCellItems.get(p_nYPosition).get(p_nXPosition);
+    }
+
+    public C getCellRowItem(int p_nYPosition) {
+        return (C) m_iCellRecyclerViewAdapter.getItem(p_nYPosition);
+    }
+
+    public void removeRow(int p_nYPosition) {
+        m_iCellRecyclerViewAdapter.deleteItem(p_nYPosition);
+        m_iRowHeaderRecyclerViewAdapter.deleteItem(p_nYPosition);
+    }
+
+    public void removeRowRange(int p_nYPositionStart, int p_nItemCount) {
+        m_iCellRecyclerViewAdapter.deleteItemRange(p_nYPositionStart, p_nItemCount);
+        m_iRowHeaderRecyclerViewAdapter.deleteItemRange(p_nYPositionStart, p_nItemCount);
+    }
+
+    public void addRow(int p_nYPosition, RH p_jRowHeaderItem, List<C> p_jCellItems) {
+        m_iCellRecyclerViewAdapter.addItem(p_nYPosition, p_jCellItems);
+        m_iRowHeaderRecyclerViewAdapter.addItem(p_nYPosition, p_jRowHeaderItem);
+    }
+
+    public void addRowRange(int p_nYPositionStart, List<RH> p_jRowHeaderItem, List<List<C>>
+            p_jCellItems) {
+        m_iRowHeaderRecyclerViewAdapter.addItemRange(p_nYPositionStart, p_jRowHeaderItem);
+        m_iCellRecyclerViewAdapter.addItemRange(p_nYPositionStart, p_jCellItems);
+    }
+
+    public void changeRowHeaderItem(int p_nYPosition, RH p_jRowHeaderModel) {
+        m_iRowHeaderRecyclerViewAdapter.changeItem(p_nYPosition, p_jRowHeaderModel);
+    }
+
+    public void changeRowHeaderItemRange(int p_nYPositionStart, List<RH> p_jRowHeaderModelList) {
+        m_iRowHeaderRecyclerViewAdapter.changeItemRange(p_nYPositionStart, p_jRowHeaderModelList);
+    }
+
+    public void changeCellItem(int p_nXPosition, int p_nYPosition, C p_jCellModel) {
+        List<C> cellItems = (List<C>) m_iCellRecyclerViewAdapter.getItem(p_nYPosition);
+        if (cellItems != null && cellItems.size() > p_nXPosition) {
+            // Update cell row items.
+            cellItems.set(p_nXPosition, p_jCellModel);
+
+            m_iCellRecyclerViewAdapter.changeItem(p_nYPosition, cellItems);
+        }
+    }
+
+    public void changeColumnHeader(int p_nXPosition, CH p_jColumnHeaderModel) {
+        m_iColumnHeaderRecyclerViewAdapter.changeItem(p_nXPosition, p_jColumnHeaderModel);
+    }
+
+    public void changeColumnHeaderRange(int p_nXPositionStart, List<CH> p_jColumnHeaderModelList) {
+        m_iColumnHeaderRecyclerViewAdapter.changeItemRange(p_nXPositionStart,
+                p_jColumnHeaderModelList);
     }
 
     public final void notifyDataSetChanged() {
@@ -177,4 +224,5 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
     public ITableView getTableView() {
         return m_iTableView;
     }
+
 }
