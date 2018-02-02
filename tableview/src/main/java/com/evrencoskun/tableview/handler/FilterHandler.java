@@ -18,6 +18,7 @@
 package com.evrencoskun.tableview.handler;
 
 import android.support.v7.util.DiffUtil;
+import android.text.TextUtils;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
@@ -55,7 +56,7 @@ public class FilterHandler<T> {
         List<List<IFilterableModel>> filteredCellList = new ArrayList<>();
         List<T> filteredRowList = new ArrayList<>();
 
-        if (filter.equals("")) {
+        if (TextUtils.isEmpty(filter)) {
             filteredCellList.addAll(originalCellData);
             filteredRowList.addAll(originalRowData);
         } else {
