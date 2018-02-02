@@ -17,14 +17,13 @@
 
 package com.evrencoskun.tableview.handler;
 
-import android.support.v7.util.DiffUtil;
+import android.text.TextUtils;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.RowHeaderRecyclerViewAdapter;
-import com.evrencoskun.tableview.filter.IFilterableModel;
-import com.evrencoskun.tableview.filter.FilterCallback;
 import com.evrencoskun.tableview.filter.FilterHelper;
+import com.evrencoskun.tableview.filter.IFilterableModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +54,7 @@ public class FilterHandler<T> {
         List<List<IFilterableModel>> filteredCellList = new ArrayList<>();
         List<T> filteredRowList = new ArrayList<>();
 
-        if (filter.equals("")) {
+        if (TextUtils.isEmpty(filter)) {
             filteredCellList.addAll(originalCellData);
             filteredRowList.addAll(originalRowData);
         } else {
@@ -80,16 +79,8 @@ public class FilterHandler<T> {
             }
         }
 
-        final FilterCallback diffCellCallback = new FilterCallback(originalCellData, filteredCellList);
-        final FilterCallback diffRowCallback = new FilterCallback(originalRowData, filteredRowList);
-        final DiffUtil.DiffResult diffCellResult = DiffUtil.calculateDiff(diffCellCallback);
-        final DiffUtil.DiffResult diffRowResult = DiffUtil.calculateDiff(diffRowCallback);
-
-        mCellRecyclerViewAdapter.setItems(filteredCellList, false);
-        mRowHeaderRecyclerViewAdapter.setItems(filteredRowList, false);
-
-        diffCellResult.dispatchUpdatesTo(mCellRecyclerViewAdapter);
-        diffRowResult.dispatchUpdatesTo(mRowHeaderRecyclerViewAdapter);
+        mCellRecyclerViewAdapter.setItems(filteredCellList, true);
+        mRowHeaderRecyclerViewAdapter.setItems(filteredRowList, true);
     }
 
     public void filter(String filter) {
