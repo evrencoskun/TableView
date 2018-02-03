@@ -30,6 +30,7 @@ import android.widget.RelativeLayout;
 
 import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
+import com.evrencoskun.tableview.filter.Filter;
 import com.evrencoskun.tableviewsample.tableview.TableViewAdapter;
 import com.evrencoskun.tableviewsample.tableview.TableViewListener;
 import com.evrencoskun.tableviewsample.tableview.model.Cell;
@@ -55,6 +56,7 @@ public class MainFragment extends Fragment {
 
     private AbstractTableAdapter mTableViewAdapter;
     private TableView mTableView;
+    private Filter mTableFilter; // This is used for filtering the table.
 
     public MainFragment() {
         // Required empty public constructor
@@ -75,6 +77,7 @@ public class MainFragment extends Fragment {
 
         // Create Table view
         mTableView = createTableView();
+        mTableFilter = new Filter(mTableView); // Create an instance of a Filter and pass the created TableView.
         fragment_container.addView(mTableView);
 
         loadData();
@@ -157,6 +160,8 @@ public class MainFragment extends Fragment {
                 title = "large column " + i;
             } else if (i == 3) {
                 title = "mood";
+            } else if (i == 4) {
+                title = "gender";
             }
             ColumnHeader header = new ColumnHeader(String.valueOf(i), title);
             list.add(header);
@@ -224,6 +229,10 @@ public class MainFragment extends Fragment {
                     text = random % 2 == 0 ?
                             ContextCompat.getDrawable(getActivity(), R.drawable.ic_happy) :
                             ContextCompat.getDrawable(getActivity(), R.drawable.ic_sad);
+                } else if (j == 4) {
+                    text = random % 2 == 0 ?
+                            ContextCompat.getDrawable(getActivity(), R.drawable.ic_male) :
+                            ContextCompat.getDrawable(getActivity(), R.drawable.ic_female);
                 }
 
                 // Create dummy id.
@@ -232,6 +241,9 @@ public class MainFragment extends Fragment {
                 Cell cell;
                 if (j == 3) {
                     cell = new Cell(id, text, random % 2 == 0 ? "happy" : "sad");
+                } else if (j == 4) {
+                    // NOTE female and male keywords for filter will have conflict since "female" contains "male"
+                    cell = new Cell(id, text, random % 2 == 0 ? "boy" : "girl");
                 } else {
                     cell = new Cell(id, text);
                 }
@@ -306,10 +318,19 @@ public class MainFragment extends Fragment {
     }
 
     public void filterTable(String filter) {
-        mTableView.filter(filter);
+        // Sets a filter to the table, this will filter ALL the columns.
+        mTableFilter.set(filter);
     }
 
     public void filterTableForMood(String filter) {
-        mTableView.filterColumn(3, filter);
+        // Sets a filter to the table, this will only filter a specific column.
+        // In the example data, this will filter the mood column.
+        mTableFilter.set(3, filter);
+    }
+
+    public void filterTableForGender(String filter) {
+        // Sets a filter to the table, this will only filter a specific column.
+        // In the example data, this will filter the gender column.
+        mTableFilter.set(4, filter);
     }
 }
