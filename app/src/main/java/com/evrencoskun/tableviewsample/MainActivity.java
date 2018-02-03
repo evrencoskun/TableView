@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private MainFragment mainFragment;
     private EditText searchField;
-    private Spinner moodFilter;
+    private Spinner moodFilter, genderFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +40,10 @@ public class MainActivity extends AppCompatActivity {
         mainFragment = new MainFragment();
         searchField = findViewById(R.id.query_string);
         moodFilter = findViewById(R.id.mood_spinner);
+        genderFilter = findViewById(R.id.gender_spinner);
         searchField.addTextChangedListener(onSearchTextChange);
         moodFilter.setOnItemSelectedListener(onMoodSelectedListener);
+        genderFilter.setOnItemSelectedListener(onGenderSelectedListener);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.activity_container,
@@ -84,4 +86,30 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+    private AdapterView.OnItemSelectedListener onGenderSelectedListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            String filter = "";
+            switch (parent.getItemAtPosition(position).toString()) {
+                case "":
+                    filter = "";
+                    break;
+                case "Male":
+                    filter = "boy";
+                    break;
+                case "Female":
+                    filter = "girl";
+                    break;
+            }
+
+            mainFragment.filterTableForGender(filter);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
+
 }

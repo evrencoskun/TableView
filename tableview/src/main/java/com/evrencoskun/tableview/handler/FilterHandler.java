@@ -17,12 +17,13 @@
 
 package com.evrencoskun.tableview.handler;
 
-import android.text.TextUtils;
-
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.RowHeaderRecyclerViewAdapter;
+import com.evrencoskun.tableview.filter.Filter;
 import com.evrencoskun.tableview.filter.FilterHelper;
+import com.evrencoskun.tableview.filter.FilterItem;
+import com.evrencoskun.tableview.filter.FilterType;
 import com.evrencoskun.tableview.filter.IFilterableModel;
 
 import java.util.ArrayList;
@@ -43,47 +44,66 @@ public class FilterHandler<T> {
     }
 
     @SuppressWarnings("unchecked")
-    public void filter(int column, String filter) {
+    public void filter(Filter filter) {
         if (mFilterHelper == null) {
             mFilterHelper = new FilterHelper(mCellRecyclerViewAdapter.getItems(),
                     mRowHeaderRecyclerViewAdapter.getItems());
         }
 
-        final List<List<IFilterableModel>> originalCellData = mFilterHelper.getCellOriginalData();
-        final List<T> originalRowData = mFilterHelper.getRowOriginalData();
+        List<List<IFilterableModel>> originalCellData = new ArrayList<>(mFilterHelper.getCellOriginalData());
+        List<T> originalRowData = new ArrayList<>(mFilterHelper.getRowOriginalData());
         List<List<IFilterableModel>> filteredCellList = new ArrayList<>();
         List<T> filteredRowList = new ArrayList<>();
 
-        if (TextUtils.isEmpty(filter)) {
-            filteredCellList.addAll(originalCellData);
-            filteredRowList.addAll(originalRowData);
+        if (filter.getFilterItems().size() == 0) {
+            filteredCellList = new ArrayList<>(originalCellData);
+            filteredRowList = new ArrayList<>(originalRowData);
         } else {
-            if (column == -1) {
-                for (List<IFilterableModel> itemsList : originalCellData) {
-                    for (IFilterableModel item : itemsList) {
-                        if (item.getFilterableKeyword().toLowerCase().contains(filter.toLowerCase())) {
+            for (int x = 0; x < filter.getFilterItems().size(); ) {
+                final FilterItem filterItem = filter.getFilterItems().get(x);
+                if (filterItem.getFilterType().equals(FilterType.ALL)) {
+                    for (List<IFilterableModel> itemsList : originalCellData) {
+                        for (IFilterableModel item : itemsList) {
+                            if (item
+                                    .getFilterableKeyword()
+                                    .toLowerCase()
+                                    .contains(filterItem
+                                            .getFilter()
+                                            .toLowerCase())) {
+                                filteredCellList.add(itemsList);
+                                filteredRowList.add(originalRowData.get(filteredCellList.indexOf(itemsList)));
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    for (List<IFilterableModel> itemsList : originalCellData) {
+                        if (itemsList
+                                .get(filterItem
+                                        .getColumn())
+                                .getFilterableKeyword()
+                                .toLowerCase()
+                                .contains(filterItem
+                                        .getFilter()
+                                        .toLowerCase())) {
                             filteredCellList.add(itemsList);
                             filteredRowList.add(originalRowData.get(filteredCellList.indexOf(itemsList)));
-                            break;
                         }
                     }
                 }
-            } else {
-                for (List<IFilterableModel> itemsList : originalCellData) {
-                    final IFilterableModel item = itemsList.get(column);
-                    if (item.getFilterableKeyword().toLowerCase().contains(filter.toLowerCase())) {
-                        filteredCellList.add(itemsList);
-                        filteredRowList.add(originalRowData.get(filteredCellList.indexOf(itemsList)));
-                    }
+
+                // If this is the last filter to be processed, the filtered lists will not be cleared.
+                if (++x < filter.getFilterItems().size()) {
+                    originalCellData = new ArrayList<>(filteredCellList);
+                    originalRowData = new ArrayList<>(filteredRowList);
+                    filteredCellList.clear();
+                    filteredRowList.clear();
                 }
             }
         }
 
-        mCellRecyclerViewAdapter.setItems(filteredCellList, true);
+        // Sets the filtered data to the TableView.
         mRowHeaderRecyclerViewAdapter.setItems(filteredRowList, true);
-    }
-
-    public void filter(String filter) {
-        filter(-1, filter);
+        mCellRecyclerViewAdapter.setItems(filteredCellList, true);
     }
 }
