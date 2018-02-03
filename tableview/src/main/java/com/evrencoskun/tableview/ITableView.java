@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
+import com.evrencoskun.tableview.filter.Filter;
 import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
@@ -109,17 +110,9 @@ public interface ITableView {
     AbstractTableAdapter getAdapter();
 
     /**
-     * Filters a column for an entry and displays all rows with the filtered column item.
+     * Filters the wholte table using the provided Filter object which supports multiple filters.
      *
-     * @param columnPosition The column to be searched.
-     * @param filter         The filter string.
+     * @param filter The filter object.
      */
-    void filterColumn(int columnPosition, String filter);
-
-    /**
-     * Filters the whole table and displays all rows containing the filter string.
-     *
-     * @param filter The query string.
-     */
-    void filter(String filter);
+    void filter(Filter filter);
 }

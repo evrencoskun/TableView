@@ -34,6 +34,7 @@ import android.widget.FrameLayout;
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+import com.evrencoskun.tableview.filter.Filter;
 import com.evrencoskun.tableview.handler.ColumnSortHandler;
 import com.evrencoskun.tableview.handler.ScrollHandler;
 import com.evrencoskun.tableview.handler.FilterHandler;
@@ -307,7 +308,7 @@ public class TableView extends FrameLayout implements ITableView {
                 // Create Sort Handler
                 mColumnSortHandler = new ColumnSortHandler(this);
 
-                // Create Search Handler
+                // Create Filter Handler
                 mFilterHandler = new FilterHandler(this);
             }
         }
@@ -436,12 +437,7 @@ public class TableView extends FrameLayout implements ITableView {
     }
 
     @Override
-    public void filterColumn(int columnPosition, String filter) {
-        mFilterHandler.filter(columnPosition, filter);
-    }
-
-    @Override
-    public void filter(String filter) {
+    public void filter(Filter filter) {
         mFilterHandler.filter(filter);
     }
 
