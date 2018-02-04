@@ -110,7 +110,7 @@ public interface ITableView {
     AbstractTableAdapter getAdapter();
 
     /**
-     * Filters the wholte table using the provided Filter object which supports multiple filters.
+     * Filters the whole table using the provided Filter object which supports multiple filters.
      *
      * @param filter The filter object.
      */
