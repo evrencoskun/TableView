@@ -31,6 +31,7 @@ import android.widget.RelativeLayout;
 import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.filter.Filter;
+import com.evrencoskun.tableview.pagination.Pagination;
 import com.evrencoskun.tableviewsample.tableview.TableViewAdapter;
 import com.evrencoskun.tableviewsample.tableview.TableViewListener;
 import com.evrencoskun.tableviewsample.tableview.model.Cell;
@@ -57,6 +58,9 @@ public class MainFragment extends Fragment {
     private AbstractTableAdapter mTableViewAdapter;
     private TableView mTableView;
     private Filter mTableFilter; // This is used for filtering the table.
+    private Pagination mPagination; // This is used for paginating the table.
+
+    private MainActivity mainActivity;
 
     public MainFragment() {
         // Required empty public constructor
@@ -65,6 +69,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mainActivity = (MainActivity) getActivity();
         initData();
     }
 
@@ -78,6 +83,8 @@ public class MainFragment extends Fragment {
         // Create Table view
         mTableView = createTableView();
         mTableFilter = new Filter(mTableView); // Create an instance of a Filter and pass the created TableView.
+        mPagination = new Pagination(mTableView);
+        mPagination.setOnTableViewPageTurnedListener(onTableViewPageTurnedListener);
         fragment_container.addView(mTableView);
 
         loadData();
@@ -333,4 +340,53 @@ public class MainFragment extends Fragment {
         // In the example data, this will filter the gender column.
         mTableFilter.set(4, filter);
     }
+
+    public void nextTablePage() {
+        mPagination.nextPage();
+    }
+
+    public void previousTablePage() {
+        mPagination.previousPage();
+    }
+
+    public void goToTablePage(int page) {
+        mPagination.goToPage(page);
+    }
+
+    public void setTableItemsPerPage(int itemsPerPage) {
+        mPagination.setItemsPerPage(itemsPerPage);
+    }
+
+    private Pagination.OnTableViewPageTurnedListener onTableViewPageTurnedListener =
+            new Pagination.OnTableViewPageTurnedListener() {
+                @Override
+                public void onPageTurned(int numItems, int itemsStart, int itemsEnd) {
+                    int currentPage = mPagination.getCurrentPage();
+                    int pageCount = mPagination.getPageCount();
+                    mainActivity.previousButton.setEnabled(true);
+                    mainActivity.nextButton.setEnabled(true);
+
+                    if (currentPage == 1 && pageCount == 1) {
+                        mainActivity.previousButton.setEnabled(false);
+                        mainActivity.nextButton.setEnabled(false);
+                    }
+
+                    if (currentPage == 1) {
+                        mainActivity.previousButton.setEnabled(false);
+                    }
+
+                    if (currentPage == pageCount) {
+                        mainActivity.nextButton.setEnabled(false);
+                    }
+
+                    mainActivity.tablePaginationDetails
+                            .setText(mainActivity
+                                    .getString(
+                                            R.string.table_pagination_details,
+                                            String.valueOf(currentPage),
+                                            String.valueOf(itemsStart),
+                                            String.valueOf(itemsEnd)));
+
+                }
+            };
 }
