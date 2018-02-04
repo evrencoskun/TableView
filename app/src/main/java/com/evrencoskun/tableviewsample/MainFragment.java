@@ -21,7 +21,6 @@ package com.evrencoskun.tableviewsample;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +57,16 @@ public class MainFragment extends Fragment {
     private TableView mTableView;
     private Filter mTableFilter; // This is used for filtering the table.
 
+    // Columns indexes
+    public static final int MOOD_COLUMN_INDEX = 3;
+    public static final int GENDER_COLUMN_INDEX = 4;
+
+    // Constant values for icons
+    public static final int SAD = 0;
+    public static final int HAPPY = 1;
+    public static final int BOY = 0;
+    public static final int GIRL = 1;
+
     public MainFragment() {
         // Required empty public constructor
     }
@@ -77,7 +86,8 @@ public class MainFragment extends Fragment {
 
         // Create Table view
         mTableView = createTableView();
-        mTableFilter = new Filter(mTableView); // Create an instance of a Filter and pass the created TableView.
+        mTableFilter = new Filter(mTableView); // Create an instance of a Filter and pass the
+        // created TableView.
         fragment_container.addView(mTableView);
 
         loadData();
@@ -158,9 +168,9 @@ public class MainFragment extends Fragment {
             String title = "column " + i;
             if (i % 6 == 2) {
                 title = "large column " + i;
-            } else if (i == 3) {
+            } else if (i == MOOD_COLUMN_INDEX) {
                 title = "mood";
-            } else if (i == 4) {
+            } else if (i == GENDER_COLUMN_INDEX) {
                 title = "gender";
             }
             ColumnHeader header = new ColumnHeader(String.valueOf(i), title);
@@ -225,14 +235,10 @@ public class MainFragment extends Fragment {
                     text = i;
                 } else if (j == 1) {
                     text = random;
-                } else if (j == 3) {
-                    text = random % 2 == 0 ?
-                            ContextCompat.getDrawable(getActivity(), R.drawable.ic_happy) :
-                            ContextCompat.getDrawable(getActivity(), R.drawable.ic_sad);
-                } else if (j == 4) {
-                    text = random % 2 == 0 ?
-                            ContextCompat.getDrawable(getActivity(), R.drawable.ic_male) :
-                            ContextCompat.getDrawable(getActivity(), R.drawable.ic_female);
+                } else if (j == MOOD_COLUMN_INDEX) {
+                    text = random % 2 == 0 ? HAPPY : SAD;
+                } else if (j == GENDER_COLUMN_INDEX) {
+                    text = random % 2 == 0 ? BOY : GIRL;
                 }
 
                 // Create dummy id.
@@ -242,7 +248,8 @@ public class MainFragment extends Fragment {
                 if (j == 3) {
                     cell = new Cell(id, text, random % 2 == 0 ? "happy" : "sad");
                 } else if (j == 4) {
-                    // NOTE female and male keywords for filter will have conflict since "female" contains "male"
+                    // NOTE female and male keywords for filter will have conflict since "female"
+                    // contains "male"
                     cell = new Cell(id, text, random % 2 == 0 ? "boy" : "girl");
                 } else {
                     cell = new Cell(id, text);
