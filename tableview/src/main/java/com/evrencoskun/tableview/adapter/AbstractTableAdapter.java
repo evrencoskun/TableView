@@ -27,6 +27,7 @@ import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.ColumnHeaderRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.RowHeaderRecyclerViewAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,7 +50,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
     protected List<List<C>> mCellItems;
 
     private ITableView mTableView;
-    private OnAdapterDataSetChangedListener dataSetChangedListener;
+    private List<AdapterDataSetChangedListener> dataSetChangedListeners;
 
     public AbstractTableAdapter(Context context) {
         mContext = context;
@@ -78,7 +79,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
 
         // Set the items to the adapter
         mColumnHeaderRecyclerViewAdapter.setItems(mColumnHeaderItems);
-        dispatchColumnHeaderDataSetChangesToListener(columnHeaderItems);
+        dispatchColumnHeaderDataSetChangesToListeners(columnHeaderItems);
     }
 
     public void setRowHeaderItems(List<RH> rowHeaderItems) {
@@ -90,7 +91,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
 
         // Set the items to the adapter
         mRowHeaderRecyclerViewAdapter.setItems(mRowHeaderItems);
-        dispatchRowHeaderDataSetChangesToListener(mRowHeaderItems);
+        dispatchRowHeaderDataSetChangesToListeners(mRowHeaderItems);
     }
 
     public void setCellItems(List<List<C>> cellItems) {
@@ -102,7 +103,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
 
         // Set the items to the adapter
         mCellRecyclerViewAdapter.setItems(mCellItems);
-        dispatchCellDataSetChangesToListener(mCellItems);
+        dispatchCellDataSetChangesToListeners(mCellItems);
     }
 
     public void setAllItems(List<CH> columnHeaderItems, List<RH> rowHeaderItems, List<List<C>>
@@ -130,8 +131,6 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
                 mCornerView.setVisibility(View.VISIBLE);
             }
         }
-
-        dispatchDataSetChangesToListener(columnHeaderItems, rowHeaderItems, cellItems);
     }
 
 
@@ -264,81 +263,42 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
     }
 
     @SuppressWarnings("unchecked")
-    private void dispatchColumnHeaderDataSetChangesToListener(List<CH> newColumnHeaderItems) {
-        if (dataSetChangedListener != null) {
-            dataSetChangedListener.onColumnHeaderItemsChanged(newColumnHeaderItems);
+    private void dispatchColumnHeaderDataSetChangesToListeners(List<CH> newColumnHeaderItems) {
+        if (dataSetChangedListeners != null) {
+            for (AdapterDataSetChangedListener listener : dataSetChangedListeners) {
+                listener.onColumnHeaderItemsChanged(newColumnHeaderItems);
+            }
         }
     }
 
     @SuppressWarnings("unchecked")
-    private void dispatchRowHeaderDataSetChangesToListener(List<RH> newRowHeaderItems) {
-        if (dataSetChangedListener != null) {
-            dataSetChangedListener.onRowHeaderItemsChanged(newRowHeaderItems);
+    private void dispatchRowHeaderDataSetChangesToListeners(final List<RH> newRowHeaderItems) {
+        if (dataSetChangedListeners != null) {
+            for (AdapterDataSetChangedListener listener : dataSetChangedListeners) {
+                listener.onRowHeaderItemsChanged(newRowHeaderItems);
+            }
         }
     }
 
     @SuppressWarnings("unchecked")
-    private void dispatchCellDataSetChangesToListener(List<List<C>> newCellItems) {
-        if (dataSetChangedListener != null) {
-            dataSetChangedListener.onCellItemsChanged(newCellItems);
+    private void dispatchCellDataSetChangesToListeners(List<List<C>> newCellItems) {
+        if (dataSetChangedListeners != null) {
+            for (AdapterDataSetChangedListener listener : dataSetChangedListeners) {
+                listener.onCellItemsChanged(newCellItems);
+            }
         }
     }
-
-    @SuppressWarnings("unchecked")
-    private void dispatchDataSetChangesToListener(
-            List<CH> newColumnHeaderItems,
-            List<RH> newRowHeaderItems,
-            List<List<C>> newCellItems
-    ) {
-        if (dataSetChangedListener != null) {
-            dataSetChangedListener.onDataSetChanged(
-                    newColumnHeaderItems,
-                    newRowHeaderItems,
-                    newCellItems
-            );
-        }
-    }
-
 
     /**
      * Sets the listener for changes of data set on the TableView.
      *
-     * @param listener The OnAdapterDataSetChangedListener listener.
+     * @param listener The AdapterDataSetChangedListener listener.
      */
-    public void setOnAdapterDataSetChangedListener(OnAdapterDataSetChangedListener listener) {
-        dataSetChangedListener = listener;
-    }
+    public void addAdapterDataSetChangedListener(AdapterDataSetChangedListener listener) {
+        if (dataSetChangedListeners == null) {
+            dataSetChangedListeners = new ArrayList<>();
+        }
 
-    public interface OnAdapterDataSetChangedListener<CH, RH, C> {
-
-        /**
-         * Dispatches changes on column header items to listener.
-         *
-         * @param columnHeaderItems The current column header items.
-         */
-        void onColumnHeaderItemsChanged(List<CH> columnHeaderItems);
-
-        /**
-         * Dispatches changes on row header items to listener.
-         *
-         * @param rowHeaderItems The current row header items.
-         */
-        void onRowHeaderItemsChanged(List<RH> rowHeaderItems);
-
-        /**
-         * Dispatches changes on cell items to listener.
-         *
-         * @param cellItems The current cell items.
-         */
-        void onCellItemsChanged(List<List<C>> cellItems);
-
-        /**
-         * Dispatches the changes on column header, row header and cell items.
-         *
-         * @param columnHeaderItems The current column header items.
-         * @param rowHeaderItems    The current row header items.
-         * @param cellItems         The current cell items.
-         */
-        void onDataSetChanged(List<CH> columnHeaderItems, List<RH> rowHeaderItems, List<List<C>> cellItems);
+        dataSetChangedListeners.add(listener);
     }
 }
