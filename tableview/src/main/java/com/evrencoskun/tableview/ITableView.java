@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.filter.Filter;
+import com.evrencoskun.tableview.handler.FilterHandler;
 import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
@@ -115,4 +116,11 @@ public interface ITableView {
      * @param filter The filter object.
      */
     void filter(Filter filter);
+
+    /**
+     * Retrieves the FilterHandler of the TableView.
+     *
+     * @return The FilterHandler of the TableView.
+     */
+    FilterHandler getFilterHandler();
 }
