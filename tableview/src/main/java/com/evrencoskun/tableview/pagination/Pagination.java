@@ -18,9 +18,10 @@
 package com.evrencoskun.tableview.pagination;
 
 import com.evrencoskun.tableview.ITableView;
-import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
+import com.evrencoskun.tableview.adapter.AdapterDataSetChangedListener;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.RowHeaderRecyclerViewAdapter;
+import com.evrencoskun.tableview.filter.FilterChangedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +80,8 @@ public class Pagination<T> implements IPagination {
                 .getRowHeaderRecyclerView().getAdapter();
         this.mCellRecyclerViewAdapter = (CellRecyclerViewAdapter) tableView.getCellRecyclerView()
                 .getAdapter();
-        this.tableView.getAdapter().setOnAdapterDataSetChangedListener(onAdapterDataSetChangedListener);
+        this.tableView.getAdapter().addAdapterDataSetChangedListener(adapterDataSetChangedListener);
+        this.tableView.getFilterHandler().addFilterChangedListeners(filterChangedListener);
         this.currentPage = 1;
         reloadPages();
     }
@@ -185,13 +187,8 @@ public class Pagination<T> implements IPagination {
     }
 
     @SuppressWarnings("unchecked")
-    private AbstractTableAdapter.OnAdapterDataSetChangedListener onAdapterDataSetChangedListener =
-            new AbstractTableAdapter.OnAdapterDataSetChangedListener() {
-                @Override
-                public void onColumnHeaderItemsChanged(List columnHeaderItems) {
-
-                }
-
+    private AdapterDataSetChangedListener adapterDataSetChangedListener =
+            new AdapterDataSetChangedListener() {
                 @Override
                 public void onRowHeaderItemsChanged(List rowHeaderItems) {
                     if (rowHeaderItems != null) {
@@ -207,14 +204,23 @@ public class Pagination<T> implements IPagination {
                         reloadPages();
                     }
                 }
+            };
+
+    @SuppressWarnings("unchecked")
+    private FilterChangedListener filterChangedListener =
+            new FilterChangedListener() {
+                @Override
+                public void onFilterChanged(List filteredCellItems, List filteredRowHeaderItems) {
+                    originalCellData = new ArrayList<>(filteredCellItems);
+                    originalRowData = new ArrayList<>(filteredRowHeaderItems);
+                    paginateData();
+                }
 
                 @Override
-                public void onDataSetChanged(List columnHeaderItems, List rowHeaderItems, List cellItems) {
-                    if (rowHeaderItems != null && cellItems != null) {
-                        originalCellData = new ArrayList<>(cellItems);
-                        originalRowData = new ArrayList<>(rowHeaderItems);
-                        reloadPages();
-                    }
+                public void onFilterCleared(List originalCellItems, List originalRowHeaderItems) {
+                    originalCellData = new ArrayList<>(originalCellItems);
+                    originalRowData = new ArrayList<>(originalRowHeaderItems);
+                    paginateData();
                 }
             };
 
@@ -226,9 +232,9 @@ public class Pagination<T> implements IPagination {
         /**
          * Called when the page is changed in the TableView.
          *
-         * @param numItems   The number of items currently displayed in the TableView.
-         * @param itemsStart The starting item currently displayed in the TableView.
-         * @param itemsEnd   The ending item currently displayed in the TableView.
+         * @param numItems   The number of items currently being displayed in the TableView.
+         * @param itemsStart The starting item currently being displayed in the TableView.
+         * @param itemsEnd   The ending item currently being displayed in the TableView.
          */
         void onPageTurned(int numItems, int itemsStart, int itemsEnd);
     }
