@@ -213,14 +213,14 @@ public class Pagination<T> implements IPagination {
                 public void onFilterChanged(List filteredCellItems, List filteredRowHeaderItems) {
                     originalCellData = new ArrayList<>(filteredCellItems);
                     originalRowData = new ArrayList<>(filteredRowHeaderItems);
-                    paginateData();
+                    reloadPages();
                 }
 
                 @Override
                 public void onFilterCleared(List originalCellItems, List originalRowHeaderItems) {
                     originalCellData = new ArrayList<>(originalCellItems);
                     originalRowData = new ArrayList<>(originalRowHeaderItems);
-                    paginateData();
+                    reloadPages();
                 }
             };
 
