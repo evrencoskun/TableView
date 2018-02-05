@@ -123,7 +123,7 @@ public class Filter {
      */
     private void update(int column, FilterItem filterItem) {
         // This would update an existing FilterItem from the Filter list.
-        // Used Iterator for removing instead of canonical loop to prevent ConcurrentModificationException.
+        // Used Iterator for updating instead of canonical loop to prevent ConcurrentModificationException.
         for (Iterator<FilterItem> filterItemIterator = filterItems.iterator(); filterItemIterator.hasNext(); ) {
             final FilterItem item = filterItemIterator.next();
             if (column == -1 && item.getFilterType().equals(filterItem.getFilterType())) {

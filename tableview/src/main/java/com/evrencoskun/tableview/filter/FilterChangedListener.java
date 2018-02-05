@@ -19,24 +19,23 @@ package com.evrencoskun.tableview.filter;
 
 import java.util.List;
 
-public class FilterHelper<T> {
+public abstract class FilterChangedListener<T> {
 
-    private List<List<IFilterableModel>> mCellOriginalData;
-    private List<T> mRowOriginalData;
-
-    public List<List<IFilterableModel>> getCellOriginalData() {
-        return mCellOriginalData;
+    /**
+     * Called when a filter has been changed.
+     *
+     * @param filteredCellItems      The list of filtered cell items.
+     * @param filteredRowHeaderItems The list of filtered row items.
+     */
+    public void onFilterChanged(List<List<T>> filteredCellItems, List<T> filteredRowHeaderItems) {
     }
 
-    public List<T> getRowOriginalData() {
-        return mRowOriginalData;
-    }
-
-    public FilterHelper(
-            List<List<IFilterableModel>> mCellOriginalData,
-            List<T> mRowOriginalData
-    ) {
-        this.mCellOriginalData = mCellOriginalData;
-        this.mRowOriginalData = mRowOriginalData;
+    /**
+     * Called when the TableView filters are cleared.
+     *
+     * @param originalCellItems      The unfiltered cell item list.
+     * @param originalRowHeaderItems The unfiltered row header list.
+     */
+    public void onFilterCleared(List<List<T>> originalCellItems, List<T> originalRowHeaderItems) {
     }
 }

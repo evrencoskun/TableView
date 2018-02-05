@@ -18,10 +18,11 @@
 package com.evrencoskun.tableview.handler;
 
 import com.evrencoskun.tableview.ITableView;
+import com.evrencoskun.tableview.adapter.AdapterDataSetChangedListener;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.RowHeaderRecyclerViewAdapter;
 import com.evrencoskun.tableview.filter.Filter;
-import com.evrencoskun.tableview.filter.FilterHelper;
+import com.evrencoskun.tableview.filter.FilterChangedListener;
 import com.evrencoskun.tableview.filter.FilterItem;
 import com.evrencoskun.tableview.filter.FilterType;
 import com.evrencoskun.tableview.filter.IFilterableModel;
@@ -33,11 +34,15 @@ public class FilterHandler<T> {
 
     private CellRecyclerViewAdapter mCellRecyclerViewAdapter;
     private RowHeaderRecyclerViewAdapter mRowHeaderRecyclerViewAdapter;
-    private FilterHelper mFilterHelper;
+    private List<List<IFilterableModel>> originalCellDataStore, originalCellData, filteredCellList;
+    private List<T> originalRowDataStore, originalRowData, filteredRowList;
+
+    private List<FilterChangedListener> filterChangedListeners;
 
     public FilterHandler(ITableView tableView) {
-        this.mCellRecyclerViewAdapter = (CellRecyclerViewAdapter) tableView.getCellRecyclerView()
-                .getAdapter();
+        tableView.getAdapter().addAdapterDataSetChangedListener(adapterDataSetChangedListener);
+        this.mCellRecyclerViewAdapter = (CellRecyclerViewAdapter) tableView
+                .getCellRecyclerView().getAdapter();
 
         this.mRowHeaderRecyclerViewAdapter = (RowHeaderRecyclerViewAdapter) tableView
                 .getRowHeaderRecyclerView().getAdapter();
@@ -45,19 +50,19 @@ public class FilterHandler<T> {
 
     @SuppressWarnings("unchecked")
     public void filter(Filter filter) {
-        if (mFilterHelper == null) {
-            mFilterHelper = new FilterHelper(mCellRecyclerViewAdapter.getItems(),
-                    mRowHeaderRecyclerViewAdapter.getItems());
+        if (originalCellDataStore == null || originalRowDataStore == null) {
+            return;
         }
 
-        List<List<IFilterableModel>> originalCellData = new ArrayList<>(mFilterHelper.getCellOriginalData());
-        List<T> originalRowData = new ArrayList<>(mFilterHelper.getRowOriginalData());
-        List<List<IFilterableModel>> filteredCellList = new ArrayList<>();
-        List<T> filteredRowList = new ArrayList<>();
+        originalCellData = new ArrayList<>(originalCellDataStore);
+        originalRowData = new ArrayList<>(originalRowDataStore);
+        filteredCellList = new ArrayList<>();
+        filteredRowList = new ArrayList<>();
 
-        if (filter.getFilterItems().size() == 0) {
-            filteredCellList = new ArrayList<>(originalCellData);
-            filteredRowList = new ArrayList<>(originalRowData);
+        if (filter.getFilterItems().isEmpty()) {
+            filteredCellList = new ArrayList<>(originalCellDataStore);
+            filteredRowList = new ArrayList<>(originalRowDataStore);
+            dispatchFilterClearedToListeners(originalCellDataStore, originalRowDataStore);
         } else {
             for (int x = 0; x < filter.getFilterItems().size(); ) {
                 final FilterItem filterItem = filter.getFilterItems().get(x);
@@ -105,5 +110,58 @@ public class FilterHandler<T> {
         // Sets the filtered data to the TableView.
         mRowHeaderRecyclerViewAdapter.setItems(filteredRowList, true);
         mCellRecyclerViewAdapter.setItems(filteredCellList, true);
+
+        // Tells the listeners that the TableView is filtered.
+        dispatchFilterChangedToListeners(filteredCellList, filteredRowList);
+    }
+
+    @SuppressWarnings("unchecked")
+    private AdapterDataSetChangedListener adapterDataSetChangedListener =
+            new AdapterDataSetChangedListener() {
+                @Override
+                public void onRowHeaderItemsChanged(List rowHeaderItems) {
+                    if (rowHeaderItems != null) {
+                        originalRowDataStore = new ArrayList<>(rowHeaderItems);
+                    }
+                }
+
+                @Override
+                public void onCellItemsChanged(List cellItems) {
+                    if (cellItems != null) {
+                        originalCellDataStore = new ArrayList<>(cellItems);
+                    }
+                }
+            };
+
+    @SuppressWarnings("unchecked")
+    private void dispatchFilterChangedToListeners(
+            List<List<IFilterableModel>> filteredCellItems,
+            List<T> filteredRowHeaderItems
+    ) {
+        if (filterChangedListeners != null) {
+            for (FilterChangedListener listener : filterChangedListeners) {
+                listener.onFilterChanged(filteredCellItems, filteredRowHeaderItems);
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void dispatchFilterClearedToListeners(
+            List<List<IFilterableModel>> originalCellItems,
+            List<T> originalRowHeaderItems
+    ) {
+        if (filterChangedListeners != null) {
+            for (FilterChangedListener listener : filterChangedListeners) {
+                listener.onFilterCleared(originalCellItems, originalRowHeaderItems);
+            }
+        }
+    }
+
+    public void addFilterChangedListeners(FilterChangedListener listener) {
+        if (filterChangedListeners == null) {
+            filterChangedListeners = new ArrayList<>();
+        }
+
+        filterChangedListeners.add(listener);
     }
 }
