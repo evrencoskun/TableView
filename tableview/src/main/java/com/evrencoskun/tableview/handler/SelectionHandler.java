@@ -344,5 +344,11 @@ public class SelectionHandler {
             viewHolder.setBackgroundColor(mTableView.getUnSelectedColor());
         }
     }
+    
+    public void clearSelection() {
+        unselectedRowHeader();
+        unselectedCellView();
+        unselectedColumnHeader();
+    }
 
 }

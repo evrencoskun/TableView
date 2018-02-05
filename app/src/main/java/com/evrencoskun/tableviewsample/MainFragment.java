@@ -30,6 +30,7 @@ import android.widget.RelativeLayout;
 import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.filter.Filter;
+import com.evrencoskun.tableview.pagination.Pagination;
 import com.evrencoskun.tableviewsample.tableview.TableViewAdapter;
 import com.evrencoskun.tableviewsample.tableview.TableViewListener;
 import com.evrencoskun.tableviewsample.tableview.model.Cell;
@@ -56,6 +57,9 @@ public class MainFragment extends Fragment {
     private AbstractTableAdapter mTableViewAdapter;
     private TableView mTableView;
     private Filter mTableFilter; // This is used for filtering the table.
+    private Pagination mPagination; // This is used for paginating the table.
+
+    private MainActivity mainActivity;
 
     // Columns indexes
     public static final int MOOD_COLUMN_INDEX = 3;
@@ -74,6 +78,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mainActivity = (MainActivity) getActivity();
         initData();
     }
 
@@ -88,6 +93,13 @@ public class MainFragment extends Fragment {
         mTableView = createTableView();
         mTableFilter = new Filter(mTableView); // Create an instance of a Filter and pass the
         // created TableView.
+
+        // Create an instance for the TableView pagination and pass the created TableView.
+        mPagination = new Pagination(mTableView);
+
+        // Sets the pagination listener of the TableView pagination to handle
+        // pagination actions. See onTableViewPageTurnedListener variable declaration below.
+        mPagination.setOnTableViewPageTurnedListener(onTableViewPageTurnedListener);
         fragment_container.addView(mTableView);
 
         loadData();
@@ -340,4 +352,57 @@ public class MainFragment extends Fragment {
         // In the example data, this will filter the gender column.
         mTableFilter.set(4, filter);
     }
+
+    // The following four methods below: nextTablePage(), previousTablePage(),
+    // goToTablePage(int page) and setTableItemsPerPage(int itemsPerPage)
+    // are for controlling the TableView pagination.
+    public void nextTablePage() {
+        mPagination.nextPage();
+    }
+
+    public void previousTablePage() {
+        mPagination.previousPage();
+    }
+
+    public void goToTablePage(int page) {
+        mPagination.goToPage(page);
+    }
+
+    public void setTableItemsPerPage(int itemsPerPage) {
+        mPagination.setItemsPerPage(itemsPerPage);
+    }
+
+    // Handler for the changing of pages in the paginated TableView.
+    private Pagination.OnTableViewPageTurnedListener onTableViewPageTurnedListener =
+            new Pagination.OnTableViewPageTurnedListener() {
+                @Override
+                public void onPageTurned(int numItems, int itemsStart, int itemsEnd) {
+                    int currentPage = mPagination.getCurrentPage();
+                    int pageCount = mPagination.getPageCount();
+                    mainActivity.previousButton.setVisibility(View.VISIBLE);
+                    mainActivity.nextButton.setVisibility(View.VISIBLE);
+
+                    if (currentPage == 1 && pageCount == 1) {
+                        mainActivity.previousButton.setVisibility(View.INVISIBLE);
+                        mainActivity.nextButton.setVisibility(View.INVISIBLE);
+                    }
+
+                    if (currentPage == 1) {
+                        mainActivity.previousButton.setVisibility(View.INVISIBLE);
+                    }
+
+                    if (currentPage == pageCount) {
+                        mainActivity.nextButton.setVisibility(View.INVISIBLE);
+                    }
+
+                    mainActivity.tablePaginationDetails
+                            .setText(mainActivity
+                                    .getString(
+                                            R.string.table_pagination_details,
+                                            String.valueOf(currentPage),
+                                            String.valueOf(itemsStart),
+                                            String.valueOf(itemsEnd)));
+
+                }
+            };
 }

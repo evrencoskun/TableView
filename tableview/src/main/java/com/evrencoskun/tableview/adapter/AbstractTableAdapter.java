@@ -27,6 +27,7 @@ import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.ColumnHeaderRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.RowHeaderRecyclerViewAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,6 +50,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
     protected List<List<C>> mCellItems;
 
     private ITableView mTableView;
+    private List<AdapterDataSetChangedListener> dataSetChangedListeners;
 
     public AbstractTableAdapter(Context context) {
         mContext = context;
@@ -77,6 +79,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
 
         // Set the items to the adapter
         mColumnHeaderRecyclerViewAdapter.setItems(mColumnHeaderItems);
+        dispatchColumnHeaderDataSetChangesToListeners(columnHeaderItems);
     }
 
     public void setRowHeaderItems(List<RH> rowHeaderItems) {
@@ -88,6 +91,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
 
         // Set the items to the adapter
         mRowHeaderRecyclerViewAdapter.setItems(mRowHeaderItems);
+        dispatchRowHeaderDataSetChangesToListeners(mRowHeaderItems);
     }
 
     public void setCellItems(List<List<C>> cellItems) {
@@ -99,6 +103,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
 
         // Set the items to the adapter
         mCellRecyclerViewAdapter.setItems(mCellItems);
+        dispatchCellDataSetChangesToListeners(mCellItems);
     }
 
     public void setAllItems(List<CH> columnHeaderItems, List<RH> rowHeaderItems, List<List<C>>
@@ -257,4 +262,43 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
         return mTableView;
     }
 
+    @SuppressWarnings("unchecked")
+    private void dispatchColumnHeaderDataSetChangesToListeners(List<CH> newColumnHeaderItems) {
+        if (dataSetChangedListeners != null) {
+            for (AdapterDataSetChangedListener listener : dataSetChangedListeners) {
+                listener.onColumnHeaderItemsChanged(newColumnHeaderItems);
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void dispatchRowHeaderDataSetChangesToListeners(final List<RH> newRowHeaderItems) {
+        if (dataSetChangedListeners != null) {
+            for (AdapterDataSetChangedListener listener : dataSetChangedListeners) {
+                listener.onRowHeaderItemsChanged(newRowHeaderItems);
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void dispatchCellDataSetChangesToListeners(List<List<C>> newCellItems) {
+        if (dataSetChangedListeners != null) {
+            for (AdapterDataSetChangedListener listener : dataSetChangedListeners) {
+                listener.onCellItemsChanged(newCellItems);
+            }
+        }
+    }
+
+    /**
+     * Sets the listener for changes of data set on the TableView.
+     *
+     * @param listener The AdapterDataSetChangedListener listener.
+     */
+    public void addAdapterDataSetChangedListener(AdapterDataSetChangedListener listener) {
+        if (dataSetChangedListeners == null) {
+            dataSetChangedListeners = new ArrayList<>();
+        }
+
+        dataSetChangedListeners.add(listener);
+    }
 }

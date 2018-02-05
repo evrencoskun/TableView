@@ -442,6 +442,11 @@ public class TableView extends FrameLayout implements ITableView {
     }
 
     @Override
+    public FilterHandler getFilterHandler() {
+        return mFilterHandler;
+    }
+
+    @Override
     public SortState getSortingStatus(int column) {
         return mColumnSortHandler.getSortingStatus(column);
     }
