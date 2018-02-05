@@ -379,20 +379,20 @@ public class MainFragment extends Fragment {
                 public void onPageTurned(int numItems, int itemsStart, int itemsEnd) {
                     int currentPage = mPagination.getCurrentPage();
                     int pageCount = mPagination.getPageCount();
-                    mainActivity.previousButton.setEnabled(true);
-                    mainActivity.nextButton.setEnabled(true);
+                    mainActivity.previousButton.setVisibility(View.VISIBLE);
+                    mainActivity.nextButton.setVisibility(View.VISIBLE);
 
                     if (currentPage == 1 && pageCount == 1) {
-                        mainActivity.previousButton.setEnabled(false);
-                        mainActivity.nextButton.setEnabled(false);
+                        mainActivity.previousButton.setVisibility(View.INVISIBLE);
+                        mainActivity.nextButton.setVisibility(View.INVISIBLE);
                     }
 
                     if (currentPage == 1) {
-                        mainActivity.previousButton.setEnabled(false);
+                        mainActivity.previousButton.setVisibility(View.INVISIBLE);
                     }
 
                     if (currentPage == pageCount) {
-                        mainActivity.nextButton.setEnabled(false);
+                        mainActivity.nextButton.setVisibility(View.INVISIBLE);
                     }
 
                     mainActivity.tablePaginationDetails
