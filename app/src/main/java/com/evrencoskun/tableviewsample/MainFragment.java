@@ -93,7 +93,12 @@ public class MainFragment extends Fragment {
         mTableView = createTableView();
         mTableFilter = new Filter(mTableView); // Create an instance of a Filter and pass the
         // created TableView.
+
+        // Create an instance for the TableView pagination and pass the created TableView.
         mPagination = new Pagination(mTableView);
+
+        // Sets the pagination listener of the TableView pagination to handle
+        // pagination actions. See onTableViewPageTurnedListener variable declaration below.
         mPagination.setOnTableViewPageTurnedListener(onTableViewPageTurnedListener);
         fragment_container.addView(mTableView);
 
@@ -348,6 +353,9 @@ public class MainFragment extends Fragment {
         mTableFilter.set(4, filter);
     }
 
+    // The following four methods below: nextTablePage(), previousTablePage(),
+    // goToTablePage(int page) and setTableItemsPerPage(int itemsPerPage)
+    // are for controlling the TableView pagination.
     public void nextTablePage() {
         mPagination.nextPage();
     }
@@ -364,6 +372,7 @@ public class MainFragment extends Fragment {
         mPagination.setItemsPerPage(itemsPerPage);
     }
 
+    // Handler for the changing of pages in the paginated TableView.
     private Pagination.OnTableViewPageTurnedListener onTableViewPageTurnedListener =
             new Pagination.OnTableViewPageTurnedListener() {
                 @Override
