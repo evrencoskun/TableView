@@ -55,4 +55,10 @@ public interface ITableAdapter {
 
     ITableView getTableView();
 
+    /**
+     * Sets the listener for changes of data set on the TableView.
+     *
+     * @param listener The OnAdapterDataSetChangedListener listener.
+     */
+    void setOnAdapterDataSetChangedListener(AbstractTableAdapter.OnAdapterDataSetChangedListener listener);
 }
