@@ -30,14 +30,6 @@ public class Cell implements ISortableModel, IFilterableModel {
     private Object mData;
     private String mFilterKeyword;
 
-    public String getFilterKeyword() {
-        return mFilterKeyword;
-    }
-
-    public void setFilterKeyword(String filterKeyword) {
-        this.mFilterKeyword = filterKeyword;
-    }
-
     public Cell(String id) {
         this.mId = id;
     }
@@ -54,10 +46,19 @@ public class Cell implements ISortableModel, IFilterableModel {
         this.mFilterKeyword = filterKeyword;
     }
 
+    /**
+     * This is necessary for sorting process.
+     * See ISortableModel
+     */
+    @Override
     public String getId() {
         return mId;
     }
 
+    /**
+     * This is necessary for sorting process.
+     * See ISortableModel
+     */
     @Override
     public Object getContent() {
         return mData;
@@ -68,8 +69,14 @@ public class Cell implements ISortableModel, IFilterableModel {
         return mData;
     }
 
-    public void setData(String data) {
-        mData = data;
+    public void setData(String data) { mData = data; }
+
+    public String getFilterKeyword() {
+        return mFilterKeyword;
+    }
+
+    public void setFilterKeyword(String filterKeyword) {
+        this.mFilterKeyword = filterKeyword;
     }
 
     @Override

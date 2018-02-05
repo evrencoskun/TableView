@@ -58,9 +58,6 @@ public class ColumnHeaderViewHolder extends AbstractSorterViewHolder {
         // initialize drawables
         arrow_up = ContextCompat.getDrawable(itemView.getContext(), R.drawable.ic_up);
         arrow_down = ContextCompat.getDrawable(itemView.getContext(), R.drawable.ic_down);
-        // Change its colors
-        //arrow_up.setColorFilter();
-
 
         // Set click listener to the sort button
         column_header_sortButton.setOnClickListener(mSortButtonClickListener);
