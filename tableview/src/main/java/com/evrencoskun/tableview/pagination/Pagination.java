@@ -1,11 +1,235 @@
-package com.evrencoskun.tableview.pagination;
-
-/**
- * Created by jeremypacabis on February 04, 2018.
+/*
+ * Copyright (c) 2018. Evren Coşkun
  *
- * @author Jeremy Patrick Pacabis <jeremy@ingenuity.ph>
- *         com.evrencoskun.tableview.pagination <TableView>
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
  */
 
-public class Pagination {
+package com.evrencoskun.tableview.pagination;
+
+import com.evrencoskun.tableview.ITableView;
+import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
+import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
+import com.evrencoskun.tableview.adapter.recyclerview.RowHeaderRecyclerViewAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Pagination<T> implements IPagination {
+
+    private static final int DEFAULT_ITEMS_PER_PAGE = 10;
+    private int itemsPerPage;
+    private int currentPage;
+    private int pageCount;
+    private List<List<T>> originalCellData, currentPageCellData;
+    private List<T> originalRowData, currentPageRowData;
+
+    private RowHeaderRecyclerViewAdapter mRowHeaderRecyclerViewAdapter;
+    private CellRecyclerViewAdapter mCellRecyclerViewAdapter;
+    private ITableView tableView;
+
+    private OnTableViewPageTurnedListener onTableViewPageTurnedListener;
+
+    /**
+     * Basic constructor, TableView instance is required.
+     *
+     * @param tableView The TableView to be paginated.
+     */
+    public Pagination(ITableView tableView) {
+        initialize(tableView, DEFAULT_ITEMS_PER_PAGE, null);
+    }
+
+    /**
+     * Applies pagination to the supplied TableView with number of items per page.
+     *
+     * @param tableView    The TableView to be paginated.
+     * @param itemsPerPage The number of items per page.
+     */
+    public Pagination(ITableView tableView, int itemsPerPage) {
+        initialize(tableView, itemsPerPage, null);
+    }
+
+    /**
+     * Applies pagination to the supplied TableView with number of items per page and an
+     * OnTableViewPageTurnedListener for handling changes in the TableView pagination.
+     *
+     * @param tableView    The TableView to be paginated.
+     * @param itemsPerPage The number of items per page.
+     * @param listener     The OnTableViewPageTurnedListener for the TableView.
+     */
+    public Pagination(ITableView tableView, int itemsPerPage, OnTableViewPageTurnedListener listener) {
+        initialize(tableView, itemsPerPage, listener);
+    }
+
+    private void initialize(ITableView tableView, int itemsPerPage, OnTableViewPageTurnedListener listener) {
+        this.onTableViewPageTurnedListener = listener;
+        this.itemsPerPage = itemsPerPage;
+        this.tableView = tableView;
+        this.mRowHeaderRecyclerViewAdapter = (RowHeaderRecyclerViewAdapter) tableView
+                .getRowHeaderRecyclerView().getAdapter();
+        this.mCellRecyclerViewAdapter = (CellRecyclerViewAdapter) tableView.getCellRecyclerView()
+                .getAdapter();
+        this.tableView.getAdapter().setOnAdapterDataSetChangedListener(onAdapterDataSetChangedListener);
+        this.currentPage = 1;
+        reloadPages();
+    }
+
+    @SuppressWarnings("unchecked")
+    private void reloadPages() {
+        if (originalCellData != null && originalRowData != null) {
+            paginateData();
+            goToPage(currentPage);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void paginateData() {
+        int start, end;
+        currentPageCellData = new ArrayList<>();
+        currentPageRowData = new ArrayList<>();
+        // No pagination if itemsPerPage is 0, all data will be loaded into the TableView.
+        if (itemsPerPage == 0) {
+            currentPageCellData.addAll(originalCellData);
+            currentPageRowData.addAll(originalRowData);
+            pageCount = 1;
+            start = 0;
+            end = currentPageCellData.size();
+        } else {
+            start = (currentPage * itemsPerPage) - itemsPerPage;
+            end = (currentPage * itemsPerPage) > originalCellData.size() ?
+                    originalCellData.size() : (currentPage * itemsPerPage);
+
+            for (int x = start; x < end; x++) {
+                currentPageCellData.add(originalCellData.get(x));
+                currentPageRowData.add(originalRowData.get(x));
+            }
+
+            // Using ceiling to calculate number of pages, e.g. 103 items of 10 items per page
+            // will result to 11 pages.
+            pageCount = (int) Math.ceil((double) originalCellData.size() / itemsPerPage);
+        }
+
+        // Sets the paginated data to the TableView.
+        mRowHeaderRecyclerViewAdapter.setItems(currentPageRowData, true);
+        mCellRecyclerViewAdapter.setItems(currentPageCellData, true);
+
+        // Dispatches TableView changes to Listener interface
+        if (onTableViewPageTurnedListener != null) {
+            onTableViewPageTurnedListener.onPageTurned(currentPageCellData.size(), start, end - 1);
+        }
+    }
+
+    @Override
+    public void nextPage() {
+        currentPage = currentPage + 1 > pageCount ? currentPage : ++currentPage;
+        paginateData();
+    }
+
+    @Override
+    public void previousPage() {
+        currentPage = currentPage - 1 == 0 ? currentPage : --currentPage;
+        paginateData();
+    }
+
+    @Override
+    public void goToPage(int page) {
+        currentPage = (page > pageCount || page < 1) ? (page > pageCount ? pageCount : currentPage) : page;
+        paginateData();
+    }
+
+    @Override
+    public void setItemsPerPage(int numItems) {
+        itemsPerPage = numItems;
+        currentPage = 1;
+        paginateData();
+    }
+
+    @Override
+    public void setOnTableViewPageTurnedListener(OnTableViewPageTurnedListener onTableViewPageTurnedListener) {
+        this.onTableViewPageTurnedListener = onTableViewPageTurnedListener;
+    }
+
+    @Override
+    public void removeOnTableViewPageTurnedListener() {
+        this.onTableViewPageTurnedListener = null;
+    }
+
+    @Override
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    @Override
+    public int getItemsPerPage() {
+        return itemsPerPage;
+    }
+
+    @Override
+    public int getPageCount() {
+        return pageCount;
+    }
+
+    @Override
+    public boolean isPaginated() {
+        return itemsPerPage > 0;
+    }
+
+    @SuppressWarnings("unchecked")
+    private AbstractTableAdapter.OnAdapterDataSetChangedListener onAdapterDataSetChangedListener =
+            new AbstractTableAdapter.OnAdapterDataSetChangedListener() {
+                @Override
+                public void onColumnHeaderItemsChanged(List columnHeaderItems) {
+
+                }
+
+                @Override
+                public void onRowHeaderItemsChanged(List rowHeaderItems) {
+                    if (rowHeaderItems != null) {
+                        originalRowData = new ArrayList<>(rowHeaderItems);
+                        reloadPages();
+                    }
+                }
+
+                @Override
+                public void onCellItemsChanged(List cellItems) {
+                    if (cellItems != null) {
+                        originalCellData = new ArrayList<>(cellItems);
+                        reloadPages();
+                    }
+                }
+
+                @Override
+                public void onDataSetChanged(List columnHeaderItems, List rowHeaderItems, List cellItems) {
+                    if (rowHeaderItems != null && cellItems != null) {
+                        originalCellData = new ArrayList<>(cellItems);
+                        originalRowData = new ArrayList<>(rowHeaderItems);
+                        reloadPages();
+                    }
+                }
+            };
+
+    /**
+     * Listener interface for changing of TableView page.
+     */
+    public interface OnTableViewPageTurnedListener {
+
+        /**
+         * Called when the page is changed in the TableView.
+         *
+         * @param numItems   The number of items currently displayed in the TableView.
+         * @param itemsStart The starting item currently displayed in the TableView.
+         * @param itemsEnd   The ending item currently displayed in the TableView.
+         */
+        void onPageTurned(int numItems, int itemsStart, int itemsEnd);
+    }
 }
