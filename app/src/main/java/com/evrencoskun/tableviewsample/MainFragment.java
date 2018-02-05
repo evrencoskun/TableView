@@ -113,6 +113,9 @@ public class MainFragment extends Fragment {
         mTableViewAdapter = new TableViewAdapter(getContext());
         tableView.setAdapter(mTableViewAdapter);
 
+        // Disable shadow
+        //tableView.getSelectionHandler().setShadowEnabled(false);
+
         // Set layout params
         FrameLayout.LayoutParams tlp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams
                 .MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
