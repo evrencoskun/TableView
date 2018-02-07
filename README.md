@@ -396,6 +396,19 @@ Setting data using our TableView adapter like this;
              rowPosition) {
          // Do what you want.
      }
+
+     /**
+      * Called when user long press any cell item.
+      *
+      * @param cellView : Long Pressed Cell ViewHolder.
+      * @param column   : X (Column) position of Long Pressed Cell item.
+      * @param row      : Y (Row) position of Long Pressed Cell item.
+      */
+     @Override
+     public void onCellLongPressed(@NonNull RecyclerView.ViewHolder cellView, int column, int row) {
+        // Do What you want
+        showToast("Cell " + column + " " + row + " has been long pressed.");
+     }
  
      /**
       * Called when user click any column header item.
@@ -433,8 +446,7 @@ Setting data using our TableView adapter like this;
              rowPosition) {
          // Do what you want.
  
-     }
-     
+     }    
      
      /**
       * Called when user click any Row Header item.
