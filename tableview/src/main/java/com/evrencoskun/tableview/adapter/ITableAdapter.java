@@ -36,6 +36,8 @@ public interface ITableAdapter {
 
     int getCellItemViewType(int position);
 
+    View getCornerView();
+
     RecyclerView.ViewHolder onCreateCellViewHolder(ViewGroup parent, int viewType);
 
     void onBindCellViewHolder(AbstractViewHolder holder, Object cellItemModel, int
