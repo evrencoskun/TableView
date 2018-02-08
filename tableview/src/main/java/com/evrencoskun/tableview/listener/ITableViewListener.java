@@ -29,6 +29,9 @@ public interface ITableViewListener {
     void onCellClicked(@NonNull RecyclerView.ViewHolder cellView, int column, int
             row);
 
+    void onCellLongPressed(@NonNull RecyclerView.ViewHolder cellView, int column, int
+            row);
+
     void onColumnHeaderClicked(@NonNull RecyclerView.ViewHolder columnHeaderView, int
             column);
 

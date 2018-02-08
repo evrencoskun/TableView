@@ -71,6 +71,12 @@ public class MainFragment extends Fragment {
     public static final int BOY = 0;
     public static final int GIRL = 1;
 
+    private boolean paginationEnabled = false;
+
+    public boolean isPaginationEnabled() {
+        return paginationEnabled;
+    }
+
     public MainFragment() {
         // Required empty public constructor
     }
@@ -91,15 +97,18 @@ public class MainFragment extends Fragment {
 
         // Create Table view
         mTableView = createTableView();
-        mTableFilter = new Filter(mTableView); // Create an instance of a Filter and pass the
-        // created TableView.
 
-        // Create an instance for the TableView pagination and pass the created TableView.
-        mPagination = new Pagination(mTableView);
+        if(paginationEnabled) {
+            mTableFilter = new Filter(mTableView); // Create an instance of a Filter and pass the
+            // created TableView.
 
-        // Sets the pagination listener of the TableView pagination to handle
-        // pagination actions. See onTableViewPageTurnedListener variable declaration below.
-        mPagination.setOnTableViewPageTurnedListener(onTableViewPageTurnedListener);
+            // Create an instance for the TableView pagination and pass the created TableView.
+            mPagination = new Pagination(mTableView);
+
+            // Sets the pagination listener of the TableView pagination to handle
+            // pagination actions. See onTableViewPageTurnedListener variable declaration below.
+            mPagination.setOnTableViewPageTurnedListener(onTableViewPageTurnedListener);
+        }
         fragment_container.addView(mTableView);
 
         loadData();
@@ -112,6 +121,9 @@ public class MainFragment extends Fragment {
         // Set adapter
         mTableViewAdapter = new TableViewAdapter(getContext());
         tableView.setAdapter(mTableViewAdapter);
+
+        // Disable shadow
+        //tableView.getSelectionHandler().setShadowEnabled(false);
 
         // Set layout params
         FrameLayout.LayoutParams tlp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams

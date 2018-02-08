@@ -74,6 +74,8 @@ public interface ITableView {
 
     SortState getSortingStatus(int column);
 
+    SortState getRowHeaderSortingStatus();
+
     void scrollToColumnPosition(int column);
 
     void scrollToRowPosition(int row);
@@ -105,6 +107,8 @@ public interface ITableView {
     int getUnSelectedColor();
 
     void sortColumn(int columnPosition, SortState sortState);
+
+    void sortRowHeader(SortState sortState);
 
     void remeasureColumnWidth(int column);
 

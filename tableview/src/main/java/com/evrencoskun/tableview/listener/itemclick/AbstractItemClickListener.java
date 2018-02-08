@@ -18,6 +18,7 @@
 package com.evrencoskun.tableview.listener.itemclick;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -44,15 +45,28 @@ public abstract class AbstractItemClickListener implements RecyclerView.OnItemTo
 
         mGestureDetector = new GestureDetector(mRecyclerView.getContext(), new
                 GestureDetector.SimpleOnGestureListener() {
+
+            MotionEvent start;
+
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
                 return true;
             }
 
             @Override
+            public boolean onDown(MotionEvent e) {
+                start = e;
+                return false;
+            }
+
+            @Override
             public void onLongPress(MotionEvent e) {
-                //TODO: long press implementation should have done.
-                longPressAction(e);
+                // Check distance to prevent scroll to trigger the event
+                if(start != null
+                        && Math.abs(start.getRawX() - e.getRawX()) < 10
+                        && Math.abs(start.getRawY() - e.getRawY()) < 10) {
+                    longPressAction(e);
+                }
             }
         });
     }

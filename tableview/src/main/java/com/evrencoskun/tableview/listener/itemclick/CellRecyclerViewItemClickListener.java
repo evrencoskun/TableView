@@ -73,16 +73,10 @@ public class CellRecyclerViewItemClickListener extends AbstractItemClickListener
     }
 
     protected void longPressAction(MotionEvent e) {
-        // Ignore this action for now;
-        if (true) {
-            return;
-        }
-
         // Consume the action for the time when either the cell row recyclerView or
         // the cell recyclerView is scrolling.
         if ((mRecyclerView.getScrollState() != RecyclerView.SCROLL_STATE_IDLE) ||
-                (mCellRecyclerView.getScrollState() != RecyclerView.SCROLL_STATE_IDLE) ||
-                mRecyclerView.isScrollOthers()) {
+                (mCellRecyclerView.getScrollState() != RecyclerView.SCROLL_STATE_IDLE)) {
             return;
         }
 
@@ -98,8 +92,8 @@ public class CellRecyclerViewItemClickListener extends AbstractItemClickListener
                     .getAdapter();
 
             // Call ITableView listener for long click
-            //m_jListener.onCellLongPressed(holder, holder.getAdapterPosition(), adapter
-            //        .getYPosition());
+            getTableViewListener().onCellLongPressed(holder, holder.getAdapterPosition(), adapter
+                    .getYPosition());
         }
     }
 }
