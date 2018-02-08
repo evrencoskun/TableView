@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mainFragment = new MainFragment();
+
+        View tableControls  = findViewById(R.id.table_controls);
         searchField = findViewById(R.id.query_string);
         moodFilter = findViewById(R.id.mood_spinner);
         genderFilter = findViewById(R.id.gender_spinner);
@@ -54,14 +56,19 @@ public class MainActivity extends AppCompatActivity {
         pageNumberField = findViewById(R.id.page_number_text);
         tablePaginationDetails = findViewById(R.id.table_details);
 
-        searchField.addTextChangedListener(onSearchTextChange);
-        moodFilter.setOnItemSelectedListener(onMoodSelectedListener);
-        genderFilter.setOnItemSelectedListener(onGenderSelectedListener);
-        itemsPerPage.setOnItemSelectedListener(onItemsPerPageSelectedListener);
+        if(mainFragment.isPaginationEnabled()) {
+            tableControls.setVisibility(View.VISIBLE);
+            searchField.addTextChangedListener(onSearchTextChange);
+            moodFilter.setOnItemSelectedListener(onMoodSelectedListener);
+            genderFilter.setOnItemSelectedListener(onGenderSelectedListener);
+            itemsPerPage.setOnItemSelectedListener(onItemsPerPageSelectedListener);
 
-        previousButton.setOnClickListener(onPreviousPageButtonClicked);
-        nextButton.setOnClickListener(onNextPageButtonClicked);
-        pageNumberField.addTextChangedListener(onPageTextChanged);
+            previousButton.setOnClickListener(onPreviousPageButtonClicked);
+            nextButton.setOnClickListener(onNextPageButtonClicked);
+            pageNumberField.addTextChangedListener(onPageTextChanged);
+        } else {
+            tableControls.setVisibility(View.GONE);
+        }
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.activity_container,
