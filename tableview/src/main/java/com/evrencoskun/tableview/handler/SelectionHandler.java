@@ -32,6 +32,8 @@ public class SelectionHandler {
     private int mSelectedRowPosition = UNSELECTED_POSITION;
     private int mSelectedColumnPosition = UNSELECTED_POSITION;
 
+    private boolean shadowEnabled = true;
+
 
     private ITableView mTableView;
     private AbstractViewHolder mPreviousSelectedViewHolder;
@@ -44,6 +46,14 @@ public class SelectionHandler {
         this.mRowHeaderRecyclerView = mTableView.getRowHeaderRecyclerView();
     }
 
+    public boolean isShadowEnabled() {
+        return shadowEnabled;
+    }
+
+    public void setShadowEnabled(boolean shadowEnabled) {
+        this.shadowEnabled = shadowEnabled;
+    }
+
     public void setSelectedCellPositions(AbstractViewHolder selectedViewHolder, int column, int
             row) {
         this.setPreviousSelectedView(selectedViewHolder);
@@ -51,7 +61,9 @@ public class SelectionHandler {
         this.mSelectedColumnPosition = column;
         this.mSelectedRowPosition = row;
 
-        selectedCellView();
+        if(shadowEnabled) {
+            selectedCellView();
+        }
     }
 
 
@@ -131,8 +143,10 @@ public class SelectionHandler {
         changeVisibleCellViewsBackgroundForRow(mSelectedRowPosition, true);
 
         // Change background color of the column headers to be shown as a shadow.
-        mTableView.getColumnHeaderRecyclerView().setSelected(SelectionState.SHADOWED, mTableView
-                .getShadowColor(), false);
+        if(shadowEnabled) {
+            mTableView.getColumnHeaderRecyclerView().setSelected(SelectionState.SHADOWED, mTableView
+                    .getShadowColor(), false);
+        }
     }
 
     private void unselectedRowHeader() {
@@ -321,7 +335,7 @@ public class SelectionHandler {
 
     public void changeRowBackgroundColorBySelectionStatus(AbstractViewHolder viewHolder,
                                                           SelectionState selectionState) {
-        if (selectionState == SelectionState.SHADOWED) {
+        if (shadowEnabled && selectionState == SelectionState.SHADOWED) {
             viewHolder.setBackgroundColor(mTableView.getShadowColor());
 
         } else if (selectionState == SelectionState.SELECTED) {
@@ -334,7 +348,7 @@ public class SelectionHandler {
 
     public void changeColumnBackgroundColorBySelectionStatus(AbstractViewHolder viewHolder,
                                                              SelectionState selectionState) {
-        if (selectionState == SelectionState.SHADOWED) {
+        if (shadowEnabled && selectionState == SelectionState.SHADOWED) {
             viewHolder.setBackgroundColor(mTableView.getShadowColor());
 
         } else if (selectionState == SelectionState.SELECTED) {
