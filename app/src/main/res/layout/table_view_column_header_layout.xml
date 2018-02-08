@@ -60,7 +60,7 @@
                 android:layout_marginLeft="4dp"
                 android:background="@android:color/transparent"
                 android:paddingRight="-5dp"
-                android:visibility="gone"
+                android:visibility="invisible"
                 app:srcCompat="@drawable/ic_down"/>
         </LinearLayout>
 

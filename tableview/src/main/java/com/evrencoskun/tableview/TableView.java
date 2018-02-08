@@ -424,6 +424,12 @@ public class TableView extends FrameLayout implements ITableView {
     }
 
     @Override
+    public void sortRowHeader(SortState sortState) {
+        mIsSortable = true;
+        mColumnSortHandler.sortByRowHeader(sortState);
+    }
+
+    @Override
     public void remeasureColumnWidth(int column) {
         // Remove calculated width value to be ready for recalculation.
         getColumnHeaderLayoutManager().removeCachedWidth(column);
@@ -449,6 +455,11 @@ public class TableView extends FrameLayout implements ITableView {
     @Override
     public SortState getSortingStatus(int column) {
         return mColumnSortHandler.getSortingStatus(column);
+    }
+
+    @Override
+    public SortState getRowHeaderSortingStatus() {
+        return mColumnSortHandler.getRowHeaderSortingStatus();
     }
 
     @Override

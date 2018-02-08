@@ -19,12 +19,14 @@ package com.evrencoskun.tableviewsample.tableview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+import com.evrencoskun.tableview.sort.SortState;
 import com.evrencoskun.tableviewsample.MainFragment;
 import com.evrencoskun.tableviewsample.R;
 import com.evrencoskun.tableviewsample.tableview.holder.CellViewHolder;
@@ -225,7 +227,21 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
     @Override
     public View onCreateCornerView() {
         // Get Corner xml layout
-        return LayoutInflater.from(mContext).inflate(R.layout.table_view_corner_layout, null);
+        View corner = LayoutInflater.from(mContext).inflate(R.layout.table_view_corner_layout, null);
+        corner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SortState sortState = TableViewAdapter.this.getTableView().getRowHeaderSortingStatus();
+                if(sortState != SortState.ASCENDING) {
+                    Log.d("TableViewAdapter", "Order Ascending");
+                    TableViewAdapter.this.getTableView().sortRowHeader(SortState.ASCENDING);
+                } else {
+                    Log.d("TableViewAdapter", "Order Descending");
+                    TableViewAdapter.this.getTableView().sortRowHeader(SortState.DESCENDING);
+                }
+            }
+        });
+        return corner;
     }
 
     @Override

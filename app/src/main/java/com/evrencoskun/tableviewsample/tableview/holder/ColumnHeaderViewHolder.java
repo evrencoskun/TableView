@@ -127,7 +127,7 @@ public class ColumnHeaderViewHolder extends AbstractSorterViewHolder {
             column_header_sortButton.setVisibility(View.VISIBLE);
             column_header_sortButton.setImageDrawable(arrow_up);
         } else {
-            column_header_sortButton.setVisibility(View.GONE);
+            column_header_sortButton.setVisibility(View.INVISIBLE);
         }
     }
 }
