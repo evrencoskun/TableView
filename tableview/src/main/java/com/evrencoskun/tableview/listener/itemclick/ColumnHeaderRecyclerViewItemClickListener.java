@@ -51,7 +51,7 @@ public class ColumnHeaderRecyclerViewItemClickListener extends AbstractItemClick
 
             // Control to ignore selection color
             if (!mTableView.isIgnoreSelectionColors()) {
-                mSelectionHandler.setSelectedColumnPosition(holder, column);
+                mSelectionHandler.setSelectedColumnPosition(column);
             }
 
             if (getTableViewListener() != null) {

@@ -124,29 +124,6 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
                 .scrollToPositionWithOffset(mHorizontalListener.getScrollPosition(),
                         mHorizontalListener.getScrollPositionOffset());
 
-        SelectionHandler selectionHandler = mTableAdapter.getTableView().getSelectionHandler();
-
-        if (selectionHandler.isAnyColumnSelected()) {
-
-            AbstractViewHolder cellViewHolder = (AbstractViewHolder) ((CellRowViewHolder) holder)
-                    .m_jRecyclerView.findViewHolderForAdapterPosition(selectionHandler
-                            .getSelectedColumnPosition());
-
-            if (cellViewHolder != null) {
-                // Control to ignore selection color
-                if (!mTableAdapter.getTableView().isIgnoreSelectionColors()) {
-                    cellViewHolder.setBackgroundColor(mTableAdapter.getTableView()
-                            .getSelectedColor());
-                }
-                cellViewHolder.setSelected(SelectionState.SELECTED);
-
-            }
-        } else if (selectionHandler.isRowSelected(holder.getAdapterPosition())) {
-
-            viewHolder.m_jRecyclerView.setSelected(SelectionState.SELECTED, mTableAdapter
-                    .getTableView().getSelectedColor(), mTableAdapter.getTableView()
-                    .isIgnoreSelectionColors());
-        }
 
     }
 

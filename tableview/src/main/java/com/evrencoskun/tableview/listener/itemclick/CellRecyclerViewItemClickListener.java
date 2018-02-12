@@ -58,13 +58,13 @@ public class CellRecyclerViewItemClickListener extends AbstractItemClickListener
             int row = adapter.getYPosition();
 
             // Control to ignore selection color
-            if (!mTableView.isIgnoreSelectionColors()) {
-                mSelectionHandler.setSelectedCellPositions(holder, column, row);
+            if (!mTableView.isIgnoreSelectionColors() && mTableView.isSelectable()) {
+                mSelectionHandler.setSelectedCellPositions(row, column);
             }
 
             if (getTableViewListener() != null) {
                 // Call ITableView listener for item click
-                getTableViewListener().onCellClicked(holder, column, row);
+                getTableViewListener().onCellClicked(holder, row, column);
             }
 
             return true;

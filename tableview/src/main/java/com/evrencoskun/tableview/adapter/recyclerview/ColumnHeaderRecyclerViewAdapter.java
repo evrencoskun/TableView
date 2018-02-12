@@ -25,6 +25,7 @@ import com.evrencoskun.tableview.adapter.ITableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractSorterViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
+import com.evrencoskun.tableview.handler.ISelectableModel;
 import com.evrencoskun.tableview.sort.ColumnSortHelper;
 import com.evrencoskun.tableview.sort.SortState;
 
@@ -56,6 +57,17 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
         AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
         Object value = getItem(position);
 
+        // Apply Selection Style
+        if(mTableAdapter.getTableView().isSelectable()) {
+            if (value instanceof ISelectableModel) {
+                viewHolder.setSelected(((ISelectableModel) value).getSelectionState());
+                final int color = mTableAdapter.getColorForSelection(((ISelectableModel) value).getSelectionState());
+                viewHolder.setBackgroundColor(color);
+            } else {
+                //TODO: trigger exception, if isSelectable, Cells MUST implements ISelectableModel
+            }
+        }
+
         mTableAdapter.onBindColumnHeaderViewHolder(viewHolder, value, position);
     }
 
@@ -70,7 +82,7 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
         AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
 
         SelectionState selectionState = mTableAdapter.getTableView().getSelectionHandler()
-                .getColumnSelectionState(viewHolder.getAdapterPosition());
+                .getSelectionStateColumnHeader(viewHolder.getAdapterPosition());
 
         // Control to ignore selection color
         if (!mTableAdapter.getTableView().isIgnoreSelectionColors()) {

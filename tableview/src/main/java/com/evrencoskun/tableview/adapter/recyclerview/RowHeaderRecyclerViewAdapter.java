@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import com.evrencoskun.tableview.adapter.ITableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
+import com.evrencoskun.tableview.handler.ISelectableModel;
 
 import java.util.List;
 
@@ -51,6 +52,17 @@ public class RowHeaderRecyclerViewAdapter<RH> extends AbstractRecyclerViewAdapte
         AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
         Object value = getItem(position);
 
+        // Apply Selection Style
+        if(mTableAdapter.getTableView().isSelectable()) {
+            if (value instanceof ISelectableModel) {
+                viewHolder.setSelected(((ISelectableModel) value).getSelectionState());
+                int color = mTableAdapter.getColorForSelection(((ISelectableModel) value).getSelectionState());
+                viewHolder.setBackgroundColor(color);
+            } else {
+                //TODO: trigger exception, if isSelectable, Cells MUST implements ISelectableModel
+            }
+        }
+
         mTableAdapter.onBindRowHeaderViewHolder(viewHolder, value, position);
     }
 
@@ -65,7 +77,7 @@ public class RowHeaderRecyclerViewAdapter<RH> extends AbstractRecyclerViewAdapte
         AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
 
         SelectionState selectionState = mTableAdapter.getTableView().getSelectionHandler()
-                .getRowSelectionState(holder.getAdapterPosition());
+                .getSelectionStateRowHeader(holder.getAdapterPosition());
 
 
         // Control to ignore selection color

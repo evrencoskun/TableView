@@ -26,6 +26,7 @@ import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.ColumnHeaderRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.RowHeaderRecyclerViewAdapter;
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -300,5 +301,33 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
         }
 
         dataSetChangedListeners.add(listener);
+    }
+
+    public boolean isSelectable(){
+        return mTableView.isSelectable();
+    }
+
+    public int getColorForSelection(AbstractViewHolder.SelectionState selectionState) {
+        switch (selectionState) {
+            case SELECTED:
+                return mTableView.getSelectedColor();
+            case SHADOWED:
+                return  mTableView.getShadowColor();
+        }
+        return mTableView.getUnSelectedColor();
+    }
+
+    public int getColumnHeaderItemCount() {
+        if( mColumnHeaderItems != null) {
+            return mColumnHeaderItems.size();
+        }
+        return 0;
+    }
+
+    public int getRowHeaderItemCount() {
+        if( mRowHeaderItems != null) {
+            return mRowHeaderItems.size();
+        }
+        return 0;
     }
 }

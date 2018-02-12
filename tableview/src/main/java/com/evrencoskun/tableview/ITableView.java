@@ -50,6 +50,10 @@ public interface ITableView {
 
     boolean isSortable();
 
+    boolean isSelectable();
+
+    void setSelectable(boolean selectable);
+
     CellRecyclerView getCellRecyclerView();
 
     CellRecyclerView getColumnHeaderRecyclerView();
