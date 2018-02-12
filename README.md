@@ -412,7 +412,6 @@ Setting data using our TableView adapter like this;
      @Override
      public void onCellLongPressed(@NonNull RecyclerView.ViewHolder cellView, int column, int row) {
         // Do What you want
-        showToast("Cell " + column + " " + row + " has been long pressed.");
      }
  
      /**
@@ -645,9 +644,8 @@ scrollToRowPosition(int row)
 
 ## Contributors
 
-I would like to thank the following [contributors](https://github.com/evrencoskun/TableView/blob/develop/CONTRIBUTORS.md) for sharing code and 
-making TableView library a better product. Contributions of any kind are welcome!
-
+Contributions of any kind are welcome! I would like to thank the following [contributors](https://github.com/evrencoskun/TableView/blob/master/CONTRIBUTORS.md) for sharing code and 
+making TableView library a better product. 
 
 ## License
 
