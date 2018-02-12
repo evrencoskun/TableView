@@ -47,6 +47,4 @@ public class ColumnSortComparator extends AbstractSortComparator implements Comp
         }
     }
 
-
-
 }
