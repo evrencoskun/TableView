@@ -98,6 +98,8 @@ public class MainFragment extends Fragment {
         // Create Table view
         mTableView = createTableView();
         mTableView.setSelectable(true);
+        mTableView.getSelectionHandler().setShadowEnabled(true);
+        mTableView.getSelectionHandler().setMultiSelectionEnabled(true);
         mTableFilter = new Filter(mTableView); // Create an instance of a Filter and pass the
         // created TableView.
 

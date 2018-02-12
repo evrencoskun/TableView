@@ -20,12 +20,9 @@ package com.evrencoskun.tableview.handler;
 import android.util.Log;
 
 import com.evrencoskun.tableview.ITableView;
-import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
 import com.evrencoskun.tableview.sort.ISortableModel;
-
-import java.util.ArrayList;
 
 /**
  * Created by evrencoskun on 24/10/2017.
@@ -42,13 +39,21 @@ public class SelectionHandler {
 
     private boolean mMultiSelectionEnabled = false;
 
-    private boolean shadowEnabled = true;
+    private boolean mShadowEnabled = true;
 
 
     private ITableView mTableView;
 
     public SelectionHandler(ITableView tableView) {
         this.mTableView = tableView;
+    }
+
+    public boolean isShadowEnabled() {
+        return mShadowEnabled;
+    }
+
+    public void setShadowEnabled(boolean shadowEnabled) {
+        this.mShadowEnabled = shadowEnabled;
     }
 
     /**
@@ -75,10 +80,10 @@ public class SelectionHandler {
         boolean clean = false;
         if(selectionType != SELECTION_TYPE.CELLS && selectionType != SELECTION_TYPE.NONE) {
             // unselect everything
-            clearAllSelection(false);
-            selectionType = SELECTION_TYPE.CELLS;
+            clearAllSelection(true);
             clean = true;
         }
+        selectionType = SELECTION_TYPE.CELLS;
 
         if(!mMultiSelectionEnabled && !clean) {
             // unselect everything first
@@ -92,8 +97,10 @@ public class SelectionHandler {
             setSelectionStateCell(column, row, SelectionState.SELECTED);
 
             // Shadow column and row
-            setSelectionStateRowHeader(row, SelectionState.SHADOWED);
-            setSelectionStateColumnHeader(column, SelectionState.SHADOWED);
+            if(mShadowEnabled) {
+                setSelectionStateRowHeader(row, SelectionState.SHADOWED);
+                setSelectionStateColumnHeader(column, SelectionState.SHADOWED);
+            }
         } else {
             setSelectionStateCell(column, row, SelectionState.UNSELECTED);
 
@@ -123,10 +130,10 @@ public class SelectionHandler {
         boolean clean = false;
         if(selectionType != SELECTION_TYPE.ROWS && selectionType != SELECTION_TYPE.NONE) {
             // unselect everything
-            clearAllSelection(false);
-            selectionType = SELECTION_TYPE.ROWS;
+            clearAllSelection(true);
             clean = true;
         }
+        selectionType = SELECTION_TYPE.ROWS;
 
         if(!mMultiSelectionEnabled && !clean) {
             // unselect everything first
@@ -155,8 +162,15 @@ public class SelectionHandler {
         }
 
 
-        if(shadowEnabled) {
-            // TODO: Shadow/UnShadow column headers
+        if(mShadowEnabled) {
+            // Shadow/UnShadow row headers
+            for(int columnPosition = 0; columnPosition < mTableView.getAdapter().getColumnHeaderItemCount(); columnPosition++) {
+                if(getSelectionStateRowHeader(columnPosition) != SelectionState.SHADOWED){
+                    setSelectionStateColumnHeader(columnPosition, SelectionState.SHADOWED);
+                } else {
+                    setSelectionStateColumnHeader(columnPosition, SelectionState.UNSELECTED);
+                }
+            }
         }
 
         mTableView.getAdapter().notifyDataSetChanged();
@@ -171,9 +185,10 @@ public class SelectionHandler {
         boolean clean = false;
         if(selectionType != SELECTION_TYPE.COLUMNS && selectionType != SELECTION_TYPE.NONE) {
             // unselect everything
-            selectionType = SELECTION_TYPE.COLUMNS;
-            clearAllSelection(false);
+            clearAllSelection(true);
+            clean = true;
         }
+        selectionType = SELECTION_TYPE.COLUMNS;
 
 
         if(!mMultiSelectionEnabled && !clean) {
@@ -202,8 +217,15 @@ public class SelectionHandler {
             }
         }
 
-        if(shadowEnabled) {
-            // TODO: Shadow/UnShadow row headers
+        if(mShadowEnabled) {
+            // Shadow/UnShadow row headers
+            for(int rowPosition = 0; rowPosition < mTableView.getAdapter().getRowHeaderItemCount(); rowPosition++) {
+                if(getSelectionStateRowHeader(rowPosition) != SelectionState.SHADOWED){
+                    setSelectionStateRowHeader(rowPosition, SelectionState.SHADOWED);
+                } else {
+                    setSelectionStateRowHeader(rowPosition, SelectionState.UNSELECTED);
+                }
+            }
         }
 
         mTableView.getAdapter().notifyDataSetChanged();
@@ -301,14 +323,14 @@ public class SelectionHandler {
 
     public void changeRowBackgroundColorBySelectionStatus(AbstractViewHolder viewHolder,
                                                           SelectionState selectionState) {
-        if(shadowEnabled || (!shadowEnabled && selectionState != SelectionState.SHADOWED)) {
+        if(mShadowEnabled || (!mShadowEnabled && selectionState != SelectionState.SHADOWED)) {
             viewHolder.setBackgroundColor(mTableView.getAdapter().getColorForSelection(selectionState));
         }
     }
 
     public void changeColumnBackgroundColorBySelectionStatus(AbstractViewHolder viewHolder,
                                                              SelectionState selectionState) {
-        if(shadowEnabled || (!shadowEnabled && selectionState != SelectionState.SHADOWED)) {
+        if(mShadowEnabled || (!mShadowEnabled && selectionState != SelectionState.SHADOWED)) {
             viewHolder.setBackgroundColor(mTableView.getAdapter().getColorForSelection(selectionState));
         }
     }
