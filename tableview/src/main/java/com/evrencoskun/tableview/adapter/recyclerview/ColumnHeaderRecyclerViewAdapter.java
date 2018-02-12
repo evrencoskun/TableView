@@ -81,19 +81,21 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
         super.onViewAttachedToWindow(holder);
         AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
 
-        SelectionState selectionState = mTableAdapter.getTableView().getSelectionHandler()
-                .getSelectionStateColumnHeader(viewHolder.getAdapterPosition());
+        if(mTableAdapter.getTableView().isSelectable()) {
+            SelectionState selectionState = mTableAdapter.getTableView().getSelectionHandler()
+                    .getSelectionStateColumnHeader(viewHolder.getAdapterPosition());
 
-        // Control to ignore selection color
-        if (!mTableAdapter.getTableView().isIgnoreSelectionColors()) {
+            // Control to ignore selection color
+            if (!mTableAdapter.getTableView().isIgnoreSelectionColors()) {
 
-            // Change background color of the view considering it's selected state
-            mTableAdapter.getTableView().getSelectionHandler()
-                    .changeColumnBackgroundColorBySelectionStatus(viewHolder, selectionState);
+                // Change background color of the view considering it's selected state
+                mTableAdapter.getTableView().getSelectionHandler()
+                        .changeColumnBackgroundColorBySelectionStatus(viewHolder, selectionState);
+            }
+
+            // Change selection status
+            viewHolder.setSelected(selectionState);
         }
-
-        // Change selection status
-        viewHolder.setSelected(selectionState);
 
         // Control whether the TableView is sortable or not.
         if (mTableAdapter.getTableView().isSortable()) {

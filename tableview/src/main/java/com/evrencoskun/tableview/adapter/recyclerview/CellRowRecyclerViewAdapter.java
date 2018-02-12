@@ -90,23 +90,25 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
     @Override
     public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
-        AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
+        
+        if(mTableAdapter.getTableView().isSelectable()) {
+            AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
+            SelectionState selectionState = mTableAdapter.getTableView().getSelectionHandler()
+                    .getSelectionStateCell(holder.getAdapterPosition(), mYPosition);
 
-        SelectionState selectionState = mTableAdapter.getTableView().getSelectionHandler()
-                .getSelectionStateCell(holder.getAdapterPosition(), mYPosition);
+            // Control to ignore selection color
+            if (!mTableAdapter.getTableView().isIgnoreSelectionColors()) {
 
-        // Control to ignore selection color
-        if (!mTableAdapter.getTableView().isIgnoreSelectionColors()) {
-
-            // Change the background color of the view considering selected row/cell position.
-            if (selectionState == SelectionState.SELECTED) {
-                viewHolder.setBackgroundColor(mTableAdapter.getTableView().getSelectedColor());
-            } else {
-                viewHolder.setBackgroundColor(mTableAdapter.getTableView().getUnSelectedColor());
+                // Change the background color of the view considering selected row/cell position.
+                if (selectionState == SelectionState.SELECTED) {
+                    viewHolder.setBackgroundColor(mTableAdapter.getTableView().getSelectedColor());
+                } else {
+                    viewHolder.setBackgroundColor(mTableAdapter.getTableView().getUnSelectedColor());
+                }
             }
-        }
 
-        // Change selection status
-        viewHolder.setSelected(selectionState);
+            // Change selection status
+            viewHolder.setSelected(selectionState);
+        }
     }
 }
