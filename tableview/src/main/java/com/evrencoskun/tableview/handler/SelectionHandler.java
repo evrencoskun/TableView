@@ -37,9 +37,13 @@ public class SelectionHandler {
     public enum SELECTION_TYPE { NONE, CELLS, ROWS, COLUMNS};
 
 
+
     private SELECTION_TYPE selectionType = SELECTION_TYPE.NONE;
 
-    private boolean mMultiSelectionEnabled = true;
+    private boolean mMultiSelectionEnabled = false;
+
+    private boolean shadowEnabled = true;
+
 
     private ITableView mTableView;
 
@@ -150,7 +154,10 @@ public class SelectionHandler {
             }
         }
 
-        // TODO: Shadow/UnShadow column headers
+
+        if(shadowEnabled) {
+            // TODO: Shadow/UnShadow column headers
+        }
 
         mTableView.getAdapter().notifyDataSetChanged();
     }
@@ -195,7 +202,9 @@ public class SelectionHandler {
             }
         }
 
-        // TODO: Shadow/UnShadow row headers
+        if(shadowEnabled) {
+            // TODO: Shadow/UnShadow row headers
+        }
 
         mTableView.getAdapter().notifyDataSetChanged();
 
@@ -292,13 +301,16 @@ public class SelectionHandler {
 
     public void changeRowBackgroundColorBySelectionStatus(AbstractViewHolder viewHolder,
                                                           SelectionState selectionState) {
-        viewHolder.setBackgroundColor(mTableView.getAdapter().getColorForSelection(selectionState));
+        if(shadowEnabled || (!shadowEnabled && selectionState != SelectionState.SHADOWED)) {
+            viewHolder.setBackgroundColor(mTableView.getAdapter().getColorForSelection(selectionState));
+        }
     }
 
     public void changeColumnBackgroundColorBySelectionStatus(AbstractViewHolder viewHolder,
                                                              SelectionState selectionState) {
-
-        viewHolder.setBackgroundColor(mTableView.getAdapter().getColorForSelection(selectionState));
+        if(shadowEnabled || (!shadowEnabled && selectionState != SelectionState.SHADOWED)) {
+            viewHolder.setBackgroundColor(mTableView.getAdapter().getColorForSelection(selectionState));
+        }
     }
 
     public boolean isMultiSelectionEnabled() {

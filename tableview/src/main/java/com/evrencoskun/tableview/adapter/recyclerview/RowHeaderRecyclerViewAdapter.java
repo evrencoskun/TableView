@@ -25,6 +25,8 @@ import com.evrencoskun.tableview.adapter.ITableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
 import com.evrencoskun.tableview.handler.ISelectableModel;
+import com.evrencoskun.tableview.sort.RowHeaderSortHelper;
+
 
 import java.util.List;
 
@@ -35,6 +37,7 @@ import java.util.List;
 public class RowHeaderRecyclerViewAdapter<RH> extends AbstractRecyclerViewAdapter<RH> {
 
     private ITableAdapter mTableAdapter;
+    private RowHeaderSortHelper mRowHeaderSortHelper;
 
     public RowHeaderRecyclerViewAdapter(Context context, List<RH> itemList, ITableAdapter
             tableAdapter) {
@@ -89,6 +92,14 @@ public class RowHeaderRecyclerViewAdapter<RH> extends AbstractRecyclerViewAdapte
 
         // Change selection status
         viewHolder.setSelected(selectionState);
+    }
+
+    public RowHeaderSortHelper getRowHeaderSortHelper() {
+        if (mRowHeaderSortHelper == null) {
+            // It helps to store sorting state of column headers
+            this.mRowHeaderSortHelper = new RowHeaderSortHelper();
+        }
+        return mRowHeaderSortHelper;
     }
 
 }

@@ -134,6 +134,9 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
         }
     }
 
+    public View getCornerView() {
+        return mCornerView;
+    }
 
     public ColumnHeaderRecyclerViewAdapter getColumnHeaderRecyclerViewAdapter() {
         return mColumnHeaderRecyclerViewAdapter;
