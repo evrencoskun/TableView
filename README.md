@@ -44,6 +44,11 @@ You can check new implementations of TableView on <a href="https://github.com/ev
     - [1. ISortableModel to your Cell Model](#1-isortablemodel-to-your-cell-model)
     - [2. AbstractSorterViewHolder to your Column Header ViewHolder](#2-abstractsorterviewholder-to-your-column-header-viewholder)
     - [3. Helper methods for sorting process](#3-helper-methods-for-sorting-process)
+  - [Selecting](#selecting)
+    - [1. Implements ISelectable to your Cell Model](#1-implements-iselectable-to-your-cell-model)
+    - [2. Enable selection on the TableView](#2-enable-selection-on-the-tableview)
+    - [3. Multi-selection and Shadows](#3-multi-selection-and-shadows)
+    - [4. Customize selection colors](#4-customize-selection-colors)
   - [Change your TableView model](#change-your-tableview-model)
   - [Hiding & Showing the Row](#hiding--showing-the-row)
   - [Hiding & Showing the Column](#hiding--showing-the-column)
@@ -547,6 +552,77 @@ TableView has some helper functions to change desired cell item model easily wit
 
 *Note:* <a href="https://github.com/evrencoskun/TableViewSample2"> TableViewSample 2 </a> app shows also usage of these helper methods.
 
+## Selecting
+
+### 1. Implements ISelectable to your Cell Model
+
+To be able use this feature on your TableView. You have to implement ISelectableModel to your Cell Model. This interface
+wants two methods from your cell model. These are ;
+
+- ```java SelectionState getSelectionState()``` : To get current selection state for this Cell
+- ```java SelectionState setSelectionState()``` : To set current selection state for this Cell
+
+Note:  Make sure you return a default SelectionState value (UNSELECTED) when calling ```getSelectionState()```
+
+As you seen getSelectionState value returns SelectionState. TableView controls the style regarding this state.
+Their are three states;
+
+```java
+    /**
+     * Enumeration value indicating the item is selected.
+     * <code>SELECTED</code>.
+     */
+    SELECTED, 
+    
+    /** 
+     * Enumeration value indicating the item is selected.
+     * <code>UNSELECTED</code>.
+     */
+    UNSELECTED,
+
+    /** 
+     * Enumeration value indicating the item is shadowed.
+     * <code>SHADOWED</code>.
+     */ 
+    SHADOWED
+```
+
+### 2. Enable selection on the TableView
+
+To enable selection, you have to enable selection for the TableView
+```java
+mTableView.setSelectable(true);
+```
+
+### 3. Multi-selection and Shadows
+
+You can enable multi-selection thanks to the SelectionHandler:
+```java
+mTableView.getSelectionHandler().setMultiSelectionEnabled(true);
+``` 
+
+You can also enable/disable Shadows thanks to the SelectionHandler:
+
+```java
+mTableView.getSelectionHandler().setShadowEnabled(true);
+```
+
+### 4. Customize selection colors
+
+You can customize selection colors easily in your layout:
+```xml
+
+	<com.evrencoskun.tableview.TableView
+            android:id="@+id/table_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:selected_color="@color/tableview_selected_background_color"
+            app:shadow_color="@color/tableview_shadow_background_color"
+            app:unselected_color="@color/tableview_unselected_background_color"
+            />
+```
+
 
 ## Hiding & Showing the Row
 
@@ -588,6 +664,12 @@ To ignore setting selection colors that are displayed by user interaction, the b
 ```java
 tableView.setIgnoreSelectionColors(false);
 ``` 
+
+To enable selection, the below line can be used. You will need to implement ISelectable in your Cell
+```java
+tableView.setSelectable(true);
+```
+
 
 To show or hide separators of the TableView, you can simply use these helper methods.
 
