@@ -61,8 +61,9 @@ public class RowHeaderRecyclerViewAdapter<RH> extends AbstractRecyclerViewAdapte
                 viewHolder.setSelected(((ISelectableModel) value).getSelectionState());
                 int color = mTableAdapter.getColorForSelection(((ISelectableModel) value).getSelectionState());
                 viewHolder.setBackgroundColor(color);
-            } else {
-                //TODO: trigger exception, if isSelectable, Cells MUST implements ISelectableModel
+            } else if(value != null){
+                // trigger exception, if isSelectable, Cells MUST implements ISelectableModel
+                throw new ClassCastException("Invalid Class type for RH: "+position+", ISelectableModel expected. Please implement ISelectable in your RowHeaderCell in order to have it selectable.");
             }
         }
 

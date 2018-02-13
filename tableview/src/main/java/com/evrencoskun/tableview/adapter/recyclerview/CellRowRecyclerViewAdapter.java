@@ -69,8 +69,9 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
                     viewHolder.setSelected(((ISelectableModel) value).getSelectionState());
                     int color = mTableAdapter.getColorForSelection(((ISelectableModel) value).getSelectionState());
                     viewHolder.setBackgroundColor(color);
-                } else {
-                    //TODO: trigger exception, if isSelectable, Cells MUST implements ISelectableModel
+                } else if(value != null){
+                    // trigger exception, if isSelectable, Cells MUST implements ISelectableModel
+                    throw new ClassCastException("Invalid Class type for Cell: ("+mYPosition+","+xPosition+"), ISelectableModel expected. Please implement ISelectable in your Cell in order to have it selectable.");
                 }
             }
 
