@@ -140,7 +140,8 @@ public class SelectionHandler {
             clearAllSelection(false);
         }
 
-        for(Object cell: mTableView.getAdapter().getCellRowItems(rowPosition)) {
+
+        for(Object cell: mTableView.getAdapter().getCellRecyclerViewAdapter().getRowItems(rowPosition)) {
             if(cell instanceof ISelectableModel) {
                 ISelectableModel selectableModel = (ISelectableModel)cell;
                 if (selectableModel.getSelectionState() != AbstractViewHolder.SelectionState.SELECTED) {
@@ -151,7 +152,7 @@ public class SelectionHandler {
             }
         }
 
-        Object rowHeader = mTableView.getAdapter().getRowHeaderItem(rowPosition);
+        Object rowHeader = mTableView.getAdapter().getRowHeaderRecyclerViewAdapter().getItem(rowPosition);
         if(rowHeader instanceof ISelectableModel) {
             ISelectableModel selectableModel = (ISelectableModel)rowHeader;
             if (selectableModel.getSelectionState() != AbstractViewHolder.SelectionState.SELECTED) {
@@ -164,7 +165,7 @@ public class SelectionHandler {
 
         if(mShadowEnabled) {
             // Shadow/UnShadow row headers
-            for(int columnPosition = 0; columnPosition < mTableView.getAdapter().getColumnHeaderItemCount(); columnPosition++) {
+            for(int columnPosition = 0; columnPosition < mTableView.getAdapter().getColumnHeaderRecyclerViewAdapter().getItemCount(); columnPosition++) {
                 if(getSelectionStateRowHeader(columnPosition) != SelectionState.SHADOWED){
                     setSelectionStateColumnHeader(columnPosition, SelectionState.SHADOWED);
                 } else {
@@ -196,7 +197,7 @@ public class SelectionHandler {
             clearAllSelection(false);
         }
 
-        for(Object cell: mTableView.getAdapter().getCellColumnItems(columnPosition)) {
+        for(Object cell: mTableView.getAdapter().getCellRecyclerViewAdapter().getColumnItems(columnPosition)) {
             if(cell instanceof ISelectableModel) {
                 ISelectableModel selectableModel = (ISelectableModel)cell;
                 if (selectableModel.getSelectionState() != AbstractViewHolder.SelectionState.SELECTED) {
@@ -207,7 +208,8 @@ public class SelectionHandler {
             }
         }
 
-        Object columnHeader = mTableView.getAdapter().getColumnHeaderItem(columnPosition);
+
+        Object columnHeader = mTableView.getAdapter().getColumnHeaderRecyclerViewAdapter().getItem(columnPosition);
         if(columnHeader instanceof ISelectableModel) {
             ISelectableModel selectableModel = (ISelectableModel)columnHeader;
             if (selectableModel.getSelectionState() != AbstractViewHolder.SelectionState.SELECTED) {
@@ -219,7 +221,8 @@ public class SelectionHandler {
 
         if(mShadowEnabled) {
             // Shadow/UnShadow row headers
-            for(int rowPosition = 0; rowPosition < mTableView.getAdapter().getRowHeaderItemCount(); rowPosition++) {
+
+            for(int rowPosition = 0; rowPosition < mTableView.getAdapter().getRowHeaderRecyclerViewAdapter().getItemCount(); rowPosition++) {
                 if(getSelectionStateRowHeader(rowPosition) != SelectionState.SHADOWED){
                     setSelectionStateRowHeader(rowPosition, SelectionState.SHADOWED);
                 } else {
@@ -266,40 +269,40 @@ public class SelectionHandler {
 
 
     public SelectionState getSelectionStateCell(int column, int row){
-        ISelectableModel cellModel = (ISelectableModel) mTableView.getAdapter().getCellItem(column, row);
+        ISelectableModel cellModel = (ISelectableModel) mTableView.getAdapter().getCellRecyclerViewAdapter().getItem(row, column);
         return cellModel.getSelectionState();
     }
 
     public SelectionState getSelectionStateRowHeader(int row) {
-        ISelectableModel rowModel = (ISelectableModel) mTableView.getAdapter().getRowHeaderItem(row);
+        ISelectableModel rowModel = (ISelectableModel) mTableView.getAdapter().getRowHeaderRecyclerViewAdapter().getItem(row);
         return rowModel.getSelectionState();
     }
 
     public SelectionState getSelectionStateColumnHeader(int column) {
-        ISelectableModel columnModel = (ISelectableModel) mTableView.getAdapter().getColumnHeaderItem(column);
+        ISelectableModel columnModel = (ISelectableModel) mTableView.getAdapter().getColumnHeaderRecyclerViewAdapter().getItem(column);
         return columnModel.getSelectionState();
     }
 
     private void setSelectionStateCell(int column, int row , SelectionState selectionState){
-        ISelectableModel cellModel = (ISelectableModel) mTableView.getAdapter().getCellItem(column, row);
+        ISelectableModel cellModel = (ISelectableModel) mTableView.getAdapter().getCellRecyclerViewAdapter().getItem(row, column);
         cellModel.setSelectionState(selectionState);
 
         Log.d("SelectionHandler", "r"+row+"-"+column+" val: "+((ISelectableModel)cellModel).getSelectionState()+" "+((ISortableModel)cellModel).getContent());
 
     }
 
-    private void setSelectionStateRowHeader(Integer row, SelectionState selectionState) {
-        ISelectableModel rowModel = (ISelectableModel) mTableView.getAdapter().getRowHeaderItem(row);
+    private void setSelectionStateRowHeader(int row, SelectionState selectionState) {
+        ISelectableModel rowModel = (ISelectableModel) mTableView.getAdapter().getRowHeaderRecyclerViewAdapter().getItem(row);
         rowModel.setSelectionState(selectionState);
     }
 
-    private void setSelectionStateColumnHeader(Integer column, SelectionState selectionState) {
-        ISelectableModel columnModel = (ISelectableModel) mTableView.getAdapter().getColumnHeaderItem(column);
+    private void setSelectionStateColumnHeader(int column, SelectionState selectionState) {
+        ISelectableModel columnModel = (ISelectableModel) mTableView.getAdapter().getColumnHeaderRecyclerViewAdapter().getItem(column);
         columnModel.setSelectionState(selectionState);
     }
 
     public boolean columnHasItemSelected(int column) {
-        for(Object cell : mTableView.getAdapter().getCellColumnItems(column)) {
+        for(Object cell : mTableView.getAdapter().getCellRecyclerViewAdapter().getColumnItems(column)) {
             if(cell instanceof ISelectableModel) {
                 if( ((ISelectableModel)cell).getSelectionState() == SelectionState.SELECTED ) {
                     return true;
@@ -310,7 +313,7 @@ public class SelectionHandler {
     }
 
     public boolean rowHasItemSelected(int row) {
-        for(Object cell : mTableView.getAdapter().getCellRowItems(row)) {
+        for(Object cell : mTableView.getAdapter().getCellRecyclerViewAdapter().getRowItems(row)) {
             if(cell instanceof ISelectableModel) {
                 if( ((ISelectableModel)cell).getSelectionState() == SelectionState.SELECTED ) {
                     return true;
