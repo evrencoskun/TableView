@@ -22,7 +22,10 @@ public class ColumnForRowHeaderSortComparator implements Comparator {
     private SortState mRortState;
     private ColumnSortComparator mColumnSortComparator;
 
-    public ColumnForRowHeaderSortComparator(List<ISortableModel> rowHeader, List<List<ISortableModel>> referenceList, int column, SortState sortState) {
+    public ColumnForRowHeaderSortComparator(List<ISortableModel> rowHeader,
+                                            List<List<ISortableModel>> referenceList,
+                                            int column,
+                                            SortState sortState) {
         this.mRowHeaderList = rowHeader;
         this.mReferenceList = referenceList;
         this.column = column;

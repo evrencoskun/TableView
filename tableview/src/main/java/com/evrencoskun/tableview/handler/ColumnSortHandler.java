@@ -18,7 +18,6 @@
 package com.evrencoskun.tableview.handler;
 
 import android.support.v7.util.DiffUtil;
-import android.util.Log;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
@@ -27,6 +26,7 @@ import com.evrencoskun.tableview.adapter.recyclerview.RowHeaderRecyclerViewAdapt
 import com.evrencoskun.tableview.sort.ColumnForRowHeaderSortComparator;
 import com.evrencoskun.tableview.sort.ColumnSortCallback;
 import com.evrencoskun.tableview.sort.ColumnSortComparator;
+import com.evrencoskun.tableview.sort.RowHeaderForCellSortComparator;
 import com.evrencoskun.tableview.sort.ISortableModel;
 import com.evrencoskun.tableview.sort.RowHeaderSortCallback;
 import com.evrencoskun.tableview.sort.RowHeaderSortComparator;
@@ -34,7 +34,6 @@ import com.evrencoskun.tableview.sort.SortState;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -59,25 +58,36 @@ public class ColumnSortHandler {
     }
 
     public void sortByRowHeader(final SortState sortState) {
-        List<ISortableModel> originalList = mRowHeaderRecyclerViewAdapter.getItems();
-        List<ISortableModel> sortedList = new ArrayList<>(originalList);
+        List<ISortableModel> originalRowHeaderList = mRowHeaderRecyclerViewAdapter.getItems();
+        List<ISortableModel> sortedRowHeaderList = new ArrayList<>(originalRowHeaderList);
+
+        List<List<ISortableModel>> originalList = mCellRecyclerViewAdapter.getItems();
+        List<List<ISortableModel>> sortedList = new ArrayList<>(originalList);
 
         if (sortState != SortState.UNSORTED) {
             // Do descending / ascending sort
-            Collections.sort(sortedList, new RowHeaderSortComparator(sortState) );
+            Collections.sort(sortedRowHeaderList, new RowHeaderSortComparator(sortState) );
+
+            // Sorting Columns/Cells using the same logic has sorting DataSet
+            RowHeaderForCellSortComparator rowHeaderForCellSortComparator
+                    = new RowHeaderForCellSortComparator(
+                    originalRowHeaderList,
+                    originalList,
+                    sortState);
+
+            Collections.sort(sortedList, rowHeaderForCellSortComparator);
         }
 
         mRowHeaderRecyclerViewAdapter.getRowHeaderSortHelper().setSortingStatus(sortState);
 
         // Set sorted data list
-        swapItems(originalList, sortedList);
-
-
+        swapItems(originalRowHeaderList, sortedRowHeaderList, sortedList);
     }
 
     public void sort(int column, SortState sortState) {
         List<List<ISortableModel>> originalList = mCellRecyclerViewAdapter.getItems();
         List<List<ISortableModel>> sortedList = new ArrayList<>(originalList);
+
         List<ISortableModel> originalRowHeaderList
                 = mRowHeaderRecyclerViewAdapter.getItems();
         List<ISortableModel> sortedRowHeaderList
@@ -105,15 +115,18 @@ public class ColumnSortHandler {
         swapItems(originalList, sortedList, column, sortedRowHeaderList);
     }
 
-    private void swapItems(List<ISortableModel> oldItems, List<ISortableModel> newItems) {
+    private void swapItems(List<ISortableModel> oldRowHeader,
+                           List<ISortableModel> newRowHeader,
+                           List<List<ISortableModel>> newColumnItems) {
 
         // Find the differences between old cell items and new items.
-        final RowHeaderSortCallback diffCallback = new RowHeaderSortCallback(oldItems, newItems);
+        final RowHeaderSortCallback diffCallback = new RowHeaderSortCallback(oldRowHeader, newRowHeader);
 
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
         // Set new items without calling notifyCellDataSetChanged method of CellRecyclerViewAdapter
-        mRowHeaderRecyclerViewAdapter.setItems(newItems, false);
+        mRowHeaderRecyclerViewAdapter.setItems(newRowHeader, false);
+        mCellRecyclerViewAdapter.setItems(newColumnItems, false);
 
         diffResult.dispatchUpdatesTo(mRowHeaderRecyclerViewAdapter);
         diffResult.dispatchUpdatesTo(mCellRecyclerViewAdapter);
