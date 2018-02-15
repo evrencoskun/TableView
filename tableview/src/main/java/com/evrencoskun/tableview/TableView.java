@@ -29,6 +29,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
@@ -634,5 +635,51 @@ public class TableView extends FrameLayout implements ITableView {
     public @ColorInt
     int getShadowColor() {
         return mShadowColor;
+    }
+
+    /**
+     * get row header width
+     * @return size in pixel
+     */
+    @Override
+    public int getRowHeaderWidth() {
+        return mRowHeaderWidth;
+    }
+
+    /**
+     * set RowHeaderWidth
+     * @param rowHeaderWidth in pixel
+     */
+    @Override
+    public void setRowHeaderWidth(int rowHeaderWidth) {
+        this.mRowHeaderWidth = rowHeaderWidth;
+        if(mRowHeaderRecyclerView != null) {
+            // Update RowHeader layout width
+            ViewGroup.LayoutParams layoutParams = mRowHeaderRecyclerView.getLayoutParams();
+            layoutParams.width = rowHeaderWidth;
+            mRowHeaderRecyclerView.setLayoutParams(layoutParams);
+            mRowHeaderRecyclerView.requestLayout();
+        }
+
+        if(mColumnHeaderRecyclerView != null) {
+            // Update ColumnHeader left margin
+            LayoutParams layoutParams = (LayoutParams) mColumnHeaderRecyclerView.getLayoutParams();
+            layoutParams.leftMargin = rowHeaderWidth;
+            mColumnHeaderRecyclerView.setLayoutParams(layoutParams);
+            mColumnHeaderRecyclerView.requestLayout();
+        }
+
+        if(mCellRecyclerView != null) {
+            // Update Cells left margin
+            LayoutParams layoutParams = (LayoutParams) mCellRecyclerView.getLayoutParams();
+            layoutParams.leftMargin = rowHeaderWidth;
+            mCellRecyclerView.setLayoutParams(layoutParams);
+            mCellRecyclerView.requestLayout();
+        }
+
+        if(getAdapter() != null) {
+            // update CornerView size
+            getAdapter().setRowHeaderWidth(rowHeaderWidth);
+        }
     }
 }
