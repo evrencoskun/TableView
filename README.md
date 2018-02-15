@@ -23,8 +23,10 @@
   - [x] Each column width value can be calculated automatically considering the largest one
   - [x] Setting your own model class to displayed in a table view easily.
   - [x] TableView has an click listener to listen user touch interaction for each cell.
-  - [x] TableView columns can be sorted ascendingly or descendingly. (*NEW*)
-  - [x] Hiding & Showing the row is pretty easy. (*NEW*)
+  - [x] TableView columns can be sorted ascendingly or descendingly.
+  - [x] Hiding & Showing the row and the column is pretty easy. 
+  - [x] Filtering by more than one data. (*NEW*)
+  - [x] Paging functionality. (*NEW*)
   
   
 ## What's new 
@@ -44,6 +46,8 @@ You can check new implementations of TableView on <a href="https://github.com/ev
     - [1. ISortableModel to your Cell Model](#1-isortablemodel-to-your-cell-model)
     - [2. AbstractSorterViewHolder to your Column Header ViewHolder](#2-abstractsorterviewholder-to-your-column-header-viewholder)
     - [3. Helper methods for sorting process](#3-helper-methods-for-sorting-process)
+  - [Filtering](#filtering)
+  - [Paging](#paging)
   - [Change your TableView model](#change-your-tableview-model)
   - [Hiding & Showing the Row](#hiding--showing-the-row)
   - [Hiding & Showing the Column](#hiding--showing-the-column)
@@ -51,6 +55,7 @@ You can check new implementations of TableView on <a href="https://github.com/ev
   - [Sample Apps](#sample-apps)
   - [Articles](#Articles)
   - [Communication](#communication)
+  - [Contributors](#contributors)
   - [License](#license)
 
 
@@ -60,7 +65,7 @@ To use this library in your android project, just simply add the following depen
 
 ``` 
 dependencies {
- compile 'com.evrencoskun.library:tableview:0.8.5.5' 
+ compile 'com.evrencoskun.library:tableview:0.8.6' 
 }
 ```
 
@@ -407,7 +412,6 @@ Setting data using our TableView adapter like this;
      @Override
      public void onCellLongPressed(@NonNull RecyclerView.ViewHolder cellView, int column, int row) {
         // Do What you want
-        showToast("Cell " + column + " " + row + " has been long pressed.");
      }
  
      /**
@@ -531,6 +535,14 @@ Several helper methods have been inserted on TableView. These are;
 - ```java sortColumn(int column, SortState sortState)``` : To sort
 - ```java SortState getSortingStatus(int column)``` : To get current state of the column
 
+## Filtering
+
+TableView has a filtering functionality with 0.8.6 version. (This subject will be updated.)  
+
+## Paging
+
+TableView has a paging functionality with 0.8.6 version. (This subject will be updated.)
+
 ## Change your TableView model 
 
 TableView has some helper functions to change desired cell item model easily with 0.8.5.1 version. These are;
@@ -630,6 +642,10 @@ scrollToRowPosition(int row)
 - If you **want to contribute**, please submit a pull request.
 - If you **use the control**, please contact me to mention your app on this page.
 
+## Contributors
+
+Contributions of any kind are welcome! I would like to thank the following [contributors](https://github.com/evrencoskun/TableView/blob/master/CONTRIBUTORS.md) for sharing code and 
+making TableView library a better product. 
 
 ## License
 
