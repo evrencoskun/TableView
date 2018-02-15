@@ -46,6 +46,16 @@ public class ColumnSortHandler {
     private RowHeaderRecyclerViewAdapter mRowHeaderRecyclerViewAdapter;
     private ColumnHeaderRecyclerViewAdapter mColumnHeaderRecyclerViewAdapter;
 
+    private boolean mEnableAnimation = true;
+
+    public boolean isEnableAnimation() {
+        return mEnableAnimation;
+    }
+
+    public void setEnableAnimation(boolean mEnableAnimation) {
+        this.mEnableAnimation = mEnableAnimation;
+    }
+
     public ColumnSortHandler(ITableView tableView) {
         this.mCellRecyclerViewAdapter = (CellRecyclerViewAdapter) tableView.getCellRecyclerView()
                 .getAdapter();
@@ -119,34 +129,35 @@ public class ColumnSortHandler {
                            List<ISortableModel> newRowHeader,
                            List<List<ISortableModel>> newColumnItems) {
 
-        // Find the differences between old cell items and new items.
-        final RowHeaderSortCallback diffCallback = new RowHeaderSortCallback(oldRowHeader, newRowHeader);
-
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
-
         // Set new items without calling notifyCellDataSetChanged method of CellRecyclerViewAdapter
-        mRowHeaderRecyclerViewAdapter.setItems(newRowHeader, false);
-        mCellRecyclerViewAdapter.setItems(newColumnItems, false);
+        mRowHeaderRecyclerViewAdapter.setItems(newRowHeader, !mEnableAnimation);
+        mCellRecyclerViewAdapter.setItems(newColumnItems, !mEnableAnimation);
 
-        diffResult.dispatchUpdatesTo(mRowHeaderRecyclerViewAdapter);
-        diffResult.dispatchUpdatesTo(mCellRecyclerViewAdapter);
+        if(mEnableAnimation) {
+            // Find the differences between old cell items and new items.
+            final RowHeaderSortCallback diffCallback = new RowHeaderSortCallback(oldRowHeader, newRowHeader);
+            final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+
+            diffResult.dispatchUpdatesTo(mRowHeaderRecyclerViewAdapter);
+            diffResult.dispatchUpdatesTo(mCellRecyclerViewAdapter);
+        }
     }
 
     private void swapItems(List<List<ISortableModel>> oldItems, List<List<ISortableModel>>
             newItems, int column, List<ISortableModel> newRowHeader) {
 
-        // Find the differences between old cell items and new items.
-        final ColumnSortCallback diffCallback = new ColumnSortCallback(oldItems, newItems, column);
-
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
-
         // Set new items without calling notifyCellDataSetChanged method of CellRecyclerViewAdapter
-        mCellRecyclerViewAdapter.setItems(newItems, false);
-        mRowHeaderRecyclerViewAdapter.setItems(newRowHeader, false);
+        mCellRecyclerViewAdapter.setItems(newItems, !mEnableAnimation);
+        mRowHeaderRecyclerViewAdapter.setItems(newRowHeader, !mEnableAnimation);
 
-        diffResult.dispatchUpdatesTo(mCellRecyclerViewAdapter);
-        diffResult.dispatchUpdatesTo(mRowHeaderRecyclerViewAdapter);
+        if(mEnableAnimation) {
+            // Find the differences between old cell items and new items.
+            final ColumnSortCallback diffCallback = new ColumnSortCallback(oldItems, newItems, column);
+            final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
+            diffResult.dispatchUpdatesTo(mCellRecyclerViewAdapter);
+            diffResult.dispatchUpdatesTo(mRowHeaderRecyclerViewAdapter);
+        }
     }
 
     public void swapItems(List<List<ISortableModel>> newItems, int column) {
@@ -154,16 +165,17 @@ public class ColumnSortHandler {
         List<List<ISortableModel>> oldItems = (List<List<ISortableModel>>)
                 mCellRecyclerViewAdapter.getItems();
 
-        // Find the differences between old cell items and new items.
-        final ColumnSortCallback diffCallback = new ColumnSortCallback(oldItems, newItems, column);
-
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
-
         // Set new items without calling notifyCellDataSetChanged method of CellRecyclerViewAdapter
-        mCellRecyclerViewAdapter.setItems(newItems, false);
+        mCellRecyclerViewAdapter.setItems(newItems, !mEnableAnimation);
 
-        diffResult.dispatchUpdatesTo(mCellRecyclerViewAdapter);
-        diffResult.dispatchUpdatesTo(mRowHeaderRecyclerViewAdapter);
+        if(mEnableAnimation) {
+            // Find the differences between old cell items and new items.
+            final ColumnSortCallback diffCallback = new ColumnSortCallback(oldItems, newItems, column);
+            final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+
+            diffResult.dispatchUpdatesTo(mCellRecyclerViewAdapter);
+            diffResult.dispatchUpdatesTo(mRowHeaderRecyclerViewAdapter);
+        }
 
     }
 
