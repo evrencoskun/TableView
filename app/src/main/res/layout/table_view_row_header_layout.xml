@@ -44,7 +44,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="1px"
+        android:layout_width="2px"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:background="@color/header_line_color"/>
