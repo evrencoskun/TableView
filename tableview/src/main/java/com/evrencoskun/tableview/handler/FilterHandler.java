@@ -157,7 +157,7 @@ public class FilterHandler<T> {
         }
     }
 
-    public void addFilterChangedListeners(FilterChangedListener listener) {
+    public void addFilterChangedListener(FilterChangedListener listener) {
         if (filterChangedListeners == null) {
             filterChangedListeners = new ArrayList<>();
         }
