@@ -47,7 +47,7 @@ public class Pagination<T> implements IPagination {
      * @param tableView The TableView to be paginated.
      */
     public Pagination(ITableView tableView) {
-        initialize(tableView, DEFAULT_ITEMS_PER_PAGE, null);
+        this(tableView, DEFAULT_ITEMS_PER_PAGE, null);
     }
 
     /**
@@ -57,7 +57,7 @@ public class Pagination<T> implements IPagination {
      * @param itemsPerPage The number of items per page.
      */
     public Pagination(ITableView tableView, int itemsPerPage) {
-        initialize(tableView, itemsPerPage, null);
+        this(tableView, itemsPerPage, null);
     }
 
     /**
@@ -81,7 +81,7 @@ public class Pagination<T> implements IPagination {
         this.mCellRecyclerViewAdapter = (CellRecyclerViewAdapter) tableView.getCellRecyclerView()
                 .getAdapter();
         this.tableView.getAdapter().addAdapterDataSetChangedListener(adapterDataSetChangedListener);
-        this.tableView.getFilterHandler().addFilterChangedListeners(filterChangedListener);
+        this.tableView.getFilterHandler().addFilterChangedListener(filterChangedListener);
         this.currentPage = 1;
         reloadPages();
     }
