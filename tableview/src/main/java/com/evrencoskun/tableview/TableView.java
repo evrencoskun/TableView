@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Parcelable;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -36,8 +37,9 @@ import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.filter.Filter;
 import com.evrencoskun.tableview.handler.ColumnSortHandler;
-import com.evrencoskun.tableview.handler.ScrollHandler;
 import com.evrencoskun.tableview.handler.FilterHandler;
+import com.evrencoskun.tableview.handler.PreferencesHandler;
+import com.evrencoskun.tableview.handler.ScrollHandler;
 import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.handler.VisibilityHandler;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
@@ -48,6 +50,7 @@ import com.evrencoskun.tableview.listener.itemclick.ColumnHeaderRecyclerViewItem
 import com.evrencoskun.tableview.listener.itemclick.RowHeaderRecyclerViewItemClickListener;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
+import com.evrencoskun.tableview.preference.SavedState;
 import com.evrencoskun.tableview.sort.SortState;
 
 /**
@@ -83,6 +86,7 @@ public class TableView extends FrameLayout implements ITableView {
     private VisibilityHandler mVisibilityHandler;
     private ScrollHandler mScrollHandler;
     private FilterHandler mFilterHandler;
+    private PreferencesHandler mPreferencesHandler;
 
     private int mRowHeaderWidth;
     private int mColumnHeaderHeight;
@@ -180,6 +184,7 @@ public class TableView extends FrameLayout implements ITableView {
         mSelectionHandler = new SelectionHandler(this);
         mVisibilityHandler = new VisibilityHandler(this);
         mScrollHandler = new ScrollHandler(this);
+        mPreferencesHandler = new PreferencesHandler(this);
 
         initializeListeners();
     }
@@ -468,8 +473,22 @@ public class TableView extends FrameLayout implements ITableView {
     }
 
     @Override
+    public void scrollToColumnPosition(int column, int offset) {
+        mScrollHandler.scrollToColumnPosition(column, offset);
+    }
+
+    @Override
     public void scrollToRowPosition(int row) {
         mScrollHandler.scrollToRowPosition(row);
+    }
+
+    @Override
+    public void scrollToRowPosition(int row, int offset) {
+        mScrollHandler.scrollToRowPosition(row, offset);
+    }
+
+    public ScrollHandler getScrollHandler() {
+        return mScrollHandler;
     }
 
     @Override
@@ -555,8 +574,7 @@ public class TableView extends FrameLayout implements ITableView {
 
     public void setSelectedCell(int column, int row) {
         // Find the cell view holder which is located on x,y (column,row) position.
-        AbstractViewHolder cellViewHolder = getCellLayoutManager().getCellViewHolder
-                (column, row);
+        AbstractViewHolder cellViewHolder = getCellLayoutManager().getCellViewHolder(column, row);
 
         mSelectionHandler.setSelectedCellPositions(cellViewHolder, column, row);
     }
@@ -590,8 +608,7 @@ public class TableView extends FrameLayout implements ITableView {
             divider.setColorFilter(mSeparatorColor, PorterDuff.Mode.SRC_ATOP);
         }
 
-        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(),
-                orientation);
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), orientation);
         itemDecoration.setDrawable(divider);
         return itemDecoration;
     }
@@ -635,4 +652,83 @@ public class TableView extends FrameLayout implements ITableView {
     int getShadowColor() {
         return mShadowColor;
     }
+
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        SavedState state = new SavedState(super.onSaveInstanceState());
+        state.preferences = mPreferencesHandler.savePreferences();
+        /*state.cell = getCellLayoutManager().onSaveInstanceState();
+        state.row = getRowHeaderLayoutManager().onSaveInstanceState();
+        state.column = getColumnHeaderLayoutManager().onSaveInstanceState();
+        state.cellRow = getCellLayoutManager().onSaveInstanceStateForCellRow();*/
+        return state;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+
+        if (!(state instanceof SavedState)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
+
+        SavedState savedState = (SavedState) state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+
+        mPreferencesHandler.loadPreferences(savedState.preferences);
+
+        /*getRowHeaderLayoutManager().onRestoreInstanceState(savedState.row);
+        getColumnHeaderLayoutManager().onRestoreInstanceState(savedState.column);
+        getCellLayoutManager().onRestoreInstanceState(savedState.cell);
+        getCellLayoutManager().onRestoreInstanceStateForCellRow(savedState.cellRow);*/
+
+
+        //scrollTo(savedState.offsetX, savedState.offsetY);
+        //mScrollHandler.scrollToRowPosition(savedState.mRow);
+        //mScrollHandler.scrollToColumnPosition(savedState.mColumn);
+    }
+
+    /*static class SavedState extends View.BaseSavedState {
+        //public int mRow, mColumn;
+        public Parcelable cell;
+        public Parcelable column;
+        public Parcelable row;
+        public Parcelable[] cellRow;
+        //public SparseArray<SparseArray<Object>> mCellRowCachedWidthList;
+        //public SparseArray<Object> mColumnHeaderCachedWidthList;
+
+
+        public SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            cell = in.readParcelable(TableView.class.getClassLoader());
+            column = in.readParcelable(TableView.class.getClassLoader());
+            row = in.readParcelable(TableView.class.getClassLoader());
+            //cellRow = in.readParcelableArray(TableView.class.getClassLoader());
+            //mCellRowCachedWidthList = in.readSparseArray(TableView.class.getClassLoader());
+            //mColumnHeaderCachedWidthList = in.readSparseArray(TableView.class.getClassLoader());
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeParcelable(cell, flags);
+            out.writeParcelable(column, flags);
+            out.writeParcelable(row, flags);
+            //out.writeParcelableArray(cellRow, flags);
+            //out.writeSparseArray(mCellRowCachedWidthList);
+            //out.writeSparseArray(mColumnHeaderCachedWidthList);
+        }
+
+        public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable
+                .Creator<SavedState>() {
+            public SavedState createFromParcel(Parcel in) { return new SavedState(in); }
+
+            public SavedState[] newArray(int size) { return new SavedState[size]; }
+        };
+    }*/
 }

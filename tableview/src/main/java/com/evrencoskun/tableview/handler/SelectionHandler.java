@@ -61,7 +61,7 @@ public class SelectionHandler {
         this.mSelectedColumnPosition = column;
         this.mSelectedRowPosition = row;
 
-        if(shadowEnabled) {
+        if (shadowEnabled) {
             selectedCellView();
         }
     }
@@ -143,9 +143,9 @@ public class SelectionHandler {
         changeVisibleCellViewsBackgroundForRow(mSelectedRowPosition, true);
 
         // Change background color of the column headers to be shown as a shadow.
-        if(shadowEnabled) {
-            mTableView.getColumnHeaderRecyclerView().setSelected(SelectionState.SHADOWED, mTableView
-                    .getShadowColor(), false);
+        if (shadowEnabled) {
+            mTableView.getColumnHeaderRecyclerView().setSelected(SelectionState.SHADOWED,
+                    mTableView.getShadowColor(), false);
         }
     }
 
@@ -358,11 +358,19 @@ public class SelectionHandler {
             viewHolder.setBackgroundColor(mTableView.getUnSelectedColor());
         }
     }
-    
+
     public void clearSelection() {
         unselectedRowHeader();
         unselectedCellView();
         unselectedColumnHeader();
+    }
+
+    public void setSelectedRowPosition(int row) {
+        this.mSelectedRowPosition = row;
+    }
+
+    public void setSelectedColumnPosition(int column) {
+        this.mSelectedColumnPosition = column;
     }
 
 }
