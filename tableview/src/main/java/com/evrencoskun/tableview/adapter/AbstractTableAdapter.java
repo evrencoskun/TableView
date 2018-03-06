@@ -127,9 +127,9 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
 
             // Change corner view visibility
             if (rowHeaderItems != null && !rowHeaderItems.isEmpty()) {
-                mCornerView.setVisibility(View.GONE);
-            } else {
                 mCornerView.setVisibility(View.VISIBLE);
+            } else {
+                mCornerView.setVisibility(View.GONE);
             }
         }
     }
