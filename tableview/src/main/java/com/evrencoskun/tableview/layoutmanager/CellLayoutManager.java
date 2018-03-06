@@ -469,5 +469,4 @@ public class CellLayoutManager extends LinearLayoutManager {
 
         return recyclerViews;
     }
-
 }

@@ -241,5 +241,4 @@ public class ColumnLayoutManager extends LinearLayoutManager {
         }
         return views;
     }
-
 }

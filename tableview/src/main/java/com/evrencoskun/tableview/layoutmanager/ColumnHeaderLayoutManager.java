@@ -79,9 +79,9 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
     }
 
     public int getCacheWidth(int position) {
-        Integer cachedWidth = mCachedWidthList.get(position);
+        Integer cachedWidth = (Integer) mCachedWidthList.get(position);
         if (cachedWidth != null) {
-            return mCachedWidthList.get(position);
+            return (int) mCachedWidthList.get(position);
         }
         return -1;
     }
@@ -135,4 +135,5 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
         return (AbstractViewHolder) mTableView.getColumnHeaderRecyclerView()
                 .findViewHolderForAdapterPosition(xPosition);
     }
+
 }
