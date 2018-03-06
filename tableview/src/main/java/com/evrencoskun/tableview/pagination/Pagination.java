@@ -145,7 +145,7 @@ public class Pagination<T> implements IPagination {
 
     @Override
     public void goToPage(int page) {
-        currentPage = (page > pageCount || page < 1) ? (page > pageCount ? pageCount : currentPage) : page;
+        currentPage = (page > pageCount || page < 1) ? (page > pageCount && pageCount > 0 ? pageCount : currentPage) : page;
         paginateData();
     }
 
