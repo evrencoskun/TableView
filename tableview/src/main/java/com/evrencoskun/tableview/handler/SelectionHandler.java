@@ -346,4 +346,12 @@ public class SelectionHandler {
         this.mMultiSelectionEnabled = enabled;
     }
 
+    public void setSelectedRowPosition(int row) {
+        this.mSelectedRowPosition = row;
+    }
+
+    public void setSelectedColumnPosition(int column) {
+        this.mSelectedColumnPosition = column;
+    }
+
 }

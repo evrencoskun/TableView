@@ -18,20 +18,19 @@
     </a>
 </p>
 
-
 ## Features
+
   - [x] Each column width value can be calculated automatically considering the largest one
   - [x] Setting your own model class to displayed in a table view easily.
-  - [x] TableView has an click listener to listen user touch interaction for each cell.
-  - [x] TableView columns can be sorted ascendingly or descendingly.
+  - [x] TableView has an action listener interface to listen user touch interaction for each cell.
+  - [x] TableView columns can be sorted in ascending or descending order.
   - [x] Hiding & Showing the row and the column is pretty easy. 
   - [x] Filtering by more than one data. (*NEW*)
-  - [x] Paging functionality. (*NEW*)
-  
-  
-## What's new 
-You can check new implementations of TableView on <a href="https://github.com/evrencoskun/TableView/releases">release page.</a> 
+  - [x] Pagination functionality. (*NEW*)
+    
+## What's new
 
+You can check new implementations of TableView on the [release page](https://github.com/evrencoskun/TableView/releases). 
   
 ## Table of Contents
   - [Installation](#installation)
@@ -52,7 +51,13 @@ You can check new implementations of TableView on <a href="https://github.com/ev
     - [3. Multi-selection and Shadows](#3-multi-selection-and-shadows)
     - [4. Customize selection colors](#4-customize-selection-colors)
   - [Filtering](#filtering)
-  - [Paging](#paging)
+    - [Steps to implement filtering functionality into TableView](#steps-to-implement-filtering-functionality-into-tableview)
+    - [Filtering notes](#filtering-notes)
+  - [Pagination](#pagination)
+    - [Steps to implement pagination functionality into TableView](#steps-to-implement-pagination-functionality-into-tableview)
+        - [Creating views to control the Pagination](#creating-views-to-control-the-pagination)
+        - [Implementation of the pagination](#implementation-of-the-pagination)
+    - [Pagination notes](#pagination-notes)
   - [Change your TableView model](#change-your-tableview-model)
   - [Hiding & Showing the Row](#hiding--showing-the-row)
   - [Hiding & Showing the Column](#hiding--showing-the-column)
@@ -63,20 +68,20 @@ You can check new implementations of TableView on <a href="https://github.com/ev
   - [Contributors](#contributors)
   - [License](#license)
 
-
 ## Installation
 
 To use this library in your android project, just simply add the following dependency into your build.gradle
 
-``` 
+```
 dependencies {
- compile 'com.evrencoskun.library:tableview:0.8.6' 
+    compile 'com.evrencoskun.library:tableview:0.8.6' 
 }
 ```
 
 ## Implement your item on TableView 
 
 ### 1. Create your TableView
+
 #### XML 
 
 ``` 
@@ -86,7 +91,7 @@ dependencies {
     android:layout_height="wrap_content"/>
 ```
 
-As default constants can be set programmatically, it can be set by also using  xml attributes of TableView like this;
+As default constants can be set programmatically, it can be set by also using xml attributes of TableView like this:
 
 ``` 
 <com.evrencoskun.tableview.TableView
@@ -101,13 +106,12 @@ As default constants can be set programmatically, it can be set by also using  x
     app:unselected_color="@color/unselected_background_color"
 />
 ```
-**Note:** To be able use these attributes on xml side, below **xmlns:** line should be added on root view. Otherwise, android studio gives you compile error.
+
+**Note:** To be able use these attributes on xml side, the **xmlns:** namespace below line should be added on layout root view. Otherwise, Android Studio gives you compile error.
 
 ``` 
 xmlns:app="http://schemas.android.com/apk/res-auto"
 ```
-
-
 
 #### Programmatically 
 
@@ -115,15 +119,14 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 TableView tableView = new TableView(getContext());
 ```
 
-
-
 ### 2. Create your TableViewAdapter
- Firstly, you must create your custom TableView Adapter  which extends from ```AbstractTableAdapter``` class. 
- ```AbstractTableAdapter``` class wants 3 different lists which represent respectively; ColumnHeader, RowHeader and Cell views model.
 
- **For example;** 
- 
- ```java
+Firstly, you must create your custom TableView Adapter  which extends from ```AbstractTableAdapter``` class. 
+ ```AbstractTableAdapter``` class requires 3 different lists which represent respectively; **ColumnHeader**, **RowHeader** and **Cell** ViewModels.
+
+**For example:** 
+
+```java
  public class MyTableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHeader, Cell> {
   
      public MyTableViewAdapter(Context context) {
@@ -365,118 +368,118 @@ TableView tableView = new TableView(getContext());
  
 ### 3. Set the Adapter to the TableView
  
- > ```AbstractTableAdapter``` class wants 3 different lists which represent respectively; ColumnHeader, RowHeader and Cell views model.
+ > ```AbstractTableAdapter``` class requires 3 different lists which represent respectively; **ColumnHeader**, **RowHeader** and **Cell** ViewModels.
 
- Assume that we have 3 below list items.
+ Assuming that we have the 3 item lists below:
  
  ```java
-  private List<RowHeader> mRowHeaderList;
-  private List<ColumnHeader> mColumnHeaderList;
-  private List<List<Cell>> mCellList;
+    private List<RowHeader> mRowHeaderList;
+    private List<ColumnHeader> mColumnHeaderList;
+    private List<List<Cell>> mCellList;
  ```
-Setting data using our TableView adapter like this;
+Setting data using our TableView adapter like this:
  
  ```java
- TableView tableView = new TableView(getContext());
- 
- // Create our custom TableView Adapter
- MyTableViewAdapter adapter = new MyTableViewAdapter(getContext());
- // Set this adapter to the our TableView
- tableView.setAdapter(adapter);
- 
- // Let's set datas of the TableView on the Adapter
-  adapter.setAllItems(mColumnHeaderList, mRowHeaderList, mCellList);
-   
+    TableView tableView = new TableView(getContext());
+    
+    // Create our custom TableView Adapter
+    MyTableViewAdapter adapter = new MyTableViewAdapter(getContext());
+    
+    // Set this adapter to the our TableView
+    tableView.setAdapter(adapter);
+    
+    // Let's set datas of the TableView on the Adapter
+    adapter.setAllItems(mColumnHeaderList, mRowHeaderList, mCellList);
  ```
  
  ### 4. Set Click listener to the TableView
  
  ```java
- public class MyTableViewListener implements ITableViewListener {
- 
-     /**
-      * Called when user click any cell item.
-      *
-      * @param cellView  : Clicked Cell ViewHolder.
-      * @param columnPosition : X (Column) position of Clicked Cell item.
-      * @param rowPosition : Y (Row) position of Clicked Cell item.
-      */
-     @Override
-     public void onCellClicked(@NonNull RecyclerView.ViewHolder cellView, int columnPosition, int
-             rowPosition) {
-         // Do what you want.
-     }
-
-     /**
-      * Called when user long press any cell item.
-      *
-      * @param cellView : Long Pressed Cell ViewHolder.
-      * @param column   : X (Column) position of Long Pressed Cell item.
-      * @param row      : Y (Row) position of Long Pressed Cell item.
-      */
-     @Override
-     public void onCellLongPressed(@NonNull RecyclerView.ViewHolder cellView, int column, int row) {
-        // Do What you want
-     }
- 
-     /**
-      * Called when user click any column header item.
-      *
-      * @param columnHeaderView : Clicked Column Header ViewHolder.
-      * @param columnPosition        : X (Column) position of Clicked Column Header item.
-      */
-     @Override
-     public void onColumnHeaderClicked(@NonNull RecyclerView.ViewHolder columnHeaderView, int
-             columnPosition) {
-         // Do what you want.
-     }
+     public class MyTableViewListener implements ITableViewListener {
      
-     /**
-      * Called when user click any column header item.
-      *                   
-      * @param columnHeaderView : Long pressed Column Header ViewHolder.
-      * @param columnPosition        : X (Column) position of Clicked Column Header item.
-      * @version 0.8.5.1
-      */
-     @Override
-     public void onColumnHeaderLongPressed(@NonNull RecyclerView.ViewHolder columnHeaderView, int
-              columnPosition) {
-          // Do what you want.
-     }
- 
-     /**
-      * Called when user click any Row Header item.
-      *
-      * @param rowHeaderView : Clicked Row Header ViewHolder.
-      * @param rowPosition     : Y (Row) position of Clicked Row Header item.
-      */
-     @Override
-     public void onRowHeaderClicked(@NonNull RecyclerView.ViewHolder rowHeaderView, int
-             rowPosition) {
-         // Do what you want.
- 
-     }    
+         /**
+          * Called when user click any cell item.
+          *
+          * @param cellView  : Clicked Cell ViewHolder.
+          * @param columnPosition : X (Column) position of Clicked Cell item.
+          * @param rowPosition : Y (Row) position of Clicked Cell item.
+          */
+         @Override
+         public void onCellClicked(@NonNull RecyclerView.ViewHolder cellView, int columnPosition, int
+                 rowPosition) {
+             // Do what you want.
+         }
+    
+         /**
+          * Called when user long press any cell item.
+          *
+          * @param cellView : Long Pressed Cell ViewHolder.
+          * @param column   : X (Column) position of Long Pressed Cell item.
+          * @param row      : Y (Row) position of Long Pressed Cell item.
+          */
+         @Override
+         public void onCellLongPressed(@NonNull RecyclerView.ViewHolder cellView, int column, int row) {
+            // Do What you want
+         }
      
-     /**
-      * Called when user click any Row Header item.
-      *
-      * @param rowHeaderView : Long pressed Row Header ViewHolder.
-      * @param rowPosition     : Y (Row) position of Clicked Row Header item.
-      * @version 0.8.5.1
-      */
-     @Override
-     public void onRowHeaderLongPressed(@NonNull RecyclerView.ViewHolder rowHeaderView, int
-              rowPosition) {
-          // Do what you want.
-  
-     }
-}
+         /**
+          * Called when user click any column header item.
+          *
+          * @param columnHeaderView : Clicked Column Header ViewHolder.
+          * @param columnPosition        : X (Column) position of Clicked Column Header item.
+          */
+         @Override
+         public void onColumnHeaderClicked(@NonNull RecyclerView.ViewHolder columnHeaderView, int
+                 columnPosition) {
+             // Do what you want.
+         }
+         
+         /**
+          * Called when user click any column header item.
+          *                   
+          * @param columnHeaderView : Long pressed Column Header ViewHolder.
+          * @param columnPosition        : X (Column) position of Clicked Column Header item.
+          * @version 0.8.5.1
+          */
+         @Override
+         public void onColumnHeaderLongPressed(@NonNull RecyclerView.ViewHolder columnHeaderView, int
+                  columnPosition) {
+              // Do what you want.
+         }
+     
+         /**
+          * Called when user click any Row Header item.
+          *
+          * @param rowHeaderView : Clicked Row Header ViewHolder.
+          * @param rowPosition     : Y (Row) position of Clicked Row Header item.
+          */
+         @Override
+         public void onRowHeaderClicked(@NonNull RecyclerView.ViewHolder rowHeaderView, int
+                 rowPosition) {
+             // Do what you want.
+     
+         }    
+         
+         /**
+          * Called when user click any Row Header item.
+          *
+          * @param rowHeaderView : Long pressed Row Header ViewHolder.
+          * @param rowPosition     : Y (Row) position of Clicked Row Header item.
+          * @version 0.8.5.1
+          */
+         @Override
+         public void onRowHeaderLongPressed(@NonNull RecyclerView.ViewHolder rowHeaderView, int
+                  rowPosition) {
+              // Do what you want.
+      
+         }
+    }
 ```
 
 Setting the listener to the TableView
 
 ```java
-tableView.setTableViewListener(new MyTableViewListener());
+    tableView.setTableViewListener(new MyTableViewListener());
 ``` 
 
 ## Sorting
@@ -486,27 +489,40 @@ instead it maintains a map from the row indexes of the view to the row indexes o
 
 ### 1. ISortableModel to your Cell Model 
 
-To be able use this feature on your TableView. You have to implement ISortableModel to your Cell Model. This interface
-wants two methods from your cell model. These are ;
+To be able use this feature on your TableView. You have to implement **ISortableModel** to your Cell Model. This interface
+wants two methods from your cell model. These are:
 
-- ```java String getId()``` : To compare sorted items ordered by normal items in terms of  "are Items The Same"
-- ```java Object getContent()``` : To compare sorted items ordered by normal items in terms of  "are Contents The Same"
+- To compare sorted items ordered by normal items in terms of "**are _items_ the same**":
+```java
+    String getId()
+```
+
+- To compare sorted items ordered by normal items in terms of  "**are _contents_ the same**":
+```java
+    Object getContent()
+```
 
 As you seen getContent value returns Object. TableView controls the type of the object. And It sorts by considering to the type of class.
 So you can sort any type of value. Such as; 
 
-- Number
-- String
-- Date
-- Boolean
-- Comparable
+- **Number**
+- **String**
+- **Date**
+- **Boolean**
+- **Comparable**
 
 ### 2. AbstractSorterViewHolder to your Column Header ViewHolder
  
 AbstractSorterViewHolder helps to listen to change of sorting actions. So you can do whatever you want on any sorting state.
 
-- ```java onSortingStatusChanged(SortState sortState)``` : It will be called each sorting process. *Note* : It will be also called every recycling process.
-- ```java SortState getSortState()``` : It gives current Sorting state.
+- This interface method will be called after each sorting process. *Note* : It will be also called every recycling process.
+```java
+    onSortingStatusChanged(SortState sortState)
+```
+- This method gives current Sorting state:
+```java
+    SortState getSortState()
+```
 
 #### Sorting States
 
@@ -517,14 +533,14 @@ AbstractSorterViewHolder helps to listen to change of sorting actions. So you ca
      * <code>ASCENDING</code> order is <code>0, 1, 4</code>.
      */
      ASCENDING,
-
+    
     /**
      * Enumeration value indicating the items are sorted in decreasing order.
      * For example, the set <code>1, 4, 0</code> sorted in
      * <code>DESCENDING</code> order is <code>4, 1, 0</code>.
      */
     DESCENDING,
-
+    
     /**
      * Enumeration value indicating the items are unordered.
      * For example, the set <code>1, 4, 0</code> in
@@ -533,36 +549,312 @@ AbstractSorterViewHolder helps to listen to change of sorting actions. So you ca
     UNSORTED
 ```
 
-
 ### 3. Helper methods for sorting process
 
-Several helper methods have been inserted on TableView. These are;
-- ```java sortColumn(int column, SortState sortState)``` : To sort
-- ```java SortState getSortingStatus(int column)``` : To get current state of the column
+Several helper methods have been inserted on TableView. These are:
+- To **sort the TableView according to a specified column**:
+```java
+    sortColumn(int column, SortState sortState)
+```
+- To **get the current sorting state of a column**:
+```java
+    SortState getSortingStatus(int column)
+```
 
 ## Filtering
 
-TableView has a filtering functionality with 0.8.6 version. (This subject will be updated.)  
+As of version **0.8.6**, a **filtering** functionality has been added.
+>Filtering, by definition and usage in this context, is displaying a subset of data into the TableView based on a given filter globally. on a specified column or combination.
 
-## Paging
+### Steps to implement filtering functionality into TableView
 
-TableView has a paging functionality with 0.8.6 version. (This subject will be updated.)
+1. Implement the **IFilterableModel** interface to your Cell Item Model. This interface would require you to implement the method ```getFilterableKeyword()```.
+2. The ```getFilterableKeyword()``` requires a **String** value to be returned. Make sure that this item is unique for a specific filter and without conflict to other filter Strings.
+3. Create a **Filter** instance passing the created TableView:
+```java
+    ...
+    private TableView   tableView;
+    private Filter      tableViewFilter;
+    ...    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        ...
+        tableView = setUpTableView();
+        tableViewFilter = new Filter(tableView);
+        ...
+    }
+    ...
+```
+4. Filtering can be done for the whole table (global), for a specified column or combination. The filtering call is very easy to use once the **Filter** object is created:
+```java
+    ...
+    public void filterWholeTable(String filterKeyword) {
+        tableViewFilter.set(filterKeyword);
+    }
+    
+    // assuming that Gender column is the 4th column in the TableView
+    public void filterTableForGender(String genderFilterKeyword) {
+        tableViewFilter.set(3, genderFilterKeyword);
+    }
+    
+    public void filterTableColumnForKeyword(int column, String keyword) {
+        tableViewFilter.set(column, keyword);
+    }
+    ...
+```
+
+#### Filtering notes
+
+1. For clearing a filter, just pass an **empty** String ("" **AND NOT ```null```**) to the ```set``` method.
+```java
+    ...
+    public void clearWholeTableFilter() {
+        tableViewFilter.set("");
+    }
+    
+    // assuming that Gender column is the 4th column in the TableView
+    public void clearFilterForGender() {
+        tableViewFilter.set(3, "");
+    }
+    ...
+```
+2. Multiple filtering combinations are supported such as COLUMN + WHOLE TABLE filter or MULTIPLE COLUMNS filter: e.g. "Happy" + "Boy" + all strings with a '-' character.
+3. Based on step 2 of the implementation steps above, **FilterableKeyword** for different types of filters must be unique Strings **AND** no common substring. For instance, "**_male_**" and "**_female_**" should not be used together as filter keywords, since the method for processing filters uses ```String.contains(CharSequence s)```, the filtering process will return all data with **male** keyword, thus, **female** is also included in the filtered data set. Better use "boy" and "girl" or the _hashed_ values of your keyword Strings.
+4. Advanced usage: **FilterChangedListener** is also available and can be implemented if you want to do something whenever the TableView is filtered. Public listener methods include:
+```java
+    // FilterChangedListener implementation:
+    ...
+    tableView.getFilterHandler().addFilterChangedListener(filterChangedListener);
+    ...
+    
+    // The filterChangedListener variable:
+    private FilterChangedListener filterChangedListener =
+            new FilterChangedListener() {
+                /**
+                 * Called when a filter has been changed.
+                 *
+                 * @param filteredCellItems      The list of filtered cell items.
+                 * @param filteredRowHeaderItems The list of filtered row items.
+                 */
+                @Override
+                public void onFilterChanged(List<List<T>> filteredCellItems, List<T> filteredRowHeaderItems) {
+                    // do something here...
+                }
+                
+                /**
+                 * Called when the TableView filters are cleared.
+                 *
+                 * @param originalCellItems      The unfiltered cell item list.
+                 * @param originalRowHeaderItems The unfiltered row header list.
+                 */
+                @Override
+                public void onFilterCleared(List<List<T>> originalCellItems, List<T> originalRowHeaderItems) {
+                    // do something here...
+                }
+    };
+```
+
+## Pagination
+
+As of version **0.8.6**, a **pagination** functionality has been added.
+>Pagination, by definition and usage in this context, is the division of the whole set of data into subsets called pages and loading the data into the TableView page-by-page and not the whole data directly. This is useful if you have a large amount of data to be displayed.
+
+### Steps to implement pagination functionality into TableView
+
+##### Creating views to control the Pagination
+
+_Depending on your preference, you may not follow the following and create your own implementation._
+1. Create a layout with the following components: Two **Button** views to control next and previous page, a **Spinner** if you want to have a customized number of pagination (e.g. 10, 20, 50, All), an **EditText** to have a user input on which page s/he wants to go to, a **TextView** to display details (e.g. _Showing page X, items Y-Z_)
+2. Asign the views with the controls and methods which are discussed below.
+
+##### Implementation of the pagination
+
+1. Create a **Pagination** instance passing the created TableView.
+```java
+    ...
+    private TableView   tableView;
+    private Pagination  mPagination;
+    ...    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        ...
+        tableView = setUpTableView();
+        mPagination = new Pagination(mTableView);
+        ...
+    }
+    ...
+
+```
+
+- The Pagination class has three possible constructors: (1) passing the TableView instance only, (2) TableView and the initial ITEMS_PER_PAGE and (3) TableView, initial ITEMS_PER_PAGE and the OnTableViewPageTurnedListener. By default, if no ITEMS_PER_PAGE specified, the TableView will be paginated into **10** items per page.
+```java
+    /**
+     * Basic constructor, TableView instance is required.
+     *
+     * @param tableView The TableView to be paginated.
+     */
+    public Pagination(ITableView tableView) { ... }
+    
+    /**
+     * Applies pagination to the supplied TableView with number of items per page.
+     *
+     * @param tableView    The TableView to be paginated.
+     * @param itemsPerPage The number of items per page.
+     */
+    public Pagination(ITableView tableView, int itemsPerPage) { ... }
+    
+    /**
+     * Applies pagination to the supplied TableView with number of items per page and an
+     * OnTableViewPageTurnedListener for handling changes in the TableView pagination.
+     *
+     * @param tableView    The TableView to be paginated.
+     * @param itemsPerPage The number of items per page.
+     * @param listener     The OnTableViewPageTurnedListener for the TableView.
+     */
+    public Pagination(ITableView tableView, int itemsPerPage, OnTableViewPageTurnedListener listener) { ... }
+```
+2. **Loading the next page of items** into the TableView using the ```nextPage()``` method. You can assign this to your implementation of nextPageButton onClick action:
+```java
+    ...
+    public void nextTablePage() {
+        mPagination.nextPage();
+    }
+    ...
+```
+
+2. **Loading the previous page of items** into the TableView using the ```previousPage()``` method. You can assign this to your implementation of previousPageButton onClick action:
+```java
+    ...
+    public void previousTablePage() {
+        mPagination.previousPage();
+    }
+    ...
+```
+
+3. You can navigate through the pages by **going to a specific page directly** using the ```goToPage(int page)``` method. You can assign this to the EditText field TextChanged action (using TextWatcher):
+```java
+    ...
+    public void goToTablePage(int page) {
+        mPagination.goToPage(page);
+    }
+    ...
+```
+
+4. You can customize and **set the number of items to be displayed per page** of the TableView using the ```setItemsPerPage(int itemsPerPage)``` method. You can assign this to your Spinner with the number of items per page list:
+```java
+    ...
+    public void setTableItemsPerPage(int itemsPerPage) {
+        mPagination.setItemsPerPage(itemsPerPage);
+    }
+    ...
+```
+
+5. Advanced usage: A listener interface (**Pagination.OnTableViewPageTurnedListener**) can also be implemented if you want to do something everytime _a page is turned_ (e.g. previous, next, goToPage or change items per page action is called):
+```java
+    ...
+        mPagination = new Pagination(mTableView);
+        mPagination.setOnTableViewPageTurnedListener(onTableViewPageTurnedListener);
+    ...
+    
+    private Pagination.OnTableViewPageTurnedListener onTableViewPageTurnedListener =
+            new Pagination.OnTableViewPageTurnedListener() {
+                /**
+                 * Called when the page is changed in the TableView.
+                 *
+                 * @param numItems   The number of items currently being displayed in the TableView.
+                 * @param itemsStart The starting item currently being displayed in the TableView.
+                 * @param itemsEnd   The ending item currently being displayed in the TableView.
+                 */
+                @Override
+                public void onPageTurned(int numItems, int itemsStart, int itemsEnd) {
+                    // Do something here...
+                    // You can update a TextView to display details (e.g. Showing page X, items Y-Z)
+                }
+            };
+    ...
+```
+
+#### Pagination notes
+1. Other methods which can be used from Pagination:
+```java
+    /**
+     * Removes the OnTableViewPageTurnedListener for this Pagination.
+     */
+    void removeOnTableViewPageTurnedListener();
+    
+    /**
+     * @return The current page loaded to the table view.
+     */
+    int getCurrentPage();
+    
+    /**
+     * @return The number of items per page loaded to the table view.
+     */
+    int getItemsPerPage();
+    
+    /**
+     * @return The number of pages in the pagination.
+     */
+    int getPageCount();
+    
+    /**
+     * @return Current pagination state of the table view.
+     */
+    boolean isPaginated();
+```
+
+2. Pagination and Filtering works seamlessly: Filter action <---> Paginate action, e.g. You filter for all "Boy" then paginate by 50 items per page OR You paginate by 25 items per page and go to a specific page and then filter all "Sad", etc.
 
 ## Change your TableView model 
 
-TableView has some helper functions to change desired cell item model easily with 0.8.5.1 version. These are;
+As of version **0.8.5.1**, TableView has some helper functions to change desired cell item model easily. These are the following:
 
-- ```java addRow(int rowPosition, YourRowHeaderModel rowHeaderItem, List<YourCellItemModel> cellItems)```
-- ```java addRowRange(int rowPositionStart, List<YourRowHeaderModel> rowHeaderItem, List<List<YourCellItemModel>> cellItems))```
-- ```java removeRow(int rowPosition)``` 
-- ```java removeRowRange(int rowPositionStart, int itemCount)``` 
-- ```java changeRowHeaderItem(int rowPosition, YourRowHeaderModel rowHeaderModel)``` 
-- ```java changeRowHeaderItemRange(int rowPositionStart, List<YourRowHeaderModel> rowHeaderModelList)``` 
-- ```java changeCellItem(int columnPosition, int rowPosition, YourCellItemModel cellModel)``` 
-- ```java changeColumnHeader(int columnPosition, YourColumnHeaderModel columnHeaderModel)``` 
-- ```java changeColumnHeaderRange(int columnPositionStart, List<YourColumnHeaderModel> columnHeaderModelList)``` 
+- To **add a row**:
+```java
+    addRow(int rowPosition, YourRowHeaderModel rowHeaderItem, List<YourCellItemModel> cellItems)
+```
 
-*Note:* <a href="https://github.com/evrencoskun/TableViewSample2"> TableViewSample 2 </a> app shows also usage of these helper methods.
+- To **add a multiple rows**:
+```java
+    addRowRange(int rowPositionStart, List<YourRowHeaderModel> rowHeaderItem, List<List<YourCellItemModel>> cellItems)
+```
+
+- To **remove a row**:
+```java
+    removeRow(int rowPosition)
+``` 
+
+- To **remove multiple rows**:
+```java
+    removeRowRange(int rowPositionStart, int itemCount)
+``` 
+
+- To **update a row header**:
+```java
+    changeRowHeaderItem(int rowPosition, YourRowHeaderModel rowHeaderModel)
+```
+
+- To **update multiple row headers**:
+```java
+    changeRowHeaderItemRange(int rowPositionStart, List<YourRowHeaderModel> rowHeaderModelList)
+``` 
+- To **update a cell item**:
+```java
+    changeCellItem(int columnPosition, int rowPosition, YourCellItemModel cellModel)
+``` 
+
+- To **update a column header**:
+```java
+    changeColumnHeader(int columnPosition, YourColumnHeaderModel columnHeaderModel)
+``` 
+
+- To **update multiple column headers**:
+```java
+    changeColumnHeaderRange(int columnPositionStart, List<YourColumnHeaderModel> columnHeaderModelList)
+```
+
+*Note:*[TableViewSample 2 app](https://github.com/evrencoskun/TableViewSample2) also shows usage of these helper methods.
+
 
 ## Selecting
 
@@ -635,85 +927,117 @@ You can customize selection colors easily in your layout:
             />
 ```
 
-
 ## Hiding & Showing the Row
 
 With 0.8.5.1 version, hiding and showing any of row is pretty easy for TableView.  For that several helper methods have been inserted on TableView. 
 
-- ```java showRow(int row)``` : To show the row
-- ```java hideRow(int row)``` : To Hide the row
-- ```java showAllHiddenRows()``` : To show all hidden rows
-- ```java clearHiddenRowList()``` : TableView store a map that contains all hidden rows. This method for the time that is necessary to clear the list. 
-- ```java isRowVisible(int row)``` : To check state of row
+- To **show** a row:
+```java
+    showRow(int row)
+```
+
+- To **hide** the row:
+```java
+    hideRow(int row)
+```
+
+- To **show all hidden** rows:
+```java
+    showAllHiddenRows()
+```
+
+- TableView store a map that contains all hidden rows. This method for the time that is necessary to **clear the list of hidden** rows. 
+```java
+    clearHiddenRowList()
+```
+
+- To **check the visibility state** of a row:
+```java
+    isRowVisible(int row)
+```
 
 ## Hiding & Showing the Column
 
 With 0.8.5.5 version, hiding and showing any of column is pretty easy for TableView.  For that several helper methods have been inserted on TableView. 
 
-- ```java showColumn(int column)``` : To show the column
-- ```java hideColumn(int column)``` : To Hide the column
-- ```java showAllHiddenColumns()``` : To show all hidden columns
-- ```java clearHiddenColumnList()``` : TableView store a map that contains all hidden columns. This method for the time that is necessary to clear the list. 
-- ```java isColumnVisible(int column)``` : To check state of column
+- To **show** a column:
+```java
+    showColumn(int column)
+```
 
+- To **hide** a column:
+```java
+    hideColumn(int column)
+```
 
+- To **show all hidden** columns
+```java
+    showAllHiddenColumns()
+```
+
+- TableView store a map that contains all hidden columns. This method for the time that is necessary to **clear the list of hidden columns**.
+```java
+    clearHiddenColumnList()
+```
+
+- To **check the visibility state** of a column:
+```java
+    isColumnVisible(int column)
+```
 ## Advanced Usage
 
-To recalculate the desired column. Sample app shows also its usage as well.
+- To recalculate the desired column. Sample app shows also its usage as well.
 
 ```java
-remeasureColumnWidth(int column);
+    remeasureColumnWidth(int column);
 ``` 
 
-To ignore column width calculation for better performance, the below line can be used.
+- To ignore column width calculation for better performance, the below line can be used.
   
 ```java
-tableView.setHasFixedWidth(false);
+    tableView.setHasFixedWidth(false);
 ``` 
 
-To ignore setting selection colors that are displayed by user interaction, the below line can be used.
+- To ignore setting selection colors that are displayed by user interaction, the below line can be used.
 
 ```java
-tableView.setIgnoreSelectionColors(false);
+    tableView.setIgnoreSelectionColors(false);
 ``` 
 
-To enable selection, the below line can be used. You will need to implement ISelectable in your Cell
+- To enable selection, the below line can be used. You will need to implement ISelectable in your Cell
 ```java
 tableView.setSelectable(true);
 ```
 
-
-To show or hide separators of the TableView, you can simply use these helper methods.
+- To show or hide separators of the TableView, you can simply use these helper methods.
 
 ```java
-setShowHorizontalSeparators(boolean showSeparators)
+    setShowHorizontalSeparators(boolean showSeparators)
 ```
 
 ```java
-setShowVerticalSeparators(boolean showSeparators)
+    setShowVerticalSeparators(boolean showSeparators)
 ```
 
-There are 2 new helper methods to scroll desired column or row position programmatically.
+- There are 2 new helper methods to scroll desired column or row position programmatically.
 
 ```java
-scrollToColumnPosition(int column)
+    scrollToColumnPosition(int column)
 ```
 
 ```java
-scrollToRowPosition(int row)
+    scrollToRowPosition(int row)
 ```
 
 ## Sample Apps
 
 - This repository has an Sample Application of TableView.
-- <a href="https://github.com/evrencoskun/TableViewSample2"> TableViewSample 2 </a>
+- [TableViewSample 2](https://github.com/evrencoskun/TableViewSample2)
 - (contact me to mention your app on this page)
-
 
 ## Article
 
 - Coming soon.
-
 
 ## Communication
 

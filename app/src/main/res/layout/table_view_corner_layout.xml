@@ -21,6 +21,11 @@
                 android:layout_height="@dimen/cell_height"
                 android:background="@color/cell_background_color">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Corner"/>
+    
     <View
         android:layout_width="1px"
         android:layout_height="match_parent"

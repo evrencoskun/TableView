@@ -82,7 +82,11 @@ public interface ITableView {
 
     void scrollToColumnPosition(int column);
 
+    void scrollToColumnPosition(int column, int offset);
+
     void scrollToRowPosition(int row);
+
+    void scrollToRowPosition(int row, int offset);
 
     void showRow(int row);
 
