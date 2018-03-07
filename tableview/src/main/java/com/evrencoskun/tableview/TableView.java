@@ -586,6 +586,11 @@ public class TableView extends FrameLayout implements ITableView {
     }
 
     @Override
+    public ColumnSortHandler getColumnSortHandler() {
+        return mColumnSortHandler;
+    }
+
+    @Override
     public DividerItemDecoration getHorizontalItemDecoration() {
         if (mHorizontalItemDecoration == null) {
             mHorizontalItemDecoration = createItemDecoration(DividerItemDecoration.HORIZONTAL);
