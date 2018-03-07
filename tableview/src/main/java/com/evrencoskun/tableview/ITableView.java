@@ -116,6 +116,10 @@ public interface ITableView {
 
     void remeasureColumnWidth(int column);
 
+    int getRowHeaderWidth();
+
+    void setRowHeaderWidth(int rowHeaderWidth);
+
     AbstractTableAdapter getAdapter();
 
     /**

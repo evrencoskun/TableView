@@ -19,6 +19,7 @@ package com.evrencoskun.tableview.adapter;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.evrencoskun.tableview.ITableView;
@@ -151,6 +152,11 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
 
     public void setRowHeaderWidth(int rowHeaderWidth) {
         this.mRowHeaderWidth = rowHeaderWidth;
+
+        if(mCornerView != null) {
+            ViewGroup.LayoutParams layoutParams = mCornerView.getLayoutParams();
+            layoutParams.width = rowHeaderWidth;
+        }
     }
 
     public void setColumnHeaderHeight(int columnHeaderHeight) {
