@@ -199,4 +199,20 @@ public class VisibilityHandler {
 
         return new Column(column, columnHeaderModel, cellModelList);
     }
+
+    public SparseArray<Row> getHideRowList() {
+        return mHideRowList;
+    }
+
+    public SparseArray<Column> getHideColumnList() {
+        return mHideColumnList;
+    }
+
+    public void setHideRowList(SparseArray<Row> rowList) {
+        this.mHideRowList = rowList;
+    }
+
+    public void setHideColumnList(SparseArray<Column> columnList) {
+        this.mHideColumnList = columnList;
+    }
 }

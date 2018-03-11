@@ -435,6 +435,7 @@ public class TableView extends FrameLayout implements ITableView {
         mColumnSortHandler.sortByRowHeader(sortState);
     }
 
+
     @Override
     public void remeasureColumnWidth(int column) {
         // Remove calculated width value to be ready for recalculation.
@@ -661,6 +662,7 @@ public class TableView extends FrameLayout implements ITableView {
 
     /**
      * get row header width
+     *
      * @return size in pixel
      */
     @Override
@@ -670,12 +672,13 @@ public class TableView extends FrameLayout implements ITableView {
 
     /**
      * set RowHeaderWidth
+     *
      * @param rowHeaderWidth in pixel
      */
     @Override
     public void setRowHeaderWidth(int rowHeaderWidth) {
         this.mRowHeaderWidth = rowHeaderWidth;
-        if(mRowHeaderRecyclerView != null) {
+        if (mRowHeaderRecyclerView != null) {
             // Update RowHeader layout width
             ViewGroup.LayoutParams layoutParams = mRowHeaderRecyclerView.getLayoutParams();
             layoutParams.width = rowHeaderWidth;
@@ -683,7 +686,7 @@ public class TableView extends FrameLayout implements ITableView {
             mRowHeaderRecyclerView.requestLayout();
         }
 
-        if(mColumnHeaderRecyclerView != null) {
+        if (mColumnHeaderRecyclerView != null) {
             // Update ColumnHeader left margin
             LayoutParams layoutParams = (LayoutParams) mColumnHeaderRecyclerView.getLayoutParams();
             layoutParams.leftMargin = rowHeaderWidth;
@@ -691,7 +694,7 @@ public class TableView extends FrameLayout implements ITableView {
             mColumnHeaderRecyclerView.requestLayout();
         }
 
-        if(mCellRecyclerView != null) {
+        if (mCellRecyclerView != null) {
             // Update Cells left margin
             LayoutParams layoutParams = (LayoutParams) mCellRecyclerView.getLayoutParams();
             layoutParams.leftMargin = rowHeaderWidth;
@@ -699,7 +702,7 @@ public class TableView extends FrameLayout implements ITableView {
             mCellRecyclerView.requestLayout();
         }
 
-        if(getAdapter() != null) {
+        if (getAdapter() != null) {
             // update CornerView size
             getAdapter().setRowHeaderWidth(rowHeaderWidth);
         }
@@ -709,11 +712,8 @@ public class TableView extends FrameLayout implements ITableView {
     @Override
     protected Parcelable onSaveInstanceState() {
         SavedState state = new SavedState(super.onSaveInstanceState());
+        // Save all preferences of The TableView before the configuration changed.
         state.preferences = mPreferencesHandler.savePreferences();
-        /*state.cell = getCellLayoutManager().onSaveInstanceState();
-        state.row = getRowHeaderLayoutManager().onSaveInstanceState();
-        state.column = getColumnHeaderLayoutManager().onSaveInstanceState();
-        state.cellRow = getCellLayoutManager().onSaveInstanceStateForCellRow();*/
         return state;
     }
 
@@ -728,60 +728,7 @@ public class TableView extends FrameLayout implements ITableView {
         SavedState savedState = (SavedState) state;
         super.onRestoreInstanceState(savedState.getSuperState());
 
+        // Reload the preferences
         mPreferencesHandler.loadPreferences(savedState.preferences);
-
-        /*getRowHeaderLayoutManager().onRestoreInstanceState(savedState.row);
-        getColumnHeaderLayoutManager().onRestoreInstanceState(savedState.column);
-        getCellLayoutManager().onRestoreInstanceState(savedState.cell);
-        getCellLayoutManager().onRestoreInstanceStateForCellRow(savedState.cellRow);*/
-
-
-        //scrollTo(savedState.offsetX, savedState.offsetY);
-        //mScrollHandler.scrollToRowPosition(savedState.mRow);
-        //mScrollHandler.scrollToColumnPosition(savedState.mColumn);
     }
-
-    /*static class SavedState extends View.BaseSavedState {
-        //public int mRow, mColumn;
-        public Parcelable cell;
-        public Parcelable column;
-        public Parcelable row;
-        public Parcelable[] cellRow;
-        //public SparseArray<SparseArray<Object>> mCellRowCachedWidthList;
-        //public SparseArray<Object> mColumnHeaderCachedWidthList;
-
-
-        public SavedState(Parcelable superState) {
-            super(superState);
-        }
-
-        private SavedState(Parcel in) {
-            super(in);
-            cell = in.readParcelable(TableView.class.getClassLoader());
-            column = in.readParcelable(TableView.class.getClassLoader());
-            row = in.readParcelable(TableView.class.getClassLoader());
-            //cellRow = in.readParcelableArray(TableView.class.getClassLoader());
-            //mCellRowCachedWidthList = in.readSparseArray(TableView.class.getClassLoader());
-            //mColumnHeaderCachedWidthList = in.readSparseArray(TableView.class.getClassLoader());
-        }
-
-        @Override
-        public void writeToParcel(Parcel out, int flags) {
-            super.writeToParcel(out, flags);
-            out.writeParcelable(cell, flags);
-            out.writeParcelable(column, flags);
-            out.writeParcelable(row, flags);
-            //out.writeParcelableArray(cellRow, flags);
-            //out.writeSparseArray(mCellRowCachedWidthList);
-            //out.writeSparseArray(mColumnHeaderCachedWidthList);
-        }
-
-        public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable
-                .Creator<SavedState>() {
-            public SavedState createFromParcel(Parcel in) { return new SavedState(in); }
-
-            public SavedState[] newArray(int size) { return new SavedState[size]; }
-        };
-    }*/
-
 }

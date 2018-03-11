@@ -88,11 +88,12 @@ public abstract class AbstractRecyclerViewAdapter<T> extends RecyclerView.Adapte
     }
 
     public void deleteItemRange(int positionStart, int itemCount) {
-        for (int i = positionStart; i < positionStart + itemCount + 1; i++) {
+        for (int i = positionStart + itemCount -1; i >= positionStart ; i--) {
             if (i != RecyclerView.NO_POSITION) {
                 mItemList.remove(i);
             }
         }
+
         notifyItemRangeRemoved(positionStart, itemCount);
     }
 
