@@ -17,13 +17,6 @@
 
 package com.evrencoskun.tableview.sort;
 
-/**
- * Created by jeremypacabis on March 30, 2018.
- *
- * @author Jeremy Patrick Pacabis <jeremy@ingenuity.ph>
- *         com.evrencoskun.tableview.sort <TableView>
- */
-
 public abstract class ColumnSortStateChangedListener {
 
     /**
