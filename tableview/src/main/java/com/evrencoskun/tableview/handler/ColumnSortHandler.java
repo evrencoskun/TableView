@@ -26,8 +26,9 @@ import com.evrencoskun.tableview.adapter.recyclerview.RowHeaderRecyclerViewAdapt
 import com.evrencoskun.tableview.sort.ColumnForRowHeaderSortComparator;
 import com.evrencoskun.tableview.sort.ColumnSortCallback;
 import com.evrencoskun.tableview.sort.ColumnSortComparator;
-import com.evrencoskun.tableview.sort.RowHeaderForCellSortComparator;
+import com.evrencoskun.tableview.sort.ColumnSortStateChangedListener;
 import com.evrencoskun.tableview.sort.ISortableModel;
+import com.evrencoskun.tableview.sort.RowHeaderForCellSortComparator;
 import com.evrencoskun.tableview.sort.RowHeaderSortCallback;
 import com.evrencoskun.tableview.sort.RowHeaderSortComparator;
 import com.evrencoskun.tableview.sort.SortState;
@@ -46,6 +47,7 @@ public class ColumnSortHandler {
     private RowHeaderRecyclerViewAdapter mRowHeaderRecyclerViewAdapter;
     private ColumnHeaderRecyclerViewAdapter mColumnHeaderRecyclerViewAdapter;
 
+    private List<ColumnSortStateChangedListener> columnSortStateChangedListeners;
     private boolean mEnableAnimation = true;
 
     public boolean isEnableAnimation() {
@@ -91,7 +93,7 @@ public class ColumnSortHandler {
         mRowHeaderRecyclerViewAdapter.getRowHeaderSortHelper().setSortingStatus(sortState);
 
         // Set sorted data list
-        swapItems(originalRowHeaderList, sortedRowHeaderList, sortedList);
+        swapItems(originalRowHeaderList, sortedRowHeaderList, sortedList, sortState);
     }
 
     public void sort(int column, SortState sortState) {
@@ -122,12 +124,14 @@ public class ColumnSortHandler {
         mColumnHeaderRecyclerViewAdapter.getColumnSortHelper().setSortingStatus(column, sortState);
 
         // Set sorted data list
-        swapItems(originalList, sortedList, column, sortedRowHeaderList);
+        swapItems(originalList, sortedList, column, sortedRowHeaderList, sortState);
     }
 
     private void swapItems(List<ISortableModel> oldRowHeader,
                            List<ISortableModel> newRowHeader,
-                           List<List<ISortableModel>> newColumnItems) {
+                           List<List<ISortableModel>> newColumnItems,
+                           SortState sortState
+    ) {
 
         // Set new items without calling notifyCellDataSetChanged method of CellRecyclerViewAdapter
         mRowHeaderRecyclerViewAdapter.setItems(newRowHeader, !mEnableAnimation);
@@ -141,10 +145,14 @@ public class ColumnSortHandler {
             diffResult.dispatchUpdatesTo(mRowHeaderRecyclerViewAdapter);
             diffResult.dispatchUpdatesTo(mCellRecyclerViewAdapter);
         }
+
+        for (ColumnSortStateChangedListener listener : columnSortStateChangedListeners) {
+            listener.onRowHeaderSortStatusChanged(sortState);
+        }
     }
 
     private void swapItems(List<List<ISortableModel>> oldItems, List<List<ISortableModel>>
-            newItems, int column, List<ISortableModel> newRowHeader) {
+            newItems, int column, List<ISortableModel> newRowHeader, SortState sortState) {
 
         // Set new items without calling notifyCellDataSetChanged method of CellRecyclerViewAdapter
         mCellRecyclerViewAdapter.setItems(newItems, !mEnableAnimation);
@@ -157,6 +165,10 @@ public class ColumnSortHandler {
 
             diffResult.dispatchUpdatesTo(mCellRecyclerViewAdapter);
             diffResult.dispatchUpdatesTo(mRowHeaderRecyclerViewAdapter);
+        }
+
+        for (ColumnSortStateChangedListener listener : columnSortStateChangedListeners) {
+            listener.onColumnSortStatusChanged(column, sortState);
         }
     }
 
@@ -185,5 +197,18 @@ public class ColumnSortHandler {
 
     public SortState getRowHeaderSortingStatus() {
         return mRowHeaderRecyclerViewAdapter.getRowHeaderSortHelper().getSortingStatus();
+    }
+
+    /**
+     * Sets the listener for the changes in column sorting.
+     *
+     * @param listener ColumnSortStateChangedListener listener.
+     */
+    public void addColumnSortStateChangedListener(ColumnSortStateChangedListener listener) {
+        if (columnSortStateChangedListeners == null) {
+            columnSortStateChangedListeners = new ArrayList<>();
+        }
+
+        columnSortStateChangedListeners.add(listener);
     }
 }
