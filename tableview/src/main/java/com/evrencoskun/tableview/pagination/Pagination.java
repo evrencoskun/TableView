@@ -22,8 +22,16 @@ import com.evrencoskun.tableview.adapter.AdapterDataSetChangedListener;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.RowHeaderRecyclerViewAdapter;
 import com.evrencoskun.tableview.filter.FilterChangedListener;
+import com.evrencoskun.tableview.sort.ColumnForRowHeaderSortComparator;
+import com.evrencoskun.tableview.sort.ColumnSortComparator;
+import com.evrencoskun.tableview.sort.ColumnSortStateChangedListener;
+import com.evrencoskun.tableview.sort.ISortableModel;
+import com.evrencoskun.tableview.sort.RowHeaderForCellSortComparator;
+import com.evrencoskun.tableview.sort.RowHeaderSortComparator;
+import com.evrencoskun.tableview.sort.SortState;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Pagination<T> implements IPagination {
@@ -32,8 +40,8 @@ public class Pagination<T> implements IPagination {
     private int itemsPerPage;
     private int currentPage;
     private int pageCount;
-    private List<List<T>> originalCellData, currentPageCellData;
-    private List<T> originalRowData, currentPageRowData;
+    private List<List<ISortableModel>> originalCellData, currentPageCellData;
+    private List<ISortableModel> originalRowData, currentPageRowData;
 
     private RowHeaderRecyclerViewAdapter mRowHeaderRecyclerViewAdapter;
     private CellRecyclerViewAdapter mCellRecyclerViewAdapter;
@@ -80,6 +88,7 @@ public class Pagination<T> implements IPagination {
                 .getRowHeaderRecyclerView().getAdapter();
         this.mCellRecyclerViewAdapter = (CellRecyclerViewAdapter) tableView.getCellRecyclerView()
                 .getAdapter();
+        this.tableView.getColumnSortHandler().addColumnSortStateChangedListener(columnSortStateChangedListener);
         this.tableView.getAdapter().addAdapterDataSetChangedListener(adapterDataSetChangedListener);
         this.tableView.getFilterHandler().addFilterChangedListener(filterChangedListener);
         this.currentPage = 1;
@@ -145,7 +154,7 @@ public class Pagination<T> implements IPagination {
 
     @Override
     public void goToPage(int page) {
-        currentPage = (page > pageCount || page < 1) ? (page > pageCount ? pageCount : currentPage) : page;
+        currentPage = (page > pageCount || page < 1) ? (page > pageCount && pageCount > 0 ? pageCount : currentPage) : page;
         paginateData();
     }
 
@@ -223,6 +232,53 @@ public class Pagination<T> implements IPagination {
                     reloadPages();
                 }
             };
+
+    private ColumnSortStateChangedListener columnSortStateChangedListener =
+            new ColumnSortStateChangedListener() {
+                @Override
+                public void onColumnSortStatusChanged(int column, SortState sortState) {
+                    paginateOnColumnSort(column, sortState);
+                }
+
+                @Override
+                public void onRowHeaderSortStatusChanged(SortState sortState) {
+                    paginateOnColumnSort(-1, sortState);
+                }
+            };
+
+    @SuppressWarnings("unchecked")
+    private void paginateOnColumnSort(int column, SortState sortState) {
+        List<ISortableModel> sortedRowHeaderList = new ArrayList<>(originalRowData);
+        List<List<ISortableModel>> sortedList = new ArrayList<>(originalCellData);
+        if (sortState != SortState.UNSORTED) {
+            if (column == -1) {
+                Collections.sort(sortedRowHeaderList, new RowHeaderSortComparator(sortState));
+                RowHeaderForCellSortComparator rowHeaderForCellSortComparator =
+                        new RowHeaderForCellSortComparator(
+                                originalRowData,
+                                originalCellData,
+                                sortState
+                        );
+
+                Collections.sort(sortedList, rowHeaderForCellSortComparator);
+            } else {
+                Collections.sort(sortedList, new ColumnSortComparator(column, sortState));
+                ColumnForRowHeaderSortComparator columnForRowHeaderSortComparator =
+                        new ColumnForRowHeaderSortComparator(
+                                originalRowData,
+                                originalCellData,
+                                column,
+                                sortState
+                        );
+
+                Collections.sort(sortedRowHeaderList, columnForRowHeaderSortComparator);
+            }
+        }
+
+        originalRowData = new ArrayList<>(sortedRowHeaderList);
+        originalCellData = new ArrayList<>(sortedList);
+        reloadPages();
+    }
 
     /**
      * Listener interface for changing of TableView page.
