@@ -1,10 +1,10 @@
-TableView contributors (sorted alphabeticaly)
+TableView contributors (sorted alphabetically)
 ============================================
 
-* **[jeremy-ingenuity ](https://github.com/jeremy-ingenuity)**
+* **[jeremy-ingenuity](https://github.com/jeremy-ingenuity)**
 
-  * Add a new functionality that is filtering. 
-  * Add a new functionality that is Paging. 
+  * Add a new functionality that is filtering.
+  * Add a new functionality that is pagination.
   
 * **[sonique6784](https://github.com/sonique6784)**
 

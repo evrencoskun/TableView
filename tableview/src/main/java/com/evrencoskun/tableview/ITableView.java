@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.filter.Filter;
+import com.evrencoskun.tableview.handler.ColumnSortHandler;
 import com.evrencoskun.tableview.handler.FilterHandler;
 import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
@@ -69,6 +70,8 @@ public interface ITableView {
     ITableViewListener getTableViewListener();
 
     SelectionHandler getSelectionHandler();
+    
+    ColumnSortHandler getColumnSortHandler();
 
     DividerItemDecoration getHorizontalItemDecoration();
 
@@ -78,7 +81,11 @@ public interface ITableView {
 
     void scrollToColumnPosition(int column);
 
+    void scrollToColumnPosition(int column, int offset);
+
     void scrollToRowPosition(int row);
+
+    void scrollToRowPosition(int row, int offset);
 
     void showRow(int row);
 
@@ -111,6 +118,10 @@ public interface ITableView {
     void sortRowHeader(SortState sortState);
 
     void remeasureColumnWidth(int column);
+
+    int getRowHeaderWidth();
+
+    void setRowHeaderWidth(int rowHeaderWidth);
 
     AbstractTableAdapter getAdapter();
 

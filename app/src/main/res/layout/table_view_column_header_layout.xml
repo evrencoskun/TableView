@@ -24,12 +24,11 @@
     android:layout_width="wrap_content"
     android:layout_height="@dimen/cell_height"
     android:background="@color/cell_background_color"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -45,8 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
+                android:layout_weight="4"
                 android:gravity="center"
                 android:textColor="@color/table_view_default_text_color"
                 android:textSize="@dimen/text_size"
@@ -54,13 +52,14 @@
 
             <ImageButton
                 android:id="@+id/column_header_sortButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:layout_gravity="end|center"
                 android:layout_marginLeft="4dp"
                 android:background="@android:color/transparent"
                 android:paddingRight="-5dp"
-                android:visibility="invisible"
+                android:scaleType="fitXY"
+                android:visibility="gone"
                 app:srcCompat="@drawable/ic_down"/>
         </LinearLayout>
 
@@ -71,3 +70,4 @@
             android:background="@color/header_line_color"/>
     </FrameLayout>
 </LinearLayout>
+

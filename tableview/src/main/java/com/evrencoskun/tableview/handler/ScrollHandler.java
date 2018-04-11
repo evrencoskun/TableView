@@ -23,6 +23,7 @@ import android.view.View;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
+import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnLayoutManager;
 
 /**
@@ -30,15 +31,16 @@ import com.evrencoskun.tableview.layoutmanager.ColumnLayoutManager;
  */
 
 public class ScrollHandler {
-
     private ITableView mTableView;
     private CellLayoutManager mCellLayoutManager;
     private LinearLayoutManager mRowHeaderLayoutManager;
+    private ColumnHeaderLayoutManager mColumnHeaderLayoutManager;
 
     public ScrollHandler(ITableView tableView) {
         this.mTableView = tableView;
         this.mCellLayoutManager = tableView.getCellLayoutManager();
         this.mRowHeaderLayoutManager = tableView.getRowHeaderLayoutManager();
+        this.mColumnHeaderLayoutManager = tableView.getColumnHeaderLayoutManager();
     }
 
     public void scrollToColumnPosition(int columnPosition) {
@@ -49,8 +51,21 @@ public class ScrollHandler {
         }
 
         // Column Header should be scrolled firstly because of fitting column width process.
-        scrollColumnHeader(columnPosition);
-        scrollCellHorizontally(columnPosition);
+        scrollColumnHeader(columnPosition, 0);
+        scrollCellHorizontally(columnPosition, 0);
+    }
+
+    public void scrollToColumnPosition(int columnPosition, int offset) {
+        // TableView is not on screen yet.
+        if (!((View) mTableView).isShown()) {
+            // Change default value of the listener
+            mTableView.getHorizontalRecyclerViewListener().setScrollPosition(columnPosition);
+            mTableView.getHorizontalRecyclerViewListener().setScrollPositionOffset(offset);
+        }
+
+        // Column Header should be scrolled firstly because of fitting column width process.
+        scrollColumnHeader(columnPosition, offset);
+        scrollCellHorizontally(columnPosition, offset);
     }
 
     public void scrollToRowPosition(int rowPosition) {
@@ -58,8 +73,12 @@ public class ScrollHandler {
         mCellLayoutManager.scrollToPosition(rowPosition);
     }
 
+    public void scrollToRowPosition(int rowPosition, int offset) {
+        mRowHeaderLayoutManager.scrollToPositionWithOffset(rowPosition, offset);
+        mCellLayoutManager.scrollToPositionWithOffset(rowPosition, offset);
+    }
 
-    private void scrollCellHorizontally(int columnPosition) {
+    private void scrollCellHorizontally(int columnPosition, int offset) {
         CellLayoutManager cellLayoutManager = mTableView.getCellLayoutManager();
 
         for (int i = cellLayoutManager.findFirstVisibleItemPosition(); i < cellLayoutManager
@@ -72,13 +91,34 @@ public class ScrollHandler {
                 ColumnLayoutManager columnLayoutManager = (ColumnLayoutManager)
                         cellRowRecyclerView.getLayoutManager();
 
-                columnLayoutManager.scrollToPosition(columnPosition);
+                columnLayoutManager.scrollToPositionWithOffset(columnPosition, offset);
             }
 
         }
     }
 
-    private void scrollColumnHeader(int columnPosition) {
-        mTableView.getColumnHeaderLayoutManager().scrollToPosition(columnPosition);
+    private void scrollColumnHeader(int columnPosition, int offset) {
+        mTableView.getColumnHeaderLayoutManager().scrollToPositionWithOffset(columnPosition,
+                offset);
+    }
+
+    public int getColumnPosition() {
+        return mColumnHeaderLayoutManager.findFirstVisibleItemPosition();
+    }
+
+    public int getColumnPositionOffset() {
+        View child = mColumnHeaderLayoutManager.findViewByPosition(mColumnHeaderLayoutManager
+                .findFirstVisibleItemPosition());
+        return child.getLeft();
+    }
+
+    public int getRowPosition() {
+        return mRowHeaderLayoutManager.findFirstVisibleItemPosition();
+    }
+
+    public int getRowPositionOffset() {
+        View child = mRowHeaderLayoutManager.findViewByPosition(mRowHeaderLayoutManager
+                .findFirstVisibleItemPosition());
+        return child.getLeft();
     }
 }

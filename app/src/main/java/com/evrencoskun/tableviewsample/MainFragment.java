@@ -40,6 +40,7 @@ import com.evrencoskun.tableviewsample.tableview.model.RowHeader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 
 /**
@@ -159,12 +160,19 @@ public class MainFragment extends Fragment {
         mColumnHeaderList.addAll(columnHeaders);
         mTableViewAdapter.setAllItems(mColumnHeaderList, mRowHeaderList, mCellList);
 
+        // Example: Set row header width manually
+        // DisplayMetrics metrics = getResources().getDisplayMetrics();
+        // int rowHeaderWidth = Math.round(65 * (metrics.densityDpi / 160f));
+        // mTableView.setRowHeaderWidth(rowHeaderWidth);
+
     }
 
     private List<RowHeader> getRowHeaderList() {
         List<RowHeader> list = new ArrayList<>();
         for (int i = 0; i < ROW_SIZE; i++) {
-            RowHeader header = new RowHeader(String.valueOf(i), "row " + i);
+            String rh = "row " + i ;
+
+            RowHeader header = new RowHeader(String.valueOf(i), rh);
             list.add(header);
         }
 
@@ -337,6 +345,11 @@ public class MainFragment extends Fragment {
         return list;
     }
 
+    private static String getRealRandomString() {
+
+        int length = (int)Math.round(Math.random() * 20.0);
+        return UUID.randomUUID().toString().substring(0, length);
+    }
 
     private static String getRandomString() {
         Random r = new Random();

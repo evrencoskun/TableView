@@ -19,6 +19,7 @@ package com.evrencoskun.tableview.adapter;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.evrencoskun.tableview.ITableView;
@@ -151,6 +152,11 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
 
     public void setRowHeaderWidth(int rowHeaderWidth) {
         this.mRowHeaderWidth = rowHeaderWidth;
+
+        if (mCornerView != null) {
+            ViewGroup.LayoutParams layoutParams = mCornerView.getLayoutParams();
+            layoutParams.width = rowHeaderWidth;
+        }
     }
 
     public void setColumnHeaderHeight(int columnHeaderHeight) {
@@ -192,8 +198,39 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
         mRowHeaderRecyclerViewAdapter.deleteItem(rowPosition);
     }
 
+    public void removeRow(int rowPosition, boolean updateRowHeader) {
+        mCellRecyclerViewAdapter.deleteItem(rowPosition);
+
+        // To be able update the row header data
+        if (updateRowHeader) {
+            rowPosition = mRowHeaderRecyclerViewAdapter.getItemCount() - 1;
+
+            // Cell RecyclerView items should be notified.
+            // Because, other items stores the old row position.
+            mCellRecyclerViewAdapter.notifyDataSetChanged();
+        }
+
+        mRowHeaderRecyclerViewAdapter.deleteItem(rowPosition);
+
+    }
+
     public void removeRowRange(int rowPositionStart, int itemCount) {
         mCellRecyclerViewAdapter.deleteItemRange(rowPositionStart, itemCount);
+        mRowHeaderRecyclerViewAdapter.deleteItemRange(rowPositionStart, itemCount);
+    }
+
+    public void removeRowRange(int rowPositionStart, int itemCount, boolean updateRowHeader) {
+        mCellRecyclerViewAdapter.deleteItemRange(rowPositionStart, itemCount);
+
+        // To be able update the row header data sets
+        if (updateRowHeader) {
+            rowPositionStart = mRowHeaderRecyclerViewAdapter.getItemCount() - 1 - itemCount;
+
+            // Cell RecyclerView items should be notified.
+            // Because, other items stores the old row position.
+            mCellRecyclerViewAdapter.notifyDataSetChanged();
+        }
+
         mRowHeaderRecyclerViewAdapter.deleteItemRange(rowPositionStart, itemCount);
     }
 
