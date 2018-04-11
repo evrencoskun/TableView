@@ -47,7 +47,7 @@ public class ColumnSortHandler {
     private RowHeaderRecyclerViewAdapter mRowHeaderRecyclerViewAdapter;
     private ColumnHeaderRecyclerViewAdapter mColumnHeaderRecyclerViewAdapter;
 
-    private List<ColumnSortStateChangedListener> columnSortStateChangedListeners;
+    private List<ColumnSortStateChangedListener> columnSortStateChangedListeners = new ArrayList<>();
     private boolean mEnableAnimation = true;
 
     public boolean isEnableAnimation() {
