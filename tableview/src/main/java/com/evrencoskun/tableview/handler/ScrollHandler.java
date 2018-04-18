@@ -109,7 +109,10 @@ public class ScrollHandler {
     public int getColumnPositionOffset() {
         View child = mColumnHeaderLayoutManager.findViewByPosition(mColumnHeaderLayoutManager
                 .findFirstVisibleItemPosition());
-        return child.getLeft();
+        if(child != null) {
+            return child.getLeft();
+        }
+        return 0;
     }
 
     public int getRowPosition() {
@@ -119,6 +122,9 @@ public class ScrollHandler {
     public int getRowPositionOffset() {
         View child = mRowHeaderLayoutManager.findViewByPosition(mRowHeaderLayoutManager
                 .findFirstVisibleItemPosition());
-        return child.getLeft();
+        if(child != null) {
+            return child.getLeft();
+        }
+        return 0;
     }
 }
