@@ -138,4 +138,11 @@ public interface ITableView {
      * @return The FilterHandler of the TableView.
      */
     FilterHandler getFilterHandler();
+    
+    /**
+     * Retrieves the ScrollHandler of the TableView.
+     *
+     * @return The ScrollHandler of the TableView.
+     */
+    ScrollHandler getScrollHandler()
 }
