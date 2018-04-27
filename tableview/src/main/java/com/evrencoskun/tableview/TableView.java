@@ -355,6 +355,7 @@ public class TableView extends FrameLayout implements ITableView {
         this.mShowHorizontalSeparators = showSeparators;
     }
 
+    @Override
     public boolean isShowVerticalSeparators() {
         return mShowVerticalSeparators;
     }
@@ -599,14 +600,15 @@ public class TableView extends FrameLayout implements ITableView {
         return mHorizontalItemDecoration;
     }
 
-    private DividerItemDecoration getVerticalItemDecoration() {
+    @Override
+    public DividerItemDecoration getVerticalItemDecoration() {
         if (mVerticalItemDecoration == null) {
             mVerticalItemDecoration = createItemDecoration(DividerItemDecoration.VERTICAL);
         }
         return mVerticalItemDecoration;
     }
 
-    private DividerItemDecoration createItemDecoration(int orientation) {
+    protected DividerItemDecoration createItemDecoration(int orientation) {
         Drawable divider = ContextCompat.getDrawable(getContext(), R.drawable.cell_line_divider);
 
         // That means; There is a custom separator color from user.
