@@ -179,9 +179,8 @@ Firstly, you must create your custom TableView Adapter  which extends from ```Ab
       * @see #onCreateCellViewHolder(ViewGroup, int);
       */
      @Override
-     public void onBindCellViewHolder(AbstractViewHolder holder, Object cellItemModel, int 
+     public void onBindCellViewHolder(AbstractViewHolder holder, Cell cell, int 
              columnPosition, int rowPosition) {
-         Cell cell = (Cell) cellItemModel;
  
          // Get the holder to update cell item text
          MyCellViewHolder viewHolder = (MyCellViewHolder) holder;
@@ -247,9 +246,8 @@ Firstly, you must create your custom TableView Adapter  which extends from ```Ab
       * @see #onCreateColumnHeaderViewHolder(ViewGroup, int) ;
       */
      @Override
-     public void onBindColumnHeaderViewHolder(AbstractViewHolder holder, Object columnHeaderItemModel, int 
+     public void onBindColumnHeaderViewHolder(AbstractViewHolder holder, ColumnHeader columnHeader, int 
              position) {
-         ColumnHeader columnHeader = (ColumnHeader) columnHeaderItemModel;
  
          // Get the holder to update cell item text
          MyColumnHeaderViewHolder columnHeaderViewHolder = (MyColumnHeaderViewHolder) holder;
@@ -316,10 +314,8 @@ Firstly, you must create your custom TableView Adapter  which extends from ```Ab
       * @see #onCreateRowHeaderViewHolder(ViewGroup, int) ;
       */
      @Override
-     public void onBindRowHeaderViewHolder(AbstractViewHolder holder, Object rowHeaderItemModel, int 
+     public void onBindRowHeaderViewHolder(AbstractViewHolder holder, RowHeader rowHeaderItemModel, int 
              position) {
-         RowHeader rowHeader = (RowHeader) rowHeaderItemModel;
- 
          // Get the holder to update row header item text
          MyRowHeaderViewHolder rowHeaderViewHolder = (MyRowHeaderViewHolder) holder;
          rowHeaderViewHolder.row_header_textview.setText(rowHeader.getData());
