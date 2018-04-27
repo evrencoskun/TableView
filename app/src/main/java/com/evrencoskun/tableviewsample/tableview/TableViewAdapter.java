@@ -112,22 +112,21 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
      * @see #onCreateCellViewHolder(ViewGroup, int) ;
      */
     @Override
-    public void onBindCellViewHolder(AbstractViewHolder holder, Object cellItemModel, int
+    public void onBindCellViewHolder(AbstractViewHolder holder, Cell cellItemModel, int
             columnPosition, int rowPosition) {
-        Cell cell = (Cell) cellItemModel;
 
         if (holder instanceof GenderCellViewHolder) {
             GenderCellViewHolder viewHolder = (GenderCellViewHolder) holder;
-            viewHolder.setData(cell.getData());
+            viewHolder.setData(cellItemModel.getData());
 
         } else if (holder instanceof MoodCellViewHolder) {
             MoodCellViewHolder viewHolder = (MoodCellViewHolder) holder;
-            viewHolder.setData(cell.getData());
+            viewHolder.setData(cellItemModel.getData());
 
         } else {
             // Get the holder to update cell item text
             CellViewHolder viewHolder = (CellViewHolder) holder;
-            viewHolder.setData(cell.getData());
+            viewHolder.setData(cellItemModel.getData());
         }
     }
 
@@ -168,13 +167,11 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
      * @see #onCreateColumnHeaderViewHolder(ViewGroup, int) ;
      */
     @Override
-    public void onBindColumnHeaderViewHolder(AbstractViewHolder holder, Object
+    public void onBindColumnHeaderViewHolder(AbstractViewHolder holder, ColumnHeader
             columnHeaderItemModel, int columnPosition) {
-        ColumnHeader columnHeader = (ColumnHeader) columnHeaderItemModel;
-
         // Get the holder to update cell item text
         ColumnHeaderViewHolder columnHeaderViewHolder = (ColumnHeaderViewHolder) holder;
-        columnHeaderViewHolder.setColumnHeader(columnHeader);
+        columnHeaderViewHolder.setColumnHeader(columnHeaderItemModel);
     }
 
     /**
@@ -214,13 +211,12 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
      * @see #onCreateRowHeaderViewHolder(ViewGroup, int) ;
      */
     @Override
-    public void onBindRowHeaderViewHolder(AbstractViewHolder holder, Object rowHeaderItemModel,
+    public void onBindRowHeaderViewHolder(AbstractViewHolder holder, RowHeader rowHeaderItemModel,
                                           int rowPosition) {
-        RowHeader rowHeader = (RowHeader) rowHeaderItemModel;
 
         // Get the holder to update row header item text
         RowHeaderViewHolder rowHeaderViewHolder = (RowHeaderViewHolder) holder;
-        rowHeaderViewHolder.row_header_textview.setText(String.valueOf(rowHeader.getData()));
+        rowHeaderViewHolder.row_header_textview.setText(String.valueOf(rowHeaderItemModel.getData()));
     }
 
 

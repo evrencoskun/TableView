@@ -28,7 +28,7 @@ import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
  * Created by evrencoskun on 10/06/2017.
  */
 
-public interface ITableAdapter {
+public interface ITableAdapter<CH, RH, C> {
 
     int getColumnHeaderItemViewType(int position);
 
@@ -40,17 +40,17 @@ public interface ITableAdapter {
 
     RecyclerView.ViewHolder onCreateCellViewHolder(ViewGroup parent, int viewType);
 
-    void onBindCellViewHolder(AbstractViewHolder holder, Object cellItemModel, int
+    void onBindCellViewHolder(AbstractViewHolder holder, C cellItemModel, int
             columnPosition, int rowPosition);
 
     RecyclerView.ViewHolder onCreateColumnHeaderViewHolder(ViewGroup parent, int viewType);
 
-    void onBindColumnHeaderViewHolder(AbstractViewHolder holder, Object columnHeaderItemModel,
+    void onBindColumnHeaderViewHolder(AbstractViewHolder holder, CH columnHeaderItemModel,
                                       int columnPosition);
 
     RecyclerView.ViewHolder onCreateRowHeaderViewHolder(ViewGroup parent, int viewType);
 
-    void onBindRowHeaderViewHolder(AbstractViewHolder holder, Object rowHeaderItemModel, int
+    void onBindRowHeaderViewHolder(AbstractViewHolder holder, RH rowHeaderItemModel, int
             rowPosition);
 
     View onCreateCornerView();

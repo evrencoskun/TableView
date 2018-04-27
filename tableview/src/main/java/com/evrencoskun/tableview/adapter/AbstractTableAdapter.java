@@ -35,7 +35,7 @@ import java.util.List;
  * Created by evrencoskun on 10/06/2017.
  */
 
-public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
+public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<CH, RH, C> {
 
     private int mRowHeaderWidth;
     private int mColumnHeaderHeight;

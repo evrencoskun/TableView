@@ -60,7 +60,7 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int xPosition) {
         if (mTableAdapter != null) {
             AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
-            Object value = getItem(xPosition);
+            C value = getItem(xPosition);
 
             mTableAdapter.onBindCellViewHolder(viewHolder, value, xPosition, mYPosition);
         }
