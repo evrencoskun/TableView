@@ -27,6 +27,7 @@ import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.filter.Filter;
 import com.evrencoskun.tableview.handler.ColumnSortHandler;
 import com.evrencoskun.tableview.handler.FilterHandler;
+import com.evrencoskun.tableview.handler.ScrollHandler;
 import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
@@ -142,4 +143,11 @@ public interface ITableView {
      * @return The FilterHandler of the TableView.
      */
     FilterHandler getFilterHandler();
+    
+    /**
+     * Retrieves the ScrollHandler of the TableView.
+     *
+     * @return The ScrollHandler of the TableView.
+     */
+    ScrollHandler getScrollHandler();
 }

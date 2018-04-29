@@ -120,9 +120,12 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
         // The below code helps to display a new attached recyclerView on exact scrolled position.
         CellRowViewHolder viewHolder = (CellRowViewHolder) holder;
+        
+        int colpos = mTableAdapter.getTableView().getScrollHandler().getColumnPosition();
+        int colposoffset = mTableAdapter.getTableView().getScrollHandler().getColumnPositionOffset();
+        
         ((ColumnLayoutManager) viewHolder.m_jRecyclerView.getLayoutManager())
-                .scrollToPositionWithOffset(mHorizontalListener.getScrollPosition(),
-                        mHorizontalListener.getScrollPositionOffset());
+                .scrollToPositionWithOffset(colpos, colposoffset);
 
         SelectionHandler selectionHandler = mTableAdapter.getTableView().getSelectionHandler();
 
