@@ -40,6 +40,8 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
     private int mYPosition;
     private boolean mIsMoved;
 
+    private RecyclerView mCurrentRVTouched = null;
+
     public VerticalRecyclerViewListener(ITableView tableView) {
         this.mRowHeaderRecyclerView = tableView.getRowHeaderRecyclerView();
         this.mCellRecyclerView = tableView.getCellRecyclerView();
@@ -47,7 +49,15 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
 
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+
+        // Prevent multitouch, once we start to listen with a RV,
+        // we ignore any other RV until the touch is released (UP)
+        if(mCurrentRVTouched != null && rv != mCurrentRVTouched) {
+            return true;
+        }
+
         if (e.getAction() == MotionEvent.ACTION_DOWN) {
+            mCurrentRVTouched = rv;
             if (rv.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
 
                 if (mLastTouchedRecyclerView != null && rv != mLastTouchedRecyclerView) {
@@ -66,12 +76,14 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
                 mIsMoved = false;
             }
         } else if (e.getAction() == MotionEvent.ACTION_MOVE) {
+            mCurrentRVTouched = rv;
             // Why does it matter ?
             // user scroll any recyclerView like brushing, at that time, ACTION_UP will be
             // triggered
             // before scrolling. So, we need to store whether it moved or not.
             mIsMoved = true;
         } else if (e.getAction() == MotionEvent.ACTION_UP) {
+            mCurrentRVTouched = null;
             int nScrollY = ((CellRecyclerView) rv).getScrolledY();
 
             // TODO: Even if moved value is true and it may not scroll. This should be fixed.

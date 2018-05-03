@@ -45,6 +45,8 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
     private int mScrollPosition;
     private int mScrollPositionOffset = 0;
 
+    private RecyclerView mCurrentRVTouched = null;
+
     private VerticalRecyclerViewListener mVerticalRecyclerViewListener;
 
     public HorizontalRecyclerViewListener(ITableView tableView) {
@@ -55,7 +57,15 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
 
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+
+        // Prevent multitouch, once we start to listen with a RV,
+        // we ignore any other RV until the touch is released (UP)
+        if(mCurrentRVTouched != null && rv != mCurrentRVTouched) {
+            return true;
+        }
+
         if (e.getAction() == MotionEvent.ACTION_DOWN) {
+            mCurrentRVTouched = rv;
             if (rv.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
 
                 if (mLastTouchedRecyclerView != null && rv != mLastTouchedRecyclerView) {
@@ -102,12 +112,14 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
                         + "down");
             }
         } else if (e.getAction() == MotionEvent.ACTION_MOVE) {
+            mCurrentRVTouched = rv;
             // Why does it matter ?
             // user scroll any recyclerView like brushing, at that time, ACTION_UP will be
             // triggered
             // before scrolling. So, we need to store whether it moved or not.
             mIsMoved = true;
         } else if (e.getAction() == MotionEvent.ACTION_UP) {
+            mCurrentRVTouched = null;
             int nScrollX = ((CellRecyclerView) rv).getScrolledX();
             // Is it just touched without scrolling then remove the listener
             if (mXPosition == nScrollX && !mIsMoved) {
