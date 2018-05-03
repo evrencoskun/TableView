@@ -147,7 +147,10 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
             mIsMoved = false;
 
             mLastTouchedRecyclerView = rv;
+
+            mCurrentRVTouched = null;
         }
+
         return false;
     }
 

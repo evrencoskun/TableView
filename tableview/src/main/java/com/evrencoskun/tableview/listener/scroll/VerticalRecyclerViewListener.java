@@ -47,12 +47,47 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
         this.mCellRecyclerView = tableView.getCellRecyclerView();
     }
 
+    private float dx=0, dy=0;
+
+    /**
+     * check which direction the user is scrolling
+     * @param ev
+     * @return
+     */
+    private boolean verticalDirection(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_MOVE) {
+            if (dx == 0) {
+                dx = ev.getX();
+            }
+            if (dy == 0) {
+                dy = ev.getY();
+            }
+            float xdiff = Math.abs(dx - ev.getX());
+            float ydiff = Math.abs(dy - ev.getY());
+            dx = ev.getX();
+            dy = ev.getY();
+
+            // if user scrolled more horizontally than vertically
+            if (xdiff > ydiff) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
 
+        // If scroll direction is not Vertical, then ignore and reset last RV touched
+        if(!verticalDirection(e)) {
+            mCurrentRVTouched = null;
+            return false;
+        }
+
         // Prevent multitouch, once we start to listen with a RV,
         // we ignore any other RV until the touch is released (UP)
-        if(mCurrentRVTouched != null && rv != mCurrentRVTouched) {
+        if((mCurrentRVTouched != null && rv != mCurrentRVTouched)) {
             return true;
         }
 
@@ -105,6 +140,7 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
             mLastTouchedRecyclerView = rv;
 
         }
+
         return false;
     }
 
@@ -140,7 +176,7 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
             recyclerView.removeOnScrollListener(this);
             mIsMoved = false;
-
+            mCurrentRVTouched = null;
             if (recyclerView == mCellRecyclerView) {
                 Log.d(LOG_TAG, "mCellRecyclerView scroll listener removed from " +
                         "onScrollStateChanged");
@@ -161,6 +197,7 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
      *                 scrolls horizontally using ColumnHeaderRecyclerView.
      */
     public void removeLastTouchedRecyclerViewScrollListener(boolean isNeeded) {
+
         if (mLastTouchedRecyclerView == mCellRecyclerView) {
             mCellRecyclerView.removeOnScrollListener(this);
             mCellRecyclerView.stopScroll();
