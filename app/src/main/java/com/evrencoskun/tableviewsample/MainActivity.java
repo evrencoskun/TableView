@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        mainFragment.onDestroy();
         super.onDestroy();
     }
 
