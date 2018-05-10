@@ -21,8 +21,8 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
-import com.evrencoskun.tableviewsample.MainFragment;
 import com.evrencoskun.tableviewsample.R;
+import com.evrencoskun.tableviewsample.tableview.TableViewModel;
 
 /**
  * Created by evrencoskun on 4.02.2018.
@@ -38,7 +38,7 @@ public class GenderCellViewHolder extends MoodCellViewHolder {
     public void setData(Object data) {
         int gender = (int) data;
         Drawable genderDrawable = ContextCompat.getDrawable(itemView.getContext(), gender ==
-                MainFragment.BOY ? R.drawable.ic_male : R.drawable.ic_female);
+                TableViewModel.BOY ? R.drawable.ic_male : R.drawable.ic_female);
 
         cell_image.setImageDrawable(genderDrawable);
     }

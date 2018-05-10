@@ -24,8 +24,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
-import com.evrencoskun.tableviewsample.MainFragment;
 import com.evrencoskun.tableviewsample.R;
+import com.evrencoskun.tableviewsample.tableview.TableViewModel;
 
 /**
  * Created by evrencoskun on 4.02.2018.
@@ -46,7 +46,7 @@ public class MoodCellViewHolder extends AbstractViewHolder {
     public void setData(Object data) {
         int mood = (int) data;
         Drawable moodDrawable = ContextCompat.getDrawable(itemView.getContext(), mood ==
-                MainFragment.HAPPY ? R.drawable.ic_happy : R.drawable.ic_sad);
+                TableViewModel.HAPPY ? R.drawable.ic_happy : R.drawable.ic_sad);
 
         cell_image.setImageDrawable(moodDrawable);
     }

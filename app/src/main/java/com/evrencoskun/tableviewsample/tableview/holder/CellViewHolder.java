@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableviewsample.R;
+import com.evrencoskun.tableviewsample.tableview.model.Cell;
 
 /**
  * Created by evrencoskun on 23/10/2017.
@@ -32,6 +33,7 @@ public class CellViewHolder extends AbstractViewHolder {
 
     public final TextView cell_textview;
     public final LinearLayout cell_container;
+    private Cell cell;
 
     public CellViewHolder(View itemView) {
         super(itemView);
@@ -39,8 +41,9 @@ public class CellViewHolder extends AbstractViewHolder {
         cell_container = (LinearLayout) itemView.findViewById(R.id.cell_container);
     }
 
-    public void setData(Object data) {
-        cell_textview.setText(String.valueOf(data));
+    public void setCell(Cell cell) {
+        this.cell = cell;
+        cell_textview.setText(String.valueOf(cell.getData()));
 
         // If your TableView should have auto resize for cells & columns.
         // Then you should consider the below lines. Otherwise, you can ignore them.
