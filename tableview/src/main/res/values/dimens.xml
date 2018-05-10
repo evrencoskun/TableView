@@ -19,4 +19,5 @@
 <resources>
     <dimen name="default_row_header_width">55dp</dimen>
     <dimen name="default_column_header_height">55dp</dimen>
+    <integer name="default_item_cache_size">10</integer>
 </resources>

@@ -21,7 +21,6 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.View;
 
 import com.evrencoskun.tableview.ITableView;
@@ -36,30 +35,38 @@ import com.evrencoskun.tableview.util.TableViewUtils;
 public class ColumnLayoutManager extends LinearLayoutManager {
     private static final String LOG_TAG = ColumnLayoutManager.class.getSimpleName();
 
-    private SparseArray<SparseArray<Integer>> mCachedWidthList;
-
     private ITableView mTableView;
     private CellRecyclerView mCellRowRecyclerView, mColumnHeaderRecyclerView;
     private ColumnHeaderLayoutManager mColumnHeaderLayoutManager;
     private CellLayoutManager mCellLayoutManager;
+
+    private boolean mNeedFitForVerticalScroll, mNeedFitForHorizontalScroll;
     private int mLastDx = 0;
-    private boolean mNeedFit;
+    private int mYPosition;
 
 
-    public ColumnLayoutManager(Context context, ITableView tableView, CellRecyclerView
-            cellRowRecyclerView) {
+    public ColumnLayoutManager(Context context, ITableView tableView) {
         super(context);
         this.mTableView = tableView;
         this.mColumnHeaderRecyclerView = mTableView.getColumnHeaderRecyclerView();
         this.mColumnHeaderLayoutManager = mTableView.getColumnHeaderLayoutManager();
-        this.mCellRowRecyclerView = cellRowRecyclerView;
         this.mCellLayoutManager = mTableView.getCellLayoutManager();
-
-        mCachedWidthList = new SparseArray<>();
 
         // Set default orientation
         this.setOrientation(ColumnLayoutManager.HORIZONTAL);
+
+        //If you are using a RecyclerView.RecycledViewPool, it might be a good idea to set this
+        // flag to true so that views will be available to other RecyclerViews immediately.
+        this.setRecycleChildrenOnDetach(true);
     }
+
+    @Override
+    public void onAttachedToWindow(RecyclerView view) {
+        super.onAttachedToWindow(view);
+        mCellRowRecyclerView = (CellRecyclerView) view;
+        mYPosition = getRowPosition();
+    }
+
 
     @Override
     public void measureChildWithMargins(View child, int widthUsed, int heightUsed) {
@@ -75,51 +82,101 @@ public class ColumnLayoutManager extends LinearLayoutManager {
 
     @Override
     public void measureChild(View child, int widthUsed, int heightUsed) {
-        // If has fixed width is true, than calculation of the column width is not necessary.
-        if (mTableView.hasFixedWidth()) {
-            super.measureChild(child, widthUsed, heightUsed);
-            return;
-        }
 
-        int position = getPosition(child);
+        int columnPosition = getPosition(child);
 
         // Get cached width size of column and cell
-        int cacheWidth = getCacheWidth(position);
-        int columnCacheWidth = mColumnHeaderLayoutManager.getCacheWidth(position);
+        int cacheWidth = mCellLayoutManager.getCacheWidth(mYPosition, columnPosition);
+        int columnCacheWidth = mColumnHeaderLayoutManager.getCacheWidth(columnPosition);
 
+        // Already each of them is same width size.
         if (cacheWidth != -1 && cacheWidth == columnCacheWidth) {
-            // Already each of them is same width size.
-            TableViewUtils.setWidth(child, cacheWidth);
+            // Control whether we need to set width or not.
+            if (child.getMeasuredWidth() != cacheWidth) {
+                TableViewUtils.setWidth(child, cacheWidth);
+            }
         } else {
+            View columnHeaderChild = mColumnHeaderLayoutManager.findViewByPosition(columnPosition);
+            if (columnHeaderChild == null) {
+                return;
+            }
+
             // Need to calculate which one has the broadest width ?
-            fitWidthSize(child, position, cacheWidth, columnCacheWidth);
+            fitWidthSize(child, mYPosition, columnPosition, cacheWidth, columnCacheWidth,
+                    columnHeaderChild);
         }
 
         // Control all of the rows which has same column position.
-        if (shouldFitColumns(position)) {
+        if (shouldFitColumns(columnPosition, mYPosition)) {
             if (mLastDx < 0) {
-                Log.e(LOG_TAG, "x: " + position + " y: " + getRowPosition() + " fitWidthSize " +
-                        "left side");
-                mCellLayoutManager.fitWidthSize(position, true);
+                Log.e(LOG_TAG, "x: " + columnPosition + " y: " + mYPosition + " fitWidthSize " +
+                        "left side ");
+                mCellLayoutManager.fitWidthSize(columnPosition, true);
             } else {
-                mCellLayoutManager.fitWidthSize(position, false);
-                Log.e(LOG_TAG, "x: " + position + " y: " + getRowPosition() + " fitWidthSize " +
+                mCellLayoutManager.fitWidthSize(columnPosition, false);
+                Log.e(LOG_TAG, "x: " + columnPosition + " y: " + mYPosition + " fitWidthSize " +
                         "right side");
             }
-            mNeedFit = false;
+            mNeedFitForVerticalScroll = false;
         }
+
+        // It need to be cleared to prevent unnecessary calculation.
+        mNeedFitForHorizontalScroll = false;
     }
 
-    private boolean shouldFitColumns(int xPosition) {
-        if (mNeedFit) {
-            int yPosition = mCellLayoutManager.getPosition(mCellRowRecyclerView);
-            if (mCellLayoutManager.shouldFitColumns(yPosition)) {
+    private void fitWidthSize(View child, int row, int column, int cellWidth, int
+            columnHeaderWidth, View columnHeaderChild) {
+
+        if (cellWidth == -1) {
+            // Alternatively, TableViewUtils.getWidth(child);
+            cellWidth = child.getMeasuredWidth();
+        }
+
+        if (columnHeaderWidth == -1) {
+            // Alternatively, TableViewUtils.getWidth(columnHeaderChild)
+            columnHeaderWidth = columnHeaderChild.getMeasuredWidth();
+        }
+
+        if (cellWidth != 0) {
+
+            if (columnHeaderWidth > cellWidth) {
+                cellWidth = columnHeaderWidth;
+
+            } else if (cellWidth > columnHeaderWidth) {
+                columnHeaderWidth = cellWidth;
+            }
+
+            // Control whether column header needs to be change interns of width
+            if (columnHeaderWidth != columnHeaderChild.getWidth()) {
+                TableViewUtils.setWidth(columnHeaderChild, columnHeaderWidth);
+                mNeedFitForVerticalScroll = true;
+                mNeedFitForHorizontalScroll = true;
+            }
+
+            // Set the value to cache it for column header.
+            mColumnHeaderLayoutManager.setCacheWidth(column, columnHeaderWidth);
+        }
+
+
+        // Set the width value to cache it for cell .
+        TableViewUtils.setWidth(child, cellWidth);
+        mCellLayoutManager.setCacheWidth(row, column, cellWidth);
+    }
+
+    private boolean shouldFitColumns(int xPosition, int yPosition) {
+        if (mNeedFitForHorizontalScroll) {
+            if (!mCellRowRecyclerView.isScrollOthers() && mCellLayoutManager.shouldFitColumns
+                    (yPosition)) {
                 if (mLastDx > 0) {
-                    if (xPosition == findLastVisibleItemPosition()) {
+                    int last = findLastVisibleItemPosition();
+                    //Log.e(LOG_TAG, "Warning: findFirstVisibleItemPosition is " + last);
+                    if (xPosition == last) {
                         return true;
                     }
                 } else if (mLastDx < 0) {
-                    if (xPosition == findFirstVisibleItemPosition()) {
+                    int first = findFirstVisibleItemPosition();
+                    //Log.e(LOG_TAG, "Warning: findFirstVisibleItemPosition is " + first);
+                    if (xPosition == first) {
                         return true;
                     }
                 }
@@ -140,79 +197,14 @@ public class ColumnLayoutManager extends LinearLayoutManager {
         // It is important to determine the next attached view to fit all columns
         mLastDx = dx;
 
+        // Set the right initialPrefetch size to improve performance
+        this.setInitialPrefetchItemCount(2);
+
         return super.scrollHorizontallyBy(dx, recycler, state);
-    }
-
-
-    private void fitWidthSize(View child, int position, int cellCacheWidth, int columnCacheWidth) {
-
-        int cellWidth = cellCacheWidth;
-        if (cellWidth == -1) {
-            cellWidth = child.getMeasuredWidth(); // Alternatively, TableViewUtils.getWidth(child)
-        }
-
-        if (position > -1) {
-            View columnHeaderChild = mColumnHeaderLayoutManager.findViewByPosition(position);
-            if (columnHeaderChild != null) {
-
-                int columnHeaderWidth = columnCacheWidth;
-                if (columnHeaderWidth == -1) {
-                    columnHeaderWidth = columnHeaderChild.getMeasuredWidth(); // Alternatively,
-                    // TableViewUtils.getWidth(columnHeaderChild)
-                }
-
-                if (cellWidth != 0) {
-
-                    if (columnHeaderWidth > cellWidth) {
-                        cellWidth = columnHeaderWidth;
-
-                    } else if (cellWidth > columnHeaderWidth) {
-                        columnHeaderWidth = cellWidth;
-                    }
-
-                    // Control whether column header needs to be change interns of width
-                    if (columnHeaderWidth != columnHeaderChild.getWidth()) {
-                        TableViewUtils.setWidth(columnHeaderChild, columnHeaderWidth);
-                        mNeedFit = true;
-                    }
-
-                    // Set the value to cache it for column header.
-                    mColumnHeaderLayoutManager.setCacheWidth(position, columnHeaderWidth);
-                }
-            }
-        }
-
-        // Set the width value to cache it for cell .
-        TableViewUtils.setWidth(child, cellWidth);
-        setCacheWidth(position, cellWidth);
     }
 
     private int getRowPosition() {
         return mCellLayoutManager.getPosition(mCellRowRecyclerView);
-    }
-
-    public void setCacheWidth(int position, int width) {
-        int yPosition = getRowPosition();
-        SparseArray<Integer> cellRowCaches = mCachedWidthList.get(yPosition);
-        if (cellRowCaches == null) {
-            cellRowCaches = new SparseArray<>();
-        }
-        cellRowCaches.put(position, width);
-        mCachedWidthList.put(yPosition, cellRowCaches);
-    }
-
-    public int getCacheWidth(int position) {
-        int yPosition = getRowPosition();
-
-        SparseArray<Integer> cellRowCaches = mCachedWidthList.get(yPosition);
-        if (cellRowCaches != null) {
-            Integer cachedWidth = cellRowCaches.get(position);
-            if (cachedWidth != null) {
-                return cellRowCaches.get(position);
-            }
-        }
-
-        return -1;
     }
 
     public int getLastDx() {
@@ -220,11 +212,11 @@ public class ColumnLayoutManager extends LinearLayoutManager {
     }
 
     public boolean isNeedFit() {
-        return mNeedFit;
+        return mNeedFitForVerticalScroll;
     }
 
     public void clearNeedFit() {
-        mNeedFit = false;
+        mNeedFitForVerticalScroll = false;
     }
 
     public AbstractViewHolder[] getVisibleViewHolders() {

@@ -18,14 +18,12 @@
 package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.ITableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
-
-import java.util.List;
 
 /**
  * Created by evrencoskun on 10/06/2017.
@@ -37,37 +35,31 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
 
     private int mYPosition;
     private ITableAdapter mTableAdapter;
+    private ITableView mTableView;
 
-    public CellRowRecyclerViewAdapter(Context context, List itemList, ITableAdapter
-            p_iTableAdapter, int yPosition) {
-        super(context, itemList);
-        this.mYPosition = yPosition;
-        this.mTableAdapter = p_iTableAdapter;
+    public CellRowRecyclerViewAdapter(Context context, ITableView tableView) {
+        super(context, null);
+        this.mTableAdapter = tableView.getAdapter();
+        this.mTableView = tableView;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (mTableAdapter != null) {
-            AbstractViewHolder viewHolder = (AbstractViewHolder) mTableAdapter
-                    .onCreateCellViewHolder(parent, viewType);
-
-            return viewHolder;
-        }
-        return null;
+    public AbstractViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return mTableAdapter.onCreateCellViewHolder(parent, viewType);
     }
 
-    @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int xPosition) {
-        if (mTableAdapter != null) {
-            AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
-            Object value = getItem(xPosition);
 
-            mTableAdapter.onBindCellViewHolder(viewHolder, value, xPosition, mYPosition);
-        }
+    @Override
+    public void onBindViewHolder(final AbstractViewHolder holder, final int xPosition) {
+        mTableAdapter.onBindCellViewHolder(holder, getItem(xPosition), xPosition, mYPosition);
     }
 
     public int getYPosition() {
         return mYPosition;
+    }
+
+    public void setYPosition(int rowPosition) {
+        mYPosition = rowPosition;
     }
 
     @Override
@@ -75,26 +67,37 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
         return mTableAdapter.getCellItemViewType(position);
     }
 
-    @Override
-    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
-        AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
 
-        SelectionState selectionState = mTableAdapter.getTableView().getSelectionHandler()
-                .getCellSelectionState(holder.getAdapterPosition(), mYPosition);
+    @Override
+    public void onViewAttachedToWindow(AbstractViewHolder viewHolder) {
+        super.onViewAttachedToWindow(viewHolder);
+
+        SelectionState selectionState = mTableView.getSelectionHandler().getCellSelectionState
+                (viewHolder.getAdapterPosition(), mYPosition);
 
         // Control to ignore selection color
-        if (!mTableAdapter.getTableView().isIgnoreSelectionColors()) {
+        if (!mTableView.isIgnoreSelectionColors()) {
 
             // Change the background color of the view considering selected row/cell position.
             if (selectionState == SelectionState.SELECTED) {
-                viewHolder.setBackgroundColor(mTableAdapter.getTableView().getSelectedColor());
+                viewHolder.setBackgroundColor(mTableView.getSelectedColor());
             } else {
-                viewHolder.setBackgroundColor(mTableAdapter.getTableView().getUnSelectedColor());
+                viewHolder.setBackgroundColor(mTableView.getUnSelectedColor());
             }
         }
 
         // Change selection status
         viewHolder.setSelected(selectionState);
+    }
+
+    @Override
+    public boolean onFailedToRecycleView(AbstractViewHolder holder) {
+        return holder.onFailedToRecycleView();
+    }
+
+    @Override
+    public void onViewRecycled(AbstractViewHolder holder) {
+        super.onViewRecycled(holder);
+        holder.onViewRecycled();
     }
 }

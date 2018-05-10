@@ -38,6 +38,7 @@ import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.filter.Filter;
 import com.evrencoskun.tableview.handler.ColumnSortHandler;
+import com.evrencoskun.tableview.handler.ColumnWidthHandler;
 import com.evrencoskun.tableview.handler.FilterHandler;
 import com.evrencoskun.tableview.handler.PreferencesHandler;
 import com.evrencoskun.tableview.handler.ScrollHandler;
@@ -88,6 +89,7 @@ public class TableView extends FrameLayout implements ITableView {
     private ScrollHandler mScrollHandler;
     private FilterHandler mFilterHandler;
     private PreferencesHandler mPreferencesHandler;
+    private ColumnWidthHandler mColumnWidthHandler;
 
     private int mRowHeaderWidth;
     private int mColumnHeaderHeight;
@@ -186,6 +188,7 @@ public class TableView extends FrameLayout implements ITableView {
         mVisibilityHandler = new VisibilityHandler(this);
         mScrollHandler = new ScrollHandler(this);
         mPreferencesHandler = new PreferencesHandler(this);
+        mColumnWidthHandler = new ColumnWidthHandler(this);
 
         initializeListeners();
     }
@@ -289,6 +292,7 @@ public class TableView extends FrameLayout implements ITableView {
             // Add vertical item decoration to display row line on center recycler view
             recyclerView.addItemDecoration(getVerticalItemDecoration());
         }
+
         return recyclerView;
     }
 
@@ -708,6 +712,10 @@ public class TableView extends FrameLayout implements ITableView {
             // update CornerView size
             getAdapter().setRowHeaderWidth(rowHeaderWidth);
         }
+    }
+
+    public void setColumnWidth(int columnPosition, int width) {
+        mColumnWidthHandler.setColumnWidth(columnPosition, width);
     }
 
 

@@ -33,13 +33,11 @@ public class TableViewUtils {
      */
     public static void setWidth(View view, int width) {
         // Change width value from params
-        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
-        params.width = width;
-        view.setLayoutParams(params);
+        ((RecyclerView.LayoutParams) view.getLayoutParams()).width = width;
 
         int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY);
-        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(view.getMeasuredHeight(),
-                View.MeasureSpec.EXACTLY);
+        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(view.getMeasuredHeight(), View
+                .MeasureSpec.EXACTLY);
         view.measure(widthMeasureSpec, heightMeasureSpec);
 
         view.requestLayout();

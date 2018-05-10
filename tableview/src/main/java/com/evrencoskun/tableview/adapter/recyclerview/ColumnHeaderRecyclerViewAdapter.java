@@ -18,9 +18,9 @@
 package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.ITableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractSorterViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
@@ -38,25 +38,24 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
     private static final String LOG_TAG = ColumnHeaderRecyclerViewAdapter.class.getSimpleName();
 
     private ITableAdapter mTableAdapter;
+    private ITableView mTableView;
     private ColumnSortHelper mColumnSortHelper;
 
     public ColumnHeaderRecyclerViewAdapter(Context context, List<CH> itemList, ITableAdapter
             tableAdapter) {
         super(context, itemList);
         this.mTableAdapter = tableAdapter;
+        this.mTableView = tableAdapter.getTableView();
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AbstractViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return mTableAdapter.onCreateColumnHeaderViewHolder(parent, viewType);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
-        Object value = getItem(position);
-
-        mTableAdapter.onBindColumnHeaderViewHolder(viewHolder, value, position);
+    public void onBindViewHolder(AbstractViewHolder holder, int position) {
+        mTableAdapter.onBindColumnHeaderViewHolder(holder, getItem(position), position);
     }
 
     @Override
@@ -65,26 +64,25 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
     }
 
     @Override
-    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
-        AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
+    public void onViewAttachedToWindow(AbstractViewHolder viewHolder) {
+        super.onViewAttachedToWindow(viewHolder);
 
-        SelectionState selectionState = mTableAdapter.getTableView().getSelectionHandler()
-                .getColumnSelectionState(viewHolder.getAdapterPosition());
+        SelectionState selectionState = mTableView.getSelectionHandler().getColumnSelectionState
+                (viewHolder.getAdapterPosition());
 
         // Control to ignore selection color
-        if (!mTableAdapter.getTableView().isIgnoreSelectionColors()) {
+        if (!mTableView.isIgnoreSelectionColors()) {
 
             // Change background color of the view considering it's selected state
-            mTableAdapter.getTableView().getSelectionHandler()
-                    .changeColumnBackgroundColorBySelectionStatus(viewHolder, selectionState);
+            mTableView.getSelectionHandler().changeColumnBackgroundColorBySelectionStatus
+                    (viewHolder, selectionState);
         }
 
         // Change selection status
         viewHolder.setSelected(selectionState);
 
         // Control whether the TableView is sortable or not.
-        if (mTableAdapter.getTableView().isSortable()) {
+        if (mTableView.isSortable()) {
             if (viewHolder instanceof AbstractSorterViewHolder) {
                 // Get its sorting state
                 SortState state = getColumnSortHelper().getSortingStatus(viewHolder
@@ -99,8 +97,8 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
     public ColumnSortHelper getColumnSortHelper() {
         if (mColumnSortHelper == null) {
             // It helps to store sorting state of column headers
-            this.mColumnSortHelper = new ColumnSortHelper(mTableAdapter.getTableView()
-                    .getColumnHeaderLayoutManager());
+            this.mColumnSortHelper = new ColumnSortHelper(mTableView.getColumnHeaderLayoutManager
+                    ());
         }
         return mColumnSortHelper;
     }

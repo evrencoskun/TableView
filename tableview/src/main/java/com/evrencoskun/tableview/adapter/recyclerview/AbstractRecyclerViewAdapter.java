@@ -20,6 +20,8 @@ package com.evrencoskun.tableview.adapter.recyclerview;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +29,8 @@ import java.util.List;
  * Created by evrencoskun on 10/06/2017.
  */
 
-public abstract class AbstractRecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerView
-        .ViewHolder> {
+public abstract class AbstractRecyclerViewAdapter<T> extends RecyclerView
+        .Adapter<AbstractViewHolder> {
 
     protected List<T> mItemList;
 
@@ -41,11 +43,10 @@ public abstract class AbstractRecyclerViewAdapter<T> extends RecyclerView.Adapte
     public AbstractRecyclerViewAdapter(Context context, List<T> itemList) {
         mContext = context;
 
-        if (itemList != null) {
-            mItemList = new ArrayList<>(itemList);
-            this.notifyDataSetChanged();
-        } else {
+        if (itemList == null) {
             mItemList = new ArrayList<>();
+        } else {
+            setItems(itemList);
         }
     }
 
@@ -88,7 +89,7 @@ public abstract class AbstractRecyclerViewAdapter<T> extends RecyclerView.Adapte
     }
 
     public void deleteItemRange(int positionStart, int itemCount) {
-        for (int i = positionStart + itemCount -1; i >= positionStart ; i--) {
+        for (int i = positionStart + itemCount - 1; i >= positionStart; i--) {
             if (i != RecyclerView.NO_POSITION) {
                 mItemList.remove(i);
             }

@@ -202,8 +202,7 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
 
     private int getIndex(RecyclerView rv) {
         for (int i = 0; i < mCellLayoutManager.getChildCount(); i++) {
-            RecyclerView child = (RecyclerView) mCellLayoutManager.getChildAt(i);
-            if (child == rv) {
+            if (mCellLayoutManager.getChildAt(i) == rv) {
                 return i;
             }
         }
@@ -219,8 +218,7 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
      * @see #getScrollPositionOffset()
      */
     private void renewScrollPosition(RecyclerView recyclerView) {
-        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView
-                .getLayoutManager();
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         mScrollPosition = layoutManager.findFirstCompletelyVisibleItemPosition();
 
         // That means there is no completely visible Position.
@@ -228,8 +226,7 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
             mScrollPosition = layoutManager.findFirstVisibleItemPosition();
 
             // That means there is just a visible item on the screen
-            if (layoutManager.findFirstVisibleItemPosition() == layoutManager
-                    .findLastVisibleItemPosition()) {
+            if (mScrollPosition == layoutManager.findLastVisibleItemPosition()) {
                 // in this case we use the position which is the last & first visible item.
             } else {
                 // That means there are 2 visible item on the screen. However, second one is not
@@ -238,8 +235,7 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
             }
         }
 
-        mScrollPositionOffset = recyclerView.getLayoutManager().findViewByPosition
-                (mScrollPosition).getLeft();
+        mScrollPositionOffset = layoutManager.findViewByPosition(mScrollPosition).getLeft();
     }
 
     /**

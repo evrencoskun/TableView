@@ -17,8 +17,6 @@
 
 package com.evrencoskun.tableview.sort;
 
-import android.util.Log;
-
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractSorterViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
@@ -42,17 +40,13 @@ public class ColumnSortHelper {
     private void sortingStatusChanged(int column, SortState sortState) {
         AbstractViewHolder holder = mColumnHeaderLayoutManager.getViewHolder(column);
 
-
         if (holder != null) {
             if (holder instanceof AbstractSorterViewHolder) {
                 ((AbstractSorterViewHolder) holder).onSortingStatusChanged(sortState);
 
             } else {
-                // TODO: throw the TableViewSorterException
-                //throw new TableViewSorterException();
-                Log.e(ColumnSortHelper.class.getSimpleName(), "For sorting process, column " +
-                        "header" + " view holders must be " + "extended from " +
-                        "AbstractSorterViewHolder " + "class");
+                throw new IllegalArgumentException("Column Header ViewHolder must extend " +
+                        "AbstractSorterViewHolder");
             }
         }
     }
@@ -104,13 +98,4 @@ public class ColumnSortHelper {
     }
 
     private static Directive EMPTY_DIRECTIVE = new Directive(-1, SortState.UNSORTED);
-
-    public class TableViewSorterException extends Exception {
-
-        public TableViewSorterException() {
-            super("For sorting process, column header view holders must be " + "extended from " +
-                    "AbstractSorterViewHolder class");
-        }
-
-    }
 }
