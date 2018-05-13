@@ -40,14 +40,59 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
     private int mYPosition;
     private boolean mIsMoved;
 
+    private RecyclerView mCurrentRVTouched = null;
+
     public VerticalRecyclerViewListener(ITableView tableView) {
         this.mRowHeaderRecyclerView = tableView.getRowHeaderRecyclerView();
         this.mCellRecyclerView = tableView.getCellRecyclerView();
     }
 
+    private float dx=0, dy=0;
+
+    /**
+     * check which direction the user is scrolling
+     * @param ev
+     * @return
+     */
+    private boolean verticalDirection(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_MOVE) {
+            if (dx == 0) {
+                dx = ev.getX();
+            }
+            if (dy == 0) {
+                dy = ev.getY();
+            }
+            float xdiff = Math.abs(dx - ev.getX());
+            float ydiff = Math.abs(dy - ev.getY());
+            dx = ev.getX();
+            dy = ev.getY();
+
+            // if user scrolled more horizontally than vertically
+            if (xdiff > ydiff) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+
+        // If scroll direction is not Vertical, then ignore and reset last RV touched
+        if(!verticalDirection(e)) {
+            mCurrentRVTouched = null;
+            return false;
+        }
+
+        // Prevent multitouch, once we start to listen with a RV,
+        // we ignore any other RV until the touch is released (UP)
+        if((mCurrentRVTouched != null && rv != mCurrentRVTouched)) {
+            return true;
+        }
+
         if (e.getAction() == MotionEvent.ACTION_DOWN) {
+            mCurrentRVTouched = rv;
             if (rv.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
 
                 if (mLastTouchedRecyclerView != null && rv != mLastTouchedRecyclerView) {
@@ -66,12 +111,14 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
                 mIsMoved = false;
             }
         } else if (e.getAction() == MotionEvent.ACTION_MOVE) {
+            mCurrentRVTouched = rv;
             // Why does it matter ?
             // user scroll any recyclerView like brushing, at that time, ACTION_UP will be
             // triggered
             // before scrolling. So, we need to store whether it moved or not.
             mIsMoved = true;
         } else if (e.getAction() == MotionEvent.ACTION_UP) {
+            mCurrentRVTouched = null;
             int nScrollY = ((CellRecyclerView) rv).getScrolledY();
 
             // TODO: Even if moved value is true and it may not scroll. This should be fixed.
@@ -93,6 +140,7 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
             mLastTouchedRecyclerView = rv;
 
         }
+
         return false;
     }
 
@@ -128,7 +176,7 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
             recyclerView.removeOnScrollListener(this);
             mIsMoved = false;
-
+            mCurrentRVTouched = null;
             if (recyclerView == mCellRecyclerView) {
                 Log.d(LOG_TAG, "mCellRecyclerView scroll listener removed from " +
                         "onScrollStateChanged");
@@ -149,6 +197,7 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
      *                 scrolls horizontally using ColumnHeaderRecyclerView.
      */
     public void removeLastTouchedRecyclerViewScrollListener(boolean isNeeded) {
+
         if (mLastTouchedRecyclerView == mCellRecyclerView) {
             mCellRecyclerView.removeOnScrollListener(this);
             mCellRecyclerView.stopScroll();
