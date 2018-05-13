@@ -47,16 +47,17 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
     // Cell View Types by Column Position
     private static final int MOOD_CELL_TYPE = 1;
     private static final int GENDER_CELL_TYPE = 2;
-
     // add new one if it necessary..
 
     private static final String LOG_TAG = TableViewAdapter.class.getSimpleName();
 
     private TableViewModel mTableViewModel;
+    private final LayoutInflater mInflater;
 
     public TableViewAdapter(Context context, TableViewModel tableViewModel) {
         super(context);
         this.mTableViewModel = tableViewModel;
+        this.mInflater = LayoutInflater.from(mContext);
     }
 
     /**
@@ -78,20 +79,17 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
         switch (viewType) {
             case MOOD_CELL_TYPE:
                 // Get image cell layout which has ImageView on the base instead of TextView.
-                layout = LayoutInflater.from(mContext).inflate(R.layout
-                        .table_view_image_cell_layout, parent, false);
+                layout = mInflater.inflate(R.layout.table_view_image_cell_layout, parent, false);
 
                 return new MoodCellViewHolder(layout);
             case GENDER_CELL_TYPE:
                 // Get image cell layout which has ImageView instead of TextView.
-                layout = LayoutInflater.from(mContext).inflate(R.layout
-                        .table_view_image_cell_layout, parent, false);
+                layout = mInflater.inflate(R.layout.table_view_image_cell_layout, parent, false);
 
                 return new GenderCellViewHolder(layout);
             default:
                 // For cells that display a text
-                layout = LayoutInflater.from(mContext).inflate(R.layout.table_view_cell_layout,
-                        parent, false);
+                layout = mInflater.inflate(R.layout.table_view_cell_layout, parent, false);
 
                 // Create a Cell ViewHolder
                 return new CellViewHolder(layout);
@@ -154,8 +152,7 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
         // TODO: check
         //Log.e(LOG_TAG, " onCreateColumnHeaderViewHolder has been called");
         // Get Column Header xml Layout
-        View layout = LayoutInflater.from(mContext).inflate(R.layout
-                .table_view_column_header_layout, parent, false);
+        View layout = mInflater.inflate(R.layout.table_view_column_header_layout, parent, false);
 
         // Create a ColumnHeader ViewHolder
         return new ColumnHeaderViewHolder(layout, getTableView());
@@ -198,11 +195,8 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
      */
     @Override
     public AbstractViewHolder onCreateRowHeaderViewHolder(ViewGroup parent, int viewType) {
-        // TODO: check
-        //Log.e(LOG_TAG, " onCreateRowHeaderViewHolder has been called");
         // Get Row Header xml Layout
-        View layout = LayoutInflater.from(mContext).inflate(R.layout
-                .table_view_row_header_layout, parent, false);
+        View layout = mInflater.inflate(R.layout.table_view_row_header_layout, parent, false);
 
         // Create a Row Header ViewHolder
         return new RowHeaderViewHolder(layout);
@@ -237,8 +231,7 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
     @Override
     public View onCreateCornerView() {
         // Get Corner xml layout
-        View corner = LayoutInflater.from(mContext).inflate(R.layout.table_view_corner_layout,
-                null);
+        View corner = mInflater.inflate(R.layout.table_view_corner_layout, null);
         corner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
