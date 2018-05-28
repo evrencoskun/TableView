@@ -80,6 +80,7 @@ public class Pagination<T> implements IPagination {
         initialize(tableView, itemsPerPage, listener);
     }
 
+    @SuppressWarnings("unchecked")
     private void initialize(ITableView tableView, int itemsPerPage, OnTableViewPageTurnedListener listener) {
         this.onTableViewPageTurnedListener = listener;
         this.itemsPerPage = itemsPerPage;
@@ -91,6 +92,8 @@ public class Pagination<T> implements IPagination {
         this.tableView.getColumnSortHandler().addColumnSortStateChangedListener(columnSortStateChangedListener);
         this.tableView.getAdapter().addAdapterDataSetChangedListener(adapterDataSetChangedListener);
         this.tableView.getFilterHandler().addFilterChangedListener(filterChangedListener);
+        this.originalCellData = tableView.getAdapter().getCellRecyclerViewAdapter().getItems();
+        this.originalRowData = tableView.getAdapter().getRowHeaderRecyclerViewAdapter().getItems();
         this.currentPage = 1;
         reloadPages();
     }
