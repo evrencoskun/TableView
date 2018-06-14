@@ -641,6 +641,16 @@ public class TableView extends FrameLayout implements ITableView {
         return mSelectedColor;
     }
 
+    public void setSeparatorColor(@ColorInt int mSeparatorColor) {
+        this.mSeparatorColor = mSeparatorColor;
+    }
+
+    @Override
+    public @ColorInt
+    int getSeparatorColor() {
+        return mSeparatorColor;
+    }
+
     /**
      * This method helps to change default unselected color programmatically.
      *
