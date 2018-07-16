@@ -71,13 +71,11 @@ public class ColumnHeaderViewHolder extends AbstractSorterViewHolder {
         column_header_textview.setText(String.valueOf(columnHeader.getData()));
 
         // If your TableView should have auto resize for cells & columns.
-        // Then you should consider the below lines. Otherwise, you can ignore them.
+        // Then you should consider the below lines. Otherwise, you can remove them.
 
         // It is necessary to remeasure itself.
         column_header_container.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        column_header_sortButton.requestLayout();
         column_header_textview.requestLayout();
-        itemView.requestLayout();
     }
 
     private View.OnClickListener mSortButtonClickListener = new View.OnClickListener() {

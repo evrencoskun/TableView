@@ -17,7 +17,6 @@
 
 package com.evrencoskun.tableview.adapter;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -38,17 +37,17 @@ public interface ITableAdapter {
 
     View getCornerView();
 
-    RecyclerView.ViewHolder onCreateCellViewHolder(ViewGroup parent, int viewType);
+    AbstractViewHolder onCreateCellViewHolder(ViewGroup parent, int viewType);
 
     void onBindCellViewHolder(AbstractViewHolder holder, Object cellItemModel, int
             columnPosition, int rowPosition);
 
-    RecyclerView.ViewHolder onCreateColumnHeaderViewHolder(ViewGroup parent, int viewType);
+    AbstractViewHolder onCreateColumnHeaderViewHolder(ViewGroup parent, int viewType);
 
     void onBindColumnHeaderViewHolder(AbstractViewHolder holder, Object columnHeaderItemModel,
                                       int columnPosition);
 
-    RecyclerView.ViewHolder onCreateRowHeaderViewHolder(ViewGroup parent, int viewType);
+    AbstractViewHolder onCreateRowHeaderViewHolder(ViewGroup parent, int viewType);
 
     void onBindRowHeaderViewHolder(AbstractViewHolder holder, Object rowHeaderItemModel, int
             rowPosition);

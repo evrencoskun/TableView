@@ -55,6 +55,10 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
 
     public AbstractTableAdapter(Context context) {
         mContext = context;
+    }
+
+    public void setTableView(TableView tableView) {
+        mTableView = tableView;
         initialize();
     }
 
@@ -68,7 +72,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
                 mRowHeaderItems, this);
 
         // Create Cell RecyclerView Adapter
-        mCellRecyclerViewAdapter = new CellRecyclerViewAdapter(mContext, mCellItems, this);
+        mCellRecyclerViewAdapter = new CellRecyclerViewAdapter(mContext, mCellItems, mTableView);
     }
 
     public void setColumnHeaderItems(List<CH> columnHeaderItems) {
@@ -291,10 +295,6 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
         mColumnHeaderRecyclerViewAdapter.notifyDataSetChanged();
         mRowHeaderRecyclerViewAdapter.notifyDataSetChanged();
         mCellRecyclerViewAdapter.notifyCellDataSetChanged();
-    }
-
-    public void setTableView(TableView tableView) {
-        mTableView = tableView;
     }
 
     @Override

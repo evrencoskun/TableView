@@ -18,12 +18,11 @@
 package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
-import android.support.annotation.ColorInt;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
-import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
-import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
+import com.evrencoskun.tableview.R;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
 
@@ -43,11 +42,14 @@ public class CellRecyclerView extends RecyclerView {
     public CellRecyclerView(Context context) {
         super(context);
 
+        // These are necessary.
         this.setHasFixedSize(false);
         this.setNestedScrollingEnabled(false);
-        /*this.setItemViewCacheSize(100);
+        // These are for better scrolling process.
+        this.setItemViewCacheSize(context.getResources().getInteger(R.integer
+                .default_item_cache_size));
         this.setDrawingCacheEnabled(true);
-        this.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);*/
+        this.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
     }
 
     @Override
@@ -128,22 +130,26 @@ public class CellRecyclerView extends RecyclerView {
         return !mIsHorizontalScrollListenerRemoved;
     }
 
-    public void setSelected(SelectionState selectionState, @ColorInt int backgroundColor, boolean
-            ignoreSelectionColors) {
-        for (int i = 0; i < getAdapter().getItemCount(); i++) {
-            AbstractViewHolder viewHolder = (AbstractViewHolder) findViewHolderForAdapterPosition
-                    (i);
-            if (viewHolder != null) {
 
-                if (!ignoreSelectionColors) {
-                    // Change background color
-                    viewHolder.setBackgroundColor(backgroundColor);
-                }
-
-                // Change selection status of the view holder
-                viewHolder.setSelected(selectionState);
-            }
-        }
+    /**
+     * Begin a standard fling with an initial velocity along each axis in pixels per second.
+     * If the velocity given is below the system-defined minimum this method will return false
+     * and no fling will occur.
+     *
+     * @param velocityX Initial horizontal velocity in pixels per second
+     * @param velocityY Initial vertical velocity in pixels per second
+     *
+     * @return true if the fling was started, false if the velocity was too low to fling or
+     * LayoutManager does not support scrolling in the axis fling is issued.
+     *
+     * @see LayoutManager#canScrollVertically()
+     * @see LayoutManager#canScrollHorizontally()
+     */
+    @Override
+    public boolean fling(int velocityX, int velocityY) {
+        // Adjust speeds to be able to provide smoother scroll.
+        //velocityX *= 0.6;
+        //velocityY *= 0.6;
+        return super.fling(velocityX, velocityY);
     }
-
 }

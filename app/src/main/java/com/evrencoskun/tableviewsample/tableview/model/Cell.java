@@ -40,12 +40,6 @@ public class Cell implements ISortableModel, IFilterableModel {
         this.mFilterKeyword = String.valueOf(data);
     }
 
-    public Cell(String id, Object data, String filterKeyword) {
-        this.mId = id;
-        this.mData = data;
-        this.mFilterKeyword = filterKeyword;
-    }
-
     /**
      * This is necessary for sorting process.
      * See ISortableModel

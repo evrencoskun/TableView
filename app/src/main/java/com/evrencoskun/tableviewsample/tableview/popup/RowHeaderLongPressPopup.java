@@ -36,15 +36,18 @@ public class RowHeaderLongPressPopup extends PopupMenu implements PopupMenu
     // Menu Item constants
     private static final int SCROLL_COLUMN = 1;
     private static final int SHOWHIDE_COLUMN = 2;
+    private static final int REMOVE_ROW = 3;
 
     private ITableView mTableView;
     private Context mContext;
+    private int mRowPosition;
 
     public RowHeaderLongPressPopup(RecyclerView.ViewHolder viewHolder, ITableView tableView) {
         super(viewHolder.itemView.getContext(), viewHolder.itemView);
 
         this.mTableView = tableView;
         this.mContext = viewHolder.itemView.getContext();
+        this.mRowPosition = viewHolder.getAdapterPosition();
 
         initialize();
     }
@@ -60,6 +63,7 @@ public class RowHeaderLongPressPopup extends PopupMenu implements PopupMenu
                 .scroll_to_column_position));
         this.getMenu().add(Menu.NONE, SHOWHIDE_COLUMN, 1, mContext.getString(R.string
                 .show_hide_the_column));
+        this.getMenu().add(Menu.NONE, REMOVE_ROW, 2, "Remove " + mRowPosition + " position");
         // add new one ...
 
     }
@@ -81,6 +85,9 @@ public class RowHeaderLongPressPopup extends PopupMenu implements PopupMenu
                     mTableView.showColumn(column);
                 }
 
+                break;
+            case REMOVE_ROW:
+                mTableView.getAdapter().removeRow(mRowPosition);
                 break;
         }
         return true;

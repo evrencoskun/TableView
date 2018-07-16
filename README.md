@@ -25,8 +25,8 @@
   - [x] TableView has an action listener interface to listen user touch interaction for each cell.
   - [x] TableView columns can be sorted in ascending or descending order.
   - [x] Hiding & Showing the row and the column is pretty easy. 
-  - [x] Filtering by more than one data. (*NEW*)
-  - [x] Pagination functionality. (*NEW*)
+  - [x] Filtering by more than one data.
+  - [x] Pagination functionality.
     
 ## What's new
 
@@ -69,7 +69,7 @@ To use this library in your android project, just simply add the following depen
 
 ```
 dependencies {
-    compile 'com.evrencoskun.library:tableview:0.8.6' 
+    compile 'com.evrencoskun.library:tableview:0.8.8' 
 }
 ```
 
@@ -155,7 +155,7 @@ Firstly, you must create your custom TableView Adapter  which extends from ```Ab
       * @see #getCellItemViewType(int);
       */
      @Override
-     public RecyclerView.ViewHolder onCreateCellViewHolder(ViewGroup parent, int viewType) {
+     public AbstractViewHolder onCreateCellViewHolder(ViewGroup parent, int viewType) {
          // Get cell xml layout 
          View layout = LayoutInflater.from(context).inflate(R.layout.my_cell_layout,
                  parent, false);
@@ -221,7 +221,7 @@ Firstly, you must create your custom TableView Adapter  which extends from ```Ab
       * @see #getColumnHeaderItemViewType(int);
       */
      @Override
-     public RecyclerView.ViewHolder onCreateColumnHeaderViewHolder(ViewGroup parent, int viewType) {
+     public AbstractViewHolder onCreateColumnHeaderViewHolder(ViewGroup parent, int viewType) {
  
          // Get Column Header xml Layout
          View layout = LayoutInflater.from(context).inflate(R.layout
@@ -290,7 +290,7 @@ Firstly, you must create your custom TableView Adapter  which extends from ```Ab
       * @see #getRowHeaderItemViewType(int);
       */
      @Override
-     public RecyclerView.ViewHolder onCreateRowHeaderViewHolder(ViewGroup parent, int viewType) {
+     public AbstractViewHolder onCreateRowHeaderViewHolder(ViewGroup parent, int viewType) {
  
          // Get Row Header xml Layout
          View layout = LayoutInflater.from(context).inflate(R.layout
@@ -946,6 +946,12 @@ With 0.8.5.5 version, hiding and showing any of column is pretty easy for TableV
 
 ```java
     scrollToRowPosition(int row)
+```
+
+- With 0.8.8 version, Column width values can be set programatically using the below function. 
+ 
+```java
+    setColumnWidth(int columnPosition, int width)
 ```
 
 ## Sample Apps

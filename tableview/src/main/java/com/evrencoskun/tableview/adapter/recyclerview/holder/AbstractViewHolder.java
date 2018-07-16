@@ -35,12 +35,12 @@ public abstract class AbstractViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
     }
 
-    public void setSelected(SelectionState p_nSelectionState) {
-        m_eState = p_nSelectionState;
+    public void setSelected(SelectionState selectionState) {
+        m_eState = selectionState;
 
-        if (p_nSelectionState == SelectionState.SELECTED) {
+        if (selectionState == SelectionState.SELECTED) {
             itemView.setSelected(true);
-        } else if (p_nSelectionState == SelectionState.UNSELECTED) {
+        } else if (selectionState == SelectionState.UNSELECTED) {
             itemView.setSelected(false);
         }
     }
@@ -49,12 +49,19 @@ public abstract class AbstractViewHolder extends RecyclerView.ViewHolder {
         return m_eState == SelectionState.SELECTED;
     }
 
-    public boolean isShadowed(){
+    public boolean isShadowed() {
         return m_eState == SelectionState.SHADOWED;
     }
 
     public void setBackgroundColor(@ColorInt int p_nColor) {
         itemView.setBackgroundColor(p_nColor);
+    }
+
+    public void onViewRecycled() {
+    }
+
+    public boolean onFailedToRecycleView() {
+        return false;
     }
 
 }

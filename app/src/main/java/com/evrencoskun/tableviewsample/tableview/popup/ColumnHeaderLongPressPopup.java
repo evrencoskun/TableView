@@ -76,6 +76,7 @@ public class ColumnHeaderLongPressPopup extends PopupMenu implements PopupMenu
         this.getMenu().add(Menu.NONE, SHOW_ROW, 3, mContext.getString(R.string.showing_row_sample));
         this.getMenu().add(Menu.NONE, SCROLL_ROW, 4, mContext.getString(R.string
                 .scroll_to_row_position));
+        this.getMenu().add(Menu.NONE, SCROLL_ROW, 0, "change width");
         // add new one ...
 
     }

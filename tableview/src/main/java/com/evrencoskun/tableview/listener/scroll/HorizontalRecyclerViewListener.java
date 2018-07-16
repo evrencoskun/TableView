@@ -45,6 +45,8 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
     private int mScrollPosition;
     private int mScrollPositionOffset = 0;
 
+    private RecyclerView mCurrentRVTouched = null;
+
     private VerticalRecyclerViewListener mVerticalRecyclerViewListener;
 
     public HorizontalRecyclerViewListener(ITableView tableView) {
@@ -55,7 +57,15 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
 
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+
+        // Prevent multitouch, once we start to listen with a RV,
+        // we ignore any other RV until the touch is released (UP)
+        if(mCurrentRVTouched != null && rv != mCurrentRVTouched) {
+            return true;
+        }
+
         if (e.getAction() == MotionEvent.ACTION_DOWN) {
+            mCurrentRVTouched = rv;
             if (rv.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
 
                 if (mLastTouchedRecyclerView != null && rv != mLastTouchedRecyclerView) {
@@ -102,12 +112,14 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
                         + "down");
             }
         } else if (e.getAction() == MotionEvent.ACTION_MOVE) {
+            mCurrentRVTouched = rv;
             // Why does it matter ?
             // user scroll any recyclerView like brushing, at that time, ACTION_UP will be
             // triggered
             // before scrolling. So, we need to store whether it moved or not.
             mIsMoved = true;
         } else if (e.getAction() == MotionEvent.ACTION_UP) {
+            mCurrentRVTouched = null;
             int nScrollX = ((CellRecyclerView) rv).getScrolledX();
             // Is it just touched without scrolling then remove the listener
             if (mXPosition == nScrollX && !mIsMoved) {
@@ -135,7 +147,10 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
             mIsMoved = false;
 
             mLastTouchedRecyclerView = rv;
+
+            mCurrentRVTouched = null;
         }
+
         return false;
     }
 
@@ -202,8 +217,7 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
 
     private int getIndex(RecyclerView rv) {
         for (int i = 0; i < mCellLayoutManager.getChildCount(); i++) {
-            RecyclerView child = (RecyclerView) mCellLayoutManager.getChildAt(i);
-            if (child == rv) {
+            if (mCellLayoutManager.getChildAt(i) == rv) {
                 return i;
             }
         }
@@ -219,8 +233,7 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
      * @see #getScrollPositionOffset()
      */
     private void renewScrollPosition(RecyclerView recyclerView) {
-        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView
-                .getLayoutManager();
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         mScrollPosition = layoutManager.findFirstCompletelyVisibleItemPosition();
 
         // That means there is no completely visible Position.
@@ -228,8 +241,7 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
             mScrollPosition = layoutManager.findFirstVisibleItemPosition();
 
             // That means there is just a visible item on the screen
-            if (layoutManager.findFirstVisibleItemPosition() == layoutManager
-                    .findLastVisibleItemPosition()) {
+            if (mScrollPosition == layoutManager.findLastVisibleItemPosition()) {
                 // in this case we use the position which is the last & first visible item.
             } else {
                 // That means there are 2 visible item on the screen. However, second one is not
@@ -238,8 +250,7 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
             }
         }
 
-        mScrollPositionOffset = recyclerView.getLayoutManager().findViewByPosition
-                (mScrollPosition).getLeft();
+        mScrollPositionOffset = layoutManager.findViewByPosition(mScrollPosition).getLeft();
     }
 
     /**

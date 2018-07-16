@@ -30,6 +30,9 @@ import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.util.TableViewUtils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 /**
@@ -49,17 +52,20 @@ public class CellLayoutManager extends LinearLayoutManager {
     private HorizontalRecyclerViewListener mHorizontalListener;
     private ITableView mTableView;
 
+    private final Map<Integer, Map<Integer, Integer>> mCachedWidthList = new HashMap();
+    //TODO: Store a single instance for both cell and column cache width values.
+
     private int mLastDy = 0;
     private boolean mNeedSetLeft;
     private boolean mNeedFit;
 
     public CellLayoutManager(Context context, ITableView tableView) {
         super(context);
+        this.mTableView = tableView;
         this.mCellRecyclerView = tableView.getCellRecyclerView();
         this.mColumnHeaderLayoutManager = tableView.getColumnHeaderLayoutManager();
         this.mRowHeaderLayoutManager = tableView.getRowHeaderLayoutManager();
         this.mRowHeaderRecyclerView = tableView.getRowHeaderRecyclerView();
-        this.mTableView = tableView;
 
         initialize();
     }
@@ -67,7 +73,6 @@ public class CellLayoutManager extends LinearLayoutManager {
 
     private void initialize() {
         this.setOrientation(VERTICAL);
-        //this.setMeasurementCacheEnabled(false);
         // Add new one
     }
 
@@ -169,6 +174,8 @@ public class CellLayoutManager extends LinearLayoutManager {
                     cellRight = fit(position, j, left, cellRight, columnCacheWidth);
                 }
             }
+        } else {
+            Log.e(LOG_TAG, "Warning: column couldn't found for " + position);
         }
         return cellRight;
     }
@@ -179,7 +186,7 @@ public class CellLayoutManager extends LinearLayoutManager {
         if (child != null) {
             ColumnLayoutManager childLayoutManager = (ColumnLayoutManager) child.getLayoutManager();
 
-            int cellCacheWidth = childLayoutManager.getCacheWidth(xPosition);
+            int cellCacheWidth = getCacheWidth(yPosition, xPosition);
             View cell = childLayoutManager.findViewByPosition(xPosition);
 
             // Control whether the cell needs to be fitted by column header or not.
@@ -191,7 +198,8 @@ public class CellLayoutManager extends LinearLayoutManager {
                     if (cellCacheWidth != columnCachedWidth) {
                         cellCacheWidth = columnCachedWidth;
                         TableViewUtils.setWidth(cell, cellCacheWidth);
-                        childLayoutManager.setCacheWidth(xPosition, cellCacheWidth);
+
+                        setCacheWidth(yPosition, xPosition, cellCacheWidth);
                     }
 
                     // Even if the cached values are same, the left & right value wouldn't change.
@@ -202,21 +210,24 @@ public class CellLayoutManager extends LinearLayoutManager {
                         int scrollX = Math.max(cell.getLeft(), left) - Math.min(cell.getLeft(),
                                 left);
 
+                        // Update its left
                         cell.setLeft(left);
+
+                        int offset = mHorizontalListener.getScrollPositionOffset();
 
                         // It shouldn't be scroll horizontally and the problem is gotten just for
                         // first visible item.
-                        if (mHorizontalListener.getScrollPositionOffset() > 0 && xPosition ==
-                                childLayoutManager.findFirstVisibleItemPosition() &&
-                                mCellRecyclerView.getScrollState() != RecyclerView
-                                        .SCROLL_STATE_IDLE) { //
+                        if (offset > 0 && xPosition == childLayoutManager
+                                .findFirstVisibleItemPosition() && mCellRecyclerView
+                                .getScrollState() != RecyclerView.SCROLL_STATE_IDLE) {
 
+                            int scrollPosition = mHorizontalListener.getScrollPosition();
+                            offset = mHorizontalListener.getScrollPositionOffset() + scrollX;
 
-                            mHorizontalListener.setScrollPositionOffset(mHorizontalListener
-                                    .getScrollPositionOffset() + scrollX);
-                            childLayoutManager.scrollToPositionWithOffset(mHorizontalListener
-                                    .getScrollPosition(), mHorizontalListener
-                                    .getScrollPositionOffset());
+                            // Update scroll position offset value
+                            mHorizontalListener.setScrollPositionOffset(offset);
+                            // Scroll considering to the desired value.
+                            childLayoutManager.scrollToPositionWithOffset(scrollPosition, offset);
                         }
                     }
 
@@ -236,12 +247,10 @@ public class CellLayoutManager extends LinearLayoutManager {
                     }
                 }
             }
-        } else {
-            Log.e(LOG_TAG, " x: " + xPosition + " y: " + yPosition + " child is null. " +
-                    "Because first visible item position is  " + findFirstVisibleItemPosition());
         }
         return right;
     }
+
 
     /**
      * Alternative method of fitWidthSize().
@@ -269,6 +278,30 @@ public class CellLayoutManager extends LinearLayoutManager {
         mNeedSetLeft = false;
     }
 
+
+    /**
+     * Alternative method of fitWidthSize().
+     * The main difference is this method works after main thread draw the ui components.
+     */
+    public void fitWidthSize2(int position, boolean scrollingLeft) {
+        // The below line helps to change left & right value of the each column
+        // header views
+        // without using requestLayout().
+        mColumnHeaderLayoutManager.customRequestLayout();
+
+        // Get the right scroll position information from Column header RecyclerView
+        int columnHeaderScrollPosition = mTableView.getColumnHeaderRecyclerView().getScrolledX();
+        int columnHeaderOffset = mColumnHeaderLayoutManager.getFirstItemLeft();
+        int columnHeaderFirstItem = mColumnHeaderLayoutManager.findFirstVisibleItemPosition();
+
+        // Fit all visible columns widths
+        fitSize2(position, scrollingLeft, columnHeaderScrollPosition, columnHeaderOffset,
+                columnHeaderFirstItem);
+
+
+        mNeedSetLeft = false;
+    }
+
     private void fitSize2(int position, boolean scrollingLeft, int columnHeaderScrollPosition,
                           int columnHeaderOffset, int columnHeaderFirstItem) {
         int columnCacheWidth = mColumnHeaderLayoutManager.getCacheWidth(position);
@@ -283,55 +316,57 @@ public class CellLayoutManager extends LinearLayoutManager {
                 // Get CellRowRecyclerView
                 CellRecyclerView child = (CellRecyclerView) findViewByPosition(j);
 
-                // Checking Scroll position is necessary. Because, even if they have same width
-                // values, their scroll positions can be different.
-                if (!scrollingLeft && columnHeaderScrollPosition != child.getScrolledX()) {
+                if (child != null) {
+                    ColumnLayoutManager childLayoutManager = (ColumnLayoutManager) child
+                            .getLayoutManager();
 
-                    // Column Header RecyclerView has the right scroll position. So, considering it
-                    ((LinearLayoutManager) child.getLayoutManager()).scrollToPositionWithOffset
-                            (columnHeaderFirstItem, columnHeaderOffset);
+                    // Checking Scroll position is necessary. Because, even if they have same width
+                    // values, their scroll positions can be different.
+                    if (!scrollingLeft && columnHeaderScrollPosition != child.getScrolledX()) {
+
+                        // Column Header RecyclerView has the right scroll position. So,
+                        // considering it
+                        childLayoutManager.scrollToPositionWithOffset(columnHeaderFirstItem,
+                                columnHeaderOffset);
+                    }
+
+                    fit2(position, j, columnCacheWidth, column, childLayoutManager);
                 }
-
-                fit2(position, j, columnCacheWidth, column);
             }
         }
     }
 
-    private void fit2(int xPosition, int yPosition, int columnCachedWidth, View column) {
-        CellRecyclerView child = (CellRecyclerView) findViewByPosition(yPosition);
-        if (child != null) {
-            ColumnLayoutManager childLayoutManager = (ColumnLayoutManager) child.getLayoutManager();
+    private void fit2(int xPosition, int yPosition, int columnCachedWidth, View column,
+                      ColumnLayoutManager childLayoutManager) {
+        int cellCacheWidth = getCacheWidth(yPosition, xPosition);
+        View cell = childLayoutManager.findViewByPosition(xPosition);
 
-            int cellCacheWidth = childLayoutManager.getCacheWidth(xPosition);
-            View cell = childLayoutManager.findViewByPosition(xPosition);
+        // Control whether the cell needs to be fitted by column header or not.
+        if (cell != null) {
 
-            // Control whether the cell needs to be fitted by column header or not.
-            if (cell != null) {
+            if (cellCacheWidth != columnCachedWidth || mNeedSetLeft) {
 
-                if (cellCacheWidth != columnCachedWidth || mNeedSetLeft) {
+                // This is just for setting width value
+                if (cellCacheWidth != columnCachedWidth) {
+                    cellCacheWidth = columnCachedWidth;
+                    TableViewUtils.setWidth(cell, cellCacheWidth);
 
-                    // This is just for setting width value
-                    if (cellCacheWidth != columnCachedWidth) {
-                        cellCacheWidth = columnCachedWidth;
-                        TableViewUtils.setWidth(cell, cellCacheWidth);
-                        childLayoutManager.setCacheWidth(xPosition, cellCacheWidth);
-                    }
+                    setCacheWidth(yPosition, xPosition, cellCacheWidth);
+                }
 
-                    // The left & right values of Column header can be considered. Because this
-                    // method will be worked
-                    // after drawing process of main thread.
-                    if (column.getLeft() != cell.getLeft() || column.getRight() != cell.getRight
-                            ()) {
-                        // TODO: + 1 is for decoration item. It should be gotten from a generic
-                        // method  of layoutManager
-                        // Set right & left values
-                        cell.setLeft(column.getLeft());
-                        cell.setRight(column.getRight() + 1);
-                        childLayoutManager.layoutDecoratedWithMargins(cell, cell.getLeft(), cell
-                                .getTop(), cell.getRight(), cell.getBottom());
+                // The left & right values of Column header can be considered. Because this
+                // method will be worked
+                // after drawing process of main thread.
+                if (column.getLeft() != cell.getLeft() || column.getRight() != cell.getRight()) {
+                    // TODO: + 1 is for decoration item. It should be gotten from a generic
+                    // method  of layoutManager
+                    // Set right & left values
+                    cell.setLeft(column.getLeft());
+                    cell.setRight(column.getRight() + 1);
+                    childLayoutManager.layoutDecoratedWithMargins(cell, cell.getLeft(), cell
+                            .getTop(), cell.getRight(), cell.getBottom());
 
-                        mNeedSetLeft = true;
-                    }
+                    mNeedSetLeft = true;
                 }
             }
         }
@@ -342,20 +377,17 @@ public class CellLayoutManager extends LinearLayoutManager {
 
         // Scrolling horizontally
         if (mCellRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
-            CellRecyclerView cellRecyclerView = (CellRecyclerView) findViewByPosition(yPosition);
-            if (!cellRecyclerView.isScrollOthers()) {
 
-                int lastVisiblePosition = findLastVisibleItemPosition();
-                CellRecyclerView lastCellRecyclerView = (CellRecyclerView) findViewByPosition
-                        (lastVisiblePosition);
+            int lastVisiblePosition = findLastVisibleItemPosition();
+            CellRecyclerView lastCellRecyclerView = (CellRecyclerView) findViewByPosition
+                    (lastVisiblePosition);
 
-                if (lastCellRecyclerView != null) {
-                    if (yPosition == lastVisiblePosition) {
-                        return true;
-                    } else if (lastCellRecyclerView.isScrollOthers() && yPosition ==
-                            lastVisiblePosition - 1) {
-                        return true;
-                    }
+            if (lastCellRecyclerView != null) {
+                if (yPosition == lastVisiblePosition) {
+                    return true;
+                } else if (lastCellRecyclerView.isScrollOthers() && yPosition ==
+                        lastVisiblePosition - 1) {
+                    return true;
                 }
             }
         }
@@ -369,7 +401,6 @@ public class CellLayoutManager extends LinearLayoutManager {
 
         // If has fixed width is true, than calculation of the column width is not necessary.
         if (mTableView.hasFixedWidth()) {
-            super.measureChildWithMargins(child, widthUsed, heightUsed);
             return;
         }
 
@@ -395,11 +426,14 @@ public class CellLayoutManager extends LinearLayoutManager {
                 childLayoutManager.clearNeedFit();
             }
 
+            // Set the right initialPrefetch size to improve performance
+            childLayoutManager.setInitialPrefetchItemCount(childLayoutManager.getChildCount());
+
             // That means,populating for the first time like fetching all data to display.
             // It shouldn't be worked when it is scrolling horizontally ."getLastDx() == 0"
             // control for it.
-        } else if (mCellRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE &&
-                childLayoutManager.getLastDx() == 0) {
+        } else if (childLayoutManager.getLastDx() == 0 && mCellRecyclerView.getScrollState() ==
+                RecyclerView.SCROLL_STATE_IDLE) {
 
             if (childLayoutManager.isNeedFit()) {
                 mNeedFit = true;
@@ -449,12 +483,49 @@ public class CellLayoutManager extends LinearLayoutManager {
     }
 
     public void remeasureAllChild() {
+        // TODO: the below code causes requestLayout() improperly called by com.evrencoskun
+        // TODO: .tableview.adapter
+
         for (int j = 0; j < getChildCount(); j++) {
             CellRecyclerView recyclerView = (CellRecyclerView) getChildAt(j);
 
             recyclerView.getLayoutParams().width = WRAP_CONTENT;
             recyclerView.requestLayout();
         }
+    }
+
+    /**
+     * Allows to set cache width value for single cell item.
+     */
+    public void setCacheWidth(int row, int column, int width) {
+        Map<Integer, Integer> cellRowCache = mCachedWidthList.get(row);
+        if (cellRowCache == null) {
+            cellRowCache = new HashMap<>();
+        }
+
+        cellRowCache.put(column, width);
+        mCachedWidthList.put(row, cellRowCache);
+    }
+
+    /**
+     * Allows to set cache width value for all cell items that is located on column position.
+     */
+    public void setCacheWidth(int column, int width) {
+        for (int i = 0; i < mRowHeaderRecyclerView.getAdapter().getItemCount(); i++) {
+            // set cache width for single cell item.
+            setCacheWidth(i, column, width);
+        }
+    }
+
+    public int getCacheWidth(int row, int column) {
+        Map<Integer, Integer> cellRowCaches = mCachedWidthList.get(row);
+        if (cellRowCaches != null) {
+            Integer cachedWidth = cellRowCaches.get(column);
+            if (cachedWidth != null) {
+                return cellRowCaches.get(column);
+            }
+        }
+        return -1;
     }
 
     public CellRecyclerView[] getVisibleCellRowRecyclerViews() {
