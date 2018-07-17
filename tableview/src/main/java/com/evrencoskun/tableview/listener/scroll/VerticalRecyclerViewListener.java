@@ -79,16 +79,16 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
 
-        // If scroll direction is not Vertical, then ignore and reset last RV touched
-        if(!verticalDirection(e)) {
-            mCurrentRVTouched = null;
-            return false;
-        }
-
         // Prevent multitouch, once we start to listen with a RV,
         // we ignore any other RV until the touch is released (UP)
         if((mCurrentRVTouched != null && rv != mCurrentRVTouched)) {
             return true;
+        }
+            
+        // If scroll direction is not Vertical, then ignore and reset last RV touched
+        if(!verticalDirection(e)) {
+            mCurrentRVTouched = null;
+            return false;
         }
 
         if (e.getAction() == MotionEvent.ACTION_DOWN) {
