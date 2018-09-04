@@ -17,6 +17,7 @@
 
 package com.evrencoskun.tableview.sort;
 
+import android.support.v4.util.ObjectsCompat;
 import android.support.v7.util.DiffUtil;
 
 import java.util.List;
@@ -76,7 +77,7 @@ public class ColumnSortCallback extends DiffUtil.Callback {
                         .getContent();
                 Object newContent = mNewCellItems.get(newItemPosition).get(mColumnPosition)
                         .getContent();
-                return oldContent.equals(newContent);
+                return ObjectsCompat.equals(oldContent, newContent);
             }
         }
         return false;
