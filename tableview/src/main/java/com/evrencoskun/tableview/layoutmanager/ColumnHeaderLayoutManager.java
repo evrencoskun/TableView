@@ -100,6 +100,9 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
         mCachedWidthList.remove(position);
     }
 
+    public void clearCache() {
+        mCachedWidthList.clear();
+    }
 
     public void customRequestLayout() {
         int left = getFirstItemLeft();
