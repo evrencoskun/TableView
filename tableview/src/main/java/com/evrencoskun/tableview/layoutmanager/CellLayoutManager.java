@@ -528,7 +528,10 @@ public class CellLayoutManager extends LinearLayoutManager {
         return -1;
     }
 
-    public void clearCache() {
+    /**
+     * Clears the widths which have been calculated and reused.
+     */
+    public void clearCachedWidths() {
         mCachedWidthList.clear();
     }
 
