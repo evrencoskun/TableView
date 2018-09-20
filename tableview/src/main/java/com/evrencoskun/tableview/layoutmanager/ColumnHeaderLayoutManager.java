@@ -100,7 +100,10 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
         mCachedWidthList.remove(position);
     }
 
-    public void clearCache() {
+    /**
+     * Clears the widths which have been calculated and reused.
+     */
+    public void clearCachedWidths() {
         mCachedWidthList.clear();
     }
 

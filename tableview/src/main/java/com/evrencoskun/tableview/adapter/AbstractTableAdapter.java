@@ -81,7 +81,9 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
         }
 
         mColumnHeaderItems = columnHeaderItems;
-        mTableView.getColumnHeaderLayoutManager().clearCache();
+        // Invalidate the cached widths for letting the view measure the cells width
+        // from scratch.
+        mTableView.getColumnHeaderLayoutManager().clearCachedWidths();
         // Set the items to the adapter
         mColumnHeaderRecyclerViewAdapter.setItems(mColumnHeaderItems);
         dispatchColumnHeaderDataSetChangesToListeners(columnHeaderItems);
@@ -105,7 +107,9 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
         }
 
         mCellItems = cellItems;
-        mTableView.getCellLayoutManager().clearCache();
+        // Invalidate the cached widths for letting the view measure the cells width
+        // from scratch.
+        mTableView.getCellLayoutManager().clearCachedWidths();
         // Set the items to the adapter
         mCellRecyclerViewAdapter.setItems(mCellItems);
         dispatchCellDataSetChangesToListeners(mCellItems);
