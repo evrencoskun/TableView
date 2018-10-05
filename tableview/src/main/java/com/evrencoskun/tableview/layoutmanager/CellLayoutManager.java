@@ -528,6 +528,13 @@ public class CellLayoutManager extends LinearLayoutManager {
         return -1;
     }
 
+    /**
+     * Clears the widths which have been calculated and reused.
+     */
+    public void clearCachedWidths() {
+        mCachedWidthList.clear();
+    }
+
     public CellRecyclerView[] getVisibleCellRowRecyclerViews() {
         int length = findLastVisibleItemPosition() - findFirstVisibleItemPosition() + 1;
         CellRecyclerView[] recyclerViews = new CellRecyclerView[length];
