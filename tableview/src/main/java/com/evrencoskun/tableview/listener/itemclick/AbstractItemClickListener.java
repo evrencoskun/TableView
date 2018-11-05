@@ -60,7 +60,7 @@ public abstract class AbstractItemClickListener implements RecyclerView.OnItemTo
             @Override
             public boolean onDown(MotionEvent e) {
                 start = e;
-                return false;
+                return true;
             }
 
             @Override
