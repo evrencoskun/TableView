@@ -42,7 +42,7 @@ public class ColumnHeaderRecyclerViewItemClickListener extends AbstractItemClick
         // Get interacted view from x,y coordinate.
         View childView = view.findChildViewUnder(e.getX(), e.getY());
 
-        if (childView != null && mGestureDetector.onTouchEvent(e)) {
+        if (childView != null) {
             // Find the view holder
             AbstractViewHolder holder = (AbstractViewHolder) mRecyclerView.getChildViewHolder
                     (childView);
@@ -64,6 +64,7 @@ public class ColumnHeaderRecyclerViewItemClickListener extends AbstractItemClick
         return false;
     }
 
+    @Override
     protected void longPressAction(MotionEvent e) {
         // Consume the action for the time when the recyclerView is scrolling.
         if (mRecyclerView.getScrollState() != RecyclerView.SCROLL_STATE_IDLE) {
