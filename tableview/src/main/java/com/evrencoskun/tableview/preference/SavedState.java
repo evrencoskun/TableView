@@ -35,7 +35,7 @@ public class SavedState extends View.BaseSavedState {
 
     private SavedState(Parcel in) {
         super(in);
-
+        preferences = in.readParcelable(Preferences.class.getClassLoader());
     }
 
     @Override
@@ -51,4 +51,3 @@ public class SavedState extends View.BaseSavedState {
         public SavedState[] newArray(int size) { return new SavedState[size]; }
     };
 }
-
