@@ -1,20 +1,18 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
 
-
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -34,21 +32,15 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:27.0.2'
-    compile 'com.android.support:recyclerview-v7:27.0.2'
-
-    testCompile 'junit:junit:4.12'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
 }
 
 publish {
-    userOrg = 'evrencoskun'//user name of bintray.com
-    groupId = 'com.evrencoskun.library'//jcenter's url
-    artifactId = 'tableview'//project name
-    publishVersion = '0.8.8'//version code
+    userOrg = 'evrencoskun' //user name of bintray.com
+    groupId = 'com.evrencoskun.library' //jcenter's url
+    artifactId = 'tableview' //project name
+    publishVersion = '0.8.8' //version code
     desc = 'TableView is a powerful Android library for displaying complex data structures and rendering tabular data composed of rows, columns and cells.'
-    website = 'https://github.com/evrencoskun/TableView'//website
+    website = 'https://github.com/evrencoskun/TableView '//website
 }
