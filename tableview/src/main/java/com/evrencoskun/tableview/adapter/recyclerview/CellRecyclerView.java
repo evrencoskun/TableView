@@ -18,9 +18,10 @@
 package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.evrencoskun.tableview.R;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;

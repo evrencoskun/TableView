@@ -18,10 +18,11 @@
 package com.evrencoskun.tableviewsample.tableview.popup;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.PopupMenu;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableviewsample.R;

@@ -18,8 +18,9 @@
 package com.evrencoskun.tableview.layoutmanager;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
