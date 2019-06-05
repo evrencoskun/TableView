@@ -17,9 +17,10 @@
 
 package com.evrencoskun.tableview.adapter.recyclerview.holder;
 
-import android.support.annotation.ColorInt;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.annotation.ColorInt;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by evrencoskun on 23/10/2017.

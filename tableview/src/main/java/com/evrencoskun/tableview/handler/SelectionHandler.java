@@ -17,8 +17,8 @@
 
 package com.evrencoskun.tableview.handler;
 
-import android.support.annotation.ColorInt;
-import android.support.v7.widget.LinearLayoutManager;
+import androidx.annotation.ColorInt;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;

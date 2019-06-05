@@ -17,8 +17,8 @@
 
 package com.evrencoskun.tableview.listener;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by evrencoskun on 20/09/2017.
