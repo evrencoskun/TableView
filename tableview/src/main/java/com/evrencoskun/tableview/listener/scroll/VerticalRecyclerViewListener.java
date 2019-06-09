@@ -20,6 +20,8 @@ package com.evrencoskun.tableview.listener.scroll;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.evrencoskun.tableview.ITableView;
@@ -34,6 +36,7 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
 
     private static final String LOG_TAG = VerticalRecyclerViewListener.class.getSimpleName();
 
+    @NonNull
     private CellRecyclerView mRowHeaderRecyclerView, mCellRecyclerView;
     private RecyclerView mLastTouchedRecyclerView;
 
@@ -41,21 +44,23 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
     private int mYPosition;
     private boolean mIsMoved;
 
+    @Nullable
     private RecyclerView mCurrentRVTouched = null;
 
-    public VerticalRecyclerViewListener(ITableView tableView) {
+    public VerticalRecyclerViewListener(@NonNull ITableView tableView) {
         this.mRowHeaderRecyclerView = tableView.getRowHeaderRecyclerView();
         this.mCellRecyclerView = tableView.getCellRecyclerView();
     }
 
-    private float dx=0, dy=0;
+    private float dx = 0, dy = 0;
 
     /**
      * check which direction the user is scrolling
+     *
      * @param ev
      * @return
      */
-    private boolean verticalDirection(MotionEvent ev) {
+    private boolean verticalDirection(@NonNull MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_MOVE) {
             if (dx == 0) {
                 dx = ev.getX();
@@ -78,16 +83,16 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
     }
 
     @Override
-    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+    public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
 
         // Prevent multitouch, once we start to listen with a RV,
         // we ignore any other RV until the touch is released (UP)
-        if((mCurrentRVTouched != null && rv != mCurrentRVTouched)) {
+        if ((mCurrentRVTouched != null && rv != mCurrentRVTouched)) {
             return true;
         }
-            
+
         // If scroll direction is not Vertical, then ignore and reset last RV touched
-        if(!verticalDirection(e)) {
+        if (!verticalDirection(e)) {
             mCurrentRVTouched = null;
             return false;
         }
@@ -146,7 +151,7 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
     }
 
     @Override
-    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+    public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
     }
 
     @Override
@@ -154,7 +159,7 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
     }
 
     @Override
-    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
         // CellRecyclerViews should be scrolled after the RowHeaderRecyclerView.
         // Because it is one of the main compared criterion to make each columns fit.
 
@@ -171,7 +176,7 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
     }
 
     @Override
-    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
 
         if (newState == RecyclerView.SCROLL_STATE_IDLE) {

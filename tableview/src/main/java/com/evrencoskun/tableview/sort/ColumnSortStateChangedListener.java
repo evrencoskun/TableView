@@ -17,6 +17,8 @@
 
 package com.evrencoskun.tableview.sort;
 
+import androidx.annotation.NonNull;
+
 public abstract class ColumnSortStateChangedListener {
 
     /**
@@ -25,7 +27,7 @@ public abstract class ColumnSortStateChangedListener {
      * @param column    Column to be sorted.
      * @param sortState SortState of the column to be sorted.
      */
-    public void onColumnSortStatusChanged(int column, SortState sortState) {
+    public void onColumnSortStatusChanged(int column, @NonNull SortState sortState) {
     }
 
     /**
@@ -33,6 +35,6 @@ public abstract class ColumnSortStateChangedListener {
      *
      * @param sortState SortState of the row header column.
      */
-    public void onRowHeaderSortStatusChanged(SortState sortState) {
+    public void onRowHeaderSortStatusChanged(@NonNull SortState sortState) {
     }
 }

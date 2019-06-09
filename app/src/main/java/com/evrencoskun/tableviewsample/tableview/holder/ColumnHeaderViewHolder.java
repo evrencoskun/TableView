@@ -24,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.evrencoskun.tableview.ITableView;
@@ -95,7 +96,7 @@ public class ColumnHeaderViewHolder extends AbstractSorterViewHolder {
     };
 
     @Override
-    public void onSortingStatusChanged(SortState sortState) {
+    public void onSortingStatusChanged(@NonNull SortState sortState) {
         Log.e(LOG_TAG, " + onSortingStatusChanged : x:  " + getAdapterPosition() + " old state "
                 + getSortState() + " current state : " + sortState + " visiblity: " +
                 column_header_sortButton.getVisibility());

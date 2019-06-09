@@ -20,6 +20,7 @@ package com.evrencoskun.tableview.adapter.recyclerview.holder;
 import android.view.View;
 
 import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -30,13 +31,14 @@ public abstract class AbstractViewHolder extends RecyclerView.ViewHolder {
     public enum SelectionState {SELECTED, UNSELECTED, SHADOWED}
 
     // Default value
+    @NonNull
     private SelectionState m_eState = SelectionState.UNSELECTED;
 
-    public AbstractViewHolder(View itemView) {
+    public AbstractViewHolder(@NonNull View itemView) {
         super(itemView);
     }
 
-    public void setSelected(SelectionState selectionState) {
+    public void setSelected(@NonNull SelectionState selectionState) {
         m_eState = selectionState;
 
         if (selectionState == SelectionState.SELECTED) {

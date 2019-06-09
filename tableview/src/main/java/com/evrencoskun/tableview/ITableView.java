@@ -20,6 +20,8 @@ package com.evrencoskun.tableview;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -50,39 +52,54 @@ public interface ITableView {
     boolean isIgnoreSelectionColors();
 
     boolean isShowHorizontalSeparators();
-    
+
     boolean isShowVerticalSeparators();
 
     boolean isSortable();
 
+    @NonNull
     CellRecyclerView getCellRecyclerView();
 
+    @NonNull
     CellRecyclerView getColumnHeaderRecyclerView();
 
+    @NonNull
     CellRecyclerView getRowHeaderRecyclerView();
 
+    @NonNull
     ColumnHeaderLayoutManager getColumnHeaderLayoutManager();
 
+    @NonNull
     CellLayoutManager getCellLayoutManager();
 
+    @NonNull
     LinearLayoutManager getRowHeaderLayoutManager();
 
+    @NonNull
     HorizontalRecyclerViewListener getHorizontalRecyclerViewListener();
 
+    @NonNull
     VerticalRecyclerViewListener getVerticalRecyclerViewListener();
 
+    @Nullable
     ITableViewListener getTableViewListener();
 
+    @NonNull
     SelectionHandler getSelectionHandler();
-    
+
+    @Nullable
     ColumnSortHandler getColumnSortHandler();
 
+    @NonNull
     DividerItemDecoration getHorizontalItemDecoration();
-    
+
+    @NonNull
     DividerItemDecoration getVerticalItemDecoration();
 
+    @NonNull
     SortState getSortingStatus(int column);
 
+    @Nullable
     SortState getRowHeaderSortingStatus();
 
     void scrollToColumnPosition(int column);
@@ -121,9 +138,9 @@ public interface ITableView {
 
     int getSeparatorColor();
 
-    void sortColumn(int columnPosition, SortState sortState);
+    void sortColumn(int columnPosition, @NonNull SortState sortState);
 
-    void sortRowHeader(SortState sortState);
+    void sortRowHeader(@NonNull SortState sortState);
 
     void remeasureColumnWidth(int column);
 
@@ -131,6 +148,7 @@ public interface ITableView {
 
     void setRowHeaderWidth(int rowHeaderWidth);
 
+    @Nullable
     AbstractTableAdapter getAdapter();
 
     /**
@@ -138,19 +156,21 @@ public interface ITableView {
      *
      * @param filter The filter object.
      */
-    void filter(Filter filter);
+    void filter(@NonNull Filter filter);
 
     /**
      * Retrieves the FilterHandler of the TableView.
      *
      * @return The FilterHandler of the TableView.
      */
+    @Nullable
     FilterHandler getFilterHandler();
-    
+
     /**
      * Retrieves the ScrollHandler of the TableView.
      *
      * @return The ScrollHandler of the TableView.
      */
+    @NonNull
     ScrollHandler getScrollHandler();
 }

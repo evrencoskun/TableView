@@ -18,16 +18,16 @@
 package com.evrencoskun.tableview.layoutmanager;
 
 import android.content.Context;
+import android.util.SparseIntArray;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.util.TableViewUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by evrencoskun on 30/07/2017.
@@ -35,10 +35,12 @@ import java.util.Map;
 
 public class ColumnHeaderLayoutManager extends LinearLayoutManager {
     //private SparseArray<Integer> mCachedWidthList;
-    private Map<Integer, Integer> mCachedWidthList = new HashMap<>();
+    @NonNull
+    private SparseIntArray mCachedWidthList = new SparseIntArray();
+    @NonNull
     private ITableView mTableView;
 
-    public ColumnHeaderLayoutManager(Context context, ITableView tableView) {
+    public ColumnHeaderLayoutManager(@NonNull Context context, @NonNull ITableView tableView) {
         super(context);
         mTableView = tableView;
 
@@ -46,7 +48,7 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
     }
 
     @Override
-    public void measureChildWithMargins(View child, int widthUsed, int heightUsed) {
+    public void measureChildWithMargins(@NonNull View child, int widthUsed, int heightUsed) {
         super.measureChildWithMargins(child, widthUsed, heightUsed);
 
         // If has fixed width is true, than calculation of the column width is not necessary.
@@ -58,7 +60,7 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
     }
 
     @Override
-    public void measureChild(View child, int widthUsed, int heightUsed) {
+    public void measureChild(@NonNull View child, int widthUsed, int heightUsed) {
         // If has fixed width is true, than calculation of the column width is not necessary.
         if (mTableView.hasFixedWidth()) {
             super.measureChild(child, widthUsed, heightUsed);
@@ -76,17 +78,12 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
         }
     }
 
-
     public void setCacheWidth(int position, int width) {
         mCachedWidthList.put(position, width);
     }
 
     public int getCacheWidth(int position) {
-        Integer cachedWidth = mCachedWidthList.get(position);
-        if (cachedWidth == null) {
-            return -1;
-        }
-        return cachedWidth;
+        return mCachedWidthList.get(position);
     }
 
     public int getFirstItemLeft() {
@@ -98,7 +95,7 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
      * Helps to recalculate the width value of the cell that is located in given position.
      */
     public void removeCachedWidth(int position) {
-        mCachedWidthList.remove(position);
+        mCachedWidthList.removeAt(position);
     }
 
     /**
@@ -128,6 +125,7 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
         }
     }
 
+    @NonNull
     public AbstractViewHolder[] getVisibleViewHolders() {
         int visibleChildCount = findLastVisibleItemPosition() - findFirstVisibleItemPosition() + 1;
         int index = 0;
@@ -143,6 +141,7 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
         return views;
     }
 
+    @Nullable
     public AbstractViewHolder getViewHolder(int xPosition) {
         return (AbstractViewHolder) mTableView.getColumnHeaderRecyclerView()
                 .findViewHolderForAdapterPosition(xPosition);

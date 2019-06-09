@@ -28,7 +28,7 @@ public enum SortState {
      * For example, the set <code>1, 4, 0</code> sorted in
      * <code>ASCENDING</code> order is <code>0, 1, 4</code>.
      */
-     ASCENDING,
+    ASCENDING,
 
     /**
      * Enumeration value indicating the items are sorted in decreasing order.
@@ -42,6 +42,6 @@ public enum SortState {
      * For example, the set <code>1, 4, 0</code> in
      * <code>UNSORTED</code> order is <code>1, 4, 0</code>.
      */
-   UNSORTED
+    UNSORTED
 
 }

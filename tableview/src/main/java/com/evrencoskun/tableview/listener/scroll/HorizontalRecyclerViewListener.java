@@ -20,6 +20,8 @@ package com.evrencoskun.tableview.listener.scroll;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,8 +37,11 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
 
     private static final String LOG_TAG = HorizontalRecyclerViewListener.class.getSimpleName();
 
+    @NonNull
     private CellRecyclerView mColumnHeaderRecyclerView;
+    @Nullable
     private RecyclerView.LayoutManager mCellLayoutManager;
+    @Nullable
     private RecyclerView mLastTouchedRecyclerView;
 
     // X position means column position
@@ -46,22 +51,24 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
     private int mScrollPosition;
     private int mScrollPositionOffset = 0;
 
+    @Nullable
     private RecyclerView mCurrentRVTouched = null;
 
+    @NonNull
     private VerticalRecyclerViewListener mVerticalRecyclerViewListener;
 
-    public HorizontalRecyclerViewListener(ITableView tableView) {
+    public HorizontalRecyclerViewListener(@NonNull ITableView tableView) {
         this.mColumnHeaderRecyclerView = tableView.getColumnHeaderRecyclerView();
         this.mCellLayoutManager = tableView.getCellRecyclerView().getLayoutManager();
         this.mVerticalRecyclerViewListener = tableView.getVerticalRecyclerViewListener();
     }
 
     @Override
-    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+    public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
 
         // Prevent multitouch, once we start to listen with a RV,
         // we ignore any other RV until the touch is released (UP)
-        if(mCurrentRVTouched != null && rv != mCurrentRVTouched) {
+        if (mCurrentRVTouched != null && rv != mCurrentRVTouched) {
             return true;
         }
 
@@ -156,7 +163,7 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
     }
 
     @Override
-    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+    public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
     }
 
     @Override
@@ -164,7 +171,7 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
     }
 
     @Override
-    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
         // Column Header should be scrolled firstly. Because it is the compared recyclerView to
         // make column width fit.
 
@@ -195,7 +202,7 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
     }
 
     @Override
-    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
 
         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
@@ -216,7 +223,7 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
         }
     }
 
-    private int getIndex(RecyclerView rv) {
+    private int getIndex(@NonNull RecyclerView rv) {
         for (int i = 0; i < mCellLayoutManager.getChildCount(); i++) {
             if (mCellLayoutManager.getChildAt(i) == rv) {
                 return i;
@@ -225,7 +232,6 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
         return -1;
     }
 
-
     /**
      * This method calculates the current scroll position and its offset to help new attached
      * recyclerView on window at that position and offset
@@ -233,7 +239,7 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
      * @see #getScrollPosition()
      * @see #getScrollPositionOffset()
      */
-    private void renewScrollPosition(RecyclerView recyclerView) {
+    private void renewScrollPosition(@NonNull RecyclerView recyclerView) {
         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         mScrollPosition = layoutManager.findFirstCompletelyVisibleItemPosition();
 

@@ -21,6 +21,8 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.evrencoskun.tableview.ITableView;
@@ -40,16 +42,16 @@ import java.util.List;
  */
 
 public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
-
-    private static final String LOG_TAG = CellRecyclerViewAdapter.class.getSimpleName();
-
+    @NonNull
     private ITableView mTableView;
+
+    @NonNull
     private final RecyclerView.RecycledViewPool mRecycledViewPool;
 
     // This is for testing purpose
     private int mRecyclerViewId = 0;
 
-    public CellRecyclerViewAdapter(Context context, List<C> itemList, ITableView tableView) {
+    public CellRecyclerViewAdapter(@NonNull Context context, @Nullable List<C> itemList, @NonNull ITableView tableView) {
         super(context, itemList);
         this.mTableView = tableView;
 
@@ -59,8 +61,9 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         //mRecycledViewPool.setMaxRecycledViews(0, 110);
     }
 
+    @NonNull
     @Override
-    public AbstractViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AbstractViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         // Create a RecyclerView as a Row of the CellRecyclerView
         CellRecyclerView recyclerView = new CellRecyclerView(mContext);
@@ -100,7 +103,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
     }
 
     @Override
-    public void onBindViewHolder(AbstractViewHolder holder, int yPosition) {
+    public void onBindViewHolder(@NonNull AbstractViewHolder holder, int yPosition) {
         CellRowViewHolder viewHolder = (CellRowViewHolder) holder;
         CellRowRecyclerViewAdapter viewAdapter = (CellRowRecyclerViewAdapter) viewHolder
                 .recyclerView.getAdapter();
@@ -116,7 +119,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
     }
 
     @Override
-    public void onViewAttachedToWindow(AbstractViewHolder holder) {
+    public void onViewAttachedToWindow(@NonNull AbstractViewHolder holder) {
         super.onViewAttachedToWindow(holder);
 
         CellRowViewHolder viewHolder = (CellRowViewHolder) holder;
@@ -151,7 +154,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
     }
 
     @Override
-    public void onViewDetachedFromWindow(AbstractViewHolder holder) {
+    public void onViewDetachedFromWindow(@NonNull AbstractViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
 
         // Clear selection status of the view holder
@@ -160,7 +163,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
     }
 
     @Override
-    public void onViewRecycled(AbstractViewHolder holder) {
+    public void onViewRecycled(@NonNull AbstractViewHolder holder) {
         super.onViewRecycled(holder);
 
         CellRowViewHolder viewHolder = (CellRowViewHolder) holder;
@@ -173,7 +176,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
     static class CellRowViewHolder extends AbstractViewHolder {
         final CellRecyclerView recyclerView;
 
-        CellRowViewHolder(View itemView) {
+        CellRowViewHolder(@NonNull View itemView) {
             super(itemView);
             recyclerView = (CellRecyclerView) itemView;
         }
@@ -193,12 +196,12 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
     }
 
-
     /**
      * This method helps to get cell item model that is located on given column position.
      *
      * @param columnPosition
      */
+    @NonNull
     public List<C> getColumnItems(int columnPosition) {
         List<C> cellItems = new ArrayList<>();
 
@@ -243,7 +246,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         setItems((List<C>) cellItems, false);
     }
 
-    public void addColumnItems(int column, List<C> cellColumnItems) {
+    public void addColumnItems(int column, @NonNull List<C> cellColumnItems) {
         // It should be same size with exist model list.
         if (cellColumnItems.size() != mItemList.size() || cellColumnItems.contains(null)) {
             return;
