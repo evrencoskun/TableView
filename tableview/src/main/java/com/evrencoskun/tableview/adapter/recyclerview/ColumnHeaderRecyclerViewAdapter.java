@@ -20,6 +20,9 @@ package com.evrencoskun.tableview.adapter.recyclerview;
 import android.content.Context;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.ITableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractSorterViewHolder;
@@ -35,26 +38,26 @@ import java.util.List;
  */
 
 public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAdapter<CH> {
-    private static final String LOG_TAG = ColumnHeaderRecyclerViewAdapter.class.getSimpleName();
-
+    @NonNull
     private ITableAdapter mTableAdapter;
     private ITableView mTableView;
     private ColumnSortHelper mColumnSortHelper;
 
-    public ColumnHeaderRecyclerViewAdapter(Context context, List<CH> itemList, ITableAdapter
+    public ColumnHeaderRecyclerViewAdapter(@NonNull Context context, @Nullable List<CH> itemList, @NonNull ITableAdapter
             tableAdapter) {
         super(context, itemList);
         this.mTableAdapter = tableAdapter;
         this.mTableView = tableAdapter.getTableView();
     }
 
+    @NonNull
     @Override
-    public AbstractViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AbstractViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return mTableAdapter.onCreateColumnHeaderViewHolder(parent, viewType);
     }
 
     @Override
-    public void onBindViewHolder(AbstractViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AbstractViewHolder holder, int position) {
         mTableAdapter.onBindColumnHeaderViewHolder(holder, getItem(position), position);
     }
 
@@ -64,7 +67,7 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
     }
 
     @Override
-    public void onViewAttachedToWindow(AbstractViewHolder viewHolder) {
+    public void onViewAttachedToWindow(@NonNull AbstractViewHolder viewHolder) {
         super.onViewAttachedToWindow(viewHolder);
 
         SelectionState selectionState = mTableView.getSelectionHandler().getColumnSelectionState
@@ -93,7 +96,7 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
         }
     }
 
-
+    @NonNull
     public ColumnSortHelper getColumnSortHelper() {
         if (mColumnSortHelper == null) {
             // It helps to store sorting state of column headers

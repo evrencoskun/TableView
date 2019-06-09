@@ -21,6 +21,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by evrencoskun on 4.03.2018.
  */
@@ -44,10 +46,17 @@ public class SavedState extends View.BaseSavedState {
         out.writeParcelable(preferences, flags);
     }
 
+    @NonNull
     public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable
             .Creator<SavedState>() {
-        public SavedState createFromParcel(Parcel in) { return new SavedState(in); }
+        @NonNull
+        public SavedState createFromParcel(Parcel in) {
+            return new SavedState(in);
+        }
 
-        public SavedState[] newArray(int size) { return new SavedState[size]; }
+        @NonNull
+        public SavedState[] newArray(int size) {
+            return new SavedState[size];
+        }
     };
 }

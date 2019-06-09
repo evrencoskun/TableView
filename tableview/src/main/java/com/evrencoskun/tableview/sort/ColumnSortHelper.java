@@ -17,6 +17,8 @@
 
 package com.evrencoskun.tableview.sort;
 
+import androidx.annotation.NonNull;
+
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractSorterViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
@@ -29,15 +31,16 @@ import java.util.List;
  */
 
 public class ColumnSortHelper {
-
+    @NonNull
     private List<Directive> mSortingColumns = new ArrayList<>();
+    @NonNull
     private ColumnHeaderLayoutManager mColumnHeaderLayoutManager;
 
-    public ColumnSortHelper(ColumnHeaderLayoutManager columnHeaderLayoutManager) {
+    public ColumnSortHelper(@NonNull ColumnHeaderLayoutManager columnHeaderLayoutManager) {
         this.mColumnHeaderLayoutManager = columnHeaderLayoutManager;
     }
 
-    private void sortingStatusChanged(int column, SortState sortState) {
+    private void sortingStatusChanged(int column, @NonNull SortState sortState) {
         AbstractViewHolder holder = mColumnHeaderLayoutManager.getViewHolder(column);
 
         if (holder != null) {
@@ -51,8 +54,7 @@ public class ColumnSortHelper {
         }
     }
 
-
-    public void setSortingStatus(int column, SortState status) {
+    public void setSortingStatus(int column, @NonNull SortState status) {
         Directive directive = getDirective(column);
         if (directive != EMPTY_DIRECTIVE) {
             mSortingColumns.remove(directive);
@@ -72,11 +74,12 @@ public class ColumnSortHelper {
         return mSortingColumns.size() != 0;
     }
 
+    @NonNull
     public SortState getSortingStatus(int column) {
         return getDirective(column).direction;
     }
 
-
+    @NonNull
     private Directive getDirective(int column) {
         for (int i = 0; i < mSortingColumns.size(); i++) {
             Directive directive = mSortingColumns.get(i);
@@ -89,13 +92,15 @@ public class ColumnSortHelper {
 
     private static class Directive {
         private int column;
+        @NonNull
         private SortState direction;
 
-        public Directive(int column, SortState direction) {
+        public Directive(int column, @NonNull SortState direction) {
             this.column = column;
             this.direction = direction;
         }
     }
 
+    @NonNull
     private static Directive EMPTY_DIRECTIVE = new Directive(-1, SortState.UNSORTED);
 }

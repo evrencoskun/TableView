@@ -20,6 +20,8 @@ package com.evrencoskun.tableview.preference;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by evrencoskun on 4.03.2018.
  */
@@ -45,12 +47,15 @@ public class Preferences implements Parcelable {
         selectedColumnPosition = in.readInt();
     }
 
+    @NonNull
     public static final Creator<Preferences> CREATOR = new Creator<Preferences>() {
+        @NonNull
         @Override
         public Preferences createFromParcel(Parcel in) {
             return new Preferences(in);
         }
 
+        @NonNull
         @Override
         public Preferences[] newArray(int size) {
             return new Preferences[size];

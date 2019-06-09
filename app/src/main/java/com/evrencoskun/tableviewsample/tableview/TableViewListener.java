@@ -96,7 +96,7 @@ public class TableViewListener implements ITableViewListener {
     public void onColumnHeaderLongPressed(@NonNull RecyclerView.ViewHolder columnHeaderView, int
             column) {
 
-        if (columnHeaderView != null && columnHeaderView instanceof ColumnHeaderViewHolder) {
+        if (columnHeaderView instanceof ColumnHeaderViewHolder) {
             // Create Long Press Popup
             ColumnHeaderLongPressPopup popup = new ColumnHeaderLongPressPopup(
                     (ColumnHeaderViewHolder) columnHeaderView, mTableView);
@@ -128,12 +128,10 @@ public class TableViewListener implements ITableViewListener {
     @Override
     public void onRowHeaderLongPressed(@NonNull RecyclerView.ViewHolder rowHeaderView, int row) {
 
-        if (rowHeaderView != null) {
-            // Create Long Press Popup
-            RowHeaderLongPressPopup popup = new RowHeaderLongPressPopup(rowHeaderView, mTableView);
-            // Show
-            popup.show();
-        }
+        // Create Long Press Popup
+        RowHeaderLongPressPopup popup = new RowHeaderLongPressPopup(rowHeaderView, mTableView);
+        // Show
+        popup.show();
     }
 
 

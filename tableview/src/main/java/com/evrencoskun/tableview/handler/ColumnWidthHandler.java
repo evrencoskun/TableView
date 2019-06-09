@@ -17,6 +17,8 @@
 
 package com.evrencoskun.tableview.handler;
 
+import androidx.annotation.NonNull;
+
 import com.evrencoskun.tableview.ITableView;
 
 /**
@@ -24,10 +26,10 @@ import com.evrencoskun.tableview.ITableView;
  */
 
 public class ColumnWidthHandler {
-
+    @NonNull
     private ITableView mTableView;
 
-    public ColumnWidthHandler(ITableView tableView) {
+    public ColumnWidthHandler(@NonNull ITableView tableView) {
         mTableView = tableView;
     }
 
@@ -39,6 +41,5 @@ public class ColumnWidthHandler {
         // Set each of cell items that is located on the column position
         mTableView.getCellLayoutManager().setCacheWidth(columnPosition, width);
     }
-
 
 }

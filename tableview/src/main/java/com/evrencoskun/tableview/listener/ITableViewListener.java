@@ -43,5 +43,4 @@ public interface ITableViewListener {
     void onRowHeaderLongPressed(@NonNull RecyclerView.ViewHolder rowHeaderView, int
             row);
 
-
 }

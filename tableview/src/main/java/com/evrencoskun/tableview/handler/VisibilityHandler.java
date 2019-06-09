@@ -20,6 +20,9 @@ package com.evrencoskun.tableview.handler;
 import android.util.Log;
 import android.util.SparseArray;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.evrencoskun.tableview.ITableView;
 
 import java.util.List;
@@ -31,12 +34,14 @@ import java.util.List;
 public class VisibilityHandler {
     private static final String LOG_TAG = VisibilityHandler.class.getSimpleName();
 
+    @NonNull
     private ITableView mTableView;
+    @NonNull
     private SparseArray<Row> mHideRowList = new SparseArray<>();
+    @NonNull
     private SparseArray<Column> mHideColumnList = new SparseArray<>();
 
-
-    public VisibilityHandler(ITableView tableView) {
+    public VisibilityHandler(@NonNull ITableView tableView) {
         this.mTableView = tableView;
     }
 
@@ -72,7 +77,6 @@ public class VisibilityHandler {
         mHideRowList.clear();
     }
 
-
     public void showAllHiddenRows() {
         for (int i = 0; i < mHideRowList.size(); i++) {
             int row = mHideRowList.keyAt(i);
@@ -85,7 +89,6 @@ public class VisibilityHandler {
     public boolean isRowVisible(int row) {
         return mHideRowList.get(row) == null;
     }
-
 
     public void hideColumn(int column) {
         // add column the list
@@ -132,13 +135,14 @@ public class VisibilityHandler {
         return mHideColumnList.get(column) == null;
     }
 
-
     class Row {
         private int mYPosition;
+        @Nullable
         private Object mRowHeaderModel;
+        @Nullable
         private List<Object> mCellModelList;
 
-        public Row(int row, Object rowHeaderModel, List<Object> cellModelList) {
+        public Row(int row, @Nullable Object rowHeaderModel, @Nullable List<Object> cellModelList) {
             this.mYPosition = row;
             this.mRowHeaderModel = rowHeaderModel;
             this.mCellModelList = cellModelList;
@@ -148,10 +152,12 @@ public class VisibilityHandler {
             return mYPosition;
         }
 
+        @Nullable
         public Object getRowHeaderModel() {
             return mRowHeaderModel;
         }
 
+        @Nullable
         public List<Object> getCellModelList() {
             return mCellModelList;
         }
@@ -160,10 +166,12 @@ public class VisibilityHandler {
 
     class Column {
         private int mYPosition;
+        @Nullable
         private Object mColumnHeaderModel;
+        @NonNull
         private List<Object> mCellModelList;
 
-        public Column(int yPosition, Object columnHeaderModel, List<Object> cellModelList) {
+        public Column(int yPosition, @Nullable Object columnHeaderModel, @NonNull List<Object> cellModelList) {
             this.mYPosition = yPosition;
             this.mColumnHeaderModel = columnHeaderModel;
             this.mCellModelList = cellModelList;
@@ -173,17 +181,19 @@ public class VisibilityHandler {
             return mYPosition;
         }
 
+        @Nullable
         public Object getColumnHeaderModel() {
             return mColumnHeaderModel;
         }
 
+        @NonNull
         public List<Object> getCellModelList() {
             return mCellModelList;
         }
 
     }
 
-
+    @NonNull
     private Row getRowValueFromPosition(int row) {
 
         Object rowHeaderModel = mTableView.getAdapter().getRowHeaderItem(row);
@@ -192,6 +202,7 @@ public class VisibilityHandler {
         return new Row(row, rowHeaderModel, cellModelList);
     }
 
+    @NonNull
     private Column getColumnValueFromPosition(int column) {
         Object columnHeaderModel = mTableView.getAdapter().getColumnHeaderItem(column);
         List<Object> cellModelList = (List<Object>) mTableView.getAdapter().getCellColumnItems
@@ -200,19 +211,21 @@ public class VisibilityHandler {
         return new Column(column, columnHeaderModel, cellModelList);
     }
 
+    @NonNull
     public SparseArray<Row> getHideRowList() {
         return mHideRowList;
     }
 
+    @NonNull
     public SparseArray<Column> getHideColumnList() {
         return mHideColumnList;
     }
 
-    public void setHideRowList(SparseArray<Row> rowList) {
+    public void setHideRowList(@NonNull SparseArray<Row> rowList) {
         this.mHideRowList = rowList;
     }
 
-    public void setHideColumnList(SparseArray<Column> columnList) {
+    public void setHideColumnList(@NonNull SparseArray<Column> columnList) {
         this.mHideColumnList = columnList;
     }
 }

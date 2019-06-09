@@ -4,6 +4,8 @@ package com.evrencoskun.tableview.sort;
  * Created by cedricferry on 7/2/18.
  */
 
+import androidx.annotation.NonNull;
+
 import java.util.Comparator;
 import java.util.List;
 
@@ -14,30 +16,33 @@ import java.util.List;
  * To accomplish that we need to set a comparator that use MainDataSet
  * in order to sort RowHeader.
  */
-public class ColumnForRowHeaderSortComparator implements Comparator {
-
+public class ColumnForRowHeaderSortComparator implements Comparator<ISortableModel> {
+    @NonNull
     private List<ISortableModel> mRowHeaderList;
+    @NonNull
     private List<List<ISortableModel>> mReferenceList;
     private int column;
-    private SortState mRortState;
+    @NonNull
+    private SortState mSortState;
+    @NonNull
     private ColumnSortComparator mColumnSortComparator;
 
-    public ColumnForRowHeaderSortComparator(List<ISortableModel> rowHeader,
-                                            List<List<ISortableModel>> referenceList,
+    public ColumnForRowHeaderSortComparator(@NonNull List<ISortableModel> rowHeader,
+                                            @NonNull List<List<ISortableModel>> referenceList,
                                             int column,
-                                            SortState sortState) {
+                                            @NonNull SortState sortState) {
         this.mRowHeaderList = rowHeader;
         this.mReferenceList = referenceList;
         this.column = column;
-        this.mRortState = sortState;
+        this.mSortState = sortState;
         this.mColumnSortComparator = new ColumnSortComparator(column, sortState);
     }
 
     @Override
-    public int compare(Object o, Object t1) {
+    public int compare(ISortableModel o, ISortableModel t1) {
         Object o1 = mReferenceList.get(this.mRowHeaderList.indexOf(o)).get(column).getContent();
         Object o2 = mReferenceList.get(this.mRowHeaderList.indexOf(t1)).get(column).getContent();
-        if (mRortState == SortState.DESCENDING) {
+        if (mSortState == SortState.DESCENDING) {
             return mColumnSortComparator.compareContent(o2, o1);
         } else {
             return mColumnSortComparator.compareContent(o1, o2);

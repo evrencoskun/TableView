@@ -17,21 +17,27 @@
 
 package com.evrencoskun.tableview.filter;
 
+import androidx.annotation.NonNull;
+
 public class FilterItem {
+    @NonNull
     private FilterType filterType;
+    @NonNull
     private String filter;
     private int column;
 
-    public FilterItem(FilterType type, int column, String filter) {
+    public FilterItem(@NonNull FilterType type, int column, @NonNull String filter) {
         this.filterType = type;
         this.column = column;
         this.filter = filter;
     }
 
+    @NonNull
     public FilterType getFilterType() {
         return filterType;
     }
 
+    @NonNull
     public String getFilter() {
         return filter;
     }

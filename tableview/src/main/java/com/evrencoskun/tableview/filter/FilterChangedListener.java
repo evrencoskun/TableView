@@ -17,6 +17,8 @@
 
 package com.evrencoskun.tableview.filter;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 public abstract class FilterChangedListener<T> {
@@ -27,7 +29,7 @@ public abstract class FilterChangedListener<T> {
      * @param filteredCellItems      The list of filtered cell items.
      * @param filteredRowHeaderItems The list of filtered row items.
      */
-    public void onFilterChanged(List<List<T>> filteredCellItems, List<T> filteredRowHeaderItems) {
+    public void onFilterChanged(@NonNull List<List<T>> filteredCellItems, @NonNull List<T> filteredRowHeaderItems) {
     }
 
     /**
@@ -36,6 +38,6 @@ public abstract class FilterChangedListener<T> {
      * @param originalCellItems      The unfiltered cell item list.
      * @param originalRowHeaderItems The unfiltered row header list.
      */
-    public void onFilterCleared(List<List<T>> originalCellItems, List<T> originalRowHeaderItems) {
+    public void onFilterCleared(@NonNull List<List<T>> originalCellItems, @NonNull List<T> originalRowHeaderItems) {
     }
 }
