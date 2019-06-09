@@ -17,21 +17,24 @@
 
 package com.evrencoskun.tableviewsample.tableview.holder;
 
-/**
- * Created by evrencoskun on 23/10/2017.
- */
-
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableviewsample.R;
 
+/**
+ * Created by evrencoskun on 23/10/2017.
+ */
+
 public class RowHeaderViewHolder extends AbstractViewHolder {
+    @NonNull
     public final TextView row_header_textview;
 
-    public RowHeaderViewHolder(View itemView) {
+    public RowHeaderViewHolder(@NonNull View itemView) {
         super(itemView);
-        row_header_textview = (TextView) itemView.findViewById(R.id.row_header_textview);
+        row_header_textview = itemView.findViewById(R.id.row_header_textview);
     }
 }

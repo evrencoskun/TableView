@@ -17,7 +17,6 @@
 
 package com.evrencoskun.tableviewsample.tableview.holder;
 
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -25,7 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
+import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractSorterViewHolder;
@@ -41,35 +40,30 @@ public class ColumnHeaderViewHolder extends AbstractSorterViewHolder {
 
     private static final String LOG_TAG = ColumnHeaderViewHolder.class.getSimpleName();
 
-    public final LinearLayout column_header_container;
-    public final TextView column_header_textview;
-    public final ImageButton column_header_sortButton;
-    public final ITableView tableView;
+    @NonNull
+    private final LinearLayout column_header_container;
+    @NonNull
+    private final TextView column_header_textview;
+    @NonNull
+    private final ImageButton column_header_sortButton;
+    @Nullable
+    private final ITableView tableView;
 
-    public final Drawable arrow_up, arrow_down;
-
-    public ColumnHeaderViewHolder(View itemView, ITableView tableView) {
+    public ColumnHeaderViewHolder(@NonNull View itemView, @Nullable ITableView tableView) {
         super(itemView);
         this.tableView = tableView;
-        column_header_textview = (TextView) itemView.findViewById(R.id.column_header_textView);
-        column_header_container = (LinearLayout) itemView.findViewById(R.id
-                .column_header_container);
-        column_header_sortButton = (ImageButton) itemView.findViewById(R.id
-                .column_header_sortButton);
-
-        // initialize drawables
-        arrow_up = ContextCompat.getDrawable(itemView.getContext(), R.drawable.ic_up);
-        arrow_down = ContextCompat.getDrawable(itemView.getContext(), R.drawable.ic_down);
+        column_header_textview = itemView.findViewById(R.id.column_header_textView);
+        column_header_container = itemView.findViewById(R.id.column_header_container);
+        column_header_sortButton = itemView.findViewById(R.id.column_header_sortButton);
 
         // Set click listener to the sort button
         column_header_sortButton.setOnClickListener(mSortButtonClickListener);
     }
 
-
     /**
      * This method is calling from onBindColumnHeaderHolder on TableViewAdapter
      */
-    public void setColumnHeader(ColumnHeader columnHeader) {
+    public void setColumnHeader(@Nullable ColumnHeader columnHeader) {
         column_header_textview.setText(String.valueOf(columnHeader.getData()));
 
         // If your TableView should have auto resize for cells & columns.
@@ -80,6 +74,7 @@ public class ColumnHeaderViewHolder extends AbstractSorterViewHolder {
         column_header_textview.requestLayout();
     }
 
+    @NonNull
     private View.OnClickListener mSortButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -118,14 +113,14 @@ public class ColumnHeaderViewHolder extends AbstractSorterViewHolder {
         itemView.requestLayout();
     }
 
-    private void controlSortState(SortState sortState) {
+    private void controlSortState(@NonNull SortState sortState) {
         if (sortState == SortState.ASCENDING) {
             column_header_sortButton.setVisibility(View.VISIBLE);
-            column_header_sortButton.setImageDrawable(arrow_down);
+            column_header_sortButton.setImageResource(R.drawable.ic_down);
 
         } else if (sortState == SortState.DESCENDING) {
             column_header_sortButton.setVisibility(View.VISIBLE);
-            column_header_sortButton.setImageDrawable(arrow_up);
+            column_header_sortButton.setImageResource(R.drawable.ic_up);
         } else {
             column_header_sortButton.setVisibility(View.INVISIBLE);
         }

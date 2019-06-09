@@ -17,7 +17,6 @@
 
 package com.evrencoskun.tableviewsample;
 
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -31,35 +30,27 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.evrencoskun.tableview.TableView;
-import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.filter.Filter;
 import com.evrencoskun.tableview.pagination.Pagination;
 import com.evrencoskun.tableviewsample.tableview.TableViewAdapter;
 import com.evrencoskun.tableviewsample.tableview.TableViewListener;
 import com.evrencoskun.tableviewsample.tableview.TableViewModel;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MainFragment extends Fragment {
-
-    private EditText searchField;
-    private Spinner moodFilter, genderFilter, itemsPerPage;
-    public ImageButton previousButton, nextButton;
-    public EditText pageNumberField;
-    public TextView tablePaginationDetails;
-
-    private AbstractTableAdapter mTableViewAdapter;
+    private Spinner moodFilter, genderFilter;
+    private ImageButton previousButton, nextButton;
+    private TextView tablePaginationDetails;
     private TableView mTableView;
     private Filter mTableFilter; // This is used for filtering the table.
     private Pagination mPagination; // This is used for paginating the table.
-
-    // This is a sample class that provides the cell value objects and other configurations.
-    private TableViewModel mTableViewModel;
 
     private boolean mPaginationEnabled = false;
 
@@ -67,12 +58,13 @@ public class MainFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_main, container, false);
 
-        searchField = layout.findViewById(R.id.query_string);
+        EditText searchField = layout.findViewById(R.id.query_string);
         searchField.addTextChangedListener(mSearchTextWatcher);
 
         moodFilter = layout.findViewById(R.id.mood_spinner);
@@ -81,13 +73,13 @@ public class MainFragment extends Fragment {
         genderFilter = layout.findViewById(R.id.gender_spinner);
         genderFilter.setOnItemSelectedListener(mItemSelectionListener);
 
-        itemsPerPage = layout.findViewById(R.id.items_per_page_spinner);
+        Spinner itemsPerPage = layout.findViewById(R.id.items_per_page_spinner);
 
         View tableTestContainer = layout.findViewById(R.id.table_test_container);
 
         previousButton = layout.findViewById(R.id.previous_button);
         nextButton = layout.findViewById(R.id.next_button);
-        pageNumberField = layout.findViewById(R.id.page_number_text);
+        EditText pageNumberField = layout.findViewById(R.id.page_number_text);
         tablePaginationDetails = layout.findViewById(R.id.table_details);
 
         if (mPaginationEnabled) {
@@ -124,21 +116,20 @@ public class MainFragment extends Fragment {
 
     private void initializeTableView() {
         // Create TableView View model class  to group view models of TableView
-        mTableViewModel = new TableViewModel(getContext());
+        TableViewModel tableViewModel = new TableViewModel();
 
         // Create TableView Adapter
-        mTableViewAdapter = new TableViewAdapter(getContext(), mTableViewModel);
+        TableViewAdapter tableViewAdapter = new TableViewAdapter(requireContext(), tableViewModel);
 
-        mTableView.setAdapter(mTableViewAdapter);
+        mTableView.setAdapter(tableViewAdapter);
         mTableView.setTableViewListener(new TableViewListener(mTableView));
 
         // Create an instance of a Filter and pass the TableView.
         //mTableFilter = new Filter(mTableView);
 
         // Load the dummy data to the TableView
-        mTableViewAdapter.setAllItems(mTableViewModel.getColumnHeaderList(), mTableViewModel
-                .getRowHeaderList(), mTableViewModel.getCellList());
-
+        tableViewAdapter.setAllItems(tableViewModel.getColumnHeaderList(), tableViewModel
+                .getRowHeaderList(), tableViewModel.getCellList());
 
         //mTableView.setHasFixedWidth(true);
 
@@ -156,18 +147,18 @@ public class MainFragment extends Fragment {
 
     }
 
-    public void filterTable(String filter) {
+    public void filterTable(@NonNull String filter) {
         // Sets a filter to the table, this will filter ALL the columns.
         mTableFilter.set(filter);
     }
 
-    public void filterTableForMood(String filter) {
+    public void filterTableForMood(@NonNull String filter) {
         // Sets a filter to the table, this will only filter a specific column.
         // In the example data, this will filter the mood column.
         mTableFilter.set(TableViewModel.MOOD_COLUMN_INDEX, filter);
     }
 
-    public void filterTableForGender(String filter) {
+    public void filterTableForGender(@NonNull String filter) {
         // Sets a filter to the table, this will only filter a specific column.
         // In the example data, this will filter the gender column.
         mTableFilter.set(TableViewModel.GENDER_COLUMN_INDEX, filter);
@@ -193,35 +184,36 @@ public class MainFragment extends Fragment {
     }
 
     // Handler for the changing of pages in the paginated TableView.
+    @NonNull
     private Pagination.OnTableViewPageTurnedListener onTableViewPageTurnedListener = new
             Pagination.OnTableViewPageTurnedListener() {
-        @Override
-        public void onPageTurned(int numItems, int itemsStart, int itemsEnd) {
-            int currentPage = mPagination.getCurrentPage();
-            int pageCount = mPagination.getPageCount();
-            previousButton.setVisibility(View.VISIBLE);
-            nextButton.setVisibility(View.VISIBLE);
+                @Override
+                public void onPageTurned(int numItems, int itemsStart, int itemsEnd) {
+                    int currentPage = mPagination.getCurrentPage();
+                    int pageCount = mPagination.getPageCount();
+                    previousButton.setVisibility(View.VISIBLE);
+                    nextButton.setVisibility(View.VISIBLE);
 
-            if (currentPage == 1 && pageCount == 1) {
-                previousButton.setVisibility(View.INVISIBLE);
-                nextButton.setVisibility(View.INVISIBLE);
-            }
+                    if (currentPage == 1 && pageCount == 1) {
+                        previousButton.setVisibility(View.INVISIBLE);
+                        nextButton.setVisibility(View.INVISIBLE);
+                    }
 
-            if (currentPage == 1) {
-                previousButton.setVisibility(View.INVISIBLE);
-            }
+                    if (currentPage == 1) {
+                        previousButton.setVisibility(View.INVISIBLE);
+                    }
 
-            if (currentPage == pageCount) {
-                nextButton.setVisibility(View.INVISIBLE);
-            }
+                    if (currentPage == pageCount) {
+                        nextButton.setVisibility(View.INVISIBLE);
+                    }
 
-            tablePaginationDetails.setText(getString(R.string.table_pagination_details, String
-                    .valueOf(currentPage), String.valueOf(itemsStart), String.valueOf(itemsEnd)));
+                    tablePaginationDetails.setText(getString(R.string.table_pagination_details, String
+                            .valueOf(currentPage), String.valueOf(itemsStart), String.valueOf(itemsEnd)));
 
-        }
-    };
+                }
+            };
 
-
+    @NonNull
     private AdapterView.OnItemSelectedListener mItemSelectionListener = new AdapterView
             .OnItemSelectedListener() {
         @Override
@@ -245,6 +237,7 @@ public class MainFragment extends Fragment {
         }
     };
 
+    @NonNull
     private TextWatcher mSearchTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -262,18 +255,16 @@ public class MainFragment extends Fragment {
         }
     };
 
-
+    @NonNull
     private AdapterView.OnItemSelectedListener onItemsPerPageSelectedListener = new AdapterView
             .OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             int itemsPerPage;
-            switch (parent.getItemAtPosition(position).toString()) {
-                case "All":
-                    itemsPerPage = 0;
-                    break;
-                default:
-                    itemsPerPage = Integer.valueOf(parent.getItemAtPosition(position).toString());
+            if ("All".equals(parent.getItemAtPosition(position).toString())) {
+                itemsPerPage = 0;
+            } else {
+                itemsPerPage = Integer.valueOf(parent.getItemAtPosition(position).toString());
             }
 
             setTableItemsPerPage(itemsPerPage);
@@ -285,6 +276,7 @@ public class MainFragment extends Fragment {
         }
     };
 
+    @NonNull
     private View.OnClickListener mClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -296,6 +288,7 @@ public class MainFragment extends Fragment {
         }
     };
 
+    @NonNull
     private TextWatcher onPageTextChanged = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
