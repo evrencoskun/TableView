@@ -32,11 +32,8 @@ public class Cell implements ISortableModel, IFilterableModel {
     private String mId;
     @Nullable
     private Object mData;
+    @NonNull
     private String mFilterKeyword;
-
-    public Cell(@NonNull String id) {
-        this.mId = id;
-    }
 
     public Cell(@NonNull String id, @Nullable Object data) {
         this.mId = id;
@@ -71,14 +68,6 @@ public class Cell implements ISortableModel, IFilterableModel {
 
     public void setData(@Nullable String data) {
         mData = data;
-    }
-
-    public String getFilterKeyword() {
-        return mFilterKeyword;
-    }
-
-    public void setFilterKeyword(String filterKeyword) {
-        this.mFilterKeyword = filterKeyword;
     }
 
     @NonNull

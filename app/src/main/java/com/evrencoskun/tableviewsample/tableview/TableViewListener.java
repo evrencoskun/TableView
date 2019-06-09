@@ -34,12 +34,12 @@ import com.evrencoskun.tableviewsample.tableview.popup.RowHeaderLongPressPopup;
  */
 
 public class TableViewListener implements ITableViewListener {
-
-    private Toast mToast;
+    @NonNull
     private Context mContext;
+    @NonNull
     private TableView mTableView;
 
-    public TableViewListener(TableView tableView) {
+    public TableViewListener(@NonNull TableView tableView) {
         this.mContext = tableView.getContext();
         this.mTableView = tableView;
     }
@@ -136,11 +136,6 @@ public class TableViewListener implements ITableViewListener {
 
 
     private void showToast(String p_strMessage) {
-        if (mToast == null) {
-            mToast = Toast.makeText(mContext, "", Toast.LENGTH_SHORT);
-        }
-
-        mToast.setText(p_strMessage);
-        mToast.show();
+        Toast.makeText(mContext, p_strMessage, Toast.LENGTH_SHORT).show();
     }
 }

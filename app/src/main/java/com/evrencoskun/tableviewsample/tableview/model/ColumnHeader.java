@@ -25,11 +25,6 @@ import androidx.annotation.Nullable;
  */
 
 public class ColumnHeader extends Cell {
-
-    public ColumnHeader(@NonNull String id) {
-        super(id);
-    }
-
     public ColumnHeader(@NonNull String id, @Nullable String data) {
         super(id, data);
     }
