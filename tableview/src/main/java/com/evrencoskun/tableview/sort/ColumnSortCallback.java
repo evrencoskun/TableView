@@ -17,8 +17,8 @@
 
 package com.evrencoskun.tableview.sort;
 
-import android.support.v4.util.ObjectsCompat;
-import android.support.v7.util.DiffUtil;
+import androidx.core.util.ObjectsCompat;
+import androidx.recyclerview.widget.DiffUtil;
 
 import java.util.List;
 

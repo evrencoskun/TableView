@@ -17,9 +17,10 @@
 
 package com.evrencoskun.tableview.util;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by evrencoskun on 18/09/2017.
