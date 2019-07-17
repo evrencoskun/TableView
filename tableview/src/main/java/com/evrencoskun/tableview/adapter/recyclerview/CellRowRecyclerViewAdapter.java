@@ -20,6 +20,8 @@ package com.evrencoskun.tableview.adapter.recyclerview;
 import android.content.Context;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.ITableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
@@ -31,26 +33,26 @@ import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.
 
 public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
-    private static final String LOG_TAG = CellRowRecyclerViewAdapter.class.getSimpleName();
-
     private int mYPosition;
     private ITableAdapter mTableAdapter;
+
+    @NonNull
     private ITableView mTableView;
 
-    public CellRowRecyclerViewAdapter(Context context, ITableView tableView) {
+    public CellRowRecyclerViewAdapter(@NonNull Context context, @NonNull ITableView tableView) {
         super(context, null);
         this.mTableAdapter = tableView.getAdapter();
         this.mTableView = tableView;
     }
 
+    @NonNull
     @Override
-    public AbstractViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AbstractViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return mTableAdapter.onCreateCellViewHolder(parent, viewType);
     }
 
-
     @Override
-    public void onBindViewHolder(final AbstractViewHolder holder, final int xPosition) {
+    public void onBindViewHolder(@NonNull final AbstractViewHolder holder, final int xPosition) {
         mTableAdapter.onBindCellViewHolder(holder, getItem(xPosition), xPosition, mYPosition);
     }
 
@@ -67,9 +69,8 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
         return mTableAdapter.getCellItemViewType(position);
     }
 
-
     @Override
-    public void onViewAttachedToWindow(AbstractViewHolder viewHolder) {
+    public void onViewAttachedToWindow(@NonNull AbstractViewHolder viewHolder) {
         super.onViewAttachedToWindow(viewHolder);
 
         SelectionState selectionState = mTableView.getSelectionHandler().getCellSelectionState
@@ -91,12 +92,12 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
     }
 
     @Override
-    public boolean onFailedToRecycleView(AbstractViewHolder holder) {
+    public boolean onFailedToRecycleView(@NonNull AbstractViewHolder holder) {
         return holder.onFailedToRecycleView();
     }
 
     @Override
-    public void onViewRecycled(AbstractViewHolder holder) {
+    public void onViewRecycled(@NonNull AbstractViewHolder holder) {
         super.onViewRecycled(holder);
         holder.onViewRecycled();
     }

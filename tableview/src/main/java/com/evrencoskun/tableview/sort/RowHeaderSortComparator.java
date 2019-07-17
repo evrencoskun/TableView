@@ -1,5 +1,7 @@
 package com.evrencoskun.tableview.sort;
 
+import androidx.annotation.NonNull;
+
 import java.util.Comparator;
 
 /**
@@ -8,10 +10,7 @@ import java.util.Comparator;
 
 public class RowHeaderSortComparator extends AbstractSortComparator implements Comparator<ISortableModel> {
 
-    private static final String LOG_TAG = RowHeaderSortComparator.class.getSimpleName();
-
-
-    public RowHeaderSortComparator(SortState sortState) {
+    public RowHeaderSortComparator(@NonNull SortState sortState) {
         this.mSortState = sortState;
     }
 

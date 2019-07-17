@@ -20,6 +20,8 @@ package com.evrencoskun.tableview.listener.itemclick;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.evrencoskun.tableview.ITableView;
@@ -33,12 +35,16 @@ import com.evrencoskun.tableview.listener.ITableViewListener;
 
 public abstract class AbstractItemClickListener implements RecyclerView.OnItemTouchListener {
     private ITableViewListener mListener;
+    @NonNull
     protected GestureDetector mGestureDetector;
+    @NonNull
     protected CellRecyclerView mRecyclerView;
+    @NonNull
     protected SelectionHandler mSelectionHandler;
+    @NonNull
     protected ITableView mTableView;
 
-    public AbstractItemClickListener(CellRecyclerView recyclerView, ITableView tableView) {
+    public AbstractItemClickListener(@NonNull CellRecyclerView recyclerView, @NonNull ITableView tableView) {
         this.mRecyclerView = recyclerView;
         this.mTableView = tableView;
         this.mSelectionHandler = tableView.getSelectionHandler();
@@ -46,6 +52,7 @@ public abstract class AbstractItemClickListener implements RecyclerView.OnItemTo
         mGestureDetector = new GestureDetector(mRecyclerView.getContext(), new GestureDetector
                 .SimpleOnGestureListener() {
 
+            @Nullable
             MotionEvent start;
 
             @Override
@@ -76,17 +83,19 @@ public abstract class AbstractItemClickListener implements RecyclerView.OnItemTo
     }
 
     @Override
-    public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) {
+    public boolean onInterceptTouchEvent(@NonNull RecyclerView view, @NonNull MotionEvent e) {
         return mGestureDetector.onTouchEvent(e);
     }
 
     @Override
-    public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) { }
+    public void onTouchEvent(@NonNull RecyclerView view, @NonNull MotionEvent motionEvent) {
+    }
 
     @Override
-    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {}
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+    }
 
-
+    @NonNull
     protected ITableViewListener getTableViewListener() {
         if (mListener == null) {
             mListener = mTableView.getTableViewListener();
@@ -94,7 +103,7 @@ public abstract class AbstractItemClickListener implements RecyclerView.OnItemTo
         return mListener;
     }
 
-    abstract protected boolean clickAction(RecyclerView view, MotionEvent e);
+    abstract protected boolean clickAction(@NonNull RecyclerView view, @NonNull MotionEvent e);
 
-    abstract protected void longPressAction(MotionEvent e);
+    abstract protected void longPressAction(@NonNull MotionEvent e);
 }

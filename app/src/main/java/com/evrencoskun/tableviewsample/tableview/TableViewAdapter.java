@@ -23,6 +23,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.sort.SortState;
@@ -51,13 +54,12 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
 
     private static final String LOG_TAG = TableViewAdapter.class.getSimpleName();
 
+    @NonNull
     private TableViewModel mTableViewModel;
-    private final LayoutInflater mInflater;
 
-    public TableViewAdapter(Context context, TableViewModel tableViewModel) {
+    public TableViewAdapter(@NonNull Context context, @NonNull TableViewModel tableViewModel) {
         super(context);
         this.mTableViewModel = tableViewModel;
-        this.mInflater = LayoutInflater.from(mContext);
     }
 
     /**
@@ -67,29 +69,30 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
      *
      * @param viewType : This value comes from "getCellItemViewType" method to support different
      *                 type of viewHolder as a Cell item.
-     *
      * @see #getCellItemViewType(int);
      */
+    @NonNull
     @Override
-    public AbstractViewHolder onCreateCellViewHolder(ViewGroup parent, int viewType) {
+    public AbstractViewHolder onCreateCellViewHolder(@NonNull ViewGroup parent, int viewType) {
         //TODO check
         Log.e(LOG_TAG, " onCreateCellViewHolder has been called");
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View layout;
 
         switch (viewType) {
             case MOOD_CELL_TYPE:
                 // Get image cell layout which has ImageView on the base instead of TextView.
-                layout = mInflater.inflate(R.layout.table_view_image_cell_layout, parent, false);
+                layout = inflater.inflate(R.layout.table_view_image_cell_layout, parent, false);
 
                 return new MoodCellViewHolder(layout);
             case GENDER_CELL_TYPE:
                 // Get image cell layout which has ImageView instead of TextView.
-                layout = mInflater.inflate(R.layout.table_view_image_cell_layout, parent, false);
+                layout = inflater.inflate(R.layout.table_view_image_cell_layout, parent, false);
 
                 return new GenderCellViewHolder(layout);
             default:
                 // For cells that display a text
-                layout = mInflater.inflate(R.layout.table_view_cell_layout, parent, false);
+                layout = inflater.inflate(R.layout.table_view_cell_layout, parent, false);
 
                 // Create a Cell ViewHolder
                 return new CellViewHolder(layout);
@@ -108,11 +111,10 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
      *                       example, the model class is "Cell".
      * @param columnPosition : This is the X (Column) position of the cell item.
      * @param rowPosition    : This is the Y (Row) position of the cell item.
-     *
      * @see #onCreateCellViewHolder(ViewGroup, int) ;
      */
     @Override
-    public void onBindCellViewHolder(AbstractViewHolder holder, Object cellItemModel, int
+    public void onBindCellViewHolder(@NonNull AbstractViewHolder holder, @Nullable Object cellItemModel, int
             columnPosition, int rowPosition) {
         Cell cell = (Cell) cellItemModel;
 
@@ -120,13 +122,13 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
             case MOOD_CELL_TYPE:
                 MoodCellViewHolder moodViewHolder = (MoodCellViewHolder) holder;
 
-                moodViewHolder.cell_image.setImageDrawable(mTableViewModel.getDrawable((int) cell
+                moodViewHolder.cell_image.setImageResource(mTableViewModel.getDrawable((int) cell
                         .getData(), false));
                 break;
             case GENDER_CELL_TYPE:
                 GenderCellViewHolder genderViewHolder = (GenderCellViewHolder) holder;
 
-                genderViewHolder.cell_image.setImageDrawable(mTableViewModel.getDrawable((int)
+                genderViewHolder.cell_image.setImageResource(mTableViewModel.getDrawable((int)
                         cell.getData(), true));
                 break;
             default:
@@ -144,15 +146,16 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
      *
      * @param viewType : This value comes from "getColumnHeaderItemViewType" method to support
      *                 different type of viewHolder as a Column Header item.
-     *
      * @see #getColumnHeaderItemViewType(int);
      */
+    @NonNull
     @Override
-    public AbstractViewHolder onCreateColumnHeaderViewHolder(ViewGroup parent, int viewType) {
+    public AbstractViewHolder onCreateColumnHeaderViewHolder(@NonNull ViewGroup parent, int viewType) {
         // TODO: check
         //Log.e(LOG_TAG, " onCreateColumnHeaderViewHolder has been called");
         // Get Column Header xml Layout
-        View layout = mInflater.inflate(R.layout.table_view_column_header_layout, parent, false);
+        View layout = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.table_view_column_header_layout, parent, false);
 
         // Create a ColumnHeader ViewHolder
         return new ColumnHeaderViewHolder(layout, getTableView());
@@ -170,11 +173,10 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
      * @param columnHeaderItemModel : This is the column header view model located on this X
      *                              position. In this example, the model class is "ColumnHeader".
      * @param columnPosition        : This is the X (Column) position of the column header item.
-     *
      * @see #onCreateColumnHeaderViewHolder(ViewGroup, int) ;
      */
     @Override
-    public void onBindColumnHeaderViewHolder(AbstractViewHolder holder, Object
+    public void onBindColumnHeaderViewHolder(@NonNull AbstractViewHolder holder, @Nullable Object
             columnHeaderItemModel, int columnPosition) {
         ColumnHeader columnHeader = (ColumnHeader) columnHeaderItemModel;
 
@@ -190,13 +192,14 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
      *
      * @param viewType : This value comes from "getRowHeaderItemViewType" method to support
      *                 different type of viewHolder as a row Header item.
-     *
      * @see #getRowHeaderItemViewType(int);
      */
+    @NonNull
     @Override
-    public AbstractViewHolder onCreateRowHeaderViewHolder(ViewGroup parent, int viewType) {
+    public AbstractViewHolder onCreateRowHeaderViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Get Row Header xml Layout
-        View layout = mInflater.inflate(R.layout.table_view_row_header_layout, parent, false);
+        View layout = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.table_view_row_header_layout, parent, false);
 
         // Create a Row Header ViewHolder
         return new RowHeaderViewHolder(layout);
@@ -214,11 +217,10 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
      * @param rowHeaderItemModel : This is the row header view model located on this Y position. In
      *                           this example, the model class is "RowHeader".
      * @param rowPosition        : This is the Y (row) position of the row header item.
-     *
      * @see #onCreateRowHeaderViewHolder(ViewGroup, int) ;
      */
     @Override
-    public void onBindRowHeaderViewHolder(AbstractViewHolder holder, Object rowHeaderItemModel,
+    public void onBindRowHeaderViewHolder(@NonNull AbstractViewHolder holder, @Nullable Object rowHeaderItemModel,
                                           int rowPosition) {
         RowHeader rowHeader = (RowHeader) rowHeaderItemModel;
 
@@ -227,11 +229,12 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
         rowHeaderViewHolder.row_header_textview.setText(String.valueOf(rowHeader.getData()));
     }
 
-
+    @NonNull
     @Override
     public View onCreateCornerView() {
         // Get Corner xml layout
-        View corner = mInflater.inflate(R.layout.table_view_corner_layout, null);
+        View corner = LayoutInflater.from(mContext)
+                .inflate(R.layout.table_view_corner_layout, null);
         corner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

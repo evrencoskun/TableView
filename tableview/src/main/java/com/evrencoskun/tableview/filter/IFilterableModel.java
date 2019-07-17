@@ -17,6 +17,8 @@
 
 package com.evrencoskun.tableview.filter;
 
+import androidx.annotation.NonNull;
+
 public interface IFilterableModel {
 
     /**
@@ -24,5 +26,6 @@ public interface IFilterableModel {
      *
      * @return query string for this object to be used in filtering.
      */
+    @NonNull
     String getFilterableKeyword();
 }

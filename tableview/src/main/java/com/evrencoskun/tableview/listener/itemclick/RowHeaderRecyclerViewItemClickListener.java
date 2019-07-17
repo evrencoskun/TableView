@@ -20,6 +20,7 @@ package com.evrencoskun.tableview.listener.itemclick;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.evrencoskun.tableview.ITableView;
@@ -32,13 +33,13 @@ import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 
 public class RowHeaderRecyclerViewItemClickListener extends AbstractItemClickListener {
 
-    public RowHeaderRecyclerViewItemClickListener(CellRecyclerView recyclerView, ITableView
+    public RowHeaderRecyclerViewItemClickListener(@NonNull CellRecyclerView recyclerView, @NonNull ITableView
             tableView) {
         super(recyclerView, tableView);
     }
 
     @Override
-    protected boolean clickAction(RecyclerView view, MotionEvent e) {
+    protected boolean clickAction(@NonNull RecyclerView view, @NonNull MotionEvent e) {
         // Get interacted view from x,y coordinate.
         View childView = view.findChildViewUnder(e.getX(), e.getY());
 
@@ -54,16 +55,14 @@ public class RowHeaderRecyclerViewItemClickListener extends AbstractItemClickLis
                 mSelectionHandler.setSelectedRowPosition(holder, row);
             }
 
-            if (getTableViewListener() != null) {
-                // Call ITableView listener for item click
-                getTableViewListener().onRowHeaderClicked(holder, row);
-            }
+            // Call ITableView listener for item click
+            getTableViewListener().onRowHeaderClicked(holder, row);
             return true;
         }
         return false;
     }
 
-    protected void longPressAction(MotionEvent e) {
+    protected void longPressAction(@NonNull MotionEvent e) {
         // Consume the action for the time when the recyclerView is scrolling.
         if (mRecyclerView.getScrollState() != RecyclerView.SCROLL_STATE_IDLE) {
             return;
@@ -72,7 +71,8 @@ public class RowHeaderRecyclerViewItemClickListener extends AbstractItemClickLis
         // Get interacted view from x,y coordinate.
         View child = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
 
-        if (child != null && getTableViewListener() != null) {
+        if (child != null) {
+            getTableViewListener();
             // Find the view holder
             RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(child);
 

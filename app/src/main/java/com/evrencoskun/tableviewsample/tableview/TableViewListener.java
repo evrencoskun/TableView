@@ -34,12 +34,12 @@ import com.evrencoskun.tableviewsample.tableview.popup.RowHeaderLongPressPopup;
  */
 
 public class TableViewListener implements ITableViewListener {
-
-    private Toast mToast;
+    @NonNull
     private Context mContext;
+    @NonNull
     private TableView mTableView;
 
-    public TableViewListener(TableView tableView) {
+    public TableViewListener(@NonNull TableView tableView) {
         this.mContext = tableView.getContext();
         this.mTableView = tableView;
     }
@@ -96,7 +96,7 @@ public class TableViewListener implements ITableViewListener {
     public void onColumnHeaderLongPressed(@NonNull RecyclerView.ViewHolder columnHeaderView, int
             column) {
 
-        if (columnHeaderView != null && columnHeaderView instanceof ColumnHeaderViewHolder) {
+        if (columnHeaderView instanceof ColumnHeaderViewHolder) {
             // Create Long Press Popup
             ColumnHeaderLongPressPopup popup = new ColumnHeaderLongPressPopup(
                     (ColumnHeaderViewHolder) columnHeaderView, mTableView);
@@ -128,21 +128,14 @@ public class TableViewListener implements ITableViewListener {
     @Override
     public void onRowHeaderLongPressed(@NonNull RecyclerView.ViewHolder rowHeaderView, int row) {
 
-        if (rowHeaderView != null) {
-            // Create Long Press Popup
-            RowHeaderLongPressPopup popup = new RowHeaderLongPressPopup(rowHeaderView, mTableView);
-            // Show
-            popup.show();
-        }
+        // Create Long Press Popup
+        RowHeaderLongPressPopup popup = new RowHeaderLongPressPopup(rowHeaderView, mTableView);
+        // Show
+        popup.show();
     }
 
 
     private void showToast(String p_strMessage) {
-        if (mToast == null) {
-            mToast = Toast.makeText(mContext, "", Toast.LENGTH_SHORT);
-        }
-
-        mToast.setText(p_strMessage);
-        mToast.show();
+        Toast.makeText(mContext, p_strMessage, Toast.LENGTH_SHORT).show();
     }
 }

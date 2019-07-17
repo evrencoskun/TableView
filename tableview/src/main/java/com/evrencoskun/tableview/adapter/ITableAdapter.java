@@ -20,6 +20,9 @@ package com.evrencoskun.tableview.adapter;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 
@@ -27,7 +30,7 @@ import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
  * Created by evrencoskun on 10/06/2017.
  */
 
-public interface ITableAdapter {
+public interface ITableAdapter<CH, RH, C> {
 
     int getColumnHeaderItemViewType(int position);
 
@@ -37,21 +40,25 @@ public interface ITableAdapter {
 
     View getCornerView();
 
-    AbstractViewHolder onCreateCellViewHolder(ViewGroup parent, int viewType);
+    @NonNull
+    AbstractViewHolder onCreateCellViewHolder(@NonNull ViewGroup parent, int viewType);
 
-    void onBindCellViewHolder(AbstractViewHolder holder, Object cellItemModel, int
+    void onBindCellViewHolder(@NonNull AbstractViewHolder holder, @Nullable Object cellItemModel, int
             columnPosition, int rowPosition);
 
-    AbstractViewHolder onCreateColumnHeaderViewHolder(ViewGroup parent, int viewType);
+    @NonNull
+    AbstractViewHolder onCreateColumnHeaderViewHolder(@NonNull ViewGroup parent, int viewType);
 
-    void onBindColumnHeaderViewHolder(AbstractViewHolder holder, Object columnHeaderItemModel,
+    void onBindColumnHeaderViewHolder(@NonNull AbstractViewHolder holder, @Nullable Object columnHeaderItemModel,
                                       int columnPosition);
 
-    AbstractViewHolder onCreateRowHeaderViewHolder(ViewGroup parent, int viewType);
+    @NonNull
+    AbstractViewHolder onCreateRowHeaderViewHolder(@NonNull ViewGroup parent, int viewType);
 
-    void onBindRowHeaderViewHolder(AbstractViewHolder holder, Object rowHeaderItemModel, int
+    void onBindRowHeaderViewHolder(@NonNull AbstractViewHolder holder, @Nullable Object rowHeaderItemModel, int
             rowPosition);
 
+    @NonNull
     View onCreateCornerView();
 
     ITableView getTableView();
@@ -61,5 +68,5 @@ public interface ITableAdapter {
      *
      * @param listener The AdapterDataSetChangedListener listener.
      */
-    void addAdapterDataSetChangedListener(AdapterDataSetChangedListener listener);
+    void addAdapterDataSetChangedListener(@NonNull AdapterDataSetChangedListener<CH, RH, C> listener);
 }

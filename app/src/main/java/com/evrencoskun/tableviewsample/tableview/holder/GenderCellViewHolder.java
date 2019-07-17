@@ -17,10 +17,9 @@
 
 package com.evrencoskun.tableviewsample.tableview.holder;
 
-import android.graphics.drawable.Drawable;
 import android.view.View;
 
-import androidx.core.content.ContextCompat;
+import androidx.annotation.NonNull;
 
 import com.evrencoskun.tableviewsample.R;
 import com.evrencoskun.tableviewsample.tableview.TableViewModel;
@@ -31,16 +30,15 @@ import com.evrencoskun.tableviewsample.tableview.TableViewModel;
 
 public class GenderCellViewHolder extends MoodCellViewHolder {
 
-    public GenderCellViewHolder(View itemView) {
+    public GenderCellViewHolder(@NonNull View itemView) {
         super(itemView);
     }
 
     @Override
     public void setData(Object data) {
         int gender = (int) data;
-        Drawable genderDrawable = ContextCompat.getDrawable(itemView.getContext(), gender ==
-                TableViewModel.BOY ? R.drawable.ic_male : R.drawable.ic_female);
+        int genderDrawable = gender == TableViewModel.BOY ? R.drawable.ic_male : R.drawable.ic_female;
 
-        cell_image.setImageDrawable(genderDrawable);
+        cell_image.setImageResource(genderDrawable);
     }
 }

@@ -1,5 +1,8 @@
 package com.evrencoskun.tableview.sort;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.Date;
 
 /**
@@ -7,10 +10,10 @@ import java.util.Date;
  */
 
 public abstract class AbstractSortComparator {
-
+    @NonNull
     protected SortState mSortState;
 
-    protected int compareContent(Object o1, Object o2) {
+    protected int compareContent(@Nullable Object o1, @Nullable Object o2) {
         if (o1 == null && o2 == null) {
             return 0;
         } else if (o1 == null) {

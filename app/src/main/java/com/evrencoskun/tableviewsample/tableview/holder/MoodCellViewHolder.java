@@ -17,12 +17,10 @@
 
 package com.evrencoskun.tableviewsample.tableview.holder;
 
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
-import androidx.core.content.ContextCompat;
+import androidx.annotation.NonNull;
 
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableviewsample.R;
@@ -33,22 +31,18 @@ import com.evrencoskun.tableviewsample.tableview.TableViewModel;
  */
 
 public class MoodCellViewHolder extends AbstractViewHolder {
-
-    public final LinearLayout cell_container;
+    @NonNull
     public final ImageView cell_image;
 
-    public MoodCellViewHolder(View itemView) {
+    public MoodCellViewHolder(@NonNull View itemView) {
         super(itemView);
-        cell_container = (LinearLayout) itemView.findViewById(R.id.cell_container);
-        cell_image = (ImageView) itemView.findViewById(R.id.cell_image);
+        cell_image = itemView.findViewById(R.id.cell_image);
     }
-
 
     public void setData(Object data) {
         int mood = (int) data;
-        Drawable moodDrawable = ContextCompat.getDrawable(itemView.getContext(), mood ==
-                TableViewModel.HAPPY ? R.drawable.ic_happy : R.drawable.ic_sad);
+        int moodDrawable = mood == TableViewModel.HAPPY ? R.drawable.ic_happy : R.drawable.ic_sad;
 
-        cell_image.setImageDrawable(moodDrawable);
+        cell_image.setImageResource(moodDrawable);
     }
 }

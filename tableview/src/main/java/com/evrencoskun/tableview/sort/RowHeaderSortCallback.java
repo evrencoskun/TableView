@@ -1,5 +1,6 @@
 package com.evrencoskun.tableview.sort;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 
 import java.util.List;
@@ -8,14 +9,13 @@ import java.util.List;
  * Created by cedricferry on 6/2/18.
  */
 
-public class RowHeaderSortCallback extends DiffUtil.Callback  {
-
-    private static final String LOG_TAG = RowHeaderSortCallback.class.getSimpleName();
-
+public class RowHeaderSortCallback extends DiffUtil.Callback {
+    @NonNull
     private List<ISortableModel> mOldCellItems;
+    @NonNull
     private List<ISortableModel> mNewCellItems;
 
-    public RowHeaderSortCallback(List<ISortableModel> oldCellItems, List<ISortableModel>
+    public RowHeaderSortCallback(@NonNull List<ISortableModel> oldCellItems, @NonNull List<ISortableModel>
             newCellItems) {
         this.mOldCellItems = oldCellItems;
         this.mNewCellItems = newCellItems;
