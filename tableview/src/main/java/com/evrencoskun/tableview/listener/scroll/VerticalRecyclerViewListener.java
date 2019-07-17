@@ -17,7 +17,7 @@
 
 package com.evrencoskun.tableview.listener.scroll;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
 

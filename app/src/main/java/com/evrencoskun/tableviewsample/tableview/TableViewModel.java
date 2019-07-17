@@ -19,7 +19,7 @@ package com.evrencoskun.tableviewsample.tableview;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 
 import com.evrencoskun.tableviewsample.R;
 import com.evrencoskun.tableviewsample.tableview.model.Cell;

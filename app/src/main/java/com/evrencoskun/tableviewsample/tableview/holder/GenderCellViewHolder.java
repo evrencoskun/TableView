@@ -18,7 +18,7 @@
 package com.evrencoskun.tableviewsample.tableview.holder;
 
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.view.View;
 
 import com.evrencoskun.tableviewsample.R;
