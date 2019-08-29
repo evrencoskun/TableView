@@ -65,7 +65,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1px"
+            android:layout_height="1dp"
             android:layout_gravity="bottom"
             android:background="@color/header_line_color"/>
     </FrameLayout>
