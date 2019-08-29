@@ -17,6 +17,7 @@
 
 package com.evrencoskun.tableview;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -56,6 +57,9 @@ public interface ITableView {
     boolean isShowVerticalSeparators();
 
     boolean isSortable();
+
+    @NonNull
+    Context getContext();
 
     @NonNull
     CellRecyclerView getCellRecyclerView();

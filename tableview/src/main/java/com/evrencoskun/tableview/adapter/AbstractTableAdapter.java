@@ -26,7 +26,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.ITableView;
-import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.ColumnHeaderRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.RowHeaderRecyclerViewAdapter;
@@ -43,8 +42,6 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
     private int mRowHeaderWidth;
     private int mColumnHeaderHeight;
 
-    @NonNull
-    protected Context mContext;
     private ColumnHeaderRecyclerViewAdapter<CH> mColumnHeaderRecyclerViewAdapter;
     private RowHeaderRecyclerViewAdapter<RH> mRowHeaderRecyclerViewAdapter;
     private CellRecyclerViewAdapter mCellRecyclerViewAdapter;
@@ -57,26 +54,24 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
     private ITableView mTableView;
     private List<AdapterDataSetChangedListener<CH, RH, C>> dataSetChangedListeners;
 
-    public AbstractTableAdapter(@NonNull Context context) {
-        mContext = context;
-    }
-
-    public void setTableView(@NonNull TableView tableView) {
+    public void setTableView(@NonNull ITableView tableView) {
         mTableView = tableView;
         initialize();
     }
 
     private void initialize() {
+        Context context = mTableView.getContext();
+
         // Create Column header RecyclerView Adapter
-        mColumnHeaderRecyclerViewAdapter = new ColumnHeaderRecyclerViewAdapter<>(mContext,
+        mColumnHeaderRecyclerViewAdapter = new ColumnHeaderRecyclerViewAdapter<>(context,
                 mColumnHeaderItems, this);
 
         // Create Row Header RecyclerView Adapter
-        mRowHeaderRecyclerViewAdapter = new RowHeaderRecyclerViewAdapter<>(mContext,
+        mRowHeaderRecyclerViewAdapter = new RowHeaderRecyclerViewAdapter<>(context,
                 mRowHeaderItems, this);
 
         // Create Cell RecyclerView Adapter
-        mCellRecyclerViewAdapter = new CellRecyclerViewAdapter<>(mContext, mCellItems, mTableView);
+        mCellRecyclerViewAdapter = new CellRecyclerViewAdapter<>(context, mCellItems, mTableView);
     }
 
     public void setColumnHeaderItems(@Nullable List<CH> columnHeaderItems) {

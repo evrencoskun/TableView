@@ -119,7 +119,7 @@ public class MainFragment extends Fragment {
         TableViewModel tableViewModel = new TableViewModel();
 
         // Create TableView Adapter
-        TableViewAdapter tableViewAdapter = new TableViewAdapter(requireContext(), tableViewModel);
+        TableViewAdapter tableViewAdapter = new TableViewAdapter(tableViewModel);
 
         mTableView.setAdapter(tableViewAdapter);
         mTableView.setTableViewListener(new TableViewListener(mTableView));
@@ -264,7 +264,7 @@ public class MainFragment extends Fragment {
             if ("All".equals(parent.getItemAtPosition(position).toString())) {
                 itemsPerPage = 0;
             } else {
-                itemsPerPage = Integer.valueOf(parent.getItemAtPosition(position).toString());
+                itemsPerPage = Integer.parseInt(parent.getItemAtPosition(position).toString());
             }
 
             setTableItemsPerPage(itemsPerPage);
@@ -301,7 +301,7 @@ public class MainFragment extends Fragment {
             if (TextUtils.isEmpty(s)) {
                 page = 1;
             } else {
-                page = Integer.valueOf(String.valueOf(s));
+                page = Integer.parseInt(String.valueOf(s));
             }
 
             goToTablePage(page);
