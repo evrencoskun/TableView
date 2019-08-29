@@ -230,10 +230,10 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
 
     @NonNull
     @Override
-    public View onCreateCornerView() {
+    public View onCreateCornerView(@NonNull ViewGroup parent) {
         // Get Corner xml layout
-        View corner = LayoutInflater.from(getTableView().getContext())
-                .inflate(R.layout.table_view_corner_layout, null);
+        View corner = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.table_view_corner_layout, parent, false);
         corner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
