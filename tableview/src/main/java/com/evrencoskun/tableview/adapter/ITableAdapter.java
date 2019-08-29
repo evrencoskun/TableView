@@ -59,7 +59,7 @@ public interface ITableAdapter<CH, RH, C> {
             rowPosition);
 
     @NonNull
-    View onCreateCornerView();
+    View onCreateCornerView(@NonNull ViewGroup parent);
 
     ITableView getTableView();
 
