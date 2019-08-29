@@ -38,6 +38,12 @@ android {
         }
     }
 
+    applicationVariants.all {
+        it.getGenerateBuildConfigProvider().configure {
+            it.enabled = false
+        }
+    }
+
     lintOptions {
         abortOnError false
     }
