@@ -17,7 +17,6 @@
 
 package com.evrencoskun.tableviewsample.tableview;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,8 +56,8 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
     @NonNull
     private TableViewModel mTableViewModel;
 
-    public TableViewAdapter(@NonNull Context context, @NonNull TableViewModel tableViewModel) {
-        super(context);
+    public TableViewAdapter(@NonNull TableViewModel tableViewModel) {
+        super();
         this.mTableViewModel = tableViewModel;
     }
 
@@ -233,7 +232,7 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
     @Override
     public View onCreateCornerView() {
         // Get Corner xml layout
-        View corner = LayoutInflater.from(mContext)
+        View corner = LayoutInflater.from(getTableView().getContext())
                 .inflate(R.layout.table_view_corner_layout, null);
         corner.setOnClickListener(new View.OnClickListener() {
             @Override
