@@ -18,7 +18,6 @@
 package com.evrencoskun.tableview.util;
 
 import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,15 +41,6 @@ public class TableViewUtils {
         view.measure(widthMeasureSpec, heightMeasureSpec);
 
         view.requestLayout();
-    }
-
-    /**
-     * Gets the exact width value before the view drawing by main thread.
-     */
-    public static int getWidth(@NonNull View view) {
-        view.measure(LinearLayout.LayoutParams.WRAP_CONTENT, View.MeasureSpec.makeMeasureSpec
-                (view.getMeasuredHeight(), View.MeasureSpec.EXACTLY));
-        return view.getMeasuredWidth();
     }
 
 }
