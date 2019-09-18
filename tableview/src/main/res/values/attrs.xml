@@ -26,5 +26,8 @@
         <attr name="separator_color" format="color"/>
         <attr name="show_vertical_separator" format="boolean"/>
         <attr name="show_horizontal_separator" format="boolean"/>
+        <attr name="allow_click_inside_cell" format="boolean" />
+        <attr name="allow_click_inside_row_header" format="boolean" />
+        <attr name="allow_click_inside_column_header" format="boolean" />
     </declare-styleable>
 </resources>
