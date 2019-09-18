@@ -55,6 +55,8 @@ public interface ITableView {
 
     boolean isShowVerticalSeparators();
 
+    boolean isAllowClickInsideCell();
+
     boolean isSortable();
 
     @NonNull
