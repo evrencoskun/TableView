@@ -21,13 +21,6 @@
     <dimen name="row_header_width">55dp</dimen>
     <dimen name="text_size">12sp</dimen>
 
-    <!-- Material Design TableView dimensions -->
-    <dimen name="md_cell_height">40dp</dimen>
-    <dimen name="md_cell_text_size">13sp</dimen>
-    <dimen name="md_column_header_text_size">13sp</dimen>
-    <dimen name="md_column_header_gap_size">28dp</dimen>
-
-
     <!-- Overriding the default values of the tableView -->
     <dimen name="default_row_header_width">55dp</dimen>
     <dimen name="default_column_header_height">40dp</dimen>

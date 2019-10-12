@@ -17,7 +17,6 @@
   -->
 
 <resources>
-    <color name="table_view_default_text_color">#0a0a0a</color>
     <color name="table_view_default_separator_color">#E7E7E7</color>
     <color name="table_view_default_unselected_background_color">#ffffff</color>
     <color name="table_view_default_selected_background_color">#fada65</color>
