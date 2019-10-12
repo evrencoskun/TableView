@@ -324,7 +324,7 @@ Firstly, you must create your custom TableView Adapter  which extends from ```Ab
      public View onCreateCornerView(ViewGroup parent) {
          // Get Corner xml layout
          return LayoutInflater.from(parent.getContext())
-              .inflate(R.layout.table_view_corner_layout, null);
+              .inflate(R.layout.table_view_corner_layout, parent, false);
      }
  
      @Override
