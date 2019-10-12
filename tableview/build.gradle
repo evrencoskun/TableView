@@ -9,7 +9,7 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -20,7 +20,7 @@ android {
     }
 
     libraryVariants.all {
-        it.getGenerateBuildConfigProvider().configure {
+        it.generateBuildConfigProvider.configure {
             it.enabled = false
         }
     }
@@ -38,7 +38,7 @@ android {
 
 dependencies {
     implementation 'androidx.annotation:annotation:1.1.0'
-    implementation 'androidx.core:core:1.0.2'
+    implementation 'androidx.core:core:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 }
 

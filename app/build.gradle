@@ -26,7 +26,7 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -38,7 +38,7 @@ android {
     }
 
     applicationVariants.all {
-        it.getGenerateBuildConfigProvider().configure {
+        it.generateBuildConfigProvider.configure {
             it.enabled = false
         }
     }
@@ -52,7 +52,7 @@ dependencies {
     implementation project(path: ':tableview')
 
     implementation 'androidx.annotation:annotation:1.1.0'
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.fragment:fragment:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.fragment:fragment:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 }
