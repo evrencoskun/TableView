@@ -2,21 +2,26 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 29
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    libraryVariants.all {
+        it.generateBuildConfigProvider.configure {
+            it.enabled = false
         }
     }
 
@@ -33,7 +38,7 @@ android {
 
 dependencies {
     implementation 'androidx.annotation:annotation:1.1.0'
-    implementation 'androidx.core:core:1.0.2'
+    implementation 'androidx.core:core:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 }
 
@@ -43,5 +48,5 @@ publish {
     artifactId = 'tableview' //project name
     publishVersion = '0.8.8' //version code
     desc = 'TableView is a powerful Android library for displaying complex data structures and rendering tabular data composed of rows, columns and cells.'
-    website = 'https://github.com/evrencoskun/TableView '//website
+    website = 'https://github.com/evrencoskun/TableView' //website
 }

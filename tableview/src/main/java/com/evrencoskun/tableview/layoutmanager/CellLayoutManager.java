@@ -47,13 +47,9 @@ public class CellLayoutManager extends LinearLayoutManager {
 
     @NonNull
     private ColumnHeaderLayoutManager mColumnHeaderLayoutManager;
-    @NonNull
-    private LinearLayoutManager mRowHeaderLayoutManager;
 
     @NonNull
     private CellRecyclerView mRowHeaderRecyclerView;
-    @NonNull
-    private CellRecyclerView mCellRecyclerView;
 
     private HorizontalRecyclerViewListener mHorizontalListener;
     @NonNull
@@ -70,9 +66,7 @@ public class CellLayoutManager extends LinearLayoutManager {
     public CellLayoutManager(@NonNull Context context, @NonNull ITableView tableView) {
         super(context);
         this.mTableView = tableView;
-        this.mCellRecyclerView = tableView.getCellRecyclerView();
         this.mColumnHeaderLayoutManager = tableView.getColumnHeaderLayoutManager();
-        this.mRowHeaderLayoutManager = tableView.getRowHeaderLayoutManager();
         this.mRowHeaderRecyclerView = tableView.getRowHeaderRecyclerView();
 
         initialize();
@@ -219,8 +213,7 @@ public class CellLayoutManager extends LinearLayoutManager {
                         // It shouldn't be scroll horizontally and the problem is gotten just for
                         // first visible item.
                         if (offset > 0 && xPosition == childLayoutManager
-                                .findFirstVisibleItemPosition() && mCellRecyclerView
-                                .getScrollState() != RecyclerView.SCROLL_STATE_IDLE) {
+                                .findFirstVisibleItemPosition() && getCellRecyclerViewScrollState() != RecyclerView.SCROLL_STATE_IDLE) {
 
                             int scrollPosition = mHorizontalListener.getScrollPosition();
                             offset = mHorizontalListener.getScrollPositionOffset() + scrollX;
@@ -375,7 +368,7 @@ public class CellLayoutManager extends LinearLayoutManager {
     public boolean shouldFitColumns(int yPosition) {
 
         // Scrolling horizontally
-        if (mCellRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
+        if (getCellRecyclerViewScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
 
             int lastVisiblePosition = findLastVisibleItemPosition();
             CellRecyclerView lastCellRecyclerView = (CellRecyclerView) findViewByPosition
@@ -408,7 +401,7 @@ public class CellLayoutManager extends LinearLayoutManager {
                 .getLayoutManager();
 
         // the below codes should be worked when it is scrolling vertically
-        if (mCellRecyclerView.getScrollState() != RecyclerView.SCROLL_STATE_IDLE) {
+        if (getCellRecyclerViewScrollState() != RecyclerView.SCROLL_STATE_IDLE) {
             if (childLayoutManager.isNeedFit()) {
 
                 // Scrolling up
@@ -430,7 +423,7 @@ public class CellLayoutManager extends LinearLayoutManager {
             // That means,populating for the first time like fetching all data to display.
             // It shouldn't be worked when it is scrolling horizontally ."getLastDx() == 0"
             // control for it.
-        } else if (childLayoutManager.getLastDx() == 0 && mCellRecyclerView.getScrollState() ==
+        } else if (childLayoutManager.getLastDx() == 0 && getCellRecyclerViewScrollState() ==
                 RecyclerView.SCROLL_STATE_IDLE) {
 
             if (childLayoutManager.isNeedFit()) {
@@ -442,7 +435,7 @@ public class CellLayoutManager extends LinearLayoutManager {
 
             if (mNeedFit) {
                 // for the first time to populate adapter
-                if (mRowHeaderLayoutManager.findLastVisibleItemPosition() == position) {
+                if (mTableView.getRowHeaderLayoutManager().findLastVisibleItemPosition() == position) {
 
                     fitWidthSize2(false);
                     Log.e(LOG_TAG, position + " fitWidthSize populating data for the first time");
@@ -544,5 +537,9 @@ public class CellLayoutManager extends LinearLayoutManager {
         }
 
         return recyclerViews;
+    }
+
+    private int getCellRecyclerViewScrollState() {
+        return mTableView.getCellRecyclerView().getScrollState();
     }
 }
