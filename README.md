@@ -123,12 +123,7 @@ Firstly, you must create your custom TableView Adapter  which extends from ```Ab
 
 ```java
  public class MyTableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHeader, Cell> {
-  
-     public MyTableViewAdapter(Context context) {
-         super(context);
- 
-     }
- 
+
      /**
       * This is sample CellViewHolder class
       * This viewHolder must be extended from AbstractViewHolder class instead of RecyclerView.ViewHolder.
@@ -157,8 +152,8 @@ Firstly, you must create your custom TableView Adapter  which extends from ```Ab
      @Override
      public AbstractViewHolder onCreateCellViewHolder(ViewGroup parent, int viewType) {
          // Get cell xml layout 
-         View layout = LayoutInflater.from(context).inflate(R.layout.my_cell_layout,
-                 parent, false);
+         View layout = LayoutInflater.from(parent.getContext())
+              .inflate(R.layout.my_cell_layout, parent, false);
          // Create a Custom ViewHolder for a Cell item.
          return new MyCellViewHolder(layout);
      }
@@ -224,8 +219,8 @@ Firstly, you must create your custom TableView Adapter  which extends from ```Ab
      public AbstractViewHolder onCreateColumnHeaderViewHolder(ViewGroup parent, int viewType) {
  
          // Get Column Header xml Layout
-         View layout = LayoutInflater.from(context).inflate(R.layout
-                 .table_view_column_header_layout, parent, false);
+         View layout = LayoutInflater.from(parent.getContext())
+                 .inflate(R.layout.table_view_column_header_layout, parent, false);
  
          // Create a ColumnHeader ViewHolder
          return new MyColumnHeaderViewHolder(layout);
@@ -293,8 +288,8 @@ Firstly, you must create your custom TableView Adapter  which extends from ```Ab
      public AbstractViewHolder onCreateRowHeaderViewHolder(ViewGroup parent, int viewType) {
  
          // Get Row Header xml Layout
-         View layout = LayoutInflater.from(context).inflate(R.layout
-                 .table_view_row_header_layout, parent, false);
+         View layout = LayoutInflater.from(parent.getContext())
+                 .inflate(R.layout.table_view_row_header_layout, parent, false);
  
          // Create a Row Header ViewHolder
          return new MyRowHeaderViewHolder(layout);
@@ -324,12 +319,12 @@ Firstly, you must create your custom TableView Adapter  which extends from ```Ab
          MyRowHeaderViewHolder rowHeaderViewHolder = (MyRowHeaderViewHolder) holder;
          rowHeaderViewHolder.row_header_textview.setText(rowHeader.getData());
      }
- 
- 
+
      @Override
-     public View onCreateCornerView() {
+     public View onCreateCornerView(ViewGroup parent) {
          // Get Corner xml layout
-         return LayoutInflater.from(context).inflate(R.layout.table_view_corner_layout, null);
+         return LayoutInflater.from(parent.getContext())
+              .inflate(R.layout.table_view_corner_layout, parent, false);
      }
  
      @Override
