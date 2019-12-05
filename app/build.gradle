@@ -18,15 +18,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion compile_sdk_version
 
     defaultConfig {
-        applicationId "com.evrencoskun.tableviewsample"
-        minSdkVersion 15
-        targetSdkVersion 29
+        applicationId 'com.evrencoskun.tableviewsample'
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
         versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        versionName '1.0'
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -51,8 +51,8 @@ android {
 dependencies {
     implementation project(path: ':tableview')
 
-    implementation 'androidx.annotation:annotation:1.1.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.fragment:fragment:1.1.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation "androidx.annotation:annotation:$androidx_annotation_version"
+    implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
+    implementation "androidx.fragment:fragment:$androidx_fragment_version"
+    implementation "androidx.recyclerview:recyclerview:$androidx_recyclerview_version"
 }
