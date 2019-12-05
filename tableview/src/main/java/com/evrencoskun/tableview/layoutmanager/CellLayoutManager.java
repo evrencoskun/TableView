@@ -513,7 +513,7 @@ public class CellLayoutManager extends LinearLayoutManager {
     public int getCacheWidth(int row, int column) {
         SparseIntArray cellRowCaches = mCachedWidthList.get(row);
         if (cellRowCaches != null) {
-            return cellRowCaches.get(column);
+            return cellRowCaches.get(column, -1);
         }
         return -1;
     }
