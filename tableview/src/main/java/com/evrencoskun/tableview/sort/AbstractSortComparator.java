@@ -41,36 +41,18 @@ public abstract class AbstractSortComparator {
     public int compare(Number o1, Number o2) {
         double n1 = o1.doubleValue();
         double n2 = o2.doubleValue();
-        if (n1 < n2) {
-            return -1;
-        } else if (n1 > n2) {
-            return 1;
-        } else {
-            return 0;
-        }
+
+        return Double.compare(n1, n2);
     }
 
     public int compare(Date o1, Date o2) {
         long n1 = o1.getTime();
         long n2 = o2.getTime();
-        if (n1 < n2) {
-            return -1;
-        } else if (n1 > n2) {
-            return 1;
-        } else {
-            return 0;
-        }
+
+        return Long.compare(n1, n2);
     }
 
     public int compare(Boolean o1, Boolean o2) {
-        boolean b1 = o1.booleanValue();
-        boolean b2 = o2.booleanValue();
-        if (b1 == b2) {
-            return 0;
-        } else if (b1) {
-            return 1;
-        } else {
-            return -1;
-        }
+        return Boolean.compare(o1, o2);
     }
 }

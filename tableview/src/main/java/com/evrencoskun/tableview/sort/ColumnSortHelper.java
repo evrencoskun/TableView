@@ -95,7 +95,7 @@ public class ColumnSortHelper {
         @NonNull
         private SortState direction;
 
-        public Directive(int column, @NonNull SortState direction) {
+        Directive(int column, @NonNull SortState direction) {
             this.column = column;
             this.direction = direction;
         }

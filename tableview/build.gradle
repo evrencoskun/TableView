@@ -19,6 +19,11 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility = java_version
+        targetCompatibility = java_version
+    }
+
     libraryVariants.all {
         it.generateBuildConfigProvider.configure {
             it.enabled = false
