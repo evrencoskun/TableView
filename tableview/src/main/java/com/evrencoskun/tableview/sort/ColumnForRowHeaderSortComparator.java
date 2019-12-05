@@ -1,9 +1,5 @@
 package com.evrencoskun.tableview.sort;
 
-/**
- * Created by cedricferry on 7/2/18.
- */
-
 import androidx.annotation.NonNull;
 
 import java.util.Comparator;
@@ -15,6 +11,7 @@ import java.util.List;
  * So if MainDataSet row 1 moved to position 10, RowHeader 1 move to position 10 too.
  * To accomplish that we need to set a comparator that use MainDataSet
  * in order to sort RowHeader.
+ * Created by cedricferry on 7/2/18.
  */
 public class ColumnForRowHeaderSortComparator implements Comparator<ISortableModel> {
     @NonNull

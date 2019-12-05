@@ -135,7 +135,7 @@ public class VisibilityHandler {
         return mHideColumnList.get(column) == null;
     }
 
-    class Row {
+    static class Row {
         private int mYPosition;
         @Nullable
         private Object mRowHeaderModel;
@@ -164,7 +164,7 @@ public class VisibilityHandler {
 
     }
 
-    class Column {
+    static class Column {
         private int mYPosition;
         @Nullable
         private Object mColumnHeaderModel;

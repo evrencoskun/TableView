@@ -137,12 +137,7 @@ public class CellLayoutManager extends LinearLayoutManager {
         if (mNeedSetLeft & scrollingLeft) {
             // Works just like invoke later of swing utils.
             Handler handler = new Handler();
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    fitWidthSize2(true);
-                }
-            });
+            handler.post(() -> fitWidthSize2(true));
         }
     }
 
@@ -476,8 +471,7 @@ public class CellLayoutManager extends LinearLayoutManager {
     }
 
     public void remeasureAllChild() {
-        // TODO: the below code causes requestLayout() improperly called by com.evrencoskun
-        // TODO: .tableview.adapter
+        // TODO: the below code causes requestLayout() improperly called by com.evrencoskun.tableview.adapter
 
         for (int j = 0; j < getChildCount(); j++) {
             CellRecyclerView recyclerView = (CellRecyclerView) getChildAt(j);

@@ -24,6 +24,7 @@ buildscript {
     ext.androidx_fragment_version = '1.1.0'
     ext.androidx_recyclerview_version = '1.1.0'
     ext.compile_sdk_version = 29
+    ext.java_version = '1.8'
     ext.min_sdk_version = 14
     ext.target_sdk_version = 29
 
