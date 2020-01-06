@@ -22,9 +22,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.sort.SortState;
@@ -37,6 +34,9 @@ import com.evrencoskun.tableviewsample.tableview.holder.RowHeaderViewHolder;
 import com.evrencoskun.tableviewsample.tableview.model.Cell;
 import com.evrencoskun.tableviewsample.tableview.model.ColumnHeader;
 import com.evrencoskun.tableviewsample.tableview.model.RowHeader;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by evrencoskun on 11/06/2017.
@@ -113,27 +113,26 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
      * @see #onCreateCellViewHolder(ViewGroup, int) ;
      */
     @Override
-    public void onBindCellViewHolder(@NonNull AbstractViewHolder holder, @Nullable Object cellItemModel, int
+    public void onBindCellViewHolder(@NonNull AbstractViewHolder holder, @Nullable Cell cellItemModel, int
             columnPosition, int rowPosition) {
-        Cell cell = (Cell) cellItemModel;
 
         switch (holder.getItemViewType()) {
             case MOOD_CELL_TYPE:
                 MoodCellViewHolder moodViewHolder = (MoodCellViewHolder) holder;
 
-                moodViewHolder.cell_image.setImageResource(mTableViewModel.getDrawable((int) cell
+                moodViewHolder.cell_image.setImageResource(mTableViewModel.getDrawable((int) cellItemModel
                         .getData(), false));
                 break;
             case GENDER_CELL_TYPE:
                 GenderCellViewHolder genderViewHolder = (GenderCellViewHolder) holder;
 
                 genderViewHolder.cell_image.setImageResource(mTableViewModel.getDrawable((int)
-                        cell.getData(), true));
+                        cellItemModel.getData(), true));
                 break;
             default:
                 // Get the holder to update cell item text
                 CellViewHolder viewHolder = (CellViewHolder) holder;
-                viewHolder.setCell(cell);
+                viewHolder.setCell(cellItemModel);
                 break;
         }
     }
@@ -175,13 +174,12 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
      * @see #onCreateColumnHeaderViewHolder(ViewGroup, int) ;
      */
     @Override
-    public void onBindColumnHeaderViewHolder(@NonNull AbstractViewHolder holder, @Nullable Object
+    public void onBindColumnHeaderViewHolder(@NonNull AbstractViewHolder holder, @Nullable ColumnHeader
             columnHeaderItemModel, int columnPosition) {
-        ColumnHeader columnHeader = (ColumnHeader) columnHeaderItemModel;
 
         // Get the holder to update cell item text
         ColumnHeaderViewHolder columnHeaderViewHolder = (ColumnHeaderViewHolder) holder;
-        columnHeaderViewHolder.setColumnHeader(columnHeader);
+        columnHeaderViewHolder.setColumnHeader(columnHeaderItemModel);
     }
 
     /**
@@ -219,13 +217,12 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
      * @see #onCreateRowHeaderViewHolder(ViewGroup, int) ;
      */
     @Override
-    public void onBindRowHeaderViewHolder(@NonNull AbstractViewHolder holder, @Nullable Object rowHeaderItemModel,
+    public void onBindRowHeaderViewHolder(@NonNull AbstractViewHolder holder, @Nullable RowHeader rowHeaderItemModel,
                                           int rowPosition) {
-        RowHeader rowHeader = (RowHeader) rowHeaderItemModel;
 
         // Get the holder to update row header item text
         RowHeaderViewHolder rowHeaderViewHolder = (RowHeaderViewHolder) holder;
-        rowHeaderViewHolder.row_header_textview.setText(String.valueOf(rowHeader.getData()));
+        rowHeaderViewHolder.row_header_textview.setText(String.valueOf(rowHeaderItemModel.getData()));
     }
 
     @NonNull
