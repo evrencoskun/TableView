@@ -35,13 +35,4 @@ public class RowHeaderSortHelper {
     public SortState getSortingStatus() {
         return mSortState;
     }
-
-    public class TableViewSorterException extends Exception {
-
-        public TableViewSorterException() {
-            super("For sorting process, column header view holders must be " + "extended from " +
-                    "AbstractSorterViewHolder class");
-        }
-
-    }
 }

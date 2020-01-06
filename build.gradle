@@ -18,13 +18,23 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    ext.androidx_annotation_version = '1.1.0'
+    ext.androidx_appcompat_version = '1.1.0'
+    ext.androidx_core_version = '1.1.0'
+    ext.androidx_fragment_version = '1.1.0'
+    ext.androidx_recyclerview_version = '1.1.0'
+    ext.compile_sdk_version = 29
+    ext.java_version = '1.8'
+    ext.min_sdk_version = 14
+    ext.target_sdk_version = 29
+
     repositories {
         jcenter()
         google()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.1'
+        classpath 'com.android.tools.build:gradle:3.5.2'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath 'com.novoda:bintray-release:0.9.1'
