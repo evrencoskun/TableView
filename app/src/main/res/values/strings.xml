@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (c) 2018. Evren Coşkun
   ~
@@ -19,26 +20,27 @@
     <string name="app_name">TableViewSample</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sort_ascending">Sort Ascending</string>
     <string name="sort_descending">Sort Descending</string>
-    <string name="clear_sorting">Clear</string>
     <string name="hiding_row_sample">Hiding 3. Row Sample</string>
     <string name="showing_row_sample">Showing 3. Row Sample</string>
     <string name="scroll_to_column_position">Scroll to 15. column position</string>
     <string name="scroll_to_row_position">Scroll to 5. row position</string>
     <string name="show_hide_the_column">Showing / Hiding 1. column</string>
     <string name="table_pagination_details">Page %s, showing items %s - %s.</string>
+
     <string-array name="moods">
-        <item></item>
+        <item />
         <item>Happy</item>
         <item>Sad</item>
     </string-array>
+
     <string-array name="gender">
-        <item></item>
+        <item />
         <item>Male</item>
         <item>Female</item>
     </string-array>
+
     <string-array name="items_per_page">
         <item>10</item>
         <item>20</item>
