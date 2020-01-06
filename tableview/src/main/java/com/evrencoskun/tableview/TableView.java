@@ -112,6 +112,9 @@ public class TableView extends FrameLayout implements ITableView {
     private boolean mIgnoreSelectionColors;
     private boolean mShowHorizontalSeparators = true;
     private boolean mShowVerticalSeparators = true;
+    private boolean mAllowClickInsideCell = false;
+    private boolean mAllowClickInsideRowHeader = false;
+    private boolean mAllowClickInsideColumnHeader = false;
     private boolean mIsSortable;
 
     public TableView(@NonNull Context context) {
@@ -174,6 +177,12 @@ public class TableView extends FrameLayout implements ITableView {
                     mShowVerticalSeparators);
             mShowHorizontalSeparators = a.getBoolean(R.styleable
                     .TableView_show_horizontal_separator, mShowHorizontalSeparators);
+            mAllowClickInsideCell = a.getBoolean(R.styleable.TableView_allow_click_inside_cell,
+                    mAllowClickInsideCell);
+            mAllowClickInsideRowHeader = a.getBoolean(R.styleable.TableView_allow_click_inside_row_header,
+                    mAllowClickInsideRowHeader);
+            mAllowClickInsideColumnHeader = a.getBoolean(R.styleable.TableView_allow_click_inside_column_header,
+                    mAllowClickInsideColumnHeader);
 
         } finally {
             a.recycle();
@@ -220,15 +229,21 @@ public class TableView extends FrameLayout implements ITableView {
 
         // --- Listeners to help item clicks ---
         // Create item click listeners
-        ColumnHeaderRecyclerViewItemClickListener columnHeaderRecyclerViewItemClickListener = new
-                ColumnHeaderRecyclerViewItemClickListener(mColumnHeaderRecyclerView, this);
-        RowHeaderRecyclerViewItemClickListener rowHeaderRecyclerViewItemClickListener = new RowHeaderRecyclerViewItemClickListener
-                (mRowHeaderRecyclerView, this);
 
-        // Add item click listeners for both column header & row header recyclerView
-        mColumnHeaderRecyclerView.addOnItemTouchListener
-                (columnHeaderRecyclerViewItemClickListener);
-        mRowHeaderRecyclerView.addOnItemTouchListener(rowHeaderRecyclerViewItemClickListener);
+        // Add item click listener for column header recyclerView
+        if(!mAllowClickInsideColumnHeader){
+            ColumnHeaderRecyclerViewItemClickListener columnHeaderRecyclerViewItemClickListener = new
+                    ColumnHeaderRecyclerViewItemClickListener(mColumnHeaderRecyclerView, this);
+            mColumnHeaderRecyclerView.addOnItemTouchListener
+                    (columnHeaderRecyclerViewItemClickListener);
+        }
+
+        // Add item click listener for row header recyclerView
+        if(!mAllowClickInsideRowHeader) {
+            RowHeaderRecyclerViewItemClickListener rowHeaderRecyclerViewItemClickListener = new RowHeaderRecyclerViewItemClickListener
+                    (mRowHeaderRecyclerView, this);
+            mRowHeaderRecyclerView.addOnItemTouchListener(rowHeaderRecyclerViewItemClickListener);
+        }
 
 
         // Add Layout change listener both of Column Header  & Cell recyclerView to detect
@@ -352,6 +367,11 @@ public class TableView extends FrameLayout implements ITableView {
     @Override
     public boolean isShowHorizontalSeparators() {
         return mShowHorizontalSeparators;
+    }
+
+    @Override
+    public boolean isAllowClickInsideCell(){
+        return mAllowClickInsideCell;
     }
 
     @Override
