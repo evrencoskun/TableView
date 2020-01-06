@@ -20,14 +20,14 @@ package com.evrencoskun.tableview.listener.itemclick;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.listener.ITableViewListener;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by evrencoskun on 22.11.2017.
@@ -84,7 +84,9 @@ public abstract class AbstractItemClickListener implements RecyclerView.OnItemTo
 
     @Override
     public boolean onInterceptTouchEvent(@NonNull RecyclerView view, @NonNull MotionEvent e) {
-        return mGestureDetector.onTouchEvent(e);
+        mGestureDetector.onTouchEvent(e);
+        // Return false intentionally
+        return false;
     }
 
     @Override

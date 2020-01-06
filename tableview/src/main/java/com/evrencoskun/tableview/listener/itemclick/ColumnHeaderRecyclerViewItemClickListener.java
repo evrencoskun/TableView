@@ -20,12 +20,12 @@ package com.evrencoskun.tableview.listener.itemclick;
 import android.view.MotionEvent;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by evrencoskun on 26/09/2017.
@@ -44,7 +44,7 @@ public class ColumnHeaderRecyclerViewItemClickListener extends AbstractItemClick
         // Get interacted view from x,y coordinate.
         View childView = view.findChildViewUnder(e.getX(), e.getY());
 
-        if (childView != null && mGestureDetector.onTouchEvent(e)) {
+        if (childView != null) {
             // Find the view holder
             AbstractViewHolder holder = (AbstractViewHolder) mRecyclerView.getChildViewHolder
                     (childView);
