@@ -83,7 +83,7 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
     }
 
     public int getCacheWidth(int position) {
-        return mCachedWidthList.get(position);
+        return mCachedWidthList.get(position, -1);
     }
 
     public int getFirstItemLeft() {

@@ -74,7 +74,6 @@ public class ColumnHeaderRecyclerViewItemClickListener extends AbstractItemClick
         View child = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
 
         if (child != null) {
-            getTableViewListener();
             // Find the view holder
             RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(child);
 
