@@ -20,11 +20,11 @@ package com.evrencoskun.tableview.adapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by evrencoskun on 10/06/2017.
@@ -43,20 +43,17 @@ public interface ITableAdapter<CH, RH, C> {
     @NonNull
     AbstractViewHolder onCreateCellViewHolder(@NonNull ViewGroup parent, int viewType);
 
-    void onBindCellViewHolder(@NonNull AbstractViewHolder holder, @Nullable Object cellItemModel, int
-            columnPosition, int rowPosition);
+    void onBindCellViewHolder(@NonNull AbstractViewHolder holder, @Nullable C cellItemModel, int columnPosition, int rowPosition);
 
     @NonNull
     AbstractViewHolder onCreateColumnHeaderViewHolder(@NonNull ViewGroup parent, int viewType);
 
-    void onBindColumnHeaderViewHolder(@NonNull AbstractViewHolder holder, @Nullable Object columnHeaderItemModel,
-                                      int columnPosition);
+    void onBindColumnHeaderViewHolder(@NonNull AbstractViewHolder holder, @Nullable CH columnHeaderItemModel, int columnPosition);
 
     @NonNull
     AbstractViewHolder onCreateRowHeaderViewHolder(@NonNull ViewGroup parent, int viewType);
 
-    void onBindRowHeaderViewHolder(@NonNull AbstractViewHolder holder, @Nullable Object rowHeaderItemModel, int
-            rowPosition);
+    void onBindRowHeaderViewHolder(@NonNull AbstractViewHolder holder, @Nullable RH rowHeaderItemModel, int rowPosition);
 
     @NonNull
     View onCreateCornerView(@NonNull ViewGroup parent);
