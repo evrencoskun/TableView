@@ -6,6 +6,11 @@ TableView contributors (sorted alphabetically)
   * Add a new functionality that is filtering.
   * Add a new functionality that is pagination.
   
+* **[MGaetan89](https://github.com/MGaetan89)**
+
+    * Add `@NonNull` and `@Nullable` annotations where possible
+    * Migrate to AndroidX
+  
 * **[sonique6784](https://github.com/sonique6784)**
 
   * Add an option to disable shadow
