@@ -79,4 +79,28 @@ public class RowHeaderRecyclerViewItemClickListener extends AbstractItemClickLis
             getTableViewListener().onRowHeaderLongPressed(holder, holder.getAdapterPosition());
         }
     }
+
+    @Override
+    protected boolean doubleClickAction(MotionEvent e) {
+        // Get interacted view from x,y coordinate.
+        View childView = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
+
+        if (childView != null) {
+            // Find the view holder
+            AbstractViewHolder holder = (AbstractViewHolder) mRecyclerView.getChildViewHolder
+                    (childView);
+
+            int row = holder.getAdapterPosition();
+
+            // Control to ignore selection color
+            if (!mTableView.isIgnoreSelectionColors()) {
+                mSelectionHandler.setSelectedRowPosition(holder, row);
+            }
+
+            // Call ITableView listener for item click
+            getTableViewListener().onRowHeaderDoubleClicked(holder, row);
+            return true;
+        }
+        return false;
+    }
 }
