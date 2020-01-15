@@ -96,4 +96,34 @@ public class CellRecyclerViewItemClickListener extends AbstractItemClickListener
                     .getYPosition());
         }
     }
+
+    @Override
+    protected boolean doubleClickAction(MotionEvent e) {
+        // Get interacted view from x,y coordinate.
+        View childView = mCellRecyclerView.findChildViewUnder(e.getX(), e.getY());
+
+        if (childView != null) {
+            // Find the view holder
+            AbstractViewHolder holder = (AbstractViewHolder) mRecyclerView.getChildViewHolder
+                    (childView);
+
+            // Get y position from adapter
+            CellRowRecyclerViewAdapter adapter = (CellRowRecyclerViewAdapter) mRecyclerView
+                    .getAdapter();
+
+            int column = holder.getAdapterPosition();
+            int row = adapter.getYPosition();
+
+            // Control to ignore selection color
+            if (!mTableView.isIgnoreSelectionColors()) {
+                mSelectionHandler.setSelectedCellPositions(holder, column, row);
+            }
+
+            // Call ITableView listener for item click
+            getTableViewListener().onCellDoubleClicked(holder, column, row);
+
+            return true;
+        }
+        return false;
+    }
 }

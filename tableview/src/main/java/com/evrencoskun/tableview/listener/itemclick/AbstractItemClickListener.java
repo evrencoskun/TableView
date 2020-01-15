@@ -66,6 +66,11 @@ public abstract class AbstractItemClickListener implements RecyclerView.OnItemTo
             }
 
             @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                return doubleClickAction(e);
+            }
+
+            @Override
             public boolean onDown(MotionEvent e) {
                 start = e;
                 return false;
@@ -108,4 +113,6 @@ public abstract class AbstractItemClickListener implements RecyclerView.OnItemTo
     abstract protected boolean clickAction(@NonNull RecyclerView view, @NonNull MotionEvent e);
 
     abstract protected void longPressAction(@NonNull MotionEvent e);
+
+    abstract protected boolean doubleClickAction(MotionEvent e);
 }
