@@ -35,7 +35,6 @@ You can check new implementations of TableView on the [release page](https://git
 ## Table of Contents
   - [Installation](#installation)
   - [Documentation](#documentation)
-  - [Advanced Usage](#advanced-usage)
   - [Sample Apps](#sample-apps)
   - [Donations](#donations)
   - [Communication](#communication)
@@ -61,6 +60,7 @@ Please check out [wiki page](https://github.com/evrencoskun/TableView/wiki).
 
 - This repository has an Sample Application of TableView.
 - [TableViewSample 2](https://github.com/evrencoskun/TableViewSample2)
+- [Xently-UI](https://github.com/ajharry69/Xently-UI)
 - (contact me to mention your app on this page)
 
 
