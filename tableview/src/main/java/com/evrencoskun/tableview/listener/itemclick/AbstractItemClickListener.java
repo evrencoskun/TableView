@@ -114,5 +114,5 @@ public abstract class AbstractItemClickListener implements RecyclerView.OnItemTo
 
     abstract protected void longPressAction(@NonNull MotionEvent e);
 
-    abstract protected boolean doubleClickAction(MotionEvent e);
+    abstract protected boolean doubleClickAction(@NonNull MotionEvent e);
 }
