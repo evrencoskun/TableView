@@ -21,9 +21,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -49,38 +47,36 @@ public class MainFragment extends Fragment {
     private ImageButton previousButton, nextButton;
     private TextView tablePaginationDetails;
     private TableView mTableView;
+    @Nullable
     private Filter mTableFilter; // This is used for filtering the table.
+    @Nullable
     private Pagination mPagination; // This is used for paginating the table.
 
     private boolean mPaginationEnabled = false;
 
     public MainFragment() {
-        // Required empty public constructor
+        super(R.layout.fragment_main);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
-            savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_main, container, false);
-
-        EditText searchField = layout.findViewById(R.id.query_string);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        EditText searchField = view.findViewById(R.id.query_string);
         searchField.addTextChangedListener(mSearchTextWatcher);
 
-        moodFilter = layout.findViewById(R.id.mood_spinner);
+        moodFilter = view.findViewById(R.id.mood_spinner);
         moodFilter.setOnItemSelectedListener(mItemSelectionListener);
 
-        genderFilter = layout.findViewById(R.id.gender_spinner);
+        genderFilter = view.findViewById(R.id.gender_spinner);
         genderFilter.setOnItemSelectedListener(mItemSelectionListener);
 
-        Spinner itemsPerPage = layout.findViewById(R.id.items_per_page_spinner);
+        Spinner itemsPerPage = view.findViewById(R.id.items_per_page_spinner);
 
-        View tableTestContainer = layout.findViewById(R.id.table_test_container);
+        View tableTestContainer = view.findViewById(R.id.table_test_container);
 
-        previousButton = layout.findViewById(R.id.previous_button);
-        nextButton = layout.findViewById(R.id.next_button);
-        EditText pageNumberField = layout.findViewById(R.id.page_number_text);
-        tablePaginationDetails = layout.findViewById(R.id.table_details);
+        previousButton = view.findViewById(R.id.previous_button);
+        nextButton = view.findViewById(R.id.next_button);
+        EditText pageNumberField = view.findViewById(R.id.page_number_text);
+        tablePaginationDetails = view.findViewById(R.id.table_details);
 
         if (mPaginationEnabled) {
             tableTestContainer.setVisibility(View.VISIBLE);
@@ -94,7 +90,7 @@ public class MainFragment extends Fragment {
         }
 
         // Let's get TableView
-        mTableView = layout.findViewById(R.id.tableview);
+        mTableView = view.findViewById(R.id.tableview);
 
         initializeTableView();
 
@@ -109,9 +105,6 @@ public class MainFragment extends Fragment {
             // pagination actions. See onTableViewPageTurnedListener variable declaration below.
             mPagination.setOnTableViewPageTurnedListener(onTableViewPageTurnedListener);
         }
-
-
-        return layout;
     }
 
     private void initializeTableView() {
@@ -149,38 +142,52 @@ public class MainFragment extends Fragment {
 
     public void filterTable(@NonNull String filter) {
         // Sets a filter to the table, this will filter ALL the columns.
-        mTableFilter.set(filter);
+        if (mTableFilter != null) {
+            mTableFilter.set(filter);
+        }
     }
 
     public void filterTableForMood(@NonNull String filter) {
         // Sets a filter to the table, this will only filter a specific column.
         // In the example data, this will filter the mood column.
-        mTableFilter.set(TableViewModel.MOOD_COLUMN_INDEX, filter);
+        if (mTableFilter != null) {
+            mTableFilter.set(TableViewModel.MOOD_COLUMN_INDEX, filter);
+        }
     }
 
     public void filterTableForGender(@NonNull String filter) {
         // Sets a filter to the table, this will only filter a specific column.
         // In the example data, this will filter the gender column.
-        mTableFilter.set(TableViewModel.GENDER_COLUMN_INDEX, filter);
+        if (mTableFilter != null) {
+            mTableFilter.set(TableViewModel.GENDER_COLUMN_INDEX, filter);
+        }
     }
 
     // The following four methods below: nextTablePage(), previousTablePage(),
     // goToTablePage(int page) and setTableItemsPerPage(int itemsPerPage)
     // are for controlling the TableView pagination.
     public void nextTablePage() {
-        mPagination.nextPage();
+        if (mPagination != null) {
+            mPagination.nextPage();
+        }
     }
 
     public void previousTablePage() {
-        mPagination.previousPage();
+        if (mPagination != null) {
+            mPagination.previousPage();
+        }
     }
 
     public void goToTablePage(int page) {
-        mPagination.goToPage(page);
+        if (mPagination != null) {
+            mPagination.goToPage(page);
+        }
     }
 
     public void setTableItemsPerPage(int itemsPerPage) {
-        mPagination.setItemsPerPage(itemsPerPage);
+        if (mPagination != null) {
+            mPagination.setItemsPerPage(itemsPerPage);
+        }
     }
 
     // Handler for the changing of pages in the paginated TableView.
