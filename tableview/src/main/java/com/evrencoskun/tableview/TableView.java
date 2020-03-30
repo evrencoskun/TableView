@@ -231,15 +231,14 @@ public class TableView extends FrameLayout implements ITableView {
         // Create item click listeners
 
         // Add item click listener for column header recyclerView
-        if(!mAllowClickInsideColumnHeader){
-            ColumnHeaderRecyclerViewItemClickListener columnHeaderRecyclerViewItemClickListener = new
-                    ColumnHeaderRecyclerViewItemClickListener(mColumnHeaderRecyclerView, this);
-            mColumnHeaderRecyclerView.addOnItemTouchListener
-                    (columnHeaderRecyclerViewItemClickListener);
+        if (mAllowClickInsideColumnHeader) {
+            ColumnHeaderRecyclerViewItemClickListener columnHeaderRecyclerViewItemClickListener = new ColumnHeaderRecyclerViewItemClickListener
+                    (mColumnHeaderRecyclerView, this);
+            mColumnHeaderRecyclerView.addOnItemTouchListener(columnHeaderRecyclerViewItemClickListener);
         }
 
         // Add item click listener for row header recyclerView
-        if(!mAllowClickInsideRowHeader) {
+        if (mAllowClickInsideRowHeader) {
             RowHeaderRecyclerViewItemClickListener rowHeaderRecyclerViewItemClickListener = new RowHeaderRecyclerViewItemClickListener
                     (mRowHeaderRecyclerView, this);
             mRowHeaderRecyclerView.addOnItemTouchListener(rowHeaderRecyclerViewItemClickListener);
@@ -323,7 +322,7 @@ public class TableView extends FrameLayout implements ITableView {
         return recyclerView;
     }
 
-    public void setAdapter(@Nullable AbstractTableAdapter tableAdapter) {
+    public <CH, RH, C> void setAdapter(@Nullable AbstractTableAdapter<CH, RH, C> tableAdapter) {
         if (tableAdapter != null) {
             this.mTableAdapter = tableAdapter;
             this.mTableAdapter.setRowHeaderWidth(mRowHeaderWidth);
@@ -339,7 +338,7 @@ public class TableView extends FrameLayout implements ITableView {
             mColumnSortHandler = new ColumnSortHandler(this);
 
             // Create Filter Handler
-            mFilterHandler = new FilterHandler(this);
+            mFilterHandler = new FilterHandler<>(this);
         }
     }
 
@@ -660,7 +659,11 @@ public class TableView extends FrameLayout implements ITableView {
 
     @NonNull
     protected DividerItemDecoration createItemDecoration(int orientation) {
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), orientation);
         Drawable divider = ContextCompat.getDrawable(getContext(), R.drawable.cell_line_divider);
+        if (divider == null) {
+            return itemDecoration;
+        }
 
         // That means; There is a custom separator color from user.
         if (mSeparatorColor != -1) {
@@ -668,7 +671,6 @@ public class TableView extends FrameLayout implements ITableView {
             divider.setColorFilter(mSeparatorColor, PorterDuff.Mode.SRC_ATOP);
         }
 
-        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), orientation);
         itemDecoration.setDrawable(divider);
         return itemDecoration;
     }

@@ -83,7 +83,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         recyclerView.addOnItemTouchListener(mTableView.getHorizontalRecyclerViewListener());
 
         // Add Item click listener for cell views
-        if(!mTableView.isAllowClickInsideCell()) {
+        if (mTableView.isAllowClickInsideCell()) {
             recyclerView.addOnItemTouchListener(new CellRecyclerViewItemClickListener(recyclerView,
                     mTableView));
         }
@@ -94,7 +94,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         recyclerView.setLayoutManager(new ColumnLayoutManager(mContext, mTableView));
 
         // Create CellRow adapter
-        recyclerView.setAdapter(new CellRowRecyclerViewAdapter(mContext, mTableView));
+        recyclerView.setAdapter(new CellRowRecyclerViewAdapter<>(mContext, mTableView));
 
         // This is for testing purpose to find out which recyclerView is displayed.
         recyclerView.setId(mRecyclerViewId);
