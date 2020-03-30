@@ -98,9 +98,9 @@ public class CellRecyclerViewItemClickListener extends AbstractItemClickListener
     }
 
     @Override
-    protected boolean doubleClickAction(MotionEvent e) {
+    protected boolean doubleClickAction(@NonNull MotionEvent e) {
         // Get interacted view from x,y coordinate.
-        View childView = mCellRecyclerView.findChildViewUnder(e.getX(), e.getY());
+        View childView = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
 
         if (childView != null) {
             // Find the view holder

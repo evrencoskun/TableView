@@ -81,7 +81,7 @@ public class RowHeaderRecyclerViewItemClickListener extends AbstractItemClickLis
     }
 
     @Override
-    protected boolean doubleClickAction(MotionEvent e) {
+    protected boolean doubleClickAction(@NonNull MotionEvent e) {
         // Get interacted view from x,y coordinate.
         View childView = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
 
