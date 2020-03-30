@@ -94,7 +94,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         recyclerView.setLayoutManager(new ColumnLayoutManager(mContext, mTableView));
 
         // Create CellRow adapter
-        recyclerView.setAdapter(new CellRowRecyclerViewAdapter(mContext, mTableView));
+        recyclerView.setAdapter(new CellRowRecyclerViewAdapter<>(mContext, mTableView));
 
         // This is for testing purpose to find out which recyclerView is displayed.
         recyclerView.setId(mRecyclerViewId);
@@ -190,12 +190,16 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
         if (visibleRecyclerViews.length > 0) {
             for (CellRecyclerView cellRowRecyclerView : visibleRecyclerViews) {
-                cellRowRecyclerView.getAdapter().notifyDataSetChanged();
+                if (cellRowRecyclerView != null) {
+                    RecyclerView.Adapter adapter = cellRowRecyclerView.getAdapter();
+                    if (adapter != null) {
+                        adapter.notifyDataSetChanged();
+                    }
+                }
             }
         } else {
             notifyDataSetChanged();
         }
-
     }
 
     /**
@@ -227,9 +231,13 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
                 .getVisibleCellRowRecyclerViews();
 
         for (CellRecyclerView cellRowRecyclerView : visibleRecyclerViews) {
-            ((AbstractRecyclerViewAdapter) cellRowRecyclerView.getAdapter()).deleteItem(column);
+            if (cellRowRecyclerView != null) {
+                AbstractRecyclerViewAdapter adapter = (AbstractRecyclerViewAdapter) cellRowRecyclerView.getAdapter();
+                if (adapter != null) {
+                    adapter.deleteItem(column);
+                }
+            }
         }
-
 
         // Lets change the model list silently
         // Create a new list which the column is already removed.
