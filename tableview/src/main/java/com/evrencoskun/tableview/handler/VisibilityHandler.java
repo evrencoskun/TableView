@@ -21,6 +21,7 @@ import android.util.Log;
 import android.util.SparseArray;
 
 import com.evrencoskun.tableview.ITableView;
+import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 
 import java.util.List;
 
@@ -155,12 +156,10 @@ public class VisibilityHandler {
      * @param index, stands for column or row index.
      * @param list,  stands for HideRowList or HideColumnList
      */
-    private int getSmallerHiddenCount(int index, SparseArray list) {
+    private <T> int getSmallerHiddenCount(int index, SparseArray<T> list) {
         int count = 0;
-        for (int i = 0; i < index; i++) {
-            int key = list.keyAt(i);
-            // get the object by the key.
-            if (list.get(key) != null) {
+        for (int i = 0; i < index && i < list.size(); i++) {
+            if (list.valueAt(i) != null) {
                 count++;
             }
         }
@@ -171,7 +170,7 @@ public class VisibilityHandler {
      * It converts model index to View index considering the previous hidden rows or columns. So,
      * when we add or remove any item of RecyclerView, we need to view index.
      */
-    private int convertIndexToViewIndex(int index, SparseArray list) {
+    private <T> int convertIndexToViewIndex(int index, SparseArray<T> list) {
         return index - getSmallerHiddenCount(index, list);
     }
 
@@ -236,18 +235,18 @@ public class VisibilityHandler {
 
     @NonNull
     private Row getRowValueFromPosition(int row) {
-
-        Object rowHeaderModel = mTableView.getAdapter().getRowHeaderItem(row);
-        List<Object> cellModelList = (List<Object>) mTableView.getAdapter().getCellRowItems(row);
+        AbstractTableAdapter adapter = mTableView.getAdapter();
+        Object rowHeaderModel = adapter.getRowHeaderItem(row);
+        List<Object> cellModelList = adapter.getCellRowItems(row);
 
         return new Row(row, rowHeaderModel, cellModelList);
     }
 
     @NonNull
     private Column getColumnValueFromPosition(int column) {
-        Object columnHeaderModel = mTableView.getAdapter().getColumnHeaderItem(column);
-        List<Object> cellModelList =
-                (List<Object>) mTableView.getAdapter().getCellColumnItems(column);
+        AbstractTableAdapter adapter = mTableView.getAdapter();
+        Object columnHeaderModel = adapter.getColumnHeaderItem(column);
+        List<Object> cellModelList = adapter.getCellColumnItems(column);
 
         return new Column(column, columnHeaderModel, cellModelList);
     }
