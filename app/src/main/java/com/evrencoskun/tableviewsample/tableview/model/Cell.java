@@ -17,11 +17,11 @@
 
 package com.evrencoskun.tableviewsample.tableview.model;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.evrencoskun.tableview.filter.IFilterableModel;
 import com.evrencoskun.tableview.sort.ISortableModel;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by evrencoskun on 11/06/2017.
@@ -66,7 +66,7 @@ public class Cell implements ISortableModel, IFilterableModel {
         return mData;
     }
 
-    public void setData(@Nullable String data) {
+    public void setData(@Nullable Object data) {
         mData = data;
     }
 
