@@ -47,7 +47,7 @@ To use this library in your android project, just simply add the following depen
 
 ```
 dependencies {
-    compile 'com.evrencoskun.library:tableview:0.8.9' 
+    compile 'com.evrencoskun.library:tableview:0.8.9.2' 
 }
 ```
 
