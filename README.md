@@ -46,7 +46,7 @@ You can check new implementations of TableView on the [release page](https://git
     - [2. AbstractSorterViewHolder to your Column Header ViewHolder](#2-abstractsorterviewholder-to-your-column-header-viewholder)
     - [3. Helper methods for sorting process](#3-helper-methods-for-sorting-process)
   - [Selecting](#selecting)
-    - [1. Implements ISelectable to your Cell Model](#1-implements-iselectable-to-your-cell-model)
+    - [1. Implement ISelectable on your Cell model](#1-implement-iselectable-on-your-cell-model)
     - [2. Enable selection on the TableView](#2-enable-selection-on-the-tableview)
     - [3. Multi-selection and Shadows](#3-multi-selection-and-shadows)
     - [4. Customize selection colors](#4-customize-selection-colors)
