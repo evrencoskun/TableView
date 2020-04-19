@@ -858,34 +858,34 @@ As of version **0.8.5.1**, TableView has some helper functions to change desired
 
 ## Selecting
 
-### 1. Implements ISelectable to your Cell Model
+### 1. Implement ISelectable on your Cell model
 
 To be able to use this feature on your `TableView`, you have to implement `ISelectableModel` on your Cell model. This interface
 provides the following two methods:
 
 - `SelectionState getSelectionState()`: to get the current selection state of this Cell
-- ```java SelectionState setSelectionState()``` : To set current selection state for this Cell
+- `SelectionState setSelectionState()`: to set the current selection state of this Cell
 
-Note:  Make sure you return a default SelectionState value (UNSELECTED) when calling ```getSelectionState()```
+Note:  make sure that `getSelectionState()` returns `SelectionState.UNSELECTED` as a default value.
 
-As you seen getSelectionState value returns SelectionState. TableView controls the style regarding this state.
+`TableView` uses the return value of `getSelectionState()` to style each Cell. The supported values are:
 Their are three states;
 
 ```java
     /**
-     * Enumeration value indicating the item is selected.
+     * Indicates that the item is selected.
      * <code>SELECTED</code>.
      */
     SELECTED, 
     
     /** 
-     * Enumeration value indicating the item is selected.
+     * Indicates that the item is not selected.
      * <code>UNSELECTED</code>.
      */
     UNSELECTED,
 
     /** 
-     * Enumeration value indicating the item is shadowed.
+     * Indicates that the item is shadowed.
      * <code>SHADOWED</code>.
      */ 
     SHADOWED
@@ -893,20 +893,19 @@ Their are three states;
 
 ### 2. Enable selection on the TableView
 
-To enable selection, you have to enable selection for the TableView
+To enable selection, you have to make your `TableView` selectable:
 ```java
 mTableView.setSelectable(true);
 ```
 
 ### 3. Multi-selection and Shadows
 
-You can enable multi-selection thanks to the SelectionHandler:
+You can enable multi-selection through the `SelectionHandler`:
 ```java
 mTableView.getSelectionHandler().setMultiSelectionEnabled(true);
 ``` 
 
-You can also enable/disable Shadows thanks to the SelectionHandler:
-
+You can also enable/disable Shadows through the `SelectionHandler`:
 ```java
 mTableView.getSelectionHandler().setShadowEnabled(true);
 ```
