@@ -172,8 +172,9 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
     }
 
 
+    @Nullable
     public C getItem(int rowPosition, int columnPosition) {
-        if(mItemList.size() > rowPosition) {
+        if (mItemList.size() > rowPosition) {
             List<C> row = (List<C>) mItemList.get(rowPosition);
             if(row.size() > columnPosition) {
                 return row.get(columnPosition);

@@ -64,14 +64,14 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
             Object value = getItem(xPosition);
 
             // Apply Selection Style
-            if(mTableAdapter.getTableView().isSelectable()) {
+            if (mTableAdapter.getTableView().isSelectable()) {
                 if (value instanceof ISelectableModel) {
                     viewHolder.setSelected(((ISelectableModel) value).getSelectionState());
                     int color = mTableAdapter.getColorForSelection(((ISelectableModel) value).getSelectionState());
                     viewHolder.setBackgroundColor(color);
-                } else if(value != null){
+                } else if (value != null) {
                     // trigger exception, if isSelectable, Cells MUST implements ISelectableModel
-                    throw new ClassCastException("Invalid Class type for Cell: ("+mYPosition+","+xPosition+"), ISelectableModel expected. Please implement ISelectable in your Cell in order to have it selectable.");
+                    throw new ClassCastException("Item at position (" + mYPosition + ", " + xPosition + ") must implement ISelectableModel to be selectable.");
                 }
             }
 
@@ -92,7 +92,7 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
     public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
         
-        if(mTableAdapter.getTableView().isSelectable()) {
+        if (mTableAdapter.getTableView().isSelectable()) {
             AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
             SelectionState selectionState = mTableAdapter.getTableView().getSelectionHandler()
                     .getSelectionStateCell(holder.getAdapterPosition(), mYPosition);

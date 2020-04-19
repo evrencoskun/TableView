@@ -321,14 +321,14 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter {
     }
 
     public int getColumnHeaderItemCount() {
-        if( mColumnHeaderItems != null) {
+        if (mColumnHeaderItems != null) {
             return mColumnHeaderItems.size();
         }
         return 0;
     }
 
     public int getRowHeaderItemCount() {
-        if( mRowHeaderItems != null) {
+        if (mRowHeaderItems != null) {
             return mRowHeaderItems.size();
         }
         return 0;

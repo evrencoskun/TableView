@@ -56,14 +56,14 @@ public class RowHeaderRecyclerViewAdapter<RH> extends AbstractRecyclerViewAdapte
         Object value = getItem(position);
 
         // Apply Selection Style
-        if(mTableAdapter.getTableView().isSelectable()) {
+        if (mTableAdapter.getTableView().isSelectable()) {
             if (value instanceof ISelectableModel) {
                 viewHolder.setSelected(((ISelectableModel) value).getSelectionState());
                 int color = mTableAdapter.getColorForSelection(((ISelectableModel) value).getSelectionState());
                 viewHolder.setBackgroundColor(color);
-            } else if(value != null){
+            } else if (value != null) {
                 // trigger exception, if isSelectable, Cells MUST implements ISelectableModel
-                throw new ClassCastException("Invalid Class type for RH: "+position+", ISelectableModel expected. Please implement ISelectable in your RowHeaderCell in order to have it selectable.");
+                throw new ClassCastException("Item at position " + position + " must implement ISelectableModel to be selectable.");
             }
         }
 
@@ -80,7 +80,7 @@ public class RowHeaderRecyclerViewAdapter<RH> extends AbstractRecyclerViewAdapte
         super.onViewAttachedToWindow(holder);
         AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
 
-        if(mTableAdapter.getTableView().isSelectable()) {
+        if (mTableAdapter.getTableView().isSelectable()) {
             SelectionState selectionState = mTableAdapter.getTableView().getSelectionHandler()
                     .getSelectionStateRowHeader(holder.getAdapterPosition());
 
