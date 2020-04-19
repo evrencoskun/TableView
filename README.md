@@ -860,7 +860,7 @@ As of version **0.8.5.1**, TableView has some helper functions to change desired
 
 ### 1. Implements ISelectable to your Cell Model
 
-To be able use this feature on your TableView. You have to implement ISelectableModel to your Cell Model. This interface
+To be able to use this feature on your `TableView`, you have to implement `ISelectableModel` on your Cell model. This interface
 wants two methods from your cell model. These are ;
 
 - ```java SelectionState getSelectionState()``` : To get current selection state for this Cell
