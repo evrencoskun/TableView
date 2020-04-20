@@ -19,6 +19,8 @@ package com.evrencoskun.tableview.listener;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
@@ -30,17 +32,18 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
  */
 
 public class TableViewLayoutChangeListener implements View.OnLayoutChangeListener {
-
+    @NonNull
     private CellRecyclerView mCellRecyclerView;
+    @NonNull
     private CellRecyclerView mColumnHeaderRecyclerView;
+    @NonNull
     private CellLayoutManager mCellLayoutManager;
 
-    public TableViewLayoutChangeListener(ITableView tableView) {
+    public TableViewLayoutChangeListener(@NonNull ITableView tableView) {
         this.mCellRecyclerView = tableView.getCellRecyclerView();
         this.mColumnHeaderRecyclerView = tableView.getColumnHeaderRecyclerView();
         this.mCellLayoutManager = tableView.getCellLayoutManager();
     }
-
 
     @Override
     public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int

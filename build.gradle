@@ -18,15 +18,26 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    ext.androidx_annotation_version = '1.1.0'
+    ext.androidx_appcompat_version = '1.1.0'
+    ext.androidx_core_version = '1.1.0'
+    ext.androidx_fragment_version = '1.1.0'
+    ext.androidx_recyclerview_version = '1.1.0'
+    ext.compile_sdk_version = 29
+    ext.java_version = '1.8'
+    ext.min_sdk_version = 14
+    ext.target_sdk_version = 29
+
     repositories {
         jcenter()
         google()
     }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
-        classpath 'com.novoda:bintray-release:0.7.0'
+        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+        classpath 'com.novoda:bintray-release:0.9.1'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -41,4 +52,44 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+subprojects {
+    if (project.getGradle().startParameter.taskNames.any{it.contains('bintrayUpload')} && project.name in ['tableview']) {
+        println project.name
+        apply plugin: 'maven'
+
+        gradle.taskGraph.whenReady { taskGraph ->
+            def pomTask = taskGraph.getAllTasks().find {
+                it.path == ":$project.name:generatePomFileForReleasePublication"
+            }
+            if (pomTask == null) println 'pomTask null'
+            if (pomTask == null) return
+            pomTask.doLast {
+                println 'Updating pom-file(s) with License info'
+                pomTask.outputs.files
+                        .filter { File file ->
+                            file.path.contains("publications") && file.name.matches("^pom-.+\\.xml\$")
+                        }
+                        .forEach { File file -> addLicense(file) }
+            }
+        }
+    }
+}
+
+static void addLicense(File pom) {
+    def licenseNode = new Node(null, "license")
+    licenseNode.append(new Node(null, "name", "MIT"))
+    licenseNode.append(new Node(null, "url", "https://github.com/evrencoskun/TableView/blob/master/LICENSE"))
+    def licensesNode = new Node(null, "licenses")
+    licensesNode.append(licenseNode)
+
+    def xml = new XmlParser().parse(pom)
+    xml.append(licensesNode)
+
+    def writer = new PrintWriter(new FileWriter(pom))
+    def printer = new XmlNodePrinter(writer)
+    printer.preserveWhitespace = true
+    printer.print(xml)
+    writer.close()
 }

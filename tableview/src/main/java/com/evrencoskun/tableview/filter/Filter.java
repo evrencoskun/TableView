@@ -17,7 +17,7 @@
 
 package com.evrencoskun.tableview.filter;
 
-import android.text.TextUtils;
+import androidx.annotation.NonNull;
 
 import com.evrencoskun.tableview.ITableView;
 
@@ -33,17 +33,19 @@ public class Filter {
     /**
      * List of filter items to be used for filtering.
      */
+    @NonNull
     private List<FilterItem> filterItems;
 
     /**
      * The TableView instance used in this scope.
      */
+    @NonNull
     private ITableView tableView;
 
     /**
      * @param tableView The TableView to be filtered.
      */
-    public Filter(ITableView tableView) {
+    public Filter(@NonNull ITableView tableView) {
         this.tableView = tableView;
         this.filterItems = new ArrayList<>();
     }
@@ -54,7 +56,7 @@ public class Filter {
      *
      * @param filter the filter string.
      */
-    public void set(String filter) {
+    public void set(@NonNull String filter) {
         set(-1, filter);
     }
 
@@ -65,7 +67,7 @@ public class Filter {
      * @param column the target column for filtering.
      * @param filter the filter string.
      */
-    public void set(int column, String filter) {
+    public void set(int column, @NonNull String filter) {
         final FilterItem filterItem = new FilterItem(
                 column == -1 ? FilterType.ALL : FilterType.COLUMN,
                 column,
@@ -73,12 +75,12 @@ public class Filter {
         );
 
         if (isAlreadyFiltering(column, filterItem)) {
-            if (TextUtils.isEmpty(filter)) {
+            if (filter.isEmpty()) {
                 remove(column, filterItem);
             } else {
                 update(column, filterItem);
             }
-        } else if (!TextUtils.isEmpty(filter)) {
+        } else if (!filter.isEmpty()) {
             add(filterItem);
         }
     }
@@ -88,7 +90,7 @@ public class Filter {
      *
      * @param filterItem The filter item to be added to the list.
      */
-    private void add(FilterItem filterItem) {
+    private void add(@NonNull FilterItem filterItem) {
         filterItems.add(filterItem);
         tableView.filter(this);
     }
@@ -99,7 +101,7 @@ public class Filter {
      * @param column     The column to be checked for removing the filter item.
      * @param filterItem The filter item to be removed.
      */
-    private void remove(int column, FilterItem filterItem) {
+    private void remove(int column, @NonNull FilterItem filterItem) {
         // This would remove a FilterItem from the Filter list when the filter is cleared.
         // Used Iterator for removing instead of canonical loop to prevent ConcurrentModificationException.
         for (Iterator<FilterItem> filterItemIterator = filterItems.iterator(); filterItemIterator.hasNext(); ) {
@@ -121,7 +123,7 @@ public class Filter {
      * @param column     The column in which filter item will be updated.
      * @param filterItem The updated filter item.
      */
-    private void update(int column, FilterItem filterItem) {
+    private void update(int column, @NonNull FilterItem filterItem) {
         // This would update an existing FilterItem from the Filter list.
         // Used Iterator for updating instead of canonical loop to prevent ConcurrentModificationException.
         for (Iterator<FilterItem> filterItemIterator = filterItems.iterator(); filterItemIterator.hasNext(); ) {
@@ -144,7 +146,7 @@ public class Filter {
      * @param filterItem The filter item to be checked.
      * @return True if a filter item for a specific column or for ALL is already in the list.
      */
-    private boolean isAlreadyFiltering(int column, FilterItem filterItem) {
+    private boolean isAlreadyFiltering(int column, @NonNull FilterItem filterItem) {
         // This would determine if Filter is already filtering ALL or a specified COLUMN.
         for (FilterItem item : filterItems) {
             if (column == -1 && item.getFilterType().equals(filterItem.getFilterType())) {
@@ -161,6 +163,7 @@ public class Filter {
      *
      * @return The list of filter items.
      */
+    @NonNull
     public List<FilterItem> getFilterItems() {
         return this.filterItems;
     }

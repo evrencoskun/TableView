@@ -18,17 +18,18 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion compile_sdk_version
+
     defaultConfig {
-        applicationId "com.evrencoskun.tableviewsample"
-        minSdkVersion 15
-        targetSdkVersion 25
+        applicationId 'com.evrencoskun.tableviewsample'
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
         versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        versionName '1.0'
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -36,21 +37,27 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility = java_version
+        targetCompatibility = java_version
+    }
+
+    applicationVariants.all {
+        it.generateBuildConfigProvider.configure {
+            it.enabled = false
+        }
+    }
+
     lintOptions {
         abortOnError false
     }
-
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:27.0.2'
-    compile 'com.android.support:support-v4:27.0.2'
-    compile 'com.android.support:design:27.0.2'
+    implementation project(path: ':tableview')
 
-    testCompile 'junit:junit:4.12'
-    compile project(path: ':tableview')
+    implementation "androidx.annotation:annotation:$androidx_annotation_version"
+    implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
+    implementation "androidx.fragment:fragment:$androidx_fragment_version"
+    implementation "androidx.recyclerview:recyclerview:$androidx_recyclerview_version"
 }

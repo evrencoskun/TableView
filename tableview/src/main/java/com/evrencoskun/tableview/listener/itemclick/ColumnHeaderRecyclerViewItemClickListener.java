@@ -17,7 +17,6 @@
 
 package com.evrencoskun.tableview.listener.itemclick;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -25,24 +24,27 @@ import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 /**
  * Created by evrencoskun on 26/09/2017.
  */
 
 public class ColumnHeaderRecyclerViewItemClickListener extends AbstractItemClickListener {
 
-    public ColumnHeaderRecyclerViewItemClickListener(CellRecyclerView recyclerView, ITableView
+    public ColumnHeaderRecyclerViewItemClickListener(@NonNull CellRecyclerView recyclerView, @NonNull ITableView
             tableView) {
         super(recyclerView, tableView);
 
     }
 
     @Override
-    protected boolean clickAction(RecyclerView view, MotionEvent e) {
+    protected boolean clickAction(@NonNull RecyclerView view, @NonNull MotionEvent e) {
         // Get interacted view from x,y coordinate.
         View childView = view.findChildViewUnder(e.getX(), e.getY());
 
-        if (childView != null && mGestureDetector.onTouchEvent(e)) {
+        if (childView != null) {
             // Find the view holder
             AbstractViewHolder holder = (AbstractViewHolder) mRecyclerView.getChildViewHolder
                     (childView);
@@ -54,17 +56,15 @@ public class ColumnHeaderRecyclerViewItemClickListener extends AbstractItemClick
                 mSelectionHandler.setSelectedColumnPosition(column);
             }
 
-            if (getTableViewListener() != null) {
-                // Call ITableView listener for item click
-                getTableViewListener().onColumnHeaderClicked(holder, column);
-            }
+            // Call ITableView listener for item click
+            getTableViewListener().onColumnHeaderClicked(holder, column);
 
             return true;
         }
         return false;
     }
 
-    protected void longPressAction(MotionEvent e) {
+    protected void longPressAction(@NonNull MotionEvent e) {
         // Consume the action for the time when the recyclerView is scrolling.
         if (mRecyclerView.getScrollState() != RecyclerView.SCROLL_STATE_IDLE) {
             return;
@@ -73,12 +73,37 @@ public class ColumnHeaderRecyclerViewItemClickListener extends AbstractItemClick
         // Get interacted view from x,y coordinate.
         View child = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
 
-        if (child != null && getTableViewListener() != null) {
+        if (child != null) {
             // Find the view holder
             RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(child);
 
             // Call ITableView listener for long click
             getTableViewListener().onColumnHeaderLongPressed(holder, holder.getAdapterPosition());
         }
+    }
+
+    @Override
+    protected boolean doubleClickAction(@NonNull MotionEvent e) {
+        // Get interacted view from x,y coordinate.
+        View childView = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
+
+        if (childView != null) {
+            // Find the view holder
+            AbstractViewHolder holder = (AbstractViewHolder) mRecyclerView.getChildViewHolder
+                    (childView);
+
+            int column = holder.getAdapterPosition();
+
+            // Control to ignore selection color
+            if (!mTableView.isIgnoreSelectionColors()) {
+                mSelectionHandler.setSelectedColumnPosition(holder, column);
+            }
+
+            // Call ITableView listener for item click
+            getTableViewListener().onColumnHeaderDoubleClicked(holder, column);
+
+            return true;
+        }
+        return false;
     }
 }

@@ -17,7 +17,7 @@
 
 package com.evrencoskun.tableview.sort;
 
-import android.util.Log;
+import androidx.annotation.NonNull;
 
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractSorterViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
@@ -31,34 +31,30 @@ import java.util.List;
  */
 
 public class ColumnSortHelper {
-
+    @NonNull
     private List<Directive> mSortingColumns = new ArrayList<>();
+    @NonNull
     private ColumnHeaderLayoutManager mColumnHeaderLayoutManager;
 
-    public ColumnSortHelper(ColumnHeaderLayoutManager columnHeaderLayoutManager) {
+    public ColumnSortHelper(@NonNull ColumnHeaderLayoutManager columnHeaderLayoutManager) {
         this.mColumnHeaderLayoutManager = columnHeaderLayoutManager;
     }
 
-    private void sortingStatusChanged(int column, SortState sortState) {
+    private void sortingStatusChanged(int column, @NonNull SortState sortState) {
         AbstractViewHolder holder = mColumnHeaderLayoutManager.getViewHolder(column);
-
 
         if (holder != null) {
             if (holder instanceof AbstractSorterViewHolder) {
                 ((AbstractSorterViewHolder) holder).onSortingStatusChanged(sortState);
 
             } else {
-                // TODO: throw the TableViewSorterException
-                //throw new TableViewSorterException();
-                Log.e(ColumnSortHelper.class.getSimpleName(), "For sorting process, column " +
-                        "header" + " view holders must be " + "extended from " +
-                        "AbstractSorterViewHolder " + "class");
+                throw new IllegalArgumentException("Column Header ViewHolder must extend " +
+                        "AbstractSorterViewHolder");
             }
         }
     }
 
-
-    public void setSortingStatus(int column, SortState status) {
+    public void setSortingStatus(int column, @NonNull SortState status) {
         Directive directive = getDirective(column);
         if (directive != EMPTY_DIRECTIVE) {
             mSortingColumns.remove(directive);
@@ -78,11 +74,12 @@ public class ColumnSortHelper {
         return mSortingColumns.size() != 0;
     }
 
+    @NonNull
     public SortState getSortingStatus(int column) {
         return getDirective(column).direction;
     }
 
-
+    @NonNull
     private Directive getDirective(int column) {
         for (int i = 0; i < mSortingColumns.size(); i++) {
             Directive directive = mSortingColumns.get(i);
@@ -95,22 +92,15 @@ public class ColumnSortHelper {
 
     private static class Directive {
         private int column;
+        @NonNull
         private SortState direction;
 
-        public Directive(int column, SortState direction) {
+        Directive(int column, @NonNull SortState direction) {
             this.column = column;
             this.direction = direction;
         }
     }
 
+    @NonNull
     private static Directive EMPTY_DIRECTIVE = new Directive(-1, SortState.UNSORTED);
-
-    public class TableViewSorterException extends Exception {
-
-        public TableViewSorterException() {
-            super("For sorting process, column header view holders must be " + "extended from " +
-                    "AbstractSorterViewHolder class");
-        }
-
-    }
 }

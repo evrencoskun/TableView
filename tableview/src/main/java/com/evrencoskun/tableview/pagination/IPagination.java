@@ -17,6 +17,8 @@
 
 package com.evrencoskun.tableview.pagination;
 
+import androidx.annotation.Nullable;
+
 public interface IPagination {
 
     /**
@@ -48,7 +50,7 @@ public interface IPagination {
      *
      * @param onTableViewPageTurnedListener The OnTableViewPageTurnedListener.
      */
-    void setOnTableViewPageTurnedListener(Pagination.OnTableViewPageTurnedListener onTableViewPageTurnedListener);
+    void setOnTableViewPageTurnedListener(@Nullable Pagination.OnTableViewPageTurnedListener onTableViewPageTurnedListener);
 
     /**
      * Removes the OnTableViewPageTurnedListener for this Pagination.

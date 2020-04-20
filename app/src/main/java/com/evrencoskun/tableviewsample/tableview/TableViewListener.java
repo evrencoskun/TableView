@@ -18,8 +18,6 @@
 package com.evrencoskun.tableviewsample.tableview;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.evrencoskun.tableview.TableView;
@@ -28,17 +26,20 @@ import com.evrencoskun.tableviewsample.tableview.holder.ColumnHeaderViewHolder;
 import com.evrencoskun.tableviewsample.tableview.popup.ColumnHeaderLongPressPopup;
 import com.evrencoskun.tableviewsample.tableview.popup.RowHeaderLongPressPopup;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 /**
  * Created by evrencoskun on 21/09/2017.
  */
 
 public class TableViewListener implements ITableViewListener {
-
-    private Toast mToast;
+    @NonNull
     private Context mContext;
+    @NonNull
     private TableView mTableView;
 
-    public TableViewListener(TableView tableView) {
+    public TableViewListener(@NonNull TableView tableView) {
         this.mContext = tableView.getContext();
         this.mTableView = tableView;
     }
@@ -52,8 +53,23 @@ public class TableViewListener implements ITableViewListener {
      */
     @Override
     public void onCellClicked(@NonNull RecyclerView.ViewHolder cellView, int column, int row) {
+
         // Do what you want.
         showToast("Cell " + column + " " + row + " has been clicked.");
+
+    }
+
+    /**
+     * Called when user double click any cell item.
+     *
+     * @param cellView : Clicked Cell ViewHolder.
+     * @param column   : X (Column) position of Clicked Cell item.
+     * @param row      : Y (Row) position of Clicked Cell item.
+     */
+    @Override
+    public void onCellDoubleClicked(@NonNull RecyclerView.ViewHolder cellView, int column, int row) {
+        // Do what you want.
+        showToast("Cell " + column + " " + row + " has been double clicked.");
     }
 
     /**
@@ -64,7 +80,8 @@ public class TableViewListener implements ITableViewListener {
      * @param row      : Y (Row) position of Long Pressed Cell item.
      */
     @Override
-    public void onCellLongPressed(@NonNull RecyclerView.ViewHolder cellView, int column, int row) {
+    public void onCellLongPressed(@NonNull RecyclerView.ViewHolder cellView, final int column,
+                                  int row) {
         // Do What you want
         showToast("Cell " + column + " " + row + " has been long pressed.");
     }
@@ -83,16 +100,28 @@ public class TableViewListener implements ITableViewListener {
     }
 
     /**
+     * Called when user double click any column header item.
+     *
+     * @param columnHeaderView : Clicked Column Header ViewHolder.
+     * @param column           : X (Column) position of Clicked Column Header item.
+     */
+    @Override
+    public void onColumnHeaderDoubleClicked(@NonNull RecyclerView.ViewHolder columnHeaderView, int column) {
+        // Do what you want.
+        showToast("Column header  " + column + " has been double clicked.");
+    }
+
+    /**
      * Called when user long press any column header item.
      *
      * @param columnHeaderView : Long Pressed Column Header ViewHolder.
-     * @param column   : X (Column) position of Long Pressed Column Header item.
+     * @param column           : X (Column) position of Long Pressed Column Header item.
      */
     @Override
     public void onColumnHeaderLongPressed(@NonNull RecyclerView.ViewHolder columnHeaderView, int
             column) {
 
-        if (columnHeaderView != null && columnHeaderView instanceof ColumnHeaderViewHolder) {
+        if (columnHeaderView instanceof ColumnHeaderViewHolder) {
             // Create Long Press Popup
             ColumnHeaderLongPressPopup popup = new ColumnHeaderLongPressPopup(
                     (ColumnHeaderViewHolder) columnHeaderView, mTableView);
@@ -109,36 +138,39 @@ public class TableViewListener implements ITableViewListener {
      */
     @Override
     public void onRowHeaderClicked(@NonNull RecyclerView.ViewHolder rowHeaderView, int row) {
-        // Do what you want.
-
-
+        // Do whatever you want.
         showToast("Row header " + row + " has been clicked.");
+    }
+
+    /**
+     * Called when user double click any Row Header item.
+     *
+     * @param rowHeaderView : Clicked Row Header ViewHolder.
+     * @param row           : Y (Row) position of Clicked Row Header item.
+     */
+    @Override
+    public void onRowHeaderDoubleClicked(@NonNull RecyclerView.ViewHolder rowHeaderView, int row) {
+        // Do whatever you want.
+        showToast("Row header " + row + " has been double clicked.");
     }
 
     /**
      * Called when user long press any row header item.
      *
      * @param rowHeaderView : Long Pressed Row Header ViewHolder.
-     * @param row   : Y (Row) position of Long Pressed Row Header item.
+     * @param row           : Y (Row) position of Long Pressed Row Header item.
      */
     @Override
     public void onRowHeaderLongPressed(@NonNull RecyclerView.ViewHolder rowHeaderView, int row) {
 
-        if (rowHeaderView != null) {
-            // Create Long Press Popup
-            RowHeaderLongPressPopup popup = new RowHeaderLongPressPopup(rowHeaderView, mTableView);
-            // Show
-            popup.show();
-        }
+        // Create Long Press Popup
+        RowHeaderLongPressPopup popup = new RowHeaderLongPressPopup(rowHeaderView, mTableView);
+        // Show
+        popup.show();
     }
 
 
     private void showToast(String p_strMessage) {
-        if (mToast == null) {
-            mToast = Toast.makeText(mContext, "", Toast.LENGTH_SHORT);
-        }
-
-        mToast.setText(p_strMessage);
-        mToast.show();
+        Toast.makeText(mContext, p_strMessage, Toast.LENGTH_SHORT).show();
     }
 }

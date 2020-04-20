@@ -17,8 +17,6 @@
 
 package com.evrencoskun.tableview.listener.itemclick;
 
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -27,30 +25,49 @@ import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.listener.ITableViewListener;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+
 /**
  * Created by evrencoskun on 22.11.2017.
  */
 
 public abstract class AbstractItemClickListener implements RecyclerView.OnItemTouchListener {
     private ITableViewListener mListener;
+    @NonNull
     protected GestureDetector mGestureDetector;
+    @NonNull
     protected CellRecyclerView mRecyclerView;
+    @NonNull
     protected SelectionHandler mSelectionHandler;
+    @NonNull
     protected ITableView mTableView;
 
-    public AbstractItemClickListener(CellRecyclerView recyclerView, ITableView tableView) {
+    public AbstractItemClickListener(@NonNull CellRecyclerView recyclerView, @NonNull ITableView tableView) {
         this.mRecyclerView = recyclerView;
         this.mTableView = tableView;
         this.mSelectionHandler = tableView.getSelectionHandler();
 
-        mGestureDetector = new GestureDetector(mRecyclerView.getContext(), new
-                GestureDetector.SimpleOnGestureListener() {
+        mGestureDetector = new GestureDetector(mRecyclerView.getContext(), new GestureDetector
+                .SimpleOnGestureListener() {
 
+            @Nullable
             MotionEvent start;
 
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
                 return true;
+            }
+
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                return clickAction(mRecyclerView, e);
+            }
+
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                return doubleClickAction(e);
             }
 
             @Override
@@ -62,9 +79,8 @@ public abstract class AbstractItemClickListener implements RecyclerView.OnItemTo
             @Override
             public void onLongPress(MotionEvent e) {
                 // Check distance to prevent scroll to trigger the event
-                if(start != null
-                        && Math.abs(start.getRawX() - e.getRawX()) < 20
-                        && Math.abs(start.getRawY() - e.getRawY()) < 20) {
+                if (start != null && Math.abs(start.getRawX() - e.getRawX()) < 20 && Math.abs
+                        (start.getRawY() - e.getRawY()) < 20) {
                     longPressAction(e);
                 }
             }
@@ -72,17 +88,21 @@ public abstract class AbstractItemClickListener implements RecyclerView.OnItemTo
     }
 
     @Override
-    public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) {
-        return clickAction(view, e);
+    public boolean onInterceptTouchEvent(@NonNull RecyclerView view, @NonNull MotionEvent e) {
+        mGestureDetector.onTouchEvent(e);
+        // Return false intentionally
+        return false;
     }
 
     @Override
-    public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) { }
+    public void onTouchEvent(@NonNull RecyclerView view, @NonNull MotionEvent motionEvent) {
+    }
 
     @Override
-    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {}
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+    }
 
-
+    @NonNull
     protected ITableViewListener getTableViewListener() {
         if (mListener == null) {
             mListener = mTableView.getTableViewListener();
@@ -90,7 +110,9 @@ public abstract class AbstractItemClickListener implements RecyclerView.OnItemTo
         return mListener;
     }
 
-    abstract protected boolean clickAction(RecyclerView view, MotionEvent e);
+    abstract protected boolean clickAction(@NonNull RecyclerView view, @NonNull MotionEvent e);
 
-    abstract protected void longPressAction(MotionEvent e);
+    abstract protected void longPressAction(@NonNull MotionEvent e);
+
+    abstract protected boolean doubleClickAction(@NonNull MotionEvent e);
 }

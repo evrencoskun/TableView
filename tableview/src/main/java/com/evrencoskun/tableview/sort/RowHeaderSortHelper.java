@@ -1,28 +1,24 @@
 package com.evrencoskun.tableview.sort;
 
-import android.util.Log;
-import android.view.View;
-
+import androidx.annotation.Nullable;
 
 /**
  * Created by cedricferry on 6/2/18.
  */
 
 public class RowHeaderSortHelper {
-
-    private static final String LOG_TAG = RowHeaderSortHelper.class.getSimpleName();
-
+    @Nullable
     private SortState mSortState;
 
     public RowHeaderSortHelper() {
     }
 
-    private void sortingStatusChanged(SortState sortState) {
+    private void sortingStatusChanged(@Nullable SortState sortState) {
         mSortState = sortState;
-        // TODO: Should we add an interface and listner and call listner when it is sorted?
+        // TODO: Should we add an interface and listener and call listener when it is sorted?
     }
 
-    public void setSortingStatus(SortState status) {
+    public void setSortingStatus(@Nullable SortState status) {
         mSortState = status;
         sortingStatusChanged(status);
     }
@@ -35,17 +31,8 @@ public class RowHeaderSortHelper {
         return mSortState != SortState.UNSORTED;
     }
 
+    @Nullable
     public SortState getSortingStatus() {
         return mSortState;
-    }
-
-
-    public class TableViewSorterException extends Exception {
-
-        public TableViewSorterException() {
-            super("For sorting process, column header view holders must be " + "extended from " +
-                    "AbstractSorterViewHolder class");
-        }
-
     }
 }

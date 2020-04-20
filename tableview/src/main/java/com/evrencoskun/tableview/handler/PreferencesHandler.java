@@ -17,6 +17,8 @@
 
 package com.evrencoskun.tableview.handler;
 
+import androidx.annotation.NonNull;
+
 import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.preference.Preferences;
 
@@ -25,31 +27,30 @@ import com.evrencoskun.tableview.preference.Preferences;
  */
 
 public class PreferencesHandler {
-
-    private TableView tableView;
+    @NonNull
     private ScrollHandler scrollHandler;
+    @NonNull
     private SelectionHandler selectionHandler;
 
-    public PreferencesHandler(TableView tableView) {
-        this.tableView = tableView;
+    public PreferencesHandler(@NonNull TableView tableView) {
         this.scrollHandler = tableView.getScrollHandler();
         this.selectionHandler = tableView.getSelectionHandler();
     }
 
-
-    public Preferences savePreferences(){
+    @NonNull
+    public Preferences savePreferences() {
         Preferences preferences = new Preferences();
         preferences.columnPosition = scrollHandler.getColumnPosition();
         preferences.columnPositionOffset = scrollHandler.getColumnPositionOffset();
         preferences.rowPosition = scrollHandler.getRowPosition();
         preferences.rowPositionOffset = scrollHandler.getRowPositionOffset();
-        preferences.selectedColumnPosition = selectionHandler.getSelectedColumnPosition();
-        preferences.selectedRowPosition = selectionHandler.getSelectedRowPosition();
+        // TODO
+        //preferences.selectedColumnPosition = selectionHandler.getSelectedColumnPosition();
+        //preferences.selectedRowPosition = selectionHandler.getSelectedRowPosition();
         return preferences;
     }
 
-
-    public void loadPreferences(Preferences preferences){
+    public void loadPreferences(@NonNull Preferences preferences) {
         scrollHandler.scrollToColumnPosition(preferences.columnPosition, preferences.columnPositionOffset);
         scrollHandler.scrollToRowPosition(preferences.rowPosition, preferences.rowPositionOffset);
         selectionHandler.setSelectedColumnPosition(preferences.selectedColumnPosition);

@@ -17,9 +17,11 @@
 
 package com.evrencoskun.tableview.handler;
 
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
@@ -31,12 +33,16 @@ import com.evrencoskun.tableview.layoutmanager.ColumnLayoutManager;
  */
 
 public class ScrollHandler {
+    @NonNull
     private ITableView mTableView;
+    @NonNull
     private CellLayoutManager mCellLayoutManager;
+    @NonNull
     private LinearLayoutManager mRowHeaderLayoutManager;
+    @NonNull
     private ColumnHeaderLayoutManager mColumnHeaderLayoutManager;
 
-    public ScrollHandler(ITableView tableView) {
+    public ScrollHandler(@NonNull ITableView tableView) {
         this.mTableView = tableView;
         this.mCellLayoutManager = tableView.getCellLayoutManager();
         this.mRowHeaderLayoutManager = tableView.getRowHeaderLayoutManager();
@@ -109,7 +115,10 @@ public class ScrollHandler {
     public int getColumnPositionOffset() {
         View child = mColumnHeaderLayoutManager.findViewByPosition(mColumnHeaderLayoutManager
                 .findFirstVisibleItemPosition());
-        return child.getLeft();
+        if (child != null) {
+            return child.getLeft();
+        }
+        return 0;
     }
 
     public int getRowPosition() {
@@ -119,6 +128,9 @@ public class ScrollHandler {
     public int getRowPositionOffset() {
         View child = mRowHeaderLayoutManager.findViewByPosition(mRowHeaderLayoutManager
                 .findFirstVisibleItemPosition());
-        return child.getLeft();
+        if (child != null) {
+            return child.getLeft();
+        }
+        return 0;
     }
 }

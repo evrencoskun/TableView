@@ -18,9 +18,12 @@
 package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.ITableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractSorterViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
@@ -36,25 +39,26 @@ import java.util.List;
  */
 
 public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAdapter<CH> {
-    private static final String LOG_TAG = ColumnHeaderRecyclerViewAdapter.class.getSimpleName();
-
+    @NonNull
     private ITableAdapter mTableAdapter;
+    private ITableView mTableView;
     private ColumnSortHelper mColumnSortHelper;
 
-    public ColumnHeaderRecyclerViewAdapter(Context context, List<CH> itemList, ITableAdapter
+    public ColumnHeaderRecyclerViewAdapter(@NonNull Context context, @Nullable List<CH> itemList, @NonNull ITableAdapter
             tableAdapter) {
         super(context, itemList);
         this.mTableAdapter = tableAdapter;
+        this.mTableView = tableAdapter.getTableView();
     }
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AbstractViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return mTableAdapter.onCreateColumnHeaderViewHolder(parent, viewType);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
+    public void onBindViewHolder(@NonNull AbstractViewHolder viewHolder, int position) {
         Object value = getItem(position);
 
         // Apply Selection Style
@@ -79,19 +83,19 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
     }
 
     @Override
-    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
-        AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
+    public void onViewAttachedToWindow(@NonNull AbstractViewHolder viewHolder) {
+        super.onViewAttachedToWindow(viewHolder);
 
         if (mTableAdapter.getTableView().isSelectable()) {
-            SelectionState selectionState = mTableAdapter.getTableView().getSelectionHandler()
-                    .getSelectionStateColumnHeader(viewHolder.getAdapterPosition());
+            SelectionState selectionState = mTableView.getSelectionHandler()
+                    .getSelectionStateColumnHeader
+                (viewHolder.getAdapterPosition());
 
             // Control to ignore selection color
-            if (!mTableAdapter.getTableView().isIgnoreSelectionColors()) {
+            if (!mTableView.isIgnoreSelectionColors()) {
 
                 // Change background color of the view considering it's selected state
-                mTableAdapter.getTableView().getSelectionHandler()
+                mTableView.getSelectionHandler()
                         .changeColumnBackgroundColorBySelectionStatus(viewHolder, selectionState);
             }
 
@@ -100,7 +104,7 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
         }
 
         // Control whether the TableView is sortable or not.
-        if (mTableAdapter.getTableView().isSortable()) {
+        if (mTableView.isSortable()) {
             if (viewHolder instanceof AbstractSorterViewHolder) {
                 // Get its sorting state
                 SortState state = getColumnSortHelper().getSortingStatus(viewHolder
@@ -111,12 +115,12 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
         }
     }
 
-
+    @NonNull
     public ColumnSortHelper getColumnSortHelper() {
         if (mColumnSortHelper == null) {
             // It helps to store sorting state of column headers
-            this.mColumnSortHelper = new ColumnSortHelper(mTableAdapter.getTableView()
-                    .getColumnHeaderLayoutManager());
+            this.mColumnSortHelper = new ColumnSortHelper(mTableView.getColumnHeaderLayoutManager
+                    ());
         }
         return mColumnSortHelper;
     }

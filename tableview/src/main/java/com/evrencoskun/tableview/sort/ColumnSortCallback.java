@@ -17,7 +17,9 @@
 
 package com.evrencoskun.tableview.sort;
 
-import android.support.v7.util.DiffUtil;
+import androidx.annotation.NonNull;
+import androidx.core.util.ObjectsCompat;
+import androidx.recyclerview.widget.DiffUtil;
 
 import java.util.List;
 
@@ -26,14 +28,13 @@ import java.util.List;
  */
 
 public class ColumnSortCallback extends DiffUtil.Callback {
-
-    private static final String LOG_TAG = ColumnSortCallback.class.getSimpleName();
-
+    @NonNull
     private List<List<ISortableModel>> mOldCellItems;
+    @NonNull
     private List<List<ISortableModel>> mNewCellItems;
     private int mColumnPosition;
 
-    public ColumnSortCallback(List<List<ISortableModel>> oldCellItems, List<List<ISortableModel>>
+    public ColumnSortCallback(@NonNull List<List<ISortableModel>> oldCellItems, @NonNull List<List<ISortableModel>>
             newCellItems, int column) {
         this.mOldCellItems = oldCellItems;
         this.mNewCellItems = newCellItems;
@@ -76,7 +77,7 @@ public class ColumnSortCallback extends DiffUtil.Callback {
                         .getContent();
                 Object newContent = mNewCellItems.get(newItemPosition).get(mColumnPosition)
                         .getContent();
-                return oldContent.equals(newContent);
+                return ObjectsCompat.equals(oldContent, newContent);
             }
         }
         return false;

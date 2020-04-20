@@ -18,9 +18,12 @@
 package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.ITableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
@@ -35,24 +38,26 @@ import java.util.List;
  */
 
 public class RowHeaderRecyclerViewAdapter<RH> extends AbstractRecyclerViewAdapter<RH> {
-
+    @NonNull
     private ITableAdapter mTableAdapter;
+    private ITableView mTableView;
     private RowHeaderSortHelper mRowHeaderSortHelper;
 
-    public RowHeaderRecyclerViewAdapter(Context context, List<RH> itemList, ITableAdapter
+    public RowHeaderRecyclerViewAdapter(@NonNull Context context, @Nullable List<RH> itemList, @NonNull ITableAdapter
             tableAdapter) {
         super(context, itemList);
         this.mTableAdapter = tableAdapter;
+        this.mTableView = tableAdapter.getTableView();
     }
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AbstractViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return mTableAdapter.onCreateRowHeaderViewHolder(parent, viewType);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
+    public void onBindViewHolder(@NonNull AbstractViewHolder viewHolder, int position) {
         Object value = getItem(position);
 
         // Apply Selection Style
@@ -76,20 +81,19 @@ public class RowHeaderRecyclerViewAdapter<RH> extends AbstractRecyclerViewAdapte
     }
 
     @Override
-    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
-        AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
+    public void onViewAttachedToWindow(@NonNull AbstractViewHolder viewHolder) {
+        super.onViewAttachedToWindow(viewHolder);
 
         if (mTableAdapter.getTableView().isSelectable()) {
-            SelectionState selectionState = mTableAdapter.getTableView().getSelectionHandler()
-                    .getSelectionStateRowHeader(holder.getAdapterPosition());
+            SelectionState selectionState = mTableView.getSelectionHandler()
+                .getRowSelectionState(viewHolder.getAdapterPosition());
 
 
             // Control to ignore selection color
-            if (!mTableAdapter.getTableView().isIgnoreSelectionColors()) {
+            if (!mTableView.isIgnoreSelectionColors()) {
                 // Change background color of the view considering it's selected state
-                mTableAdapter.getTableView().getSelectionHandler()
-                        .changeRowBackgroundColorBySelectionStatus(viewHolder, selectionState);
+                mTableView.getSelectionHandler().changeRowBackgroundColorBySelectionStatus
+                        (viewHolder, selectionState);
             }
 
             // Change selection status
@@ -97,12 +101,12 @@ public class RowHeaderRecyclerViewAdapter<RH> extends AbstractRecyclerViewAdapte
         }
     }
 
+    @NonNull
     public RowHeaderSortHelper getRowHeaderSortHelper() {
         if (mRowHeaderSortHelper == null) {
-            // It helps to store sorting state of column headers
+            // It helps to store sorting state of row headers
             this.mRowHeaderSortHelper = new RowHeaderSortHelper();
         }
         return mRowHeaderSortHelper;
     }
-
 }

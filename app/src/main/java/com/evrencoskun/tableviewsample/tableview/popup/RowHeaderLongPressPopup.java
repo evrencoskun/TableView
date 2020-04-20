@@ -18,12 +18,14 @@
 package com.evrencoskun.tableviewsample.tableview.popup;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.PopupMenu;
 
-import com.evrencoskun.tableview.ITableView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableviewsample.R;
 
 /**
@@ -36,15 +38,17 @@ public class RowHeaderLongPressPopup extends PopupMenu implements PopupMenu
     // Menu Item constants
     private static final int SCROLL_COLUMN = 1;
     private static final int SHOWHIDE_COLUMN = 2;
+    private static final int REMOVE_ROW = 3;
 
-    private ITableView mTableView;
-    private Context mContext;
+    @NonNull
+    private TableView mTableView;
+    private int mRowPosition;
 
-    public RowHeaderLongPressPopup(RecyclerView.ViewHolder viewHolder, ITableView tableView) {
+    public RowHeaderLongPressPopup(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull TableView tableView) {
         super(viewHolder.itemView.getContext(), viewHolder.itemView);
 
         this.mTableView = tableView;
-        this.mContext = viewHolder.itemView.getContext();
+        this.mRowPosition = viewHolder.getAdapterPosition();
 
         initialize();
     }
@@ -56,14 +60,15 @@ public class RowHeaderLongPressPopup extends PopupMenu implements PopupMenu
     }
 
     private void createMenuItem() {
-        this.getMenu().add(Menu.NONE, SCROLL_COLUMN, 0, mContext.getString(R.string
+        Context context = mTableView.getContext();
+        this.getMenu().add(Menu.NONE, SCROLL_COLUMN, 0, context.getString(R.string
                 .scroll_to_column_position));
-        this.getMenu().add(Menu.NONE, SHOWHIDE_COLUMN, 1, mContext.getString(R.string
+        this.getMenu().add(Menu.NONE, SHOWHIDE_COLUMN, 1, context.getString(R.string
                 .show_hide_the_column));
+        this.getMenu().add(Menu.NONE, REMOVE_ROW, 2, "Remove " + mRowPosition + " position");
         // add new one ...
 
     }
-
 
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
@@ -81,6 +86,9 @@ public class RowHeaderLongPressPopup extends PopupMenu implements PopupMenu
                     mTableView.showColumn(column);
                 }
 
+                break;
+            case REMOVE_ROW:
+                mTableView.getAdapter().removeRow(mRowPosition);
                 break;
         }
         return true;

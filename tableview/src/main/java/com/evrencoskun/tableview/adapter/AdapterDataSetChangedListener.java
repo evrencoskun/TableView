@@ -17,6 +17,8 @@
 
 package com.evrencoskun.tableview.adapter;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 public abstract class AdapterDataSetChangedListener<CH, RH, C> {
@@ -26,7 +28,7 @@ public abstract class AdapterDataSetChangedListener<CH, RH, C> {
      *
      * @param columnHeaderItems The current column header items.
      */
-    public void onColumnHeaderItemsChanged(List<CH> columnHeaderItems) {
+    public void onColumnHeaderItemsChanged(@NonNull List<CH> columnHeaderItems) {
     }
 
     /**
@@ -34,7 +36,7 @@ public abstract class AdapterDataSetChangedListener<CH, RH, C> {
      *
      * @param rowHeaderItems The current row header items.
      */
-    public void onRowHeaderItemsChanged(List<RH> rowHeaderItems) {
+    public void onRowHeaderItemsChanged(@NonNull List<RH> rowHeaderItems) {
     }
 
     /**
@@ -42,7 +44,7 @@ public abstract class AdapterDataSetChangedListener<CH, RH, C> {
      *
      * @param cellItems The current cell items.
      */
-    public void onCellItemsChanged(List<List<C>> cellItems) {
+    public void onCellItemsChanged(@NonNull List<List<C>> cellItems) {
     }
 
     /**

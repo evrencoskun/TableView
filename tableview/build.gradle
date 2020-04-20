@@ -1,24 +1,32 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
 
-
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion compile_sdk_version
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 27
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
         versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        versionName '1.0'
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = java_version
+        targetCompatibility = java_version
+    }
+
+    libraryVariants.all {
+        it.generateBuildConfigProvider.configure {
+            it.enabled = false
         }
     }
 
@@ -34,21 +42,17 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:27.0.2'
-    compile 'com.android.support:recyclerview-v7:27.0.2'
-
-    testCompile 'junit:junit:4.12'
+    implementation "androidx.annotation:annotation:$androidx_annotation_version"
+    implementation "androidx.core:core:$androidx_core_version"
+    implementation "androidx.recyclerview:recyclerview:$androidx_recyclerview_version"
 }
 
 publish {
-    userOrg = 'evrencoskun'//user name of bintray.com
-    groupId = 'com.evrencoskun.library'//jcenter's url
-    artifactId = 'tableview'//project name
-    publishVersion = '0.8.6'//version code
+    userOrg = 'evrencoskun' //user name of bintray.com
+    groupId = 'com.evrencoskun.library' //jcenter's url
+    artifactId = 'tableview' //project name
+    publishVersion = '0.8.9.3' //version code
     desc = 'TableView is a powerful Android library for displaying complex data structures and rendering tabular data composed of rows, columns and cells.'
-    website = 'https://github.com/evrencoskun/TableView'//website
+    website = 'https://github.com/evrencoskun/TableView' //website
+    licences = ['MIT']
 }

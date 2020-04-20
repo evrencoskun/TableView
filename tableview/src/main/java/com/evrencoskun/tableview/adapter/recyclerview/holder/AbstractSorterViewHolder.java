@@ -19,6 +19,8 @@ package com.evrencoskun.tableview.adapter.recyclerview.holder;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import com.evrencoskun.tableview.sort.SortState;
 
 /**
@@ -26,17 +28,18 @@ import com.evrencoskun.tableview.sort.SortState;
  */
 
 public class AbstractSorterViewHolder extends AbstractViewHolder {
-
+    @NonNull
     private SortState mSortState = SortState.UNSORTED;
 
-    public AbstractSorterViewHolder(View itemView) {
+    public AbstractSorterViewHolder(@NonNull View itemView) {
         super(itemView);
     }
 
-    public void onSortingStatusChanged(SortState pSortState) {
+    public void onSortingStatusChanged(@NonNull SortState pSortState) {
         this.mSortState = pSortState;
     }
 
+    @NonNull
     public SortState getSortState() {
         return mSortState;
     }
