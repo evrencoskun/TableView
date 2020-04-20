@@ -69,7 +69,6 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
             } else if(value != null){
                 // trigger exception, if isSelectable, Cells MUST implements ISelectableModel
                 throw new ClassCastException("Item at position " + position + " must implement ISelectableModel to be selectable.");
-
             }
         }
 

@@ -28,7 +28,6 @@ import androidx.annotation.Nullable;
 /**
  * Created by evrencoskun on 11/06/2017.
  */
-
 public class Cell implements ISortableModel, IFilterableModel, ISelectableModel {
     @NonNull
     private String mId;
@@ -84,6 +83,7 @@ public class Cell implements ISortableModel, IFilterableModel, ISelectableModel 
         return mSelectionState;
     }
 
+    @NonNull
     @Override
     public void setSelectionState(AbstractViewHolder.SelectionState selectionState) {
         mSelectionState = selectionState;
