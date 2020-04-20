@@ -71,68 +71,12 @@ public class SelectionHandler {
         this.shadowEnabled = shadowEnabled;
     }
 
-    public void setSelectedCellPositions(@Nullable AbstractViewHolder selectedViewHolder, int column, int
-            row) {
-        this.setPreviousSelectedView(selectedViewHolder);
-
-        setSelectedCellPositions(row, column);
-
-        if (shadowEnabled) {
-            selectedCellView();
-        }
-    }
-
-    public void selectedCellView(){
-        // TODO
-    }
-
     public void setSelectedColumnPosition(@Nullable AbstractViewHolder selectedViewHolder, int column) {
-        this.setPreviousSelectedView(selectedViewHolder);
-
         setSelectedColumnPosition(column);
     }
 
     public void setSelectedRowPosition(AbstractViewHolder selectedViewHolder, int row) {
-        this.setPreviousSelectedView(selectedViewHolder);
-
         setSelectedRowPosition(row);
-    }
-
-    public void restorePreviousSelectedView() {
-        // TODO
-    }
-
-    public void setPreviousSelectedView(AbstractViewHolder viewHolder) {
-        restorePreviousSelectedView();
-
-        if (mPreviousSelectedViewHolder != null) {
-            // Change color
-            mPreviousSelectedViewHolder.setBackgroundColor(mTableView.getUnSelectedColor());
-            // Change state
-            mPreviousSelectedViewHolder.setSelected(SelectionState.UNSELECTED);
-        }
-
-
-
-//        AbstractViewHolder oldViewHolder = mCellLayoutManager.getCellViewHolder
-//                (getSelectedColumnPosition(), getSelectedRowPosition());
-
-        // TODO
-        AbstractViewHolder oldViewHolder = mCellLayoutManager.getCellViewHolder(0,0);
-
-        if (oldViewHolder != null) {
-            // Change color
-            oldViewHolder.setBackgroundColor(mTableView.getUnSelectedColor());
-            // Change state
-            oldViewHolder.setSelected(SelectionState.UNSELECTED);
-        }
-
-        this.mPreviousSelectedViewHolder = viewHolder;
-
-        // Change color
-        mPreviousSelectedViewHolder.setBackgroundColor(mTableView.getSelectedColor());
-        // Change state
-        mPreviousSelectedViewHolder.setSelected(SelectionState.SELECTED);
     }
 
     /**
@@ -143,6 +87,10 @@ public class SelectionHandler {
      */
     public void setSelectedCellPositions(int row, int column) {
         setSelectedCellPositions(row, column, true);
+    }
+
+    public void setSelectedCellPositions(@Nullable AbstractViewHolder selectedViewHolder, int row, int column){
+        setSelectedCellPositions(row, column);
     }
 
     public boolean isCellSelected(int column, int row) {
@@ -169,8 +117,8 @@ public class SelectionHandler {
         return columnHasItemShadowed(column);
     }
 
-    public boolean isRowShadowed(int column) {
-        return rowHasItemShadowed(column);
+    public boolean isRowShadowed(int row) {
+        return rowHasItemShadowed(row);
     }
 
     @NonNull
@@ -258,9 +206,6 @@ public class SelectionHandler {
     private void setSelectionStateCell(int column, int row, SelectionState selectionState) {
         ISelectableModel cellModel = (ISelectableModel) mTableView.getAdapter().getCellRecyclerViewAdapter().getItem(row, column);
         cellModel.setSelectionState(selectionState);
-
-        //Log.d("SelectionHandler", "r" + row + "-" + column + " val: " + ((ISelectableModel) cellModel).getSelectionState() + " " + ((ISortableModel) cellModel).getContent());
-
     }
 
     private void setSelectionStateRowHeader(int row, SelectionState selectionState) {

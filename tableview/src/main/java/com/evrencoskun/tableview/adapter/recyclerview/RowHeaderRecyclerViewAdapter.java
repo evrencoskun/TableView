@@ -26,7 +26,6 @@ import androidx.annotation.Nullable;
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.ITableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
-import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
 import com.evrencoskun.tableview.handler.ISelectableModel;
 import com.evrencoskun.tableview.sort.RowHeaderSortHelper;
 
@@ -85,19 +84,16 @@ public class RowHeaderRecyclerViewAdapter<RH> extends AbstractRecyclerViewAdapte
         super.onViewAttachedToWindow(viewHolder);
 
         if (mTableAdapter.getTableView().isSelectable()) {
-            SelectionState selectionState = mTableView.getSelectionHandler()
-                .getRowSelectionState(viewHolder.getAdapterPosition());
-
 
             // Control to ignore selection color
             if (!mTableView.isIgnoreSelectionColors()) {
                 // Change background color of the view considering it's selected state
                 mTableView.getSelectionHandler().changeRowBackgroundColorBySelectionStatus
-                        (viewHolder, selectionState);
+                        (viewHolder, viewHolder.getSelected());
             }
 
             // Change selection status
-            viewHolder.setSelected(selectionState);
+            viewHolder.setSelected(viewHolder.getSelected());
         }
     }
 

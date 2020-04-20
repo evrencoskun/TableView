@@ -27,7 +27,6 @@ import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.ITableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractSorterViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
-import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
 import com.evrencoskun.tableview.handler.ISelectableModel;
 import com.evrencoskun.tableview.sort.ColumnSortHelper;
 import com.evrencoskun.tableview.sort.SortState;
@@ -87,20 +86,16 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
         super.onViewAttachedToWindow(viewHolder);
 
         if (mTableAdapter.getTableView().isSelectable()) {
-            SelectionState selectionState = mTableView.getSelectionHandler()
-                    .getSelectionStateColumnHeader
-                (viewHolder.getAdapterPosition());
-
             // Control to ignore selection color
             if (!mTableView.isIgnoreSelectionColors()) {
 
                 // Change background color of the view considering it's selected state
                 mTableView.getSelectionHandler()
-                        .changeColumnBackgroundColorBySelectionStatus(viewHolder, selectionState);
+                        .changeColumnBackgroundColorBySelectionStatus(viewHolder, viewHolder.getSelected());
             }
 
             // Change selection status
-            viewHolder.setSelected(selectionState);
+            viewHolder.setSelected(viewHolder.getSelected());
         }
 
         // Control whether the TableView is sortable or not.
