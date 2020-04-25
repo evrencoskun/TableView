@@ -133,25 +133,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
                 .scrollToPositionWithOffset(scrollHandler.getColumnPosition(), scrollHandler
                         .getColumnPositionOffset());
 
-        SelectionHandler selectionHandler = mTableView.getSelectionHandler();
-
-        if (selectionHandler.isAnyColumnSelected()) {
-
-            AbstractViewHolder cellViewHolder = (AbstractViewHolder) viewHolder.recyclerView
-                    .findViewHolderForAdapterPosition(selectionHandler.getSelectedColumnPosition());
-
-            if (cellViewHolder != null) {
-                // Control to ignore selection color
-                if (!mTableView.isIgnoreSelectionColors()) {
-                    cellViewHolder.setBackgroundColor(mTableView.getSelectedColor());
-                }
-                cellViewHolder.setSelected(SelectionState.SELECTED);
-
-            }
-        } else if (selectionHandler.isRowSelected(holder.getAdapterPosition())) {
-            selectionHandler.changeSelectionOfRecyclerView(viewHolder.recyclerView,
-                    SelectionState.SELECTED, mTableView.getSelectedColor());
-        }
+        // TODO?
 
     }
 
@@ -200,6 +182,28 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         } else {
             notifyDataSetChanged();
         }
+    }
+
+    @Nullable
+    public C getItem(int rowPosition, int columnPosition) {
+        if (mItemList.size() > rowPosition) {
+            List<C> row = (List<C>) mItemList.get(rowPosition);
+            if(row.size() > columnPosition) {
+                return row.get(columnPosition);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * This method helps to get cell item model that is located on given row position.
+     *
+     * @param rowPosition
+     */
+    public List<C> getRowItems(int rowPosition) {
+        List<C> cellItems = new ArrayList<>();
+
+        return  (List<C>) mItemList.get(rowPosition);
     }
 
     /**

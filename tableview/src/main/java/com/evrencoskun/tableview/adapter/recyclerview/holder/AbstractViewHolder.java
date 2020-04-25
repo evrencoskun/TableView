@@ -48,6 +48,10 @@ public abstract class AbstractViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
+    public SelectionState getSelected() {
+        return m_eState;
+    }
+
     public boolean isSelected() {
         return m_eState == SelectionState.SELECTED;
     }

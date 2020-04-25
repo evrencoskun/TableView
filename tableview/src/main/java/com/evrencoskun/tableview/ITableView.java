@@ -61,6 +61,10 @@ public interface ITableView {
 
     boolean isSortable();
 
+    boolean isSelectable();
+
+    void setSelectable(boolean selectable);
+
     @NonNull
     Context getContext();
 

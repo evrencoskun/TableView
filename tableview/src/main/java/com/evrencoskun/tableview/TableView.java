@@ -116,6 +116,7 @@ public class TableView extends FrameLayout implements ITableView {
     private boolean mAllowClickInsideRowHeader = false;
     private boolean mAllowClickInsideColumnHeader = false;
     private boolean mIsSortable;
+    private boolean mIsSelectable;
 
     public TableView(@NonNull Context context) {
         super(context);
@@ -378,6 +379,16 @@ public class TableView extends FrameLayout implements ITableView {
         return mIsSortable;
     }
 
+    @Override
+    public boolean isSelectable() {
+        return mIsSelectable;
+    }
+
+    @Override
+    public void setSelectable(boolean selectable) {
+        mIsSelectable = selectable;
+    }
+
     public void setShowHorizontalSeparators(boolean showSeparators) {
         this.mShowHorizontalSeparators = showSeparators;
     }
@@ -583,42 +594,37 @@ public class TableView extends FrameLayout implements ITableView {
         return mVisibilityHandler.isRowVisible(row);
     }
 
+
+
+    public void setSelectedRow(int row) {
+        mSelectionHandler.setSelectedRowPosition(row);
+    }
+
     /**
      * Returns the index of the selected row, -1 if no row is selected.
      */
     public int getSelectedRow() {
-        return mSelectionHandler.getSelectedRowPosition();
-    }
-
-    public void setSelectedRow(int row) {
-        // Find the row header view holder which is located on row position.
-        AbstractViewHolder rowViewHolder = (AbstractViewHolder) getRowHeaderRecyclerView()
-                .findViewHolderForAdapterPosition(row);
-
-
-        mSelectionHandler.setSelectedRowPosition(rowViewHolder, row);
+        //TODO: reuse logic in mSelectionHandler.rowHasItemSelected
+        // to return list of selected rows
+        return -1;//mSelectionHandler.getSelectedRowPosition();
     }
 
     /**
      * Returns the index of the selected column, -1 if no column is selected.
      */
     public int getSelectedColumn() {
-        return mSelectionHandler.getSelectedColumnPosition();
+        //TODO: reuse logic in mSelectionHandler.columnHasItemSelected
+        // to return list of selected columns
+        return -1; //mSelectionHandler.getSelectedColumnPosition();
     }
 
     public void setSelectedColumn(int column) {
-        // Find the column view holder which is located on column position .
-        AbstractViewHolder columnViewHolder = (AbstractViewHolder) getColumnHeaderRecyclerView()
-                .findViewHolderForAdapterPosition(column);
-
-        mSelectionHandler.setSelectedColumnPosition(columnViewHolder, column);
+        mSelectionHandler.setSelectedColumnPosition(column);
     }
 
     public void setSelectedCell(int column, int row) {
         // Find the cell view holder which is located on x,y (column,row) position.
-        AbstractViewHolder cellViewHolder = getCellLayoutManager().getCellViewHolder(column, row);
-
-        mSelectionHandler.setSelectedCellPositions(cellViewHolder, column, row);
+        mSelectionHandler.setSelectedCellPositions(row, column);
     }
 
     @NonNull

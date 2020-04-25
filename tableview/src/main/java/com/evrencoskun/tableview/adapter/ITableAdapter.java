@@ -60,6 +60,8 @@ public interface ITableAdapter<CH, RH, C> {
 
     ITableView getTableView();
 
+    int getColorForSelection(AbstractViewHolder.SelectionState selectionState);
+
     /**
      * Sets the listener for changes of data set on the TableView.
      *
