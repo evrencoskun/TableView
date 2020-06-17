@@ -203,6 +203,10 @@ public class SelectionHandler {
         AbstractViewHolder rowHeader = (AbstractViewHolder) mRowHeaderRecyclerView
                 .findViewHolderForAdapterPosition(mSelectedRowPosition);
 
+        // Clear selected row and column
+        mSelectedRowPosition = UNSELECTED_POSITION;
+        mSelectedColumnPosition = UNSELECTED_POSITION;
+
         // If view is null, that means the row view holder was already recycled.
         if (rowHeader != null) {
             // Change color
