@@ -400,4 +400,130 @@ public class CornerViewTest {
         LinearLayout cornerViewReset = (LinearLayout) tableView.getAdapter().getCornerView();
         Assert.assertNull(cornerViewReset);
     }
+
+    @Test
+    public void testColumnHeadersOnlyTableShowCorner() throws Throwable {
+        Activity activity = mActivityTestRule.getActivity();
+
+        TableView tableView =
+                new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        Assert.assertNotNull(tableView);
+
+        // Set the option to show corner view when there is not row data
+        tableView.setShowCornerView(true);
+
+        SimpleTestAdapter simpleTestAdapter = new SimpleTestAdapter();
+        Assert.assertNotNull(simpleTestAdapter);
+
+        tableView.setAdapter(simpleTestAdapter);
+
+        // Only want column headers
+        SimpleData simpleData = new SimpleData(5, 0);
+
+        simpleTestAdapter.setAllItems(simpleData.getColumnHeaders(), simpleData.getRowHeaders(),
+                simpleData.getCells());
+
+        mActivityTestRule.runOnUiThread(() -> activity.setContentView(tableView));
+
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+        // Check that the corner view is created
+        // The Corner view uses cell_layout which has LinearLayout as top item
+        LinearLayout cornerView = (LinearLayout) tableView.getAdapter().getCornerView();
+        Assert.assertNotNull(cornerView);
+        // Check the corner view is visible
+        Assert.assertEquals(View.VISIBLE, cornerView.getVisibility());
+        // Check that it is the expected corner view by checking the text
+        // The first child of the LinearLayout is a textView (index starts at zero)
+        TextView cornerViewResetTextView = (TextView) cornerView.getChildAt(0);
+        Assert.assertEquals("Cell Data", cornerViewResetTextView.getText());
+    }
+
+    @Test
+    public void testColumnHeadersOnlyTableShowCornerResetEmptyTable() throws Throwable {
+        Activity activity = mActivityTestRule.getActivity();
+
+        TableView tableView =
+                new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        Assert.assertNotNull(tableView);
+
+        // Set the option to show corner view when there is not row data
+        tableView.setShowCornerView(true);
+
+        SimpleTestAdapter simpleTestAdapter = new SimpleTestAdapter();
+        Assert.assertNotNull(simpleTestAdapter);
+
+        tableView.setAdapter(simpleTestAdapter);
+
+        // Only want column headers
+        SimpleData simpleData = new SimpleData(5, 0);
+
+        simpleTestAdapter.setAllItems(simpleData.getColumnHeaders(), simpleData.getRowHeaders(),
+                simpleData.getCells());
+
+        // Check that the corner view is created
+        // The Corner view uses cell_layout which has LinearLayout as top item
+        LinearLayout cornerView = (LinearLayout) tableView.getAdapter().getCornerView();
+        Assert.assertNotNull(cornerView);
+
+        // Change the items of data to reset
+        SimpleData simpleDataReset = new SimpleData(0);
+        simpleTestAdapter.setAllItems(simpleDataReset.getColumnHeaders(), simpleDataReset.getRowHeaders(),
+                simpleDataReset.getCells());
+
+        mActivityTestRule.runOnUiThread(() -> activity.setContentView(tableView));
+
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+        // Check that the corner view is still created
+        // The Corner view uses cell_layout which has LinearLayout as top item
+        LinearLayout cornerViewReset = (LinearLayout) tableView.getAdapter().getCornerView();
+        Assert.assertNotNull(cornerViewReset);
+        // Check the corner view visibility is GONE
+        Assert.assertEquals(View.GONE, cornerViewReset.getVisibility());
+    }
+
+    @Test
+    public void testColumnHeadersOnlyTableShowCornerResetNonEmptyTable() throws Throwable {
+        Activity activity = mActivityTestRule.getActivity();
+
+        TableView tableView =
+                new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        Assert.assertNotNull(tableView);
+
+        // Set the option to show corner view when there is not row data
+        tableView.setShowCornerView(true);
+
+        SimpleTestAdapter simpleTestAdapter = new SimpleTestAdapter();
+        Assert.assertNotNull(simpleTestAdapter);
+
+        tableView.setAdapter(simpleTestAdapter);
+
+        // Only want column headers
+        SimpleData simpleData = new SimpleData(5, 0);
+
+        simpleTestAdapter.setAllItems(simpleData.getColumnHeaders(), simpleData.getRowHeaders(),
+                simpleData.getCells());
+
+        // Check that the corner view is created
+        // The Corner view uses cell_layout which has LinearLayout as top item
+        LinearLayout cornerView = (LinearLayout) tableView.getAdapter().getCornerView();
+        Assert.assertNotNull(cornerView);
+
+        // Change the items of data to reset
+        SimpleData simpleDataReset = new SimpleData(2);
+        simpleTestAdapter.setAllItems(simpleDataReset.getColumnHeaders(), simpleDataReset.getRowHeaders(),
+                simpleDataReset.getCells());
+
+        mActivityTestRule.runOnUiThread(() -> activity.setContentView(tableView));
+
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+        // Check that the corner view is still created
+        // The Corner view uses cell_layout which has LinearLayout as top item
+        LinearLayout cornerViewReset = (LinearLayout) tableView.getAdapter().getCornerView();
+        Assert.assertNotNull(cornerViewReset);
+        // Check the corner view visibility is VISIBLE
+        Assert.assertEquals(View.VISIBLE, cornerViewReset.getVisibility());
+    }
 }

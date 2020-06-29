@@ -141,15 +141,11 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
                         mColumnHeaderHeight));
             }
         } else {
-            // Check to see if the corner view show be shown with column headers
-            if (!mTableView.getShowCornerView()){
-                // (Original behaviour)
-                // Change corner view visibility
-                if (rowHeaderItems != null && !rowHeaderItems.isEmpty()) {
-                    mCornerView.setVisibility(View.VISIBLE);
-                } else {
-                    mCornerView.setVisibility(View.GONE);
-                }
+            // Change corner view visibility
+            if (rowHeaderItems != null && !rowHeaderItems.isEmpty()) {
+                mCornerView.setVisibility(View.VISIBLE);
+            } else {
+                mCornerView.setVisibility(View.GONE);
             }
         }
     }
