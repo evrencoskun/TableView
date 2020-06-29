@@ -116,6 +116,7 @@ public class TableView extends FrameLayout implements ITableView {
     private boolean mAllowClickInsideRowHeader = false;
     private boolean mAllowClickInsideColumnHeader = false;
     private boolean mIsSortable;
+    private boolean mShowCornerView = false;
 
     public TableView(@NonNull Context context) {
         super(context);
@@ -770,6 +771,14 @@ public class TableView extends FrameLayout implements ITableView {
 
     public void setColumnWidth(int columnPosition, int width) {
         mColumnWidthHandler.setColumnWidth(columnPosition, width);
+    }
+
+    public void setShowCornerView(boolean showCornerView){
+        mShowCornerView = showCornerView;
+    }
+
+    public boolean getShowCornerView(){
+        return mShowCornerView;
     }
 
     @Nullable
