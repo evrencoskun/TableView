@@ -242,6 +242,11 @@ public class SelectionHandler {
                 mTableView.getUnSelectedColor());
     }
 
+    public boolean isAnyCellSelected() {
+        return (getSelectedColumnPosition() != SelectionHandler.UNSELECTED_POSITION &&
+                getSelectedRowPosition() != SelectionHandler.UNSELECTED_POSITION);
+    }
+
     public boolean isCellSelected(int column, int row) {
         return (getSelectedColumnPosition() == column && getSelectedRowPosition() == row) ||
                 isColumnSelected(column) || isRowSelected(row);
