@@ -415,9 +415,11 @@ public class SelectionHandler {
     }
 
     public void clearSelection() {
-        unselectedRowHeader();
-        unselectedCellView();
-        unselectedColumnHeader();
+        if(isAnyCellSelected()){
+            unselectedRowHeader();
+            unselectedCellView();
+            unselectedColumnHeader();
+        }
     }
 
     public void setSelectedRowPosition(int row) {
