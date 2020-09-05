@@ -351,15 +351,17 @@ public class SelectionHandler {
             CellRecyclerView cellRowRecyclerView = (CellRecyclerView) mCellLayoutManager
                     .findViewByPosition(i);
 
-            AbstractViewHolder holder = (AbstractViewHolder) cellRowRecyclerView
-                    .findViewHolderForAdapterPosition(column);
+            if(cellRowRecyclerView!= null){
+                AbstractViewHolder holder = (AbstractViewHolder) cellRowRecyclerView
+                        .findViewHolderForAdapterPosition(column);
 
-            if (holder != null) {
-                // Get each view container of the cell view and set unselected color.
-                holder.setBackgroundColor(backgroundColor);
+                if (holder != null) {
+                    // Get each view container of the cell view and set unselected color.
+                    holder.setBackgroundColor(backgroundColor);
 
-                // Change selection status of the view holder
-                holder.setSelected(selectionState);
+                    // Change selection status of the view holder
+                    holder.setSelected(selectionState);
+                }
             }
         }
     }
