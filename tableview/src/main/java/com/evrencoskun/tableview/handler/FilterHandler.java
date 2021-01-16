@@ -34,8 +34,8 @@ import java.util.List;
 
 public class FilterHandler<T extends IFilterableModel> {
 
-    private CellRecyclerViewAdapter<List<T>> mCellRecyclerViewAdapter;
-    private RowHeaderRecyclerViewAdapter<T> mRowHeaderRecyclerViewAdapter;
+    private final CellRecyclerViewAdapter<List<T>> mCellRecyclerViewAdapter;
+    private final RowHeaderRecyclerViewAdapter<T> mRowHeaderRecyclerViewAdapter;
     private List<List<T>> originalCellDataStore;
     private List<T> originalRowDataStore;
 
@@ -118,7 +118,7 @@ public class FilterHandler<T extends IFilterableModel> {
 
     @NonNull
     @SuppressWarnings("unchecked")
-    private AdapterDataSetChangedListener adapterDataSetChangedListener =
+    private final AdapterDataSetChangedListener adapterDataSetChangedListener =
             new AdapterDataSetChangedListener() {
                 @Override
                 public void onRowHeaderItemsChanged(@NonNull List rowHeaderItems) {

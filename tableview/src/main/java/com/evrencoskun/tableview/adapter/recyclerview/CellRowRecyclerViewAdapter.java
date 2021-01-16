@@ -34,10 +34,10 @@ import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.
 public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
     private int mYPosition;
-    private ITableAdapter mTableAdapter;
+    private final ITableAdapter mTableAdapter;
 
     @NonNull
-    private ITableView mTableView;
+    private final ITableView mTableView;
 
     public CellRowRecyclerViewAdapter(@NonNull Context context, @NonNull ITableView tableView) {
         super(context, null);

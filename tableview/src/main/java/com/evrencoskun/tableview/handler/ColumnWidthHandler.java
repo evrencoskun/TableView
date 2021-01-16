@@ -27,7 +27,7 @@ import com.evrencoskun.tableview.ITableView;
 
 public class ColumnWidthHandler {
     @NonNull
-    private ITableView mTableView;
+    private final ITableView mTableView;
 
     public ColumnWidthHandler(@NonNull ITableView tableView) {
         mTableView = tableView;

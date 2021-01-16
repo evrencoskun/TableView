@@ -200,7 +200,7 @@ public class Pagination implements IPagination {
 
     @NonNull
     @SuppressWarnings("unchecked")
-    private AdapterDataSetChangedListener adapterDataSetChangedListener =
+    private final AdapterDataSetChangedListener adapterDataSetChangedListener =
             new AdapterDataSetChangedListener() {
                 @Override
                 public void onRowHeaderItemsChanged(@NonNull List rowHeaderItems) {
@@ -216,7 +216,7 @@ public class Pagination implements IPagination {
             };
 
     @NonNull
-    private FilterChangedListener<ISortableModel> filterChangedListener =
+    private final FilterChangedListener<ISortableModel> filterChangedListener =
             new FilterChangedListener<ISortableModel>() {
                 @Override
                 public void onFilterChanged(@NonNull List<List<ISortableModel>> filteredCellItems, @NonNull List<ISortableModel> filteredRowHeaderItems) {
@@ -234,7 +234,7 @@ public class Pagination implements IPagination {
             };
 
     @NonNull
-    private ColumnSortStateChangedListener columnSortStateChangedListener =
+    private final ColumnSortStateChangedListener columnSortStateChangedListener =
             new ColumnSortStateChangedListener() {
                 @Override
                 public void onColumnSortStatusChanged(int column, @NonNull SortState sortState) {

@@ -29,10 +29,10 @@ import java.util.List;
 
 public class ColumnSortCallback extends DiffUtil.Callback {
     @NonNull
-    private List<List<ISortableModel>> mOldCellItems;
+    private final List<List<ISortableModel>> mOldCellItems;
     @NonNull
-    private List<List<ISortableModel>> mNewCellItems;
-    private int mColumnPosition;
+    private final List<List<ISortableModel>> mNewCellItems;
+    private final int mColumnPosition;
 
     public ColumnSortCallback(@NonNull List<List<ISortableModel>> oldCellItems, @NonNull List<List<ISortableModel>>
             newCellItems, int column) {

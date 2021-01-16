@@ -11,9 +11,9 @@ import java.util.List;
 
 public class RowHeaderSortCallback extends DiffUtil.Callback {
     @NonNull
-    private List<ISortableModel> mOldCellItems;
+    private final List<ISortableModel> mOldCellItems;
     @NonNull
-    private List<ISortableModel> mNewCellItems;
+    private final List<ISortableModel> mNewCellItems;
 
     public RowHeaderSortCallback(@NonNull List<ISortableModel> oldCellItems, @NonNull List<ISortableModel>
             newCellItems) {

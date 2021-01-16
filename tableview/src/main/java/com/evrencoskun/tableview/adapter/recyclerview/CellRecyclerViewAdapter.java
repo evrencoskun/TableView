@@ -43,7 +43,7 @@ import java.util.List;
 
 public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
     @NonNull
-    private ITableView mTableView;
+    private final ITableView mTableView;
 
     @NonNull
     private final RecyclerView.RecycledViewPool mRecycledViewPool;

@@ -46,14 +46,14 @@ public class CellLayoutManager extends LinearLayoutManager {
     private static final int IGNORE_LEFT = -99999;
 
     @NonNull
-    private ColumnHeaderLayoutManager mColumnHeaderLayoutManager;
+    private final ColumnHeaderLayoutManager mColumnHeaderLayoutManager;
 
     @NonNull
-    private CellRecyclerView mRowHeaderRecyclerView;
+    private final CellRecyclerView mRowHeaderRecyclerView;
 
     private HorizontalRecyclerViewListener mHorizontalListener;
     @NonNull
-    private ITableView mTableView;
+    private final ITableView mTableView;
 
     @NonNull
     private final SparseArray<SparseIntArray> mCachedWidthList = new SparseArray<>();

@@ -36,7 +36,7 @@ public class VisibilityHandler {
     private static final String LOG_TAG = VisibilityHandler.class.getSimpleName();
 
     @NonNull
-    private ITableView mTableView;
+    private final ITableView mTableView;
     @NonNull
     private SparseArray<Row> mHideRowList = new SparseArray<>();
     @NonNull
@@ -175,11 +175,11 @@ public class VisibilityHandler {
     }
 
     static class Row {
-        private int mYPosition;
+        private final int mYPosition;
         @Nullable
-        private Object mRowHeaderModel;
+        private final Object mRowHeaderModel;
         @Nullable
-        private List<Object> mCellModelList;
+        private final List<Object> mCellModelList;
 
         public Row(int row, @Nullable Object rowHeaderModel, @Nullable List<Object> cellModelList) {
             this.mYPosition = row;
@@ -204,11 +204,11 @@ public class VisibilityHandler {
     }
 
     static class Column {
-        private int mYPosition;
+        private final int mYPosition;
         @Nullable
-        private Object mColumnHeaderModel;
+        private final Object mColumnHeaderModel;
         @NonNull
-        private List<Object> mCellModelList;
+        private final List<Object> mCellModelList;
 
         public Column(int yPosition, @Nullable Object columnHeaderModel,
                       @NonNull List<Object> cellModelList) {

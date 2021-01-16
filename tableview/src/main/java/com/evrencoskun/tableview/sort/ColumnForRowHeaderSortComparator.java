@@ -15,14 +15,14 @@ import java.util.List;
  */
 public class ColumnForRowHeaderSortComparator implements Comparator<ISortableModel> {
     @NonNull
-    private List<ISortableModel> mRowHeaderList;
+    private final List<ISortableModel> mRowHeaderList;
     @NonNull
-    private List<List<ISortableModel>> mReferenceList;
-    private int column;
+    private final List<List<ISortableModel>> mReferenceList;
+    private final int column;
     @NonNull
-    private SortState mSortState;
+    private final SortState mSortState;
     @NonNull
-    private ColumnSortComparator mColumnSortComparator;
+    private final ColumnSortComparator mColumnSortComparator;
 
     public ColumnForRowHeaderSortComparator(@NonNull List<ISortableModel> rowHeader,
                                             @NonNull List<List<ISortableModel>> referenceList,

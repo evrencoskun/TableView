@@ -41,14 +41,14 @@ public class SelectionHandler {
     private boolean shadowEnabled = true;
 
     @NonNull
-    private ITableView mTableView;
+    private final ITableView mTableView;
     private AbstractViewHolder mPreviousSelectedViewHolder;
     @NonNull
-    private CellRecyclerView mColumnHeaderRecyclerView;
+    private final CellRecyclerView mColumnHeaderRecyclerView;
     @NonNull
-    private CellRecyclerView mRowHeaderRecyclerView;
+    private final CellRecyclerView mRowHeaderRecyclerView;
     @NonNull
-    private CellLayoutManager mCellLayoutManager;
+    private final CellLayoutManager mCellLayoutManager;
 
     public SelectionHandler(@NonNull ITableView tableView) {
         this.mTableView = tableView;

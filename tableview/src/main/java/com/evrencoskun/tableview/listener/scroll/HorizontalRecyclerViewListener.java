@@ -38,9 +38,9 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
     private static final String LOG_TAG = HorizontalRecyclerViewListener.class.getSimpleName();
 
     @NonNull
-    private CellRecyclerView mColumnHeaderRecyclerView;
+    private final CellRecyclerView mColumnHeaderRecyclerView;
     @Nullable
-    private RecyclerView.LayoutManager mCellLayoutManager;
+    private final RecyclerView.LayoutManager mCellLayoutManager;
     @Nullable
     private RecyclerView mLastTouchedRecyclerView;
 
@@ -55,7 +55,7 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
     private RecyclerView mCurrentRVTouched = null;
 
     @NonNull
-    private VerticalRecyclerViewListener mVerticalRecyclerViewListener;
+    private final VerticalRecyclerViewListener mVerticalRecyclerViewListener;
 
     public HorizontalRecyclerViewListener(@NonNull ITableView tableView) {
         this.mColumnHeaderRecyclerView = tableView.getColumnHeaderRecyclerView();

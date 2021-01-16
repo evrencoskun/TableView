@@ -21,10 +21,10 @@ import androidx.annotation.NonNull;
 
 public class FilterItem {
     @NonNull
-    private FilterType filterType;
+    private final FilterType filterType;
     @NonNull
-    private String filter;
-    private int column;
+    private final String filter;
+    private final int column;
 
     public FilterItem(@NonNull FilterType type, int column, @NonNull String filter) {
         this.filterType = type;

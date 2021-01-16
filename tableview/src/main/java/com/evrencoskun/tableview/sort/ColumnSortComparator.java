@@ -28,7 +28,7 @@ import java.util.List;
 
 public class ColumnSortComparator extends AbstractSortComparator implements Comparator<List<ISortableModel>> {
 
-    private int mXPosition;
+    private final int mXPosition;
 
     public ColumnSortComparator(int xPosition, @NonNull SortState sortState) {
         this.mXPosition = xPosition;

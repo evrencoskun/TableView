@@ -34,13 +34,13 @@ public class Filter {
      * List of filter items to be used for filtering.
      */
     @NonNull
-    private List<FilterItem> filterItems;
+    private final List<FilterItem> filterItems;
 
     /**
      * The TableView instance used in this scope.
      */
     @NonNull
-    private ITableView tableView;
+    private final ITableView tableView;
 
     /**
      * @param tableView The TableView to be filtered.

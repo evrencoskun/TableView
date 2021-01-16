@@ -28,9 +28,9 @@ import com.evrencoskun.tableview.preference.Preferences;
 
 public class PreferencesHandler {
     @NonNull
-    private ScrollHandler scrollHandler;
+    private final ScrollHandler scrollHandler;
     @NonNull
-    private SelectionHandler selectionHandler;
+    private final SelectionHandler selectionHandler;
 
     public PreferencesHandler(@NonNull TableView tableView) {
         this.scrollHandler = tableView.getScrollHandler();
