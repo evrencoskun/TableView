@@ -43,8 +43,8 @@ public class ColumnHeaderLongPressPopup extends PopupMenu implements PopupMenu
     private static final int SCROLL_ROW = 5;
 
     @NonNull
-    private TableView mTableView;
-    private int mXPosition;
+    private final TableView mTableView;
+    private final int mXPosition;
 
     public ColumnHeaderLongPressPopup(@NonNull ColumnHeaderViewHolder viewHolder, @NonNull TableView tableView) {
         super(viewHolder.itemView.getContext(), viewHolder.itemView);

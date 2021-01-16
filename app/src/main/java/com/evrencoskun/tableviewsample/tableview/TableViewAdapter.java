@@ -54,7 +54,7 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
     private static final String LOG_TAG = TableViewAdapter.class.getSimpleName();
 
     @NonNull
-    private TableViewModel mTableViewModel;
+    private final TableViewModel mTableViewModel;
 
     public TableViewAdapter(@NonNull TableViewModel tableViewModel) {
         super();

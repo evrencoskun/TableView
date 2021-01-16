@@ -41,8 +41,8 @@ public class RowHeaderLongPressPopup extends PopupMenu implements PopupMenu
     private static final int REMOVE_ROW = 3;
 
     @NonNull
-    private TableView mTableView;
-    private int mRowPosition;
+    private final TableView mTableView;
+    private final int mRowPosition;
 
     public RowHeaderLongPressPopup(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull TableView tableView) {
         super(viewHolder.itemView.getContext(), viewHolder.itemView);

@@ -75,7 +75,7 @@ public class ColumnHeaderViewHolder extends AbstractSorterViewHolder {
     }
 
     @NonNull
-    private View.OnClickListener mSortButtonClickListener = new View.OnClickListener() {
+    private final View.OnClickListener mSortButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             if (getSortState() == SortState.ASCENDING) {

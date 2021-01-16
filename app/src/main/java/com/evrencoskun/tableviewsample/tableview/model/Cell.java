@@ -29,11 +29,11 @@ import androidx.annotation.Nullable;
 
 public class Cell implements ISortableModel, IFilterableModel {
     @NonNull
-    private String mId;
+    private final String mId;
     @Nullable
-    private Object mData;
+    private final Object mData;
     @NonNull
-    private String mFilterKeyword;
+    private final String mFilterKeyword;
 
     public Cell(@NonNull String id, @Nullable Object data) {
         this.mId = id;
@@ -64,10 +64,6 @@ public class Cell implements ISortableModel, IFilterableModel {
     @Nullable
     public Object getData() {
         return mData;
-    }
-
-    public void setData(@Nullable Object data) {
-        mData = data;
     }
 
     @NonNull

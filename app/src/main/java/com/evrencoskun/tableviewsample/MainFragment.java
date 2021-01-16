@@ -192,7 +192,7 @@ public class MainFragment extends Fragment {
 
     // Handler for the changing of pages in the paginated TableView.
     @NonNull
-    private Pagination.OnTableViewPageTurnedListener onTableViewPageTurnedListener = new
+    private final Pagination.OnTableViewPageTurnedListener onTableViewPageTurnedListener = new
             Pagination.OnTableViewPageTurnedListener() {
                 @Override
                 public void onPageTurned(int numItems, int itemsStart, int itemsEnd) {
@@ -221,7 +221,7 @@ public class MainFragment extends Fragment {
             };
 
     @NonNull
-    private AdapterView.OnItemSelectedListener mItemSelectionListener = new AdapterView
+    private final AdapterView.OnItemSelectedListener mItemSelectionListener = new AdapterView
             .OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -245,10 +245,9 @@ public class MainFragment extends Fragment {
     };
 
     @NonNull
-    private TextWatcher mSearchTextWatcher = new TextWatcher() {
+    private final TextWatcher mSearchTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
         }
 
         @Override
@@ -258,12 +257,11 @@ public class MainFragment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-
         }
     };
 
     @NonNull
-    private AdapterView.OnItemSelectedListener onItemsPerPageSelectedListener = new AdapterView
+    private final AdapterView.OnItemSelectedListener onItemsPerPageSelectedListener = new AdapterView
             .OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -279,12 +277,11 @@ public class MainFragment extends Fragment {
 
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
-
         }
     };
 
     @NonNull
-    private View.OnClickListener mClickListener = new View.OnClickListener() {
+    private final View.OnClickListener mClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if (v == previousButton) {
@@ -296,10 +293,9 @@ public class MainFragment extends Fragment {
     };
 
     @NonNull
-    private TextWatcher onPageTextChanged = new TextWatcher() {
+    private final TextWatcher onPageTextChanged = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
         }
 
         @Override
@@ -316,7 +312,6 @@ public class MainFragment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-
         }
     };
 }
