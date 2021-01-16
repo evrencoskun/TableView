@@ -109,7 +109,10 @@
         android:id="@+id/tableview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/table_test_container">
+        android:layout_below="@+id/table_test_container"
+        app:allow_click_inside_cell="true"
+        app:allow_click_inside_column_header="true"
+        app:allow_click_inside_row_header="true">
 
     </com.evrencoskun.tableview.TableView>
 </RelativeLayout>

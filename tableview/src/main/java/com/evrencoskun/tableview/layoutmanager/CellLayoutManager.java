@@ -519,7 +519,7 @@ public class CellLayoutManager extends LinearLayoutManager {
         mCachedWidthList.clear();
     }
 
-    @Nullable
+    @NonNull
     public CellRecyclerView[] getVisibleCellRowRecyclerViews() {
         int length = findLastVisibleItemPosition() - findFirstVisibleItemPosition() + 1;
         CellRecyclerView[] recyclerViews = new CellRecyclerView[length];
