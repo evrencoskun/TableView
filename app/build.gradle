@@ -42,10 +42,8 @@ android {
         targetCompatibility = java_version
     }
 
-    applicationVariants.all {
-        it.generateBuildConfigProvider.configure {
-            it.enabled = false
-        }
+    buildFeatures {
+        buildConfig = false
     }
 
     lintOptions {
