@@ -12,6 +12,10 @@ public abstract class SimpleTableViewListener implements ITableViewListener {
 	}
 
 	@Override
+	public void onCellDoubleClicked(@NonNull RecyclerView.ViewHolder cellView, int column, int row) {
+	}
+
+	@Override
 	public void onCellLongPressed(@NonNull RecyclerView.ViewHolder cellView, int column, int row) {
 	}
 
@@ -20,11 +24,19 @@ public abstract class SimpleTableViewListener implements ITableViewListener {
 	}
 
 	@Override
+	public void onColumnHeaderDoubleClicked(@NonNull RecyclerView.ViewHolder columnHeaderView, int column) {
+	}
+
+	@Override
 	public void onColumnHeaderLongPressed(@NonNull RecyclerView.ViewHolder columnHeaderView, int column) {
 	}
 
 	@Override
 	public void onRowHeaderClicked(@NonNull RecyclerView.ViewHolder rowHeaderView, int row) {
+	}
+
+	@Override
+	public void onRowHeaderDoubleClicked(@NonNull RecyclerView.ViewHolder rowHeaderView, int row) {
 	}
 
 	@Override
