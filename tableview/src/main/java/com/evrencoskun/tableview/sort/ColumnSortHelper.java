@@ -32,9 +32,9 @@ import java.util.List;
 
 public class ColumnSortHelper {
     @NonNull
-    private List<Directive> mSortingColumns = new ArrayList<>();
+    private final List<Directive> mSortingColumns = new ArrayList<>();
     @NonNull
-    private ColumnHeaderLayoutManager mColumnHeaderLayoutManager;
+    private final ColumnHeaderLayoutManager mColumnHeaderLayoutManager;
 
     public ColumnSortHelper(@NonNull ColumnHeaderLayoutManager columnHeaderLayoutManager) {
         this.mColumnHeaderLayoutManager = columnHeaderLayoutManager;
@@ -91,9 +91,9 @@ public class ColumnSortHelper {
     }
 
     private static class Directive {
-        private int column;
+        private final int column;
         @NonNull
-        private SortState direction;
+        private final SortState direction;
 
         Directive(int column, @NonNull SortState direction) {
             this.column = column;
@@ -102,5 +102,5 @@ public class ColumnSortHelper {
     }
 
     @NonNull
-    private static Directive EMPTY_DIRECTIVE = new Directive(-1, SortState.UNSORTED);
+    private static final Directive EMPTY_DIRECTIVE = new Directive(-1, SortState.UNSORTED);
 }

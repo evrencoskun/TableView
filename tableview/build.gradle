@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -8,7 +7,7 @@ android {
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
         versionCode 1
-        versionName '1.0'
+        versionName '0.8.9.3'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
@@ -24,10 +23,8 @@ android {
         targetCompatibility = java_version
     }
 
-    libraryVariants.all {
-        it.generateBuildConfigProvider.configure {
-            it.enabled = false
-        }
+    buildFeatures {
+        buildConfig = false
     }
 
     lintOptions {
@@ -47,12 +44,55 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$androidx_recyclerview_version"
 }
 
-publish {
-    userOrg = 'evrencoskun' //user name of bintray.com
-    groupId = 'com.evrencoskun.library' //jcenter's url
-    artifactId = 'tableview' //project name
-    publishVersion = '0.8.9.3' //version code
-    desc = 'TableView is a powerful Android library for displaying complex data structures and rendering tabular data composed of rows, columns and cells.'
-    website = 'https://github.com/evrencoskun/TableView' //website
-    licences = ['MIT']
+// Configure the publishing
+apply plugin: 'maven-publish'
+
+task androidJavadocs(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    android.libraryVariants.all { variant ->
+        if (variant.name == 'release') {
+            owner.classpath += variant.javaCompileProvider.get().classpath
+        }
+    }
+    exclude '**/R.html', '**/R.*.html', '**/index.html'
+}
+
+task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    archiveClassifier.set('javadoc')
+    from androidJavadocs.destinationDir
+}
+
+task androidSourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from android.sourceSets.main.java.srcDirs
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = 'com.evrencoskun.library'
+                artifactId = 'tableview'
+                version = android.defaultConfig.versionName
+
+                artifact androidJavadocsJar
+                artifact androidSourcesJar
+
+                pom {
+                    name = 'TableView'
+                    description = 'TableView is a powerful Android library for displaying complex data structures and rendering tabular data composed of rows, columns and cells.'
+                    url = 'https://github.com/evrencoskun/TableView'
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                url = 'https://api.bintray.com/content/evrencoskun/artifact-sandbox/'
+            }
+        }
+    }
 }

@@ -34,13 +34,13 @@ import com.evrencoskun.tableview.layoutmanager.ColumnLayoutManager;
 
 public class ScrollHandler {
     @NonNull
-    private ITableView mTableView;
+    private final ITableView mTableView;
     @NonNull
-    private CellLayoutManager mCellLayoutManager;
+    private final CellLayoutManager mCellLayoutManager;
     @NonNull
-    private LinearLayoutManager mRowHeaderLayoutManager;
+    private final LinearLayoutManager mRowHeaderLayoutManager;
     @NonNull
-    private ColumnHeaderLayoutManager mColumnHeaderLayoutManager;
+    private final ColumnHeaderLayoutManager mColumnHeaderLayoutManager;
 
     public ScrollHandler(@NonNull ITableView tableView) {
         this.mTableView = tableView;

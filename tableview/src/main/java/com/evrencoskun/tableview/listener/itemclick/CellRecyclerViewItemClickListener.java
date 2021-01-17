@@ -34,7 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class CellRecyclerViewItemClickListener extends AbstractItemClickListener {
     @NonNull
-    private CellRecyclerView mCellRecyclerView;
+    private final CellRecyclerView mCellRecyclerView;
 
     public CellRecyclerViewItemClickListener(@NonNull CellRecyclerView recyclerView, @NonNull ITableView tableView) {
         super(recyclerView, tableView);

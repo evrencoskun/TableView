@@ -38,14 +38,14 @@ public class ColumnLayoutManager extends LinearLayoutManager {
     private static final String LOG_TAG = ColumnLayoutManager.class.getSimpleName();
 
     @NonNull
-    private ITableView mTableView;
+    private final ITableView mTableView;
     private CellRecyclerView mCellRowRecyclerView;
     @NonNull
-    private CellRecyclerView mColumnHeaderRecyclerView;
+    private final CellRecyclerView mColumnHeaderRecyclerView;
     @NonNull
-    private ColumnHeaderLayoutManager mColumnHeaderLayoutManager;
+    private final ColumnHeaderLayoutManager mColumnHeaderLayoutManager;
     @NonNull
-    private CellLayoutManager mCellLayoutManager;
+    private final CellLayoutManager mCellLayoutManager;
 
     private boolean mNeedFitForVerticalScroll, mNeedFitForHorizontalScroll;
     private int mLastDx = 0;
@@ -175,15 +175,11 @@ public class ColumnLayoutManager extends LinearLayoutManager {
                 if (mLastDx > 0) {
                     int last = findLastVisibleItemPosition();
                     //Log.e(LOG_TAG, "Warning: findFirstVisibleItemPosition is " + last);
-                    if (xPosition == last) {
-                        return true;
-                    }
+                    return xPosition == last;
                 } else if (mLastDx < 0) {
                     int first = findFirstVisibleItemPosition();
                     //Log.e(LOG_TAG, "Warning: findFirstVisibleItemPosition is " + first);
-                    if (xPosition == first) {
-                        return true;
-                    }
+                    return xPosition == first;
                 }
             }
         }

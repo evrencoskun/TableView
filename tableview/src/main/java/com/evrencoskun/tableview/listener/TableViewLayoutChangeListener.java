@@ -33,11 +33,11 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class TableViewLayoutChangeListener implements View.OnLayoutChangeListener {
     @NonNull
-    private CellRecyclerView mCellRecyclerView;
+    private final CellRecyclerView mCellRecyclerView;
     @NonNull
-    private CellRecyclerView mColumnHeaderRecyclerView;
+    private final CellRecyclerView mColumnHeaderRecyclerView;
     @NonNull
-    private CellLayoutManager mCellLayoutManager;
+    private final CellLayoutManager mCellLayoutManager;
 
     public TableViewLayoutChangeListener(@NonNull ITableView tableView) {
         this.mCellRecyclerView = tableView.getCellRecyclerView();

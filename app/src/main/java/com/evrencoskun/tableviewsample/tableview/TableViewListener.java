@@ -35,9 +35,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class TableViewListener implements ITableViewListener {
     @NonNull
-    private Context mContext;
+    private final Context mContext;
     @NonNull
-    private TableView mTableView;
+    private final TableView mTableView;
 
     public TableViewListener(@NonNull TableView tableView) {
         this.mContext = tableView.getContext();

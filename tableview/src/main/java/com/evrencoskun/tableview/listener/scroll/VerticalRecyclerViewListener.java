@@ -37,7 +37,7 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
     private static final String LOG_TAG = VerticalRecyclerViewListener.class.getSimpleName();
 
     @NonNull
-    private CellRecyclerView mRowHeaderRecyclerView, mCellRecyclerView;
+    private final CellRecyclerView mRowHeaderRecyclerView, mCellRecyclerView;
     private RecyclerView mLastTouchedRecyclerView;
 
     // Y Position means row position
@@ -74,9 +74,7 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
             dy = ev.getY();
 
             // if user scrolled more horizontally than vertically
-            if (xdiff > ydiff) {
-                return false;
-            }
+            return xdiff <= ydiff;
         }
 
         return true;

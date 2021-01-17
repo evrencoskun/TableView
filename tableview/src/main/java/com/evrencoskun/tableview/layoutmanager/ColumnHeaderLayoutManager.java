@@ -36,9 +36,9 @@ import com.evrencoskun.tableview.util.TableViewUtils;
 public class ColumnHeaderLayoutManager extends LinearLayoutManager {
     //private SparseArray<Integer> mCachedWidthList;
     @NonNull
-    private SparseIntArray mCachedWidthList = new SparseIntArray();
+    private final SparseIntArray mCachedWidthList = new SparseIntArray();
     @NonNull
-    private ITableView mTableView;
+    private final ITableView mTableView;
 
     public ColumnHeaderLayoutManager(@NonNull Context context, @NonNull ITableView tableView) {
         super(context);

@@ -45,9 +45,9 @@ import java.util.List;
 
 public class ColumnSortHandler {
 
-    private CellRecyclerViewAdapter<List<ISortableModel>> mCellRecyclerViewAdapter;
-    private RowHeaderRecyclerViewAdapter<ISortableModel> mRowHeaderRecyclerViewAdapter;
-    private ColumnHeaderRecyclerViewAdapter mColumnHeaderRecyclerViewAdapter;
+    private final CellRecyclerViewAdapter<List<ISortableModel>> mCellRecyclerViewAdapter;
+    private final RowHeaderRecyclerViewAdapter<ISortableModel> mRowHeaderRecyclerViewAdapter;
+    private final ColumnHeaderRecyclerViewAdapter mColumnHeaderRecyclerViewAdapter;
 
     private List<ColumnSortStateChangedListener> columnSortStateChangedListeners = new ArrayList<>();
     private boolean mEnableAnimation = true;

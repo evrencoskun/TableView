@@ -11,13 +11,13 @@ import java.util.List;
 
 public class RowHeaderForCellSortComparator implements Comparator<List<ISortableModel>> {
     @NonNull
-    private List<ISortableModel> mReferenceList;
+    private final List<ISortableModel> mReferenceList;
     @NonNull
-    private List<List<ISortableModel>> mColumnList;
+    private final List<List<ISortableModel>> mColumnList;
     @NonNull
-    private SortState mSortState;
+    private final SortState mSortState;
     @NonNull
-    private RowHeaderSortComparator mRowHeaderSortComparator;
+    private final RowHeaderSortComparator mRowHeaderSortComparator;
 
     public RowHeaderForCellSortComparator(@NonNull List<ISortableModel> referenceList,
                                           @NonNull List<List<ISortableModel>> columnList,

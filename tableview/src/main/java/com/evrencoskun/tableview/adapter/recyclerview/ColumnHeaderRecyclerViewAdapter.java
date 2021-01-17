@@ -39,8 +39,8 @@ import java.util.List;
 
 public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAdapter<CH> {
     @NonNull
-    private ITableAdapter mTableAdapter;
-    private ITableView mTableView;
+    private final ITableAdapter mTableAdapter;
+    private final ITableView mTableView;
     private ColumnSortHelper mColumnSortHelper;
 
     public ColumnHeaderRecyclerViewAdapter(@NonNull Context context, @Nullable List<CH> itemList, @NonNull ITableAdapter
