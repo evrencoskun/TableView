@@ -158,6 +158,8 @@ public interface ITableView {
 
     void setRowHeaderWidth(int rowHeaderWidth);
 
+    boolean getShowCornerView();
+
     @Nullable
     AbstractTableAdapter getAdapter();
 

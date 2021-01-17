@@ -16,6 +16,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            testCoverageEnabled true
+        }
     }
 
     compileOptions {
@@ -40,8 +45,14 @@ android {
 
 dependencies {
     implementation "androidx.annotation:annotation:$androidx_annotation_version"
-    implementation "androidx.core:core:$androidx_core_version"
     implementation "androidx.recyclerview:recyclerview:$androidx_recyclerview_version"
+    testImplementation "junit:junit:4.13"
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
+    androidTestImplementation 'junit:junit:4.12'
 }
 
 // Configure the publishing
