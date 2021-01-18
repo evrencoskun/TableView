@@ -186,6 +186,10 @@ public interface ITableView {
 
     int getGravity();
 
+    boolean getReverseLayout();
+
+    void setReverseLayout(boolean reverseLayout);
+
     @Nullable
     AbstractTableAdapter getAdapter();
 
