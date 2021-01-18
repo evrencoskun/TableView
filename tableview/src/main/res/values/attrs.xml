@@ -35,5 +35,6 @@
             <enum name="bottom_left" value="2"/>
             <enum name="bottom_right" value="3"/>
         </attr>
+        <attr name="reverse_layout" format="boolean" />
     </declare-styleable>
 </resources>
