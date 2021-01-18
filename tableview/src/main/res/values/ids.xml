@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <!--
   ~ MIT License
   ~
@@ -24,23 +22,8 @@
   ~ SOFTWARE.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/cell_container"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/cell_height"
-    android:background="@android:color/white"
-    android:gravity="center"
-    android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/cell_data"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:gravity="center"
-        android:maxLines="1"
-        android:text="Cell Data"
-        android:textColor="@android:color/black"
-        android:textSize="12sp" />
-
-</LinearLayout>
+<resources>
+    <item name="ColumnHeaderRecyclerView" type="id"/>
+    <item name="RowHeaderRecyclerView" type="id"/>
+    <item name="CellRecyclerView" type="id"/>
+</resources>

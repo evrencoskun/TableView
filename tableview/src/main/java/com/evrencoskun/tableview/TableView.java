@@ -23,6 +23,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -118,6 +119,8 @@ public class TableView extends FrameLayout implements ITableView {
     private boolean mIsSortable;
     private boolean mShowCornerView = false;
 
+    private CornerViewLocation mCornerViewLocation;
+
     public TableView(@NonNull Context context) {
         super(context);
         initialDefaultValues(null);
@@ -137,11 +140,31 @@ public class TableView extends FrameLayout implements ITableView {
         initialize();
     }
 
+    /**
+     * Two Part class construction<br>
+     * Allows you to set various properties before class initialization if {@code intialize = false}<br>
+     * Allowing more control when programmically creating the class
+     *
+     * @param context
+     * @param initialize {@code false} to not call second part of class construction
+     *
+     * <p><b>Note:</b> If initialize is false you need to call {@code initilize()} method yourself.
+     *
+     */
+    public TableView(@NonNull Context context, boolean initialize) {
+        super(context);
+        initialDefaultValues(null);
+        if (initialize) initialize();
+    }
+
     private void initialDefaultValues(@Nullable AttributeSet attrs) {
         // Dimensions
         mRowHeaderWidth = (int) getResources().getDimension(R.dimen.default_row_header_width);
         mColumnHeaderHeight = (int) getResources().getDimension(R.dimen
                 .default_column_header_height);
+
+        // Cornerview location
+        mCornerViewLocation = ITableView.CornerViewLocation.TOP_LEFT;
 
         // Colors
         mSelectedColor = ContextCompat.getColor(getContext(), R.color
@@ -165,6 +188,9 @@ public class TableView extends FrameLayout implements ITableView {
                     mRowHeaderWidth);
             mColumnHeaderHeight = (int) a.getDimension(R.styleable
                     .TableView_column_header_height, mColumnHeaderHeight);
+
+            // CornerView location
+            mCornerViewLocation = CornerViewLocation.fromId(a.getInt(R.styleable.TableView_corner_view_location, 0));
 
             // Colors
             mSelectedColor = a.getColor(R.styleable.TableView_selected_color, mSelectedColor);
@@ -190,12 +216,23 @@ public class TableView extends FrameLayout implements ITableView {
         }
     }
 
-    private void initialize() {
+    /**
+     * Second Part of class construction
+     *
+     * <p><b>Note:</b> This should only be called directly if the class was constructed
+     * with initialize boolean set to {@code false}
+     */
+    public void initialize() {
 
         // Create Views
         mColumnHeaderRecyclerView = createColumnHeaderRecyclerView();
         mRowHeaderRecyclerView = createRowHeaderRecyclerView();
         mCellRecyclerView = createCellRecyclerView();
+
+        // Set some Id to help in identification
+        mColumnHeaderRecyclerView.setId(R.id.ColumnHeaderRecyclerView);
+        mRowHeaderRecyclerView.setId(R.id.RowHeaderRecyclerView);
+        mCellRecyclerView.setId(R.id.CellRecyclerView);
 
         // Add Views
         addView(mColumnHeaderRecyclerView);
@@ -265,8 +302,13 @@ public class TableView extends FrameLayout implements ITableView {
 
         // Set layout params
         LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT,
-                mColumnHeaderHeight);
-        layoutParams.leftMargin = mRowHeaderWidth;
+                mColumnHeaderHeight, getGravity());
+        // If the corner is on the right the margin needs to be on the right
+        if (mCornerViewLocation == CornerViewLocation.TOP_RIGHT || mCornerViewLocation == CornerViewLocation.BOTTOM_RIGHT) {
+            layoutParams.rightMargin = mRowHeaderWidth;
+        } else {
+            layoutParams.leftMargin = mRowHeaderWidth;
+        }
         recyclerView.setLayoutParams(layoutParams);
 
         if (isShowHorizontalSeparators()) {
@@ -285,8 +327,13 @@ public class TableView extends FrameLayout implements ITableView {
         recyclerView.setLayoutManager(getRowHeaderLayoutManager());
 
         // Set layout params
-        LayoutParams layoutParams = new LayoutParams(mRowHeaderWidth, LayoutParams.WRAP_CONTENT);
-        layoutParams.topMargin = mColumnHeaderHeight;
+        LayoutParams layoutParams = new LayoutParams(mRowHeaderWidth, LayoutParams.WRAP_CONTENT, getGravity());
+        // If the corner is on the bottom the margin needs to be on the bottom
+        if (mCornerViewLocation == CornerViewLocation.BOTTOM_LEFT || mCornerViewLocation == CornerViewLocation.BOTTOM_RIGHT) {
+            layoutParams.bottomMargin = mColumnHeaderHeight;
+        } else {
+            layoutParams.topMargin = mColumnHeaderHeight;
+        }
         recyclerView.setLayoutParams(layoutParams);
 
 
@@ -310,9 +357,19 @@ public class TableView extends FrameLayout implements ITableView {
 
         // Set layout params
         LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams
-                .WRAP_CONTENT);
-        layoutParams.leftMargin = mRowHeaderWidth;
-        layoutParams.topMargin = mColumnHeaderHeight;
+                .WRAP_CONTENT, getGravity());
+        // If the corner is on the right the margin needs to be on the right
+        if (mCornerViewLocation == CornerViewLocation.TOP_RIGHT || mCornerViewLocation == CornerViewLocation.BOTTOM_RIGHT) {
+            layoutParams.rightMargin = mRowHeaderWidth;
+        } else {
+            layoutParams.leftMargin = mRowHeaderWidth;
+        }
+        // If the corner is on the bottom the margin needs to be on the bottom
+        if (mCornerViewLocation == CornerViewLocation.BOTTOM_LEFT || mCornerViewLocation == CornerViewLocation.BOTTOM_RIGHT) {
+            layoutParams.bottomMargin = mColumnHeaderHeight;
+        } else {
+            layoutParams.topMargin = mColumnHeaderHeight;
+        }
         recyclerView.setLayoutParams(layoutParams);
 
         if (isShowVerticalSeparators()) {
@@ -753,13 +810,22 @@ public class TableView extends FrameLayout implements ITableView {
 
         // Update ColumnHeader left margin
         LayoutParams layoutParamsColumn = (LayoutParams) mColumnHeaderRecyclerView.getLayoutParams();
-        layoutParamsColumn.leftMargin = rowHeaderWidth;
+        // If the corner is on the right the margin needs to be on the right
+        if (mCornerViewLocation == CornerViewLocation.TOP_RIGHT || mCornerViewLocation == CornerViewLocation.BOTTOM_RIGHT) {
+            layoutParamsColumn.rightMargin = rowHeaderWidth;
+        } else {
+            layoutParamsColumn.leftMargin = rowHeaderWidth;
+        }
         mColumnHeaderRecyclerView.setLayoutParams(layoutParamsColumn);
         mColumnHeaderRecyclerView.requestLayout();
 
         // Update Cells left margin
         LayoutParams layoutParamsCell = (LayoutParams) mCellRecyclerView.getLayoutParams();
-        layoutParamsCell.leftMargin = rowHeaderWidth;
+        if (mCornerViewLocation == CornerViewLocation.TOP_RIGHT || mCornerViewLocation == CornerViewLocation.BOTTOM_RIGHT) {
+            layoutParamsCell.rightMargin = rowHeaderWidth;
+        } else {
+            layoutParamsCell.leftMargin = rowHeaderWidth;
+        }
         mCellRecyclerView.setLayoutParams(layoutParamsCell);
         mCellRecyclerView.requestLayout();
 
@@ -779,6 +845,35 @@ public class TableView extends FrameLayout implements ITableView {
 
     public boolean getShowCornerView(){
         return mShowCornerView;
+    }
+
+    public CornerViewLocation getCornerViewLocation() { return mCornerViewLocation; }
+
+    @Override
+    public void setCornerViewLocation(CornerViewLocation cornerViewLocation) {
+        mCornerViewLocation = cornerViewLocation;
+    }
+
+    public int getGravity() {
+        int gravity;
+        switch (mCornerViewLocation) {
+            case TOP_LEFT:
+                gravity = Gravity.TOP|Gravity.LEFT;
+                break;
+            case TOP_RIGHT:
+                gravity = Gravity.TOP|Gravity.RIGHT;
+                break;
+            case BOTTOM_LEFT:
+                gravity = Gravity.BOTTOM|Gravity.LEFT;
+                break;
+            case BOTTOM_RIGHT:
+                gravity = Gravity.BOTTOM|Gravity.RIGHT;
+                break;
+            default:
+                gravity = Gravity.TOP|Gravity.LEFT;
+                break;
+        }
+        return gravity;
     }
 
     @Nullable
