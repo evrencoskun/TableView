@@ -137,8 +137,10 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
                 }
                 // Create corner view
                 mCornerView = onCreateCornerView((ViewGroup) mTableView);
+
+                // Set the corner location
                 mTableView.addView(mCornerView, new FrameLayout.LayoutParams(mRowHeaderWidth,
-                        mColumnHeaderHeight));
+                        mColumnHeaderHeight, mTableView.getGravity()));
             }
         } else {
             // Change corner view visibility
