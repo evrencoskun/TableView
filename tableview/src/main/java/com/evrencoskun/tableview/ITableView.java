@@ -160,6 +160,32 @@ public interface ITableView {
 
     boolean getShowCornerView();
 
+    enum CornerViewLocation {
+        TOP_LEFT(0),
+        TOP_RIGHT(1),
+        BOTTOM_LEFT(2),
+        BOTTOM_RIGHT(3);
+        int id;
+
+        CornerViewLocation(int id) {
+            this.id = id;
+        }
+
+        static CornerViewLocation fromId(int id) {
+            for (CornerViewLocation c : values()) {
+                if (c.id == id) return c;
+            }
+            // If enum not found return default of Top Left
+            return TOP_LEFT;
+        }
+    }
+
+    CornerViewLocation getCornerViewLocation();
+
+    void setCornerViewLocation(CornerViewLocation cornerViewLocation);
+
+    int getGravity();
+
     @Nullable
     AbstractTableAdapter getAdapter();
 

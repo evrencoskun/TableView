@@ -26,6 +26,7 @@ package com.evrencoskun.tableview.test;
 
 import android.app.Activity;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -99,6 +100,9 @@ public class SimpleActivityTest {
                 new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext());
         Assert.assertNotNull(tableView);
 
+        RelativeLayout rl = new RelativeLayout(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        rl.addView(tableView);
+
         SimpleTestAdapter simpleTestAdapter = new SimpleTestAdapter();
         Assert.assertNotNull(simpleTestAdapter);
 
@@ -109,7 +113,8 @@ public class SimpleActivityTest {
         simpleTestAdapter.setAllItems(simpleData.getColumnHeaders(), simpleData.getRowHeaders(),
                 simpleData.getCells());
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(tableView));
+
+        mActivityTestRule.runOnUiThread(() -> activity.setContentView(rl));
 
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 

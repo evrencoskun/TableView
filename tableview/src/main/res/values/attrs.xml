@@ -29,5 +29,11 @@
         <attr name="allow_click_inside_cell" format="boolean" />
         <attr name="allow_click_inside_row_header" format="boolean" />
         <attr name="allow_click_inside_column_header" format="boolean" />
+        <attr name="corner_view_location">
+            <enum name="top_left" value="0"/>
+            <enum name="top_right" value="1"/>
+            <enum name="bottom_left" value="2"/>
+            <enum name="bottom_right" value="3"/>
+        </attr>
     </declare-styleable>
 </resources>

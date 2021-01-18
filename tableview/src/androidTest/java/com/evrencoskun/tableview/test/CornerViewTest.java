@@ -27,6 +27,7 @@ package com.evrencoskun.tableview.test;
 import android.app.Activity;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -69,6 +70,9 @@ public class CornerViewTest {
                 new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext());
         Assert.assertNotNull(tableView);
 
+        RelativeLayout rl = new RelativeLayout(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        rl.addView(tableView);
+
         SimpleTestAdapter simpleTestAdapter = new SimpleTestAdapter();
         Assert.assertNotNull(simpleTestAdapter);
 
@@ -79,7 +83,7 @@ public class CornerViewTest {
         simpleTestAdapter.setAllItems(simpleData.getColumnHeaders(), simpleData.getRowHeaders(),
                 simpleData.getCells());
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(tableView));
+        mActivityTestRule.runOnUiThread(() -> activity.setContentView(rl));
 
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -95,6 +99,9 @@ public class CornerViewTest {
         TableView tableView =
                 new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext());
         Assert.assertNotNull(tableView);
+
+        RelativeLayout rl = new RelativeLayout(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        rl.addView(tableView);
 
         SimpleTestAdapter simpleTestAdapter = new SimpleTestAdapter();
         Assert.assertNotNull(simpleTestAdapter);
@@ -115,7 +122,7 @@ public class CornerViewTest {
         simpleTestAdapter.setAllItems(simpleDataReset.getColumnHeaders(), simpleDataReset.getRowHeaders(),
                 simpleDataReset.getCells());
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(tableView));
+        mActivityTestRule.runOnUiThread(() -> activity.setContentView(rl));
 
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -139,6 +146,9 @@ public class CornerViewTest {
                 new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext());
         Assert.assertNotNull(tableView);
 
+        RelativeLayout rl = new RelativeLayout(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        rl.addView(tableView);
+
         SimpleTestAdapter simpleTestAdapter = new SimpleTestAdapter();
         Assert.assertNotNull(simpleTestAdapter);
 
@@ -158,7 +168,7 @@ public class CornerViewTest {
         simpleTestAdapter.setAllItems(simpleDataReset.getColumnHeaders(), simpleDataReset.getRowHeaders(),
                 simpleDataReset.getCells());
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(tableView));
+        mActivityTestRule.runOnUiThread(() -> activity.setContentView(rl));
 
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -176,6 +186,9 @@ public class CornerViewTest {
                 new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext());
         Assert.assertNotNull(tableView);
 
+        RelativeLayout rl = new RelativeLayout(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        rl.addView(tableView);
+
         SimpleTestAdapter simpleTestAdapter = new SimpleTestAdapter();
         Assert.assertNotNull(simpleTestAdapter);
 
@@ -186,7 +199,7 @@ public class CornerViewTest {
         simpleTestAdapter.setAllItems(simpleData.getColumnHeaders(), simpleData.getRowHeaders(),
                 simpleData.getCells());
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(tableView));
+        mActivityTestRule.runOnUiThread(() -> activity.setContentView(rl));
 
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -210,6 +223,9 @@ public class CornerViewTest {
                 new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext());
         Assert.assertNotNull(tableView);
 
+        RelativeLayout rl = new RelativeLayout(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        rl.addView(tableView);
+
         SimpleTestAdapter simpleTestAdapter = new SimpleTestAdapter();
         Assert.assertNotNull(simpleTestAdapter);
 
@@ -232,7 +248,7 @@ public class CornerViewTest {
         simpleTestAdapter.setAllItems(simpleDataReset.getColumnHeaders(), simpleDataReset.getRowHeaders(),
                 simpleDataReset.getCells());
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(tableView));
+        mActivityTestRule.runOnUiThread(() -> activity.setContentView(rl));
 
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -256,6 +272,9 @@ public class CornerViewTest {
                 new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext());
         Assert.assertNotNull(tableView);
 
+        RelativeLayout rl = new RelativeLayout(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        rl.addView(tableView);
+
         SimpleTestAdapter simpleTestAdapter = new SimpleTestAdapter();
         Assert.assertNotNull(simpleTestAdapter);
 
@@ -276,7 +295,7 @@ public class CornerViewTest {
         simpleTestAdapter.setAllItems(simpleDataReset.getColumnHeaders(), simpleDataReset.getRowHeaders(),
                 simpleDataReset.getCells());
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(tableView));
+        mActivityTestRule.runOnUiThread(() -> activity.setContentView(rl));
 
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -296,6 +315,9 @@ public class CornerViewTest {
                 new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext());
         Assert.assertNotNull(tableView);
 
+        RelativeLayout rl = new RelativeLayout(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        rl.addView(tableView);
+
         SimpleTestAdapter simpleTestAdapter = new SimpleTestAdapter();
         Assert.assertNotNull(simpleTestAdapter);
 
@@ -307,7 +329,7 @@ public class CornerViewTest {
         simpleTestAdapter.setAllItems(simpleData.getColumnHeaders(), simpleData.getRowHeaders(),
                 simpleData.getCells());
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(tableView));
+        mActivityTestRule.runOnUiThread(() -> activity.setContentView(rl));
 
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -324,6 +346,9 @@ public class CornerViewTest {
         TableView tableView =
                 new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext());
         Assert.assertNotNull(tableView);
+
+        RelativeLayout rl = new RelativeLayout(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        rl.addView(tableView);
 
         SimpleTestAdapter simpleTestAdapter = new SimpleTestAdapter();
         Assert.assertNotNull(simpleTestAdapter);
@@ -346,7 +371,7 @@ public class CornerViewTest {
         simpleTestAdapter.setAllItems(simpleDataReset.getColumnHeaders(), simpleDataReset.getRowHeaders(),
                 simpleDataReset.getCells());
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(tableView));
+        mActivityTestRule.runOnUiThread(() -> activity.setContentView(rl));
 
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -370,6 +395,9 @@ public class CornerViewTest {
                 new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext());
         Assert.assertNotNull(tableView);
 
+        RelativeLayout rl = new RelativeLayout(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        rl.addView(tableView);
+
         SimpleTestAdapter simpleTestAdapter = new SimpleTestAdapter();
         Assert.assertNotNull(simpleTestAdapter);
 
@@ -391,7 +419,7 @@ public class CornerViewTest {
         simpleTestAdapter.setAllItems(simpleDataReset.getColumnHeaders(), simpleDataReset.getRowHeaders(),
                 simpleDataReset.getCells());
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(tableView));
+        mActivityTestRule.runOnUiThread(() -> activity.setContentView(rl));
 
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -409,6 +437,9 @@ public class CornerViewTest {
                 new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext());
         Assert.assertNotNull(tableView);
 
+        RelativeLayout rl = new RelativeLayout(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        rl.addView(tableView);
+
         // Set the option to show corner view when there is not row data
         tableView.setShowCornerView(true);
 
@@ -423,7 +454,7 @@ public class CornerViewTest {
         simpleTestAdapter.setAllItems(simpleData.getColumnHeaders(), simpleData.getRowHeaders(),
                 simpleData.getCells());
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(tableView));
+        mActivityTestRule.runOnUiThread(() -> activity.setContentView(rl));
 
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -447,6 +478,9 @@ public class CornerViewTest {
                 new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext());
         Assert.assertNotNull(tableView);
 
+        RelativeLayout rl = new RelativeLayout(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        rl.addView(tableView);
+
         // Set the option to show corner view when there is not row data
         tableView.setShowCornerView(true);
 
@@ -471,7 +505,7 @@ public class CornerViewTest {
         simpleTestAdapter.setAllItems(simpleDataReset.getColumnHeaders(), simpleDataReset.getRowHeaders(),
                 simpleDataReset.getCells());
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(tableView));
+        mActivityTestRule.runOnUiThread(() -> activity.setContentView(rl));
 
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -490,6 +524,9 @@ public class CornerViewTest {
         TableView tableView =
                 new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext());
         Assert.assertNotNull(tableView);
+
+        RelativeLayout rl = new RelativeLayout(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        rl.addView(tableView);
 
         // Set the option to show corner view when there is not row data
         tableView.setShowCornerView(true);
@@ -515,7 +552,7 @@ public class CornerViewTest {
         simpleTestAdapter.setAllItems(simpleDataReset.getColumnHeaders(), simpleDataReset.getRowHeaders(),
                 simpleDataReset.getCells());
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(tableView));
+        mActivityTestRule.runOnUiThread(() -> activity.setContentView(rl));
 
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
