@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2020 Andrew Beck
+ * Copyright (c) 2021 Andrew Beck
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,30 +26,30 @@ package com.evrencoskun.tableview.test;
 
 import android.app.Activity;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
-import com.evrencoskun.tableview.*;
+import com.evrencoskun.tableview.ITableView;
+import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.test.adapters.CornerTestAdapter;
-import com.evrencoskun.tableview.test.adapters.SimpleTestAdapter;
 import com.evrencoskun.tableview.test.data.SimpleData;
 import com.evrencoskun.tableview.test.matchers.ViewWidthMatcher;
-
-
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static androidx.test.espresso.Espresso.*;
-import static androidx.test.espresso.assertion.PositionAssertions.*;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyAbove;
+import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyBelow;
+import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyLeftOf;
+import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyRightOf;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.*;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
 public class CornerLayoutTest {
