@@ -128,6 +128,8 @@ public class TableView extends FrameLayout implements ITableView {
 
     private CornerViewLocation mCornerViewLocation;
 
+    private boolean mReverseLayout = false;
+
     public TableView(@NonNull Context context) {
         super(context);
         initialDefaultValues(null);
@@ -173,6 +175,9 @@ public class TableView extends FrameLayout implements ITableView {
         // Cornerview location
         mCornerViewLocation = ITableView.CornerViewLocation.TOP_LEFT;
 
+        // Reverse Layout
+        mReverseLayout = false;
+
         // Colors
         mSelectedColor = ContextCompat.getColor(getContext(), R.color
                 .table_view_default_selected_background_color);
@@ -198,6 +203,9 @@ public class TableView extends FrameLayout implements ITableView {
 
             // CornerView location
             mCornerViewLocation = CornerViewLocation.fromId(a.getInt(R.styleable.TableView_corner_view_location, 0));
+
+            // Reverse Layout
+            mReverseLayout = a.getBoolean(R.styleable.TableView_reverse_layout, mReverseLayout);
 
             // Colors
             mSelectedColor = a.getColor(R.styleable.TableView_selected_color, mSelectedColor);
@@ -316,6 +324,7 @@ public class TableView extends FrameLayout implements ITableView {
         } else {
             layoutParams.leftMargin = mRowHeaderWidth;
         }
+
         recyclerView.setLayoutParams(layoutParams);
 
         if (isShowHorizontalSeparators()) {
@@ -479,6 +488,7 @@ public class TableView extends FrameLayout implements ITableView {
     public ColumnHeaderLayoutManager getColumnHeaderLayoutManager() {
         if (mColumnHeaderLayoutManager == null) {
             mColumnHeaderLayoutManager = new ColumnHeaderLayoutManager(getContext(), this);
+            if (mReverseLayout) mColumnHeaderLayoutManager.setReverseLayout(true);
         }
         return mColumnHeaderLayoutManager;
     }
@@ -881,6 +891,12 @@ public class TableView extends FrameLayout implements ITableView {
                 break;
         }
         return gravity;
+    }
+
+    public boolean getReverseLayout(){ return mReverseLayout;}
+
+    public void setReverseLayout(boolean reverseLayout) {
+        mReverseLayout = reverseLayout;
     }
 
     @Nullable

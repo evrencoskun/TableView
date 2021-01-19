@@ -98,7 +98,9 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         // Set the Column layout manager that helps the fit width of the cell and column header
         // and it also helps to locate the scroll position of the horizontal recyclerView
         // which is row recyclerView
-        recyclerView.setLayoutManager(new ColumnLayoutManager(mContext, mTableView));
+        ColumnLayoutManager mColumnLayoutManager = new ColumnLayoutManager(mContext, mTableView);
+        if (mTableView.getReverseLayout()) mColumnLayoutManager.setReverseLayout(true);
+        recyclerView.setLayoutManager(mColumnLayoutManager);
 
         // Create CellRow adapter
         recyclerView.setAdapter(new CellRowRecyclerViewAdapter<>(mContext, mTableView));
