@@ -13,7 +13,7 @@ If you need help to integrate this library in your project, or if you have a gen
 
 ## Reporting a bug
 
-If the library is not behaving as you would expect, please [open a new issue](https://github.com/evrencoskun/TableView/issues/new), after checking that it hasn't been reported yet.
+If the library is not behaving as you would expect, please [open a new issue](https://github.com/evrencoskun/TableView/issues/new?labels=bug&template=bug_report.md), after checking that it hasn't been reported yet.
 Don't forget to provide as much information as you can:
 
 - What are you trying to do?
@@ -24,7 +24,7 @@ Don't forget to provide as much information as you can:
 
 ## Suggest a new feature
 
-If you would like a new feature to be added to the library, please [open a new issue](https://github.com/evrencoskun/TableView/issues/new) to describe it.
+If you would like a new feature to be added to the library, please [open a new issue](https://github.com/evrencoskun/TableView/issues/new?labels=enhancement&template=feature_request.md) to describe it.
 
 ## Contributing to the project
 
