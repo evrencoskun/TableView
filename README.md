@@ -60,6 +60,7 @@ Please check out the [project's wiki](https://github.com/evrencoskun/TableView/w
 - This repository has a [sample application](https://github.com/evrencoskun/TableView/tree/master/app) of `TableView`.
 - [TableViewSample 2](https://github.com/evrencoskun/TableViewSample2)
 - [Xently-UI](https://github.com/ajharry69/Xently-UI)
+- [Price List Lite](https://pricelistlite.isolpro.in)
 - ([Submit a Pull Request](https://github.com/evrencoskun/TableView/compare) to mention your app on this page)
 
 ## Donations
