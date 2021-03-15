@@ -159,7 +159,23 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
         }
     }
 
+    @Override
+    public int getColumnHeaderItemViewType(int position) {
+        return 0;
+    }
+
+    @Override
+    public int getRowHeaderItemViewType(int position) {
+        return 0;
+    }
+
+    @Override
+    public int getCellItemViewType(int position) {
+        return 0;
+    }
+
     @Nullable
+    @Override
     public View getCornerView() {
         return mCornerView;
     }
@@ -357,6 +373,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
      *
      * @param listener The AdapterDataSetChangedListener listener.
      */
+    @Override
     public void addAdapterDataSetChangedListener(@NonNull AdapterDataSetChangedListener<CH, RH, C> listener) {
         if (dataSetChangedListeners == null) {
             dataSetChangedListeners = new ArrayList<>();

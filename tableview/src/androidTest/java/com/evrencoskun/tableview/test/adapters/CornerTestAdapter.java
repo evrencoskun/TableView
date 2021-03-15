@@ -54,7 +54,7 @@ public class CornerTestAdapter extends AbstractTableAdapter<ColumnHeader, RowHea
     }
 
     @NonNull
-    public AbstractViewHolder onCreateCellViewHolder(ViewGroup parent, int viewType) {
+    public AbstractViewHolder onCreateCellViewHolder(@NonNull ViewGroup parent, int viewType) {
         View layout = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cell_layout, parent, false);
         return new TestCellViewHolder(layout);
@@ -83,7 +83,8 @@ public class CornerTestAdapter extends AbstractTableAdapter<ColumnHeader, RowHea
     }
 
     @NonNull
-    public AbstractViewHolder onCreateColumnHeaderViewHolder(ViewGroup parent, int viewType) {
+    public AbstractViewHolder onCreateColumnHeaderViewHolder(@NonNull ViewGroup parent, int
+            viewType) {
         View layout = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.column_layout, parent, false);
         return new TestColumnHeaderViewHolder(layout);
@@ -112,7 +113,7 @@ public class CornerTestAdapter extends AbstractTableAdapter<ColumnHeader, RowHea
     }
 
     @NonNull
-    public AbstractViewHolder onCreateRowHeaderViewHolder(ViewGroup parent, int viewType) {
+    public AbstractViewHolder onCreateRowHeaderViewHolder(@NonNull ViewGroup parent, int viewType) {
         View layout = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row_layout, parent, false);
         return new TestRowHeaderViewHolder(layout);
@@ -128,12 +129,8 @@ public class CornerTestAdapter extends AbstractTableAdapter<ColumnHeader, RowHea
     }
 
     @NonNull
-    public View onCreateCornerView(ViewGroup parent) {
+    public View onCreateCornerView(@NonNull ViewGroup parent) {
         return LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.corner_layout, parent, false);
     }
-
-    public int getColumnHeaderItemViewType(int position) { return 0; }
-    public int getRowHeaderItemViewType(int position) { return 0; }
-    public int getCellItemViewType(int position) { return 0; }
 }
