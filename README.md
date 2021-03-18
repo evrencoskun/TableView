@@ -6,7 +6,7 @@
            TableView relies on a separate model object to hold and represent the data it displays. This repository also contains a sample app that is
            designed to show you how to create your own TableView in your application.</p>        
         <a href="https://youtu.be/1DWFIqrqrPk">
-            <b>Demo Full video »</b>
+            <b> Full video »</b>
         </a>
     </p>
 
@@ -47,7 +47,7 @@ To use this library in your Android project, just add the following dependency i
 
 ```
 dependencies {
-    implementation 'com.evrencoskun.library:tableview:0.8.9.2' 
+    implementation 'com.evrencoskun.library:tableview:0.8.9.4'
 }
 ```
 
