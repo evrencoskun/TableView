@@ -56,7 +56,7 @@ public class ColumnHeaderRecyclerViewItemClickListener extends AbstractItemClick
             AbstractViewHolder holder = (AbstractViewHolder) mRecyclerView.getChildViewHolder
                     (childView);
 
-            int column = holder.getAdapterPosition();
+            int column = holder.getBindingAdapterPosition();
 
             // Control to ignore selection color
             if (!mTableView.isIgnoreSelectionColors()) {
@@ -85,7 +85,7 @@ public class ColumnHeaderRecyclerViewItemClickListener extends AbstractItemClick
             RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(child);
 
             // Call ITableView listener for long click
-            getTableViewListener().onColumnHeaderLongPressed(holder, holder.getAdapterPosition());
+            getTableViewListener().onColumnHeaderLongPressed(holder, holder.getBindingAdapterPosition());
         }
     }
 
@@ -99,7 +99,7 @@ public class ColumnHeaderRecyclerViewItemClickListener extends AbstractItemClick
             AbstractViewHolder holder = (AbstractViewHolder) mRecyclerView.getChildViewHolder
                     (childView);
 
-            int column = holder.getAdapterPosition();
+            int column = holder.getBindingAdapterPosition();
 
             // Control to ignore selection color
             if (!mTableView.isIgnoreSelectionColors()) {
