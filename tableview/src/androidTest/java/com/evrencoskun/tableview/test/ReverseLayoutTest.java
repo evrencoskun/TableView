@@ -24,82 +24,71 @@
 
 package com.evrencoskun.tableview.test;
 
-import android.app.Activity;
-import android.view.View;
-import android.widget.LinearLayout;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyLeftOf;
+import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyRightOf;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.Visibility;
+import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
+import static androidx.test.espresso.matcher.ViewMatchers.withParentIndex;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.not;
+
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.rule.ActivityTestRule;
 
-import com.evrencoskun.tableview.*;
+import com.evrencoskun.tableview.ITableView;
+import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.test.adapters.CornerTestAdapter;
-import com.evrencoskun.tableview.test.adapters.SimpleTestAdapter;
 import com.evrencoskun.tableview.test.data.SimpleData;
-import com.evrencoskun.tableview.test.matchers.ViewWidthMatcher;
-
 
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static androidx.test.espresso.Espresso.*;
-import static androidx.test.espresso.assertion.PositionAssertions.*;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.*;
-
 @RunWith(AndroidJUnit4.class)
 public class ReverseLayoutTest {
 
     @Rule
-    public ActivityTestRule<TestActivity> mActivityTestRule =
-            new ActivityTestRule<TestActivity>(TestActivity.class){
-
-                @Override
-                protected void beforeActivityLaunched() {
-                    super.beforeActivityLaunched();
-                }
-
-                @Override
-                protected void afterActivityFinished(){
-                    super.afterActivityFinished();
-                }
-            };
+    public ActivityScenarioRule<TestActivity> mActivityTestRule =
+            new ActivityScenarioRule<>(TestActivity.class);
 
     @Test
-    public void testDefaultLayout() throws Throwable {
-        Activity activity = mActivityTestRule.getActivity();
+    public void testDefaultLayout() {
+        mActivityTestRule.getScenario()
+                .onActivity(activity -> {
+                    activity.setContentView(R.layout.corner_default);
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(R.layout.corner_default));
+                    TableView tableView = activity.findViewById(R.id.tableview);
+                    Assert.assertNotNull(tableView);
 
-        TableView tableView =  activity.findViewById(R.id.tableview);
-        Assert.assertNotNull(tableView);
+                    CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
 
-        CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
-        Assert.assertNotNull(cornerTestAdapter);
+                    tableView.setAdapter(cornerTestAdapter);
 
-        mActivityTestRule.runOnUiThread(() -> tableView.setAdapter(cornerTestAdapter));
+                    SimpleData simpleData = new SimpleData(5);
 
-        SimpleData simpleData = new SimpleData(5);
+                    cornerTestAdapter.setAllItems(
+                            simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells());
+                });
 
-        mActivityTestRule.runOnUiThread(() -> cornerTestAdapter.setAllItems(
-                simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells()));
+        // Check that the corner view is created and visible
+        // The Corner view uses cell_layout which has RelativeLayout as top item
+        onView(withId(R.id.corner_view))
+                .check(matches(not(doesNotExist())))
+                .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
 
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
-
-        // Check that the corner view is created
-        // The Corner view uses cell_layout which has LinearLayout as top item
-        RelativeLayout cornerView = (RelativeLayout) tableView.getAdapter().getCornerView();
-        Assert.assertNotNull(cornerView);
-        // Check the corner view is visible
-        Assert.assertEquals(View.VISIBLE, cornerView.getVisibility());
         // Check that it is the expected corner view by checking the text
         // The first child of the RelativeLayout is a textView (index starts at zero)
-        TextView cornerViewTextView = (TextView) cornerView.getChildAt(0);
-        Assert.assertEquals("Corner", cornerViewTextView.getText());
+        onView(allOf(withParent(withId(R.id.corner_view)), withParentIndex(0)))
+                .check(matches(withText("Corner")));
 
         // Check that column headers are ordered Left to Right
         onView(withText("c:0")).check(isCompletelyLeftOf(withText("c:1")));
@@ -109,36 +98,34 @@ public class ReverseLayoutTest {
     }
 
     @Test
-    public void testReverseLayout() throws Throwable {
-        Activity activity = mActivityTestRule.getActivity();
+    public void testReverseLayout() {
+        mActivityTestRule.getScenario()
+                .onActivity(activity -> {
+                    activity.setContentView(R.layout.reverse_layout);
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(R.layout.reverse_layout));
+                    TableView tableView = activity.findViewById(R.id.tableview);
+                    Assert.assertNotNull(tableView);
 
-        TableView tableView =  activity.findViewById(R.id.tableview);
-        Assert.assertNotNull(tableView);
+                    CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
 
-        CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
-        Assert.assertNotNull(cornerTestAdapter);
+                    tableView.setAdapter(cornerTestAdapter);
 
-        mActivityTestRule.runOnUiThread(() -> tableView.setAdapter(cornerTestAdapter));
+                    SimpleData simpleData = new SimpleData(5);
 
-        SimpleData simpleData = new SimpleData(5);
+                    cornerTestAdapter.setAllItems(
+                            simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells());
+                });
 
-        mActivityTestRule.runOnUiThread(() -> cornerTestAdapter.setAllItems(
-                simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells()));
+        // Check that the corner view is created and visible
+        // The Corner view uses cell_layout which has RelativeLayout as top item
+        onView(withId(R.id.corner_view))
+                .check(matches(not(doesNotExist())))
+                .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
 
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
-
-        // Check that the corner view is created
-        // The Corner view uses cell_layout which has LinearLayout as top item
-        RelativeLayout cornerView = (RelativeLayout) tableView.getAdapter().getCornerView();
-        Assert.assertNotNull(cornerView);
-        // Check the corner view is visible
-        Assert.assertEquals(View.VISIBLE, cornerView.getVisibility());
         // Check that it is the expected corner view by checking the text
         // The first child of the RelativeLayout is a textView (index starts at zero)
-        TextView cornerViewTextView = (TextView) cornerView.getChildAt(0);
-        Assert.assertEquals("Corner", cornerViewTextView.getText());
+        onView(allOf(withParent(withId(R.id.corner_view)), withParentIndex(0)))
+                .check(matches(withText("Corner")));
 
         // Check that column headers are ordered Right to Left
         onView(withText("c:0")).check(isCompletelyRightOf(withText("c:1")));
@@ -148,47 +135,42 @@ public class ReverseLayoutTest {
     }
 
     @Test
-    public void testReverseConstructor() throws Throwable {
-        Activity activity = mActivityTestRule.getActivity();
+    public void testReverseConstructor() {
+        mActivityTestRule.getScenario()
+                .onActivity(activity -> {
+                    TableView tableView = new TableView(activity, false);
 
-        TableView tableView =
-                new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext(), false);
-        Assert.assertNotNull(tableView);
+                    // initialize was false so set properties and call initialize
+                    //Set CornerView to Top Right and ReverseLayout = true
+                    tableView.setCornerViewLocation(ITableView.CornerViewLocation.TOP_RIGHT);
+                    tableView.setReverseLayout(true);
+                    tableView.initialize();
 
-        // initialize was false so set properties and call initialize
-        //Set CornerView to Top Right and ReverseLaout = true
-        tableView.setCornerViewLocation(ITableView.CornerViewLocation.TOP_RIGHT);
-        tableView.setReverseLayout(true);
-        tableView.initialize();
+                    RelativeLayout rl = new RelativeLayout(activity);
+                    rl.addView(tableView);
 
-        RelativeLayout rl = new RelativeLayout(InstrumentationRegistry.getInstrumentation().getTargetContext());
-        rl.addView(tableView);
+                    CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
 
-        CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
-        Assert.assertNotNull(cornerTestAdapter);
+                    tableView.setAdapter(cornerTestAdapter);
 
-        mActivityTestRule.runOnUiThread(() -> tableView.setAdapter(cornerTestAdapter));
+                    SimpleData simpleData = new SimpleData(5);
 
-        SimpleData simpleData = new SimpleData(5);
+                    cornerTestAdapter.setAllItems(
+                            simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells());
 
-        mActivityTestRule.runOnUiThread(() -> cornerTestAdapter.setAllItems(
-                simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells()));
+                    activity.setContentView(rl);
+                });
 
+        // Check that the corner view is created and visible
+        // The Corner view uses cell_layout which has RelativeLayout as top item
+        onView(withId(R.id.corner_view))
+                .check(matches(not(doesNotExist())))
+                .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(rl));
-
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
-
-        // Check that the corner view is created
-        // The Corner view uses cell_layout which has LinearLayout as top item
-        RelativeLayout cornerView = (RelativeLayout) tableView.getAdapter().getCornerView();
-        Assert.assertNotNull(cornerView);
-        // Check the corner view is visible
-        Assert.assertEquals(View.VISIBLE, cornerView.getVisibility());
         // Check that it is the expected corner view by checking the text
         // The first child of the RelativeLayout is a textView (index starts at zero)
-        TextView cornerViewTextView = (TextView) cornerView.getChildAt(0);
-        Assert.assertEquals("Corner", cornerViewTextView.getText());
+        onView(allOf(withParent(withId(R.id.corner_view)), withParentIndex(0)))
+                .check(matches(withText("Corner")));
 
         // Check that column headers are ordered Right to Left
         onView(withText("c:0")).check(isCompletelyRightOf(withText("c:1")));
@@ -196,5 +178,4 @@ public class ReverseLayoutTest {
         // Check that first cell data row are ordered Right to Left
         onView(withText("r:0c:0")).check(isCompletelyRightOf(withText("r:0c:1")));
     }
-
 }

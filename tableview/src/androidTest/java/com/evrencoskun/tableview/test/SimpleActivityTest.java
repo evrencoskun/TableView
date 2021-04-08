@@ -24,19 +24,18 @@
 
 package com.evrencoskun.tableview.test;
 
-import android.app.Activity;
+import android.content.Context;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.rule.ActivityTestRule;
+import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.evrencoskun.tableview.*;
+import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.test.adapters.SimpleTestAdapter;
 import com.evrencoskun.tableview.test.data.SimpleData;
-
 
 import org.junit.Assert;
 import org.junit.Rule;
@@ -47,29 +46,11 @@ import org.junit.runner.RunWith;
 public class SimpleActivityTest {
 
     @Rule
-    public ActivityTestRule<TestActivity> mActivityTestRule =
-            new ActivityTestRule<TestActivity>(TestActivity.class){
-
-        @Override
-        protected void beforeActivityLaunched() {
-            super.beforeActivityLaunched();
-        }
-
-        @Override
-        protected void afterActivityFinished(){
-            super.afterActivityFinished();
-        }
-    };
+    public ActivityScenarioRule<TestActivity> mActivityTestRule =
+            new ActivityScenarioRule<>(TestActivity.class);
 
     @Test
-    public void testTableViewCreate(){
-        TableView tableView =
-                new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext());
-        Assert.assertNotNull(tableView);
-    }
-
-    @Test
-    public void testDefaults(){
+    public void testDefaults() {
         TableView tableView =
                 new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext());
         Assert.assertFalse(tableView.isAllowClickInsideCell());
@@ -78,33 +59,14 @@ public class SimpleActivityTest {
     }
 
     @Test
-    public void testSetAttributes(){
-        TableView tableView =
-                new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext());
-        Assert.assertFalse(tableView.isAllowClickInsideCell());
-        Assert.assertTrue(tableView.isShowHorizontalSeparators());
-        Assert.assertTrue(tableView.isShowVerticalSeparators());
-    }
+    public void testSmallTable() {
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        TableView tableView = new TableView(context);
 
-    @Test
-    public void testAdapterCreate(){
-        SimpleTestAdapter simpleTestAdapter = new SimpleTestAdapter();
-        Assert.assertNotNull(simpleTestAdapter);
-    }
-
-    @Test
-    public void testSmallTable() throws Throwable {
-        Activity activity = mActivityTestRule.getActivity();
-
-        TableView tableView =
-                new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext());
-        Assert.assertNotNull(tableView);
-
-        RelativeLayout rl = new RelativeLayout(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        RelativeLayout rl = new RelativeLayout(context);
         rl.addView(tableView);
 
         SimpleTestAdapter simpleTestAdapter = new SimpleTestAdapter();
-        Assert.assertNotNull(simpleTestAdapter);
 
         tableView.setAdapter(simpleTestAdapter);
 
@@ -113,15 +75,14 @@ public class SimpleActivityTest {
         simpleTestAdapter.setAllItems(simpleData.getColumnHeaders(), simpleData.getRowHeaders(),
                 simpleData.getCells());
 
-
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(rl));
-
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+        mActivityTestRule.getScenario()
+                .onActivity(activity -> activity.setContentView(rl));
 
         // Check that the row header was created as expected at 5th Row (index starts at zero)
         // cell_layout has LinearLayout as top item
         LinearLayout rowLinearLayout = (LinearLayout) tableView.getRowHeaderLayoutManager().getChildAt(4);
         Assert.assertNotNull(rowLinearLayout);
+
         // The first child of the LinearLayout is a textView (index starts at zero)
         TextView rowTextView = (TextView) rowLinearLayout.getChildAt(0);
         Assert.assertEquals("r:4", rowTextView.getText());
@@ -130,9 +91,9 @@ public class SimpleActivityTest {
         // cell_layout has LinearLayout as top item
         LinearLayout columnLinearLayout = (LinearLayout) tableView.getColumnHeaderLayoutManager().getChildAt(4);
         Assert.assertNotNull(columnLinearLayout);
+
         // The first child of the LinearLayout is a textView (index starts at zero)
         TextView columnTextView = (TextView) columnLinearLayout.getChildAt(0);
         Assert.assertEquals("c:4", columnTextView.getText());
-
     }
 }
