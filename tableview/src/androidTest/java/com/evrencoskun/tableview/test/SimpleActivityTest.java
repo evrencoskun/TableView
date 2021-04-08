@@ -78,6 +78,8 @@ public class SimpleActivityTest {
         mActivityTestRule.getScenario()
                 .onActivity(activity -> activity.setContentView(rl));
 
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
         // Check that the row header was created as expected at 5th Row (index starts at zero)
         // cell_layout has LinearLayout as top item
         LinearLayout rowLinearLayout = (LinearLayout) tableView.getRowHeaderLayoutManager().getChildAt(4);
