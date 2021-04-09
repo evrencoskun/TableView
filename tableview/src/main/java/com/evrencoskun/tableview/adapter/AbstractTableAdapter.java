@@ -121,41 +121,58 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
         dispatchCellDataSetChangesToListeners(mCellItems);
     }
 
-    public void setAllItems(@Nullable List<CH> columnHeaderItems, @Nullable List<RH> rowHeaderItems, @Nullable List<List<C>>
-            cellItems) {
+    public void setAllItems(
+            @Nullable List<CH> columnHeaderItems,
+            @Nullable List<RH> rowHeaderItems,
+            @Nullable List<List<C>> cellItems
+    ) {
         // Set all items
         setColumnHeaderItems(columnHeaderItems);
         setRowHeaderItems(rowHeaderItems);
         setCellItems(cellItems);
 
         // Control corner view
-        if (mCornerView == null){
-            if (columnHeaderItems != null && !columnHeaderItems.isEmpty() && mTableView != null) {
-                // Check to see if the corner view show be shown with column headers
-                if (!mTableView.getShowCornerView()){
-                    // Don't show corner view if there are column headers but
-                    // No row headers or cell data
-                    // (Original behaviour)
-                    if (!(rowHeaderItems != null && !rowHeaderItems.isEmpty() &&
-                            cellItems != null && !cellItems.isEmpty())) {
-                        // There are no row headers or cell items so no corner view is needed
-                        return;
-                    }
-                }
-                // Create corner view
-                mCornerView = onCreateCornerView((ViewGroup) mTableView);
+        updateCornerViewState(columnHeaderItems, rowHeaderItems);
+    }
 
-                // Set the corner location
-                mTableView.addView(mCornerView, new FrameLayout.LayoutParams(mRowHeaderWidth,
-                        mColumnHeaderHeight, mTableView.getGravity()));
+    private void updateCornerViewState(
+            @Nullable List<CH> columnHeaderItems,
+            @Nullable List<RH> rowHeaderItems
+    ) {
+        boolean hasColumnHeaders = columnHeaderItems != null && !columnHeaderItems.isEmpty();
+        boolean hasRowHeaders = rowHeaderItems != null && !rowHeaderItems.isEmpty();
+        boolean showCornerView = mTableView != null && mTableView.getShowCornerView();
+        boolean needCornerSpace = hasColumnHeaders && (hasRowHeaders || showCornerView);
+
+        // Create the corner view if we need it
+        if (mCornerView == null && needCornerSpace) {
+            // No TableView is associated with this Adapter, so we can't create the corner view
+            if (mTableView == null) {
+                return;
             }
+
+            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                    mRowHeaderWidth,
+                    mColumnHeaderHeight,
+                    mTableView.getGravity()
+            );
+
+            // Create corner view
+            mCornerView = onCreateCornerView((ViewGroup) mTableView);
+
+            // Set the corner location
+            mTableView.addView(mCornerView, layoutParams);
+        }
+
+        // We don't have any corner view to update
+        if (mCornerView == null) {
+            return;
+        }
+
+        if (needCornerSpace) {
+            mCornerView.setVisibility(View.VISIBLE);
         } else {
-            // Change corner view visibility
-            if (rowHeaderItems != null && !rowHeaderItems.isEmpty()) {
-                mCornerView.setVisibility(View.VISIBLE);
-            } else {
-                mCornerView.setVisibility(View.GONE);
-            }
+            mCornerView.setVisibility(View.GONE);
         }
     }
 
