@@ -24,6 +24,8 @@
 
 package com.evrencoskun.tableview.layoutmanager;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
@@ -41,8 +43,6 @@ import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.util.TableViewUtils;
-
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 /**
  * Created by evrencoskun on 24/06/2017.
@@ -505,9 +505,43 @@ public class CellLayoutManager extends LinearLayoutManager {
      * Allows to set cache width value for all cell items that is located on column position.
      */
     public void setCacheWidth(int column, int width) {
-        for (int i = 0; i < mRowHeaderRecyclerView.getAdapter().getItemCount(); i++) {
+        RecyclerView.Adapter<?> adapter = mRowHeaderRecyclerView.getAdapter();
+        if (adapter == null) {
+            return;
+        }
+
+        for (int i = 0; i < adapter.getItemCount(); i++) {
             // set cache width for single cell item.
             setCacheWidth(i, column, width);
+        }
+    }
+
+    public void invalidateCell(int row, int column) {
+        int width = getCacheWidth(row, column);
+        if (width == -1) {
+            return;
+        }
+
+        CellRecyclerView cellRecyclerView = (CellRecyclerView) findViewByPosition(row);
+        if (cellRecyclerView != null) {
+            ColumnLayoutManager columnLayoutManager = (ColumnLayoutManager) cellRecyclerView.getLayoutManager();
+            if (columnLayoutManager != null) {
+                View cell = columnLayoutManager.findViewByPosition(column);
+                if (cell != null) {
+                    TableViewUtils.setWidth(cell, width);
+                }
+            }
+        }
+    }
+
+    public void invalidateColumn(int column) {
+        RecyclerView.Adapter<?> adapter = mRowHeaderRecyclerView.getAdapter();
+        if (adapter == null) {
+            return;
+        }
+
+        for (int row = 0; row < adapter.getItemCount(); row++) {
+            invalidateCell(row, column);
         }
     }
 

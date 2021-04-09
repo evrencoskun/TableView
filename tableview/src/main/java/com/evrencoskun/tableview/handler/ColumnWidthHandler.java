@@ -27,6 +27,8 @@ package com.evrencoskun.tableview.handler;
 import androidx.annotation.NonNull;
 
 import com.evrencoskun.tableview.ITableView;
+import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
+import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
 
 /**
  * Created by evrencoskun on 25.04.2018.
@@ -43,10 +45,13 @@ public class ColumnWidthHandler {
     public void setColumnWidth(int columnPosition, int width) {
 
         // Firstly set the column header cache map
-        mTableView.getColumnHeaderLayoutManager().setCacheWidth(columnPosition, width);
+        ColumnHeaderLayoutManager columnHeaderLayoutManager = mTableView.getColumnHeaderLayoutManager();
+        columnHeaderLayoutManager.setCacheWidth(columnPosition, width);
+        columnHeaderLayoutManager.customRequestLayout();
 
         // Set each of cell items that is located on the column position
-        mTableView.getCellLayoutManager().setCacheWidth(columnPosition, width);
+        CellLayoutManager cellLayoutManager = mTableView.getCellLayoutManager();
+        cellLayoutManager.setCacheWidth(columnPosition, width);
+        cellLayoutManager.invalidateColumn(columnPosition);
     }
-
 }
