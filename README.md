@@ -61,6 +61,7 @@ Please check out the [project's wiki](https://github.com/evrencoskun/TableView/w
 - [TableViewSample 2](https://github.com/evrencoskun/TableViewSample2)
 - [Xently-UI](https://github.com/ajharry69/Xently-UI)
 - [Price List Lite](https://pricelistlite.isolpro.in)
+- [Database Client for MySQL and PostgreSQL](https://play.google.com/store/apps/details?id=dev.dhruv.databaseclient)
 - ([Submit a Pull Request](https://github.com/evrencoskun/TableView/compare) to mention your app on this page)
 
 ## Donations
