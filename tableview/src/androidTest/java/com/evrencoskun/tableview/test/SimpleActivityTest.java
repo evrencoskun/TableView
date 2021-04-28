@@ -24,10 +24,16 @@
 
 package com.evrencoskun.tableview.test;
 
-import android.content.Context;
-import android.widget.LinearLayout;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
+import static androidx.test.espresso.matcher.ViewMatchers.withParentIndex;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
+
+import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -37,6 +43,7 @@ import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.test.adapters.SimpleTestAdapter;
 import com.evrencoskun.tableview.test.data.SimpleData;
 
+import org.hamcrest.Matcher;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -60,42 +67,40 @@ public class SimpleActivityTest {
 
     @Test
     public void testSmallTable() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        TableView tableView = new TableView(context);
-
-        RelativeLayout rl = new RelativeLayout(context);
-        rl.addView(tableView);
-
-        SimpleTestAdapter simpleTestAdapter = new SimpleTestAdapter();
-
-        tableView.setAdapter(simpleTestAdapter);
-
-        SimpleData simpleData = new SimpleData(5);
-
-        simpleTestAdapter.setAllItems(simpleData.getColumnHeaders(), simpleData.getRowHeaders(),
-                simpleData.getCells());
-
         mActivityTestRule.getScenario()
-                .onActivity(activity -> activity.setContentView(rl));
+                .onActivity(activity -> {
+                    TableView tableView = new TableView(activity);
+                    tableView.setId(R.id.tableview);
 
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+                    RelativeLayout rl = new RelativeLayout(activity);
+                    rl.addView(tableView);
+
+                    SimpleTestAdapter simpleTestAdapter = new SimpleTestAdapter();
+
+                    tableView.setAdapter(simpleTestAdapter);
+
+                    SimpleData simpleData = new SimpleData(5);
+
+                    simpleTestAdapter.setAllItems(
+                            simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells());
+
+                    activity.setContentView(rl);
+                });
 
         // Check that the row header was created as expected at 5th Row (index starts at zero)
         // cell_layout has LinearLayout as top item
-        LinearLayout rowLinearLayout = (LinearLayout) tableView.getRowHeaderLayoutManager().getChildAt(4);
-        Assert.assertNotNull(rowLinearLayout);
+        Matcher<View> rowHeaders = allOf(withParent(withId(R.id.tableview)), withParentIndex(1));
+        Matcher<View> rowHeader = allOf(withParent(rowHeaders), withParentIndex(4));
 
-        // The first child of the LinearLayout is a textView (index starts at zero)
-        TextView rowTextView = (TextView) rowLinearLayout.getChildAt(0);
-        Assert.assertEquals("r:4", rowTextView.getText());
+        onView(allOf(withParent(rowHeader), withParentIndex(0)))
+                .check(matches(withText("r:4")));
 
         // Check that the column header was created as expected at 5th Row (index starts at zero)
         // cell_layout has LinearLayout as top item
-        LinearLayout columnLinearLayout = (LinearLayout) tableView.getColumnHeaderLayoutManager().getChildAt(4);
-        Assert.assertNotNull(columnLinearLayout);
+        Matcher<View> columnHeaders = allOf(withParent(withId(R.id.tableview)), withParentIndex(0));
+        Matcher<View> columnHeader = allOf(withParent(columnHeaders), withParentIndex(4));
 
-        // The first child of the LinearLayout is a textView (index starts at zero)
-        TextView columnTextView = (TextView) columnLinearLayout.getChildAt(0);
-        Assert.assertEquals("c:4", columnTextView.getText());
+        onView(allOf(withParent(columnHeader), withParentIndex(0)))
+                .check(matches(withText("c:4")));
     }
 }

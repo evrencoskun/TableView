@@ -24,10 +24,14 @@
 
 package com.evrencoskun.tableview.test;
 
-import android.view.View;
-import android.widget.LinearLayout;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.Visibility;
+import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -69,8 +73,7 @@ public class CornerViewTest {
                     activity.setContentView(rl);
 
                     // Check that the corner view is not created (therefore not shown)
-                    View cornerView = simpleTestAdapter.getCornerView();
-                    Assert.assertNull(cornerView);
+                    Assert.assertNull(simpleTestAdapter.getCornerView());
                 });
     }
 
@@ -92,28 +95,28 @@ public class CornerViewTest {
                     simpleTestAdapter.setAllItems(simpleData.getColumnHeaders(), simpleData.getRowHeaders(),
                             simpleData.getCells());
 
+                    activity.setContentView(rl);
+
                     // Check that the corner view is not created (therefore not shown)
-                    View cornerView = simpleTestAdapter.getCornerView();
-                    Assert.assertNull(cornerView);
+                    Assert.assertNull(simpleTestAdapter.getCornerView());
 
                     // Change the items of data to reset
                     SimpleData simpleDataReset = new SimpleData(2);
+
                     simpleTestAdapter.setAllItems(simpleDataReset.getColumnHeaders(), simpleDataReset.getRowHeaders(),
                             simpleDataReset.getCells());
 
                     // Check that the corner view is now created
-                    // The Corner view uses cell_layout which has LinearLayout as top item
-                    LinearLayout cornerViewReset = (LinearLayout) simpleTestAdapter.getCornerView();
-                    Assert.assertNotNull(cornerViewReset);
-
-                    // Check the corner view is now visible
-                    Assert.assertEquals(View.VISIBLE, cornerViewReset.getVisibility());
-
-                    // Check that it is the expected corner view by checking the text
-                    // The first child of the LinearLayout is a textView (index starts at zero)
-                    TextView cornerViewResetTextView = (TextView) cornerViewReset.getChildAt(0);
-                    Assert.assertEquals("Cell Data", cornerViewResetTextView.getText());
+                    Assert.assertNotNull(simpleTestAdapter.getCornerView());
                 });
+
+        // Check the corner view is now visible
+        onView(withId(R.id.corner_view))
+                .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+
+        // Check that it is the expected corner view by checking the text
+        onView(withId(R.id.corner_text))
+                .check(matches(withText("Corner")));
     }
 
     @Test
@@ -137,18 +140,16 @@ public class CornerViewTest {
                     activity.setContentView(rl);
 
                     // Check that the corner view is not created (therefore not shown)
-                    View cornerView = simpleTestAdapter.getCornerView();
-                    Assert.assertNull(cornerView);
+                    Assert.assertNull(simpleTestAdapter.getCornerView());
 
                     // Change the items of data to reset
                     SimpleData simpleDataReset = new SimpleData(0);
+
                     simpleTestAdapter.setAllItems(simpleDataReset.getColumnHeaders(), simpleDataReset.getRowHeaders(),
                             simpleDataReset.getCells());
 
                     // Check that the corner view is still not created
-                    // The Corner view uses cell_layout which has LinearLayout as top item
-                    LinearLayout cornerViewReset = (LinearLayout) simpleTestAdapter.getCornerView();
-                    Assert.assertNull(cornerViewReset);
+                    Assert.assertNull(simpleTestAdapter.getCornerView());
                 });
     }
 
@@ -173,18 +174,16 @@ public class CornerViewTest {
                     activity.setContentView(rl);
 
                     // Check that the corner view is created
-                    // The Corner view uses cell_layout which has LinearLayout as top item
-                    LinearLayout cornerView = (LinearLayout) simpleTestAdapter.getCornerView();
-                    Assert.assertNotNull(cornerView);
-
-                    // Check the corner view is visible
-                    Assert.assertEquals(View.VISIBLE, cornerView.getVisibility());
-
-                    // Check that it is the expected corner view by checking the text
-                    // The first child of the LinearLayout is a textView (index starts at zero)
-                    TextView cornerViewTextView = (TextView) cornerView.getChildAt(0);
-                    Assert.assertEquals("Cell Data", cornerViewTextView.getText());
+                    Assert.assertNotNull(simpleTestAdapter.getCornerView());
                 });
+
+        // Check the corner view is now visible
+        onView(withId(R.id.corner_view))
+                .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+
+        // Check that it is the expected corner view by checking the text
+        onView(withId(R.id.corner_text))
+                .check(matches(withText("Corner")));
     }
 
     @Test
@@ -192,6 +191,7 @@ public class CornerViewTest {
         mActivityTestRule.getScenario()
                 .onActivity(activity -> {
                     TableView tableView = new TableView(activity);
+                    tableView.setId(R.id.tableview);
 
                     RelativeLayout rl = new RelativeLayout(activity);
                     rl.addView(tableView);
@@ -205,34 +205,39 @@ public class CornerViewTest {
                     simpleTestAdapter.setAllItems(simpleData.getColumnHeaders(), simpleData.getRowHeaders(),
                             simpleData.getCells());
 
-                    // Check that the corner view is created before resetting to empty
-                    // The Corner view uses cell_layout which has LinearLayout as top item
-                    LinearLayout cornerView = (LinearLayout) simpleTestAdapter.getCornerView();
-                    Assert.assertNotNull(cornerView);
+                    activity.setContentView(rl);
 
-                    // Check the corner view is visible
-                    Assert.assertEquals(View.VISIBLE, cornerView.getVisibility());
+                    // Check that the corner view is created before resetting to empty
+                    Assert.assertNotNull(simpleTestAdapter.getCornerView());
+                });
+
+        // Check the corner view is visible
+        onView(withId(R.id.corner_view))
+                .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+
+        mActivityTestRule.getScenario()
+                .onActivity(activity -> {
+                    TableView tableView = activity.findViewById(R.id.tableview);
+
+                    SimpleTestAdapter simpleTestAdapter = (SimpleTestAdapter) tableView.getAdapter();
 
                     // Change the items of data to reset
                     SimpleData simpleDataReset = new SimpleData(2);
+
                     simpleTestAdapter.setAllItems(simpleDataReset.getColumnHeaders(), simpleDataReset.getRowHeaders(),
                             simpleDataReset.getCells());
 
-                    activity.setContentView(rl);
-
                     // Check that the corner view is still created
-                    // The Corner view uses cell_layout which has LinearLayout as top item
-                    LinearLayout cornerViewReset = (LinearLayout) simpleTestAdapter.getCornerView();
-                    Assert.assertNotNull(cornerViewReset);
-
-                    // Check the corner view is still visible
-                    Assert.assertEquals(View.VISIBLE, cornerViewReset.getVisibility());
-
-                    // Check that it is the expected corner view by checking the text
-                    // The first child of the LinearLayout is a textView (index starts at zero)
-                    TextView cornerViewResetTextView = (TextView) cornerViewReset.getChildAt(0);
-                    Assert.assertEquals("Cell Data", cornerViewResetTextView.getText());
+                    Assert.assertNotNull(simpleTestAdapter.getCornerView());
                 });
+
+        // Check the corner view is still visible
+        onView(withId(R.id.corner_view))
+                .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+
+        // Check that it is the expected corner view by checking the text
+        onView(withId(R.id.corner_text))
+                .check(matches(withText("Corner")));
     }
 
     @Test
@@ -254,25 +259,23 @@ public class CornerViewTest {
                             simpleData.getCells());
 
                     // Check that the corner view is created before resetting to empty
-                    // The Corner view uses cell_layout which has LinearLayout as top item
-                    LinearLayout cornerView = (LinearLayout) simpleTestAdapter.getCornerView();
-                    Assert.assertNotNull(cornerView);
+                    Assert.assertNotNull(simpleTestAdapter.getCornerView());
 
                     // Change the items of data to reset
                     SimpleData simpleDataReset = new SimpleData(0);
+
                     simpleTestAdapter.setAllItems(simpleDataReset.getColumnHeaders(), simpleDataReset.getRowHeaders(),
                             simpleDataReset.getCells());
 
                     activity.setContentView(rl);
 
                     // Check that the corner view is still created but visibility is gone
-                    // The Corner view uses cell_layout which has LinearLayout as top item
-                    LinearLayout cornerViewReset = (LinearLayout) simpleTestAdapter.getCornerView();
-                    Assert.assertNotNull(cornerViewReset);
-
-                    // Check the corner view visibility is GONE
-                    Assert.assertEquals(View.GONE, cornerViewReset.getVisibility());
+                    Assert.assertNotNull(simpleTestAdapter.getCornerView());
                 });
+
+        // Check the corner view visibility is GONE
+        onView(withId(R.id.corner_view))
+                .check(matches(withEffectiveVisibility(Visibility.GONE)));
     }
 
     @Test
@@ -297,9 +300,7 @@ public class CornerViewTest {
                     activity.setContentView(rl);
 
                     // Check that the corner view is not created
-                    // The Corner view uses cell_layout which has LinearLayout as top item
-                    LinearLayout cornerView = (LinearLayout) simpleTestAdapter.getCornerView();
-                    Assert.assertNull(cornerView);
+                    Assert.assertNull(simpleTestAdapter.getCornerView());
                 });
     }
 
@@ -323,30 +324,27 @@ public class CornerViewTest {
                             simpleData.getCells());
 
                     // Check that the corner view is not created
-                    // The Corner view uses cell_layout which has LinearLayout as top item
-                    LinearLayout cornerView = (LinearLayout) simpleTestAdapter.getCornerView();
-                    Assert.assertNull(cornerView);
+                    Assert.assertNull(simpleTestAdapter.getCornerView());
 
                     // Change the items of data to reset
                     SimpleData simpleDataReset = new SimpleData(5);
+
                     simpleTestAdapter.setAllItems(simpleDataReset.getColumnHeaders(), simpleDataReset.getRowHeaders(),
                             simpleDataReset.getCells());
 
                     activity.setContentView(rl);
 
                     // Check that the corner view is not created
-                    // The Corner view uses cell_layout which has LinearLayout as top item
-                    LinearLayout cornerViewReset = (LinearLayout) simpleTestAdapter.getCornerView();
-                    Assert.assertNotNull(cornerViewReset);
-
-                    // Check the corner view is now visible
-                    Assert.assertEquals(View.VISIBLE, cornerViewReset.getVisibility());
-
-                    // Check that it is the expected corner view by checking the text
-                    // The first child of the LinearLayout is a textView (index starts at zero)
-                    TextView cornerViewResetTextView = (TextView) cornerViewReset.getChildAt(0);
-                    Assert.assertEquals("Cell Data", cornerViewResetTextView.getText());
+                    Assert.assertNotNull(simpleTestAdapter.getCornerView());
                 });
+
+        // Check the corner view is now visible
+        onView(withId(R.id.corner_view))
+                .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+
+        // Check that it is the expected corner view by checking the text
+        onView(withId(R.id.corner_text))
+                .check(matches(withText("Corner")));
     }
 
     @Test
@@ -369,21 +367,18 @@ public class CornerViewTest {
                             simpleData.getCells());
 
                     // Check that the corner view is not created
-                    // The Corner view uses cell_layout which has LinearLayout as top item
-                    LinearLayout cornerView = (LinearLayout) simpleTestAdapter.getCornerView();
-                    Assert.assertNull(cornerView);
+                    Assert.assertNull(simpleTestAdapter.getCornerView());
 
                     // Change the items of data to reset
                     SimpleData simpleDataReset = new SimpleData(0);
+
                     simpleTestAdapter.setAllItems(simpleDataReset.getColumnHeaders(), simpleDataReset.getRowHeaders(),
                             simpleDataReset.getCells());
 
                     activity.setContentView(rl);
 
                     // Check that the corner view is not created
-                    // The Corner view uses cell_layout which has LinearLayout as top item
-                    LinearLayout cornerViewReset = (LinearLayout) simpleTestAdapter.getCornerView();
-                    Assert.assertNull(cornerViewReset);
+                    Assert.assertNull(simpleTestAdapter.getCornerView());
                 });
     }
 
@@ -412,18 +407,16 @@ public class CornerViewTest {
                     activity.setContentView(rl);
 
                     // Check that the corner view is created
-                    // The Corner view uses cell_layout which has LinearLayout as top item
-                    LinearLayout cornerView = (LinearLayout) simpleTestAdapter.getCornerView();
-                    Assert.assertNotNull(cornerView);
-
-                    // Check the corner view is visible
-                    Assert.assertEquals(View.VISIBLE, cornerView.getVisibility());
-
-                    // Check that it is the expected corner view by checking the text
-                    // The first child of the LinearLayout is a textView (index starts at zero)
-                    TextView cornerViewResetTextView = (TextView) cornerView.getChildAt(0);
-                    Assert.assertEquals("Cell Data", cornerViewResetTextView.getText());
+                    Assert.assertNotNull(simpleTestAdapter.getCornerView());
                 });
+
+        // Check the corner view is now visible
+        onView(withId(R.id.corner_view))
+                .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+
+        // Check that it is the expected corner view by checking the text
+        onView(withId(R.id.corner_text))
+                .check(matches(withText("Corner")));
     }
 
     @Test
@@ -449,25 +442,23 @@ public class CornerViewTest {
                             simpleData.getCells());
 
                     // Check that the corner view is created
-                    // The Corner view uses cell_layout which has LinearLayout as top item
-                    LinearLayout cornerView = (LinearLayout) simpleTestAdapter.getCornerView();
-                    Assert.assertNotNull(cornerView);
+                    Assert.assertNotNull(simpleTestAdapter.getCornerView());
 
                     // Change the items of data to reset
                     SimpleData simpleDataReset = new SimpleData(0);
+
                     simpleTestAdapter.setAllItems(simpleDataReset.getColumnHeaders(), simpleDataReset.getRowHeaders(),
                             simpleDataReset.getCells());
 
                     activity.setContentView(rl);
 
                     // Check that the corner view is still created
-                    // The Corner view uses cell_layout which has LinearLayout as top item
-                    LinearLayout cornerViewReset = (LinearLayout) simpleTestAdapter.getCornerView();
-                    Assert.assertNotNull(cornerViewReset);
-
-                    // Check the corner view visibility is GONE
-                    Assert.assertEquals(View.GONE, cornerViewReset.getVisibility());
+                    Assert.assertNotNull(simpleTestAdapter.getCornerView());
                 });
+
+        // Check the corner view visibility is GONE
+        onView(withId(R.id.corner_view))
+                .check(matches(withEffectiveVisibility(Visibility.GONE)));
     }
 
     @Test
@@ -493,9 +484,7 @@ public class CornerViewTest {
                             simpleData.getCells());
 
                     // Check that the corner view is created
-                    // The Corner view uses cell_layout which has LinearLayout as top item
-                    LinearLayout cornerView = (LinearLayout) simpleTestAdapter.getCornerView();
-                    Assert.assertNotNull(cornerView);
+                    Assert.assertNotNull(simpleTestAdapter.getCornerView());
 
                     // Change the items of data to reset
                     SimpleData simpleDataReset = new SimpleData(2);
@@ -505,12 +494,11 @@ public class CornerViewTest {
                     activity.setContentView(rl);
 
                     // Check that the corner view is still created
-                    // The Corner view uses cell_layout which has LinearLayout as top item
-                    LinearLayout cornerViewReset = (LinearLayout) simpleTestAdapter.getCornerView();
-                    Assert.assertNotNull(cornerViewReset);
-
-                    // Check the corner view visibility is VISIBLE
-                    Assert.assertEquals(View.VISIBLE, cornerViewReset.getVisibility());
+                    Assert.assertNotNull(simpleTestAdapter.getCornerView());
                 });
+
+        // Check the corner view visibility is VISIBLE
+        onView(withId(R.id.corner_view))
+                .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
     }
 }

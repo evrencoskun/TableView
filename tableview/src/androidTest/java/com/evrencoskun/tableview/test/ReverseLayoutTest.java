@@ -27,7 +27,6 @@ package com.evrencoskun.tableview.test;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyLeftOf;
 import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyRightOf;
-import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.Visibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
@@ -36,7 +35,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withParentIndex;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.not;
 
 import android.widget.RelativeLayout;
 
@@ -82,7 +80,6 @@ public class ReverseLayoutTest {
         // Check that the corner view is created and visible
         // The Corner view uses cell_layout which has RelativeLayout as top item
         onView(withId(R.id.corner_view))
-                .check(matches(not(doesNotExist())))
                 .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
 
         // Check that it is the expected corner view by checking the text
@@ -119,7 +116,6 @@ public class ReverseLayoutTest {
         // Check that the corner view is created and visible
         // The Corner view uses cell_layout which has RelativeLayout as top item
         onView(withId(R.id.corner_view))
-                .check(matches(not(doesNotExist())))
                 .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
 
         // Check that it is the expected corner view by checking the text
@@ -164,7 +160,6 @@ public class ReverseLayoutTest {
         // Check that the corner view is created and visible
         // The Corner view uses cell_layout which has RelativeLayout as top item
         onView(withId(R.id.corner_view))
-                .check(matches(not(doesNotExist())))
                 .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
 
         // Check that it is the expected corner view by checking the text
