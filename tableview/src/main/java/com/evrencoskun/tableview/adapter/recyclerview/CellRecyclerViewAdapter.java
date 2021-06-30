@@ -157,7 +157,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
                 cellViewHolder.setSelected(SelectionState.SELECTED);
 
             }
-        } else if (selectionHandler.isRowSelected(holder.getAdapterPosition())) {
+        } else if (selectionHandler.isRowSelected(holder.getBindingAdapterPosition())) {
             selectionHandler.changeSelectionOfRecyclerView(viewHolder.recyclerView,
                     SelectionState.SELECTED, mTableView.getSelectedColor());
         }

@@ -78,7 +78,7 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
         super.onViewAttachedToWindow(viewHolder);
 
         SelectionState selectionState = mTableView.getSelectionHandler().getColumnSelectionState
-                (viewHolder.getAdapterPosition());
+                (viewHolder.getBindingAdapterPosition());
 
         // Control to ignore selection color
         if (!mTableView.isIgnoreSelectionColors()) {
@@ -96,7 +96,7 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
             if (viewHolder instanceof AbstractSorterViewHolder) {
                 // Get its sorting state
                 SortState state = getColumnSortHelper().getSortingStatus(viewHolder
-                        .getAdapterPosition());
+                        .getBindingAdapterPosition());
                 // Fire onSortingStatusChanged
                 ((AbstractSorterViewHolder) viewHolder).onSortingStatusChanged(state);
             }

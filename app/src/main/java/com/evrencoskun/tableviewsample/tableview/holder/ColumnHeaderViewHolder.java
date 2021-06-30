@@ -86,12 +86,12 @@ public class ColumnHeaderViewHolder extends AbstractSorterViewHolder {
         @Override
         public void onClick(View view) {
             if (getSortState() == SortState.ASCENDING) {
-                tableView.sortColumn(getAdapterPosition(), SortState.DESCENDING);
+                tableView.sortColumn(getBindingAdapterPosition(), SortState.DESCENDING);
             } else if (getSortState() == SortState.DESCENDING) {
-                tableView.sortColumn(getAdapterPosition(), SortState.ASCENDING);
+                tableView.sortColumn(getBindingAdapterPosition(), SortState.ASCENDING);
             } else {
                 // Default one
-                tableView.sortColumn(getAdapterPosition(), SortState.DESCENDING);
+                tableView.sortColumn(getBindingAdapterPosition(), SortState.DESCENDING);
             }
 
         }
@@ -99,9 +99,9 @@ public class ColumnHeaderViewHolder extends AbstractSorterViewHolder {
 
     @Override
     public void onSortingStatusChanged(@NonNull SortState sortState) {
-        Log.e(LOG_TAG, " + onSortingStatusChanged : x:  " + getAdapterPosition() + " old state "
-                + getSortState() + " current state : " + sortState + " visiblity: " +
-                column_header_sortButton.getVisibility());
+        Log.e(LOG_TAG, " + onSortingStatusChanged: x:  " + getBindingAdapterPosition() + ", " +
+                "old state: " + getSortState() + ", current state: " + sortState + ", " +
+                "visibility: " + column_header_sortButton.getVisibility());
 
         super.onSortingStatusChanged(sortState);
 
@@ -110,9 +110,9 @@ public class ColumnHeaderViewHolder extends AbstractSorterViewHolder {
 
         controlSortState(sortState);
 
-        Log.e(LOG_TAG, " - onSortingStatusChanged : x:  " + getAdapterPosition() + " old state "
-                + getSortState() + " current state : " + sortState + " visiblity: " +
-                column_header_sortButton.getVisibility());
+        Log.e(LOG_TAG, " - onSortingStatusChanged: x:  " + getBindingAdapterPosition() + ", " +
+                "old state: " + getSortState() + ", current state: " + sortState + ", " +
+                "visibility: " + column_header_sortButton.getVisibility());
 
         column_header_textview.requestLayout();
         column_header_sortButton.requestLayout();

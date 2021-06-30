@@ -107,6 +107,6 @@ public class SimpleTestAdapter extends AbstractTableAdapter<ColumnHeader, RowHea
     @NonNull
     public View onCreateCornerView(@NonNull ViewGroup parent) {
         return LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.cell_layout, parent, false);
+                .inflate(R.layout.corner_layout, parent, false);
     }
 }
