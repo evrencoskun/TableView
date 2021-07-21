@@ -62,7 +62,7 @@ public class CellRecyclerViewItemClickListener extends AbstractItemClickListener
             CellRowRecyclerViewAdapter adapter = (CellRowRecyclerViewAdapter) mRecyclerView
                     .getAdapter();
 
-            int column = holder.getAdapterPosition();
+            int column = holder.getBindingAdapterPosition();
             int row = adapter.getYPosition();
 
             // Control to ignore selection color
@@ -99,8 +99,8 @@ public class CellRecyclerViewItemClickListener extends AbstractItemClickListener
                     .getAdapter();
 
             // Call ITableView listener for long click
-            getTableViewListener().onCellLongPressed(holder, holder.getAdapterPosition(), adapter
-                    .getYPosition());
+            getTableViewListener().onCellLongPressed(holder, holder.getBindingAdapterPosition(),
+                    adapter.getYPosition());
         }
     }
 
@@ -118,7 +118,7 @@ public class CellRecyclerViewItemClickListener extends AbstractItemClickListener
             CellRowRecyclerViewAdapter adapter = (CellRowRecyclerViewAdapter) mRecyclerView
                     .getAdapter();
 
-            int column = holder.getAdapterPosition();
+            int column = holder.getBindingAdapterPosition();
             int row = adapter.getYPosition();
 
             // Control to ignore selection color

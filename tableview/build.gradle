@@ -46,15 +46,16 @@ android {
 dependencies {
     implementation "androidx.annotation:annotation:$androidx_annotation_version"
     implementation "androidx.recyclerview:recyclerview:$androidx_recyclerview_version"
-    testImplementation "junit:junit:4.13"
-    androidTestImplementation "androidx.appcompat:appcompat:1.0.0"
-    androidTestImplementation 'androidx.test:rules:1.2.0'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
-    androidTestImplementation 'junit:junit:4.12'
 
+    testImplementation "junit:junit:$junit_version"
+
+    androidTestImplementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
+    androidTestImplementation "androidx.test:rules:$androidx_test_version"
+    androidTestImplementation "androidx.test:runner:$androidx_test_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$androidx_test_espresso_version"
+    androidTestImplementation "androidx.test.ext:junit:$androidx_test_ext_version"
+    androidTestImplementation "junit:junit:$junit_version"
 }
 
 // Configure the publishing

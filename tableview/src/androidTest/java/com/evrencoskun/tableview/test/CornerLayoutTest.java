@@ -24,82 +24,69 @@
 
 package com.evrencoskun.tableview.test;
 
-import android.app.Activity;
-import android.view.View;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.rule.ActivityTestRule;
-
-import com.evrencoskun.tableview.ITableView;
-import com.evrencoskun.tableview.TableView;
-import com.evrencoskun.tableview.test.adapters.CornerTestAdapter;
-import com.evrencoskun.tableview.test.data.SimpleData;
-import com.evrencoskun.tableview.test.matchers.ViewWidthMatcher;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyAbove;
 import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyBelow;
 import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyLeftOf;
 import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyRightOf;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
+import static androidx.test.espresso.matcher.ViewMatchers.withParentIndex;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
+
+import android.widget.RelativeLayout;
+
+import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import com.evrencoskun.tableview.ITableView;
+import com.evrencoskun.tableview.TableView;
+import com.evrencoskun.tableview.test.adapters.CornerTestAdapter;
+import com.evrencoskun.tableview.test.data.SimpleData;
+import com.evrencoskun.tableview.test.matchers.ViewWidthMatcher;
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 public class CornerLayoutTest {
 
     @Rule
-    public ActivityTestRule<TestActivity> mActivityTestRule =
-            new ActivityTestRule<TestActivity>(TestActivity.class){
-
-                @Override
-                protected void beforeActivityLaunched() {
-                    super.beforeActivityLaunched();
-                }
-
-                @Override
-                protected void afterActivityFinished(){
-                    super.afterActivityFinished();
-                }
-            };
+    public ActivityScenarioRule<TestActivity> mActivityTestRule =
+            new ActivityScenarioRule<>(TestActivity.class);
 
     @Test
-    public void testDefaultCorner() throws Throwable {
-        Activity activity = mActivityTestRule.getActivity();
+    public void testDefaultCorner() {
+        mActivityTestRule.getScenario()
+                .onActivity(activity -> {
+                    activity.setContentView(R.layout.corner_default);
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(R.layout.corner_default));
+                    TableView tableView = activity.findViewById(R.id.tableview);
 
-        TableView tableView =  activity.findViewById(R.id.tableview);
-        Assert.assertNotNull(tableView);
+                    CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
 
-        CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
-        Assert.assertNotNull(cornerTestAdapter);
+                    tableView.setAdapter(cornerTestAdapter);
 
-        mActivityTestRule.runOnUiThread(() -> tableView.setAdapter(cornerTestAdapter));
+                    SimpleData simpleData = new SimpleData(5);
 
-        SimpleData simpleData = new SimpleData(5);
+                    cornerTestAdapter.setAllItems(
+                            simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells());
+                });
 
-        mActivityTestRule.runOnUiThread(() -> cornerTestAdapter.setAllItems(
-                simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells()));
+        // Check that the corner view is created and visible
+        // The Corner view uses cell_layout which has RelativeLayout as top item
+        onView(withId(R.id.corner_view))
+                .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
 
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
-
-        // Check that the corner view is created
-        // The Corner view uses cell_layout which has LinearLayout as top item
-        RelativeLayout cornerView = (RelativeLayout) tableView.getAdapter().getCornerView();
-        Assert.assertNotNull(cornerView);
-        // Check the corner view is visible
-        Assert.assertEquals(View.VISIBLE, cornerView.getVisibility());
         // Check that it is the expected corner view by checking the text
         // The first child of the RelativeLayout is a textView (index starts at zero)
-        TextView cornerViewTextView = (TextView) cornerView.getChildAt(0);
-        Assert.assertEquals("Corner", cornerViewTextView.getText());
+        onView(allOf(withParent(withId(R.id.corner_view)), withParentIndex(0)))
+                .check(matches(withText("Corner")));
 
         // Check that Corner to is to the right of the column headers
         onView(withId(R.id.corner_view)).check(isCompletelyLeftOf(withId(R.id.ColumnHeaderRecyclerView)));
@@ -109,36 +96,32 @@ public class CornerLayoutTest {
     }
 
     @Test
-    public void testTopLeftCorner() throws Throwable {
-        Activity activity = mActivityTestRule.getActivity();
+    public void testTopLeftCorner() {
+        mActivityTestRule.getScenario()
+                .onActivity(activity -> {
+                    activity.setContentView(R.layout.corner_top_left);
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(R.layout.corner_top_left));
+                    TableView tableView = activity.findViewById(R.id.tableview);
 
-        TableView tableView =  activity.findViewById(R.id.tableview);
-        Assert.assertNotNull(tableView);
+                    CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
 
-        CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
-        Assert.assertNotNull(cornerTestAdapter);
+                    tableView.setAdapter(cornerTestAdapter);
 
-        mActivityTestRule.runOnUiThread(() -> tableView.setAdapter(cornerTestAdapter));
+                    SimpleData simpleData = new SimpleData(5);
 
-        SimpleData simpleData = new SimpleData(5);
+                    cornerTestAdapter.setAllItems(
+                            simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells());
+                });
 
-        mActivityTestRule.runOnUiThread(() -> cornerTestAdapter.setAllItems(
-                simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells()));
+        // Check that the corner view is created and visible
+        // The Corner view uses cell_layout which has RelativeLayout as top item
+        onView(withId(R.id.corner_view))
+                .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
 
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
-
-        // Check that the corner view is created
-        // The Corner view uses cell_layout which has LinearLayout as top item
-        RelativeLayout cornerView = (RelativeLayout) tableView.getAdapter().getCornerView();
-        Assert.assertNotNull(cornerView);
-        // Check the corner view is visible
-        Assert.assertEquals(View.VISIBLE, cornerView.getVisibility());
         // Check that it is the expected corner view by checking the text
         // The first child of the RelativeLayout is a textView (index starts at zero)
-        TextView cornerViewTextView = (TextView) cornerView.getChildAt(0);
-        Assert.assertEquals("Corner", cornerViewTextView.getText());
+        onView(allOf(withParent(withId(R.id.corner_view)), withParentIndex(0)))
+                .check(matches(withText("Corner")));
 
         // Check that Corner to is to the right of the column headers
         onView(withId(R.id.corner_view)).check(isCompletelyLeftOf(withId(R.id.ColumnHeaderRecyclerView)));
@@ -148,36 +131,32 @@ public class CornerLayoutTest {
     }
 
     @Test
-    public void testBottomLeftCorner() throws Throwable {
-        Activity activity = mActivityTestRule.getActivity();
+    public void testBottomLeftCorner() {
+        mActivityTestRule.getScenario()
+                .onActivity(activity -> {
+                    activity.setContentView(R.layout.corner_bottom_left);
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(R.layout.corner_bottom_left));
+                    TableView tableView = activity.findViewById(R.id.tableview);
 
-        TableView tableView =  activity.findViewById(R.id.tableview);
-        Assert.assertNotNull(tableView);
+                    CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
 
-        CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
-        Assert.assertNotNull(cornerTestAdapter);
+                    tableView.setAdapter(cornerTestAdapter);
 
-        mActivityTestRule.runOnUiThread(() -> tableView.setAdapter(cornerTestAdapter));
+                    SimpleData simpleData = new SimpleData(5);
 
-        SimpleData simpleData = new SimpleData(5);
+                    cornerTestAdapter.setAllItems(
+                            simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells());
+                });
 
-        mActivityTestRule.runOnUiThread(() -> cornerTestAdapter.setAllItems(
-                simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells()));
+        // Check that the corner view is created and visible
+        // The Corner view uses cell_layout which has RelativeLayout as top item
+        onView(withId(R.id.corner_view))
+                .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
 
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
-
-        // Check that the corner view is created
-        // The Corner view uses cell_layout which has LinearLayout as top item
-        RelativeLayout cornerView = (RelativeLayout) tableView.getAdapter().getCornerView();
-        Assert.assertNotNull(cornerView);
-        // Check the corner view is visible
-        Assert.assertEquals(View.VISIBLE, cornerView.getVisibility());
         // Check that it is the expected corner view by checking the text
         // The first child of the RelativeLayout is a textView (index starts at zero)
-        TextView cornerViewTextView = (TextView) cornerView.getChildAt(0);
-        Assert.assertEquals("Corner", cornerViewTextView.getText());
+        onView(allOf(withParent(withId(R.id.corner_view)), withParentIndex(0)))
+                .check(matches(withText("Corner")));
 
         // Check that Corner to is to the right of the column headers
         onView(withId(R.id.corner_view)).check(isCompletelyLeftOf(withId(R.id.ColumnHeaderRecyclerView)));
@@ -187,36 +166,32 @@ public class CornerLayoutTest {
     }
 
     @Test
-    public void testTopRightCorner() throws Throwable {
-        Activity activity = mActivityTestRule.getActivity();
+    public void testTopRightCorner() {
+        mActivityTestRule.getScenario()
+                .onActivity(activity -> {
+                    activity.setContentView(R.layout.corner_top_right);
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(R.layout.corner_top_right));
+                    TableView tableView = activity.findViewById(R.id.tableview);
 
-        TableView tableView =  activity.findViewById(R.id.tableview);
-        Assert.assertNotNull(tableView);
+                    CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
 
-        CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
-        Assert.assertNotNull(cornerTestAdapter);
+                    tableView.setAdapter(cornerTestAdapter);
 
-        mActivityTestRule.runOnUiThread(() -> tableView.setAdapter(cornerTestAdapter));
+                    SimpleData simpleData = new SimpleData(5);
 
-        SimpleData simpleData = new SimpleData(5);
+                    cornerTestAdapter.setAllItems(
+                            simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells());
+                });
 
-        mActivityTestRule.runOnUiThread(() -> cornerTestAdapter.setAllItems(
-                simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells()));
+        // Check that the corner view is created and visible
+        // The Corner view uses cell_layout which has RelativeLayout as top item
+        onView(withId(R.id.corner_view))
+                .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
 
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
-
-        // Check that the corner view is created
-        // The Corner view uses cell_layout which has LinearLayout as top item
-        RelativeLayout cornerView = (RelativeLayout) tableView.getAdapter().getCornerView();
-        Assert.assertNotNull(cornerView);
-        // Check the corner view is visible
-        Assert.assertEquals(View.VISIBLE, cornerView.getVisibility());
         // Check that it is the expected corner view by checking the text
         // The first child of the RelativeLayout is a textView (index starts at zero)
-        TextView cornerViewTextView = (TextView) cornerView.getChildAt(0);
-        Assert.assertEquals("Corner", cornerViewTextView.getText());
+        onView(allOf(withParent(withId(R.id.corner_view)), withParentIndex(0)))
+                .check(matches(withText("Corner")));
 
         // Check that Corner to is to the right of the column headers
         onView(withId(R.id.corner_view)).check(isCompletelyRightOf(withId(R.id.ColumnHeaderRecyclerView)));
@@ -226,36 +201,32 @@ public class CornerLayoutTest {
     }
 
     @Test
-    public void testBottomRightCorner() throws Throwable {
-        Activity activity = mActivityTestRule.getActivity();
+    public void testBottomRightCorner() {
+        mActivityTestRule.getScenario()
+                .onActivity(activity -> {
+                    activity.setContentView(R.layout.corner_bottom_right);
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(R.layout.corner_bottom_right));
+                    TableView tableView = activity.findViewById(R.id.tableview);
 
-        TableView tableView =  activity.findViewById(R.id.tableview);
-        Assert.assertNotNull(tableView);
+                    CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
 
-        CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
-        Assert.assertNotNull(cornerTestAdapter);
+                    tableView.setAdapter(cornerTestAdapter);
 
-        mActivityTestRule.runOnUiThread(() -> tableView.setAdapter(cornerTestAdapter));
+                    SimpleData simpleData = new SimpleData(5);
 
-        SimpleData simpleData = new SimpleData(5);
+                    cornerTestAdapter.setAllItems(
+                            simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells());
+                });
 
-        mActivityTestRule.runOnUiThread(() -> cornerTestAdapter.setAllItems(
-                simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells()));
+        // Check that the corner view is created and visible
+        // The Corner view uses cell_layout which has RelativeLayout as top item
+        onView(withId(R.id.corner_view))
+                .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
 
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
-
-        // Check that the corner view is created
-        // The Corner view uses cell_layout which has LinearLayout as top item
-        RelativeLayout cornerView = (RelativeLayout) tableView.getAdapter().getCornerView();
-        Assert.assertNotNull(cornerView);
-        // Check the corner view is visible
-        Assert.assertEquals(View.VISIBLE, cornerView.getVisibility());
         // Check that it is the expected corner view by checking the text
         // The first child of the RelativeLayout is a textView (index starts at zero)
-        TextView cornerViewTextView = (TextView) cornerView.getChildAt(0);
-        Assert.assertEquals("Corner", cornerViewTextView.getText());
+        onView(allOf(withParent(withId(R.id.corner_view)), withParentIndex(0)))
+                .check(matches(withText("Corner")));
 
         // Check that Corner to is to the right of the column headers
         onView(withId(R.id.corner_view)).check(isCompletelyRightOf(withId(R.id.ColumnHeaderRecyclerView)));
@@ -265,45 +236,39 @@ public class CornerLayoutTest {
     }
 
     @Test
-    public void testCornerConstructor() throws Throwable {
-        Activity activity = mActivityTestRule.getActivity();
+    public void testCornerConstructor() {
+        mActivityTestRule.getScenario()
+                .onActivity(activity -> {
+                    TableView tableView = new TableView(activity, false);
 
-        TableView tableView =
-                new TableView(InstrumentationRegistry.getInstrumentation().getTargetContext(), false);
-        Assert.assertNotNull(tableView);
+                    // initialize was false so set properties and call initialize
+                    tableView.setCornerViewLocation(ITableView.CornerViewLocation.BOTTOM_LEFT);
+                    tableView.initialize();
 
-        // initialize was false so set properties and call initialize
-        tableView.setCornerViewLocation(ITableView.CornerViewLocation.BOTTOM_LEFT);
-        tableView.initialize();
+                    RelativeLayout rl = new RelativeLayout(activity);
+                    rl.addView(tableView);
 
-        RelativeLayout rl = new RelativeLayout(InstrumentationRegistry.getInstrumentation().getTargetContext());
-        rl.addView(tableView);
+                    CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
 
-        CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
-        Assert.assertNotNull(cornerTestAdapter);
+                    tableView.setAdapter(cornerTestAdapter);
 
-        mActivityTestRule.runOnUiThread(() -> tableView.setAdapter(cornerTestAdapter));
+                    SimpleData simpleData = new SimpleData(5);
 
-        SimpleData simpleData = new SimpleData(5);
+                    cornerTestAdapter.setAllItems(
+                            simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells());
 
-        mActivityTestRule.runOnUiThread(() -> cornerTestAdapter.setAllItems(
-                simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells()));
+                    activity.setContentView(rl);
+                });
 
+        // Check that the corner view is created and visible
+        // The Corner view uses cell_layout which has RelativeLayout as top item
+        onView(withId(R.id.corner_view))
+                .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(rl));
-
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
-
-        // Check that the corner view is created
-        // The Corner view uses cell_layout which has LinearLayout as top item
-        RelativeLayout cornerView = (RelativeLayout) tableView.getAdapter().getCornerView();
-        Assert.assertNotNull(cornerView);
-        // Check the corner view is visible
-        Assert.assertEquals(View.VISIBLE, cornerView.getVisibility());
         // Check that it is the expected corner view by checking the text
         // The first child of the RelativeLayout is a textView (index starts at zero)
-        TextView cornerViewTextView = (TextView) cornerView.getChildAt(0);
-        Assert.assertEquals("Corner", cornerViewTextView.getText());
+        onView(allOf(withParent(withId(R.id.corner_view)), withParentIndex(0)))
+                .check(matches(withText("Corner")));
 
         // Check that Corner to is to the right of the column headers
         onView(withId(R.id.corner_view)).check(isCompletelyLeftOf(withId(R.id.ColumnHeaderRecyclerView)));
@@ -313,39 +278,35 @@ public class CornerLayoutTest {
     }
 
     @Test
-    public void testSetRowHeaderWidthLeft() throws Throwable {
-        Activity activity = mActivityTestRule.getActivity();
+    public void testSetRowHeaderWidthLeft() {
+        mActivityTestRule.getScenario()
+                .onActivity(activity -> {
+                    activity.setContentView(R.layout.corner_top_left);
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(R.layout.corner_top_left));
+                    TableView tableView = activity.findViewById(R.id.tableview);
 
-        TableView tableView =  activity.findViewById(R.id.tableview);
-        Assert.assertNotNull(tableView);
+                    CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
 
-        CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
-        Assert.assertNotNull(cornerTestAdapter);
+                    tableView.setAdapter(cornerTestAdapter);
 
-        mActivityTestRule.runOnUiThread(() -> tableView.setAdapter(cornerTestAdapter));
+                    SimpleData simpleData = new SimpleData(5);
 
-        SimpleData simpleData = new SimpleData(5);
+                    cornerTestAdapter.setAllItems(
+                            simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells());
 
-        mActivityTestRule.runOnUiThread(() -> cornerTestAdapter.setAllItems(
-                simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells()));
+                    // Set a new width on row header
+                    tableView.setRowHeaderWidth(200);
+                });
 
-        // Set a new width on row header
-        mActivityTestRule.runOnUiThread(() -> tableView.setRowHeaderWidth(200));
+        // Check that the corner view is created and visible
+        // The Corner view uses cell_layout which has RelativeLayout as top item
+        onView(withId(R.id.corner_view))
+                .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
 
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
-
-        // Check that the corner view is created
-        // The Corner view uses cell_layout which has LinearLayout as top item
-        RelativeLayout cornerView = (RelativeLayout) tableView.getAdapter().getCornerView();
-        Assert.assertNotNull(cornerView);
-        // Check the corner view is visible
-        Assert.assertEquals(View.VISIBLE, cornerView.getVisibility());
         // Check that it is the expected corner view by checking the text
         // The first child of the RelativeLayout is a textView (index starts at zero)
-        TextView cornerViewTextView = (TextView) cornerView.getChildAt(0);
-        Assert.assertEquals("Corner", cornerViewTextView.getText());
+        onView(allOf(withParent(withId(R.id.corner_view)), withParentIndex(0)))
+                .check(matches(withText("Corner")));
 
         // Check that Corner to is to the right of the column headers
         onView(withId(R.id.corner_view)).check(isCompletelyLeftOf(withId(R.id.ColumnHeaderRecyclerView)));
@@ -361,39 +322,35 @@ public class CornerLayoutTest {
     }
 
     @Test
-    public void testSetRowHeaderWidthRight() throws Throwable {
-        Activity activity = mActivityTestRule.getActivity();
+    public void testSetRowHeaderWidthRight() {
+        mActivityTestRule.getScenario()
+                .onActivity(activity -> {
+                    activity.setContentView(R.layout.corner_top_right);
 
-        mActivityTestRule.runOnUiThread(() -> activity.setContentView(R.layout.corner_top_right));
+                    TableView tableView = activity.findViewById(R.id.tableview);
 
-        TableView tableView =  activity.findViewById(R.id.tableview);
-        Assert.assertNotNull(tableView);
+                    CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
 
-        CornerTestAdapter cornerTestAdapter = new CornerTestAdapter();
-        Assert.assertNotNull(cornerTestAdapter);
+                    tableView.setAdapter(cornerTestAdapter);
 
-        mActivityTestRule.runOnUiThread(() -> tableView.setAdapter(cornerTestAdapter));
+                    SimpleData simpleData = new SimpleData(5);
 
-        SimpleData simpleData = new SimpleData(5);
+                    cornerTestAdapter.setAllItems(
+                            simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells());
 
-        mActivityTestRule.runOnUiThread(() -> cornerTestAdapter.setAllItems(
-                simpleData.getColumnHeaders(), simpleData.getRowHeaders(), simpleData.getCells()));
+                    // Set a new width on row header
+                    tableView.setRowHeaderWidth(200);
+                });
 
-        // Set a new width on row header
-        mActivityTestRule.runOnUiThread(() -> tableView.setRowHeaderWidth(200));
+        // Check that the corner view is created and visible
+        // The Corner view uses cell_layout which has RelativeLayout as top item
+        onView(withId(R.id.corner_view))
+                .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
 
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
-
-        // Check that the corner view is created
-        // The Corner view uses cell_layout which has LinearLayout as top item
-        RelativeLayout cornerView = (RelativeLayout) tableView.getAdapter().getCornerView();
-        Assert.assertNotNull(cornerView);
-        // Check the corner view is visible
-        Assert.assertEquals(View.VISIBLE, cornerView.getVisibility());
         // Check that it is the expected corner view by checking the text
         // The first child of the RelativeLayout is a textView (index starts at zero)
-        TextView cornerViewTextView = (TextView) cornerView.getChildAt(0);
-        Assert.assertEquals("Corner", cornerViewTextView.getText());
+        onView(allOf(withParent(withId(R.id.corner_view)), withParentIndex(0)))
+                .check(matches(withText("Corner")));
 
         // Check that Corner to is to the right of the column headers
         onView(withId(R.id.corner_view)).check(isCompletelyRightOf(withId(R.id.ColumnHeaderRecyclerView)));
