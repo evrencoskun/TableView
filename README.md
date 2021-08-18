@@ -45,10 +45,21 @@ You can check new implementations of `TableView` on the [release page](https://g
 
 To use this library in your Android project, just add the following dependency into your module's `build.gradle`:
 
+***Use Jitpack implementation***
+
+1. Check Jitpack use : 
 ```
-dependencies {
-    implementation 'com.evrencoskun.library:tableview:0.8.9.4'
-}
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+
+2. Add implementation in project build :
+```
+implementation 'com.github.evrencoskun:TableView:v0.8.9.4'
 ```
 
 ## Documentation 
