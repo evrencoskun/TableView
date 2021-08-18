@@ -98,7 +98,7 @@ public class RowHeaderLongPressPopup extends PopupMenu implements PopupMenu
                 mTableView.getAdapter().removeRow(mRowPosition);
                 break;
             default:
-                break;
+                return false;
         }
         return true;
     }

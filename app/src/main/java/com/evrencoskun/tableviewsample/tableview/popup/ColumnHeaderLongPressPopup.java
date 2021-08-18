@@ -116,7 +116,7 @@ public class ColumnHeaderLongPressPopup extends PopupMenu implements PopupMenu
                 mTableView.scrollToRowPosition(5);
                 break;
             default:
-                break;
+                return false;
         }
         return true;
     }
