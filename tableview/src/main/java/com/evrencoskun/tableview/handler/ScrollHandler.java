@@ -136,7 +136,7 @@ public class ScrollHandler {
         View child = mRowHeaderLayoutManager.findViewByPosition(mRowHeaderLayoutManager
                 .findFirstVisibleItemPosition());
         if (child != null) {
-            return child.getLeft();
+            return child.getTop();
         }
         return 0;
     }
