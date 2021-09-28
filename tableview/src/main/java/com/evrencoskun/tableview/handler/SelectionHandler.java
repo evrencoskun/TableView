@@ -210,6 +210,10 @@ public class SelectionHandler {
         AbstractViewHolder rowHeader = (AbstractViewHolder) mRowHeaderRecyclerView
                 .findViewHolderForAdapterPosition(mSelectedRowPosition);
 
+        // Clear selected row and column
+        mSelectedRowPosition = UNSELECTED_POSITION;
+        mSelectedColumnPosition = UNSELECTED_POSITION;
+
         // If view is null, that means the row view holder was already recycled.
         if (rowHeader != null) {
             // Change color
@@ -243,6 +247,11 @@ public class SelectionHandler {
 
         changeSelectionOfRecyclerView(mRowHeaderRecyclerView, SelectionState.UNSELECTED,
                 mTableView.getUnSelectedColor());
+    }
+
+    public boolean isAnyCellSelected() {
+        return (getSelectedColumnPosition() != SelectionHandler.UNSELECTED_POSITION &&
+                getSelectedRowPosition() != SelectionHandler.UNSELECTED_POSITION);
     }
 
     public boolean isCellSelected(int column, int row) {
@@ -349,15 +358,17 @@ public class SelectionHandler {
             CellRecyclerView cellRowRecyclerView = (CellRecyclerView) mCellLayoutManager
                     .findViewByPosition(i);
 
-            AbstractViewHolder holder = (AbstractViewHolder) cellRowRecyclerView
-                    .findViewHolderForAdapterPosition(column);
+            if(cellRowRecyclerView!= null){
+                AbstractViewHolder holder = (AbstractViewHolder) cellRowRecyclerView
+                        .findViewHolderForAdapterPosition(column);
 
-            if (holder != null) {
-                // Get each view container of the cell view and set unselected color.
-                holder.setBackgroundColor(backgroundColor);
+                if (holder != null) {
+                    // Get each view container of the cell view and set unselected color.
+                    holder.setBackgroundColor(backgroundColor);
 
-                // Change selection status of the view holder
-                holder.setSelected(selectionState);
+                    // Change selection status of the view holder
+                    holder.setSelected(selectionState);
+                }
             }
         }
     }
@@ -413,9 +424,11 @@ public class SelectionHandler {
     }
 
     public void clearSelection() {
-        unselectedRowHeader();
-        unselectedCellView();
-        unselectedColumnHeader();
+        if(isAnyCellSelected()){
+            unselectedRowHeader();
+            unselectedCellView();
+            unselectedColumnHeader();
+        }
     }
 
     public void setSelectedRowPosition(int row) {

@@ -52,6 +52,8 @@ public interface ITableAdapter<CH, RH, C> {
 
     void onBindCellViewHolder(@NonNull AbstractViewHolder holder, @Nullable C cellItemModel, int columnPosition, int rowPosition);
 
+    void onRecycleCellViewHolder(@NonNull AbstractViewHolder holder);
+
     @NonNull
     AbstractViewHolder onCreateColumnHeaderViewHolder(@NonNull ViewGroup parent, int viewType);
 

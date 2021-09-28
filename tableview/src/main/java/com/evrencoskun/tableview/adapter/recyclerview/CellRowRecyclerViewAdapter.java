@@ -106,6 +106,7 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
     @Override
     public void onViewRecycled(@NonNull AbstractViewHolder holder) {
         super.onViewRecycled(holder);
+        mTableAdapter.onRecycleCellViewHolder(holder);
         holder.onViewRecycled();
     }
 }
