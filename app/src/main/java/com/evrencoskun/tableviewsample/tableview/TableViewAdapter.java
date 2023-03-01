@@ -166,7 +166,7 @@ public class TableViewAdapter extends AbstractTableAdapter<String, RowHeader, Ce
     }
 
     /**
-     * That is where you set Column Header View Model data to your custom Column Header ViewHolder.
+     * That is where you set Column Header data to your custom Column Header ViewHolder.
      * This method is Called by ColumnHeader RecyclerView of the TableView to display the data at
      * the specified position. This method gives you everything you need about a column header
      * item.
@@ -174,18 +174,18 @@ public class TableViewAdapter extends AbstractTableAdapter<String, RowHeader, Ce
      * @param holder                : This is one of your column header ViewHolders that was created
      *                              on ```onCreateColumnHeaderViewHolder``` method. In this example
      *                              we have created "ColumnHeaderViewHolder" holder.
-     * @param columnHeaderItemModel : This is the column header view model located on this X
+     * @param columnHeader          : This is the column header located on this X
      *                              position. In this example, the model class is "String".
      * @param columnPosition        : This is the X (Column) position of the column header item.
      * @see #onCreateColumnHeaderViewHolder(ViewGroup, int) ;
      */
     @Override
     public void onBindColumnHeaderViewHolder(@NonNull AbstractViewHolder holder, @Nullable String
-            columnHeaderItemModel, int columnPosition) {
+            columnHeader, int columnPosition) {
 
         // Get the holder to update cell item text
         ColumnHeaderViewHolder columnHeaderViewHolder = (ColumnHeaderViewHolder) holder;
-        columnHeaderViewHolder.setColumnHeader(columnHeaderItemModel);
+        columnHeaderViewHolder.setColumnHeader(columnHeader);
     }
 
     /**
