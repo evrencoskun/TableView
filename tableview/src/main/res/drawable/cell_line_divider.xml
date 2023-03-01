@@ -28,5 +28,5 @@
     <size
         android:width="1dp"
         android:height="1dp"/>
-    <solid android:color="@color/default_table_view_separator_color"/>
+    <solid android:color="@color/table_view_default_separator_color"/>
 </shape>

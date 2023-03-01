@@ -25,7 +25,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="@dimen/row_header_width"
                 android:layout_height="@dimen/cell_height"
-                android:background="@color/default_table_cell_background_color">
+                android:background="@color/cell_background_color">
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,18 +33,18 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="Corner"
-        android:textColor="@color/default_table_view_text_color"
+        android:textColor="@color/table_view_default_text_color"
         android:textSize="@dimen/text_size"/>
 
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:background="@color/default_table_header_line_color"/>
+        android:background="@color/header_line_color"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/default_table_header_line_color"/>
+        android:background="@color/header_line_color"/>
 </RelativeLayout>

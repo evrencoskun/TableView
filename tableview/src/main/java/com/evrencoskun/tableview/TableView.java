@@ -180,11 +180,11 @@ public class TableView extends FrameLayout implements ITableView {
 
         // Colors
         mSelectedColor = ContextCompat.getColor(getContext(), R.color
-                .default_table_view_selected_background_color);
+                .table_view_default_selected_background_color);
         mUnSelectedColor = ContextCompat.getColor(getContext(), R.color
-                .default_table_view_unselected_background_color);
+                .table_view_default_unselected_background_color);
         mShadowColor = ContextCompat.getColor(getContext(), R.color
-                .default_table_view_shadow_background_color);
+                .table_view_default_shadow_background_color);
 
         if (attrs == null) {
             // That means TableView is created programmatically.
@@ -212,7 +212,7 @@ public class TableView extends FrameLayout implements ITableView {
             mUnSelectedColor = a.getColor(R.styleable.TableView_unselected_color, mUnSelectedColor);
             mShadowColor = a.getColor(R.styleable.TableView_shadow_color, mShadowColor);
             mSeparatorColor = a.getColor(R.styleable.TableView_separator_color, ContextCompat
-                    .getColor(getContext(), R.color.default_table_view_separator_color));
+                    .getColor(getContext(), R.color.table_view_default_separator_color));
 
             // Booleans
             mShowVerticalSeparators = a.getBoolean(R.styleable.TableView_show_vertical_separator,
