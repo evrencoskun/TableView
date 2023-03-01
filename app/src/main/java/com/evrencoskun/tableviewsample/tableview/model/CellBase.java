@@ -21,17 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package com.evrencoskun.tableviewsample.tableview.model;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-/**
- * Created by evrencoskun on 11/06/2017.
- */
+import com.evrencoskun.tableview.filter.IFilterableModel;
 
-public class ColumnHeader extends CellBase {
-    public ColumnHeader(@Nullable String data) {
-        super(data);
+public class CellBase implements IFilterableModel {
+    @Nullable
+    protected final Object mData;
+    @NonNull
+    protected final String mFilterKeyword;
+
+    public CellBase(@Nullable Object data) {
+        this.mData = data;
+        this.mFilterKeyword = String.valueOf(data);
+    }
+
+    /**
+     * This is necessary for sorting process.
+     * See ISortableModel
+     */
+    @Nullable
+    public Object getContent() {
+        return mData;
+    }
+
+    @Nullable
+    public Object getData() {
+        return mData;
+    }
+
+    @NonNull
+    @Override
+    public String getFilterableKeyword() {
+        return mFilterKeyword;
     }
 }

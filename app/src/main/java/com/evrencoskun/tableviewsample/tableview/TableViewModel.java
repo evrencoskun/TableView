@@ -99,7 +99,7 @@ public class TableViewModel {
                 title = "large column " + i;
             }
 
-            ColumnHeader header = new ColumnHeader(String.valueOf(i), title);
+            ColumnHeader header = new ColumnHeader(title);
             list.add(header);
         }
 
