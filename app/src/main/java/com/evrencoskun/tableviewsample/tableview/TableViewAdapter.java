@@ -42,7 +42,6 @@ import com.evrencoskun.tableviewsample.tableview.holder.GenderCellViewHolder;
 import com.evrencoskun.tableviewsample.tableview.holder.MoodCellViewHolder;
 import com.evrencoskun.tableviewsample.tableview.holder.RowHeaderViewHolder;
 import com.evrencoskun.tableviewsample.tableview.model.Cell;
-import com.evrencoskun.tableviewsample.tableview.model.ColumnHeader;
 import com.evrencoskun.tableviewsample.tableview.model.RowHeader;
 
 /**
@@ -51,7 +50,7 @@ import com.evrencoskun.tableviewsample.tableview.model.RowHeader;
  * This is a sample of custom TableView Adapter.
  */
 
-public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHeader, Cell> {
+public class TableViewAdapter extends AbstractTableAdapter<String, RowHeader, Cell> {
 
     // Cell View Types by Column Position
     private static final int MOOD_CELL_TYPE = 1;
@@ -176,12 +175,12 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
      *                              on ```onCreateColumnHeaderViewHolder``` method. In this example
      *                              we have created "ColumnHeaderViewHolder" holder.
      * @param columnHeaderItemModel : This is the column header view model located on this X
-     *                              position. In this example, the model class is "ColumnHeader".
+     *                              position. In this example, the model class is "String".
      * @param columnPosition        : This is the X (Column) position of the column header item.
      * @see #onCreateColumnHeaderViewHolder(ViewGroup, int) ;
      */
     @Override
-    public void onBindColumnHeaderViewHolder(@NonNull AbstractViewHolder holder, @Nullable ColumnHeader
+    public void onBindColumnHeaderViewHolder(@NonNull AbstractViewHolder holder, @Nullable String
             columnHeaderItemModel, int columnPosition) {
 
         // Get the holder to update cell item text

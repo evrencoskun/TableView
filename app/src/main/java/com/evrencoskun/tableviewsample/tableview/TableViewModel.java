@@ -29,7 +29,6 @@ import androidx.annotation.NonNull;
 
 import com.evrencoskun.tableviewsample.R;
 import com.evrencoskun.tableviewsample.tableview.model.Cell;
-import com.evrencoskun.tableviewsample.tableview.model.ColumnHeader;
 import com.evrencoskun.tableviewsample.tableview.model.RowHeader;
 
 import java.util.ArrayList;
@@ -89,8 +88,8 @@ public class TableViewModel {
      * This is a dummy model list test some cases.
      */
     @NonNull
-    private List<ColumnHeader> getRandomColumnHeaderList() {
-        List<ColumnHeader> list = new ArrayList<>();
+    private List<String> getRandomColumnHeaderList() {
+        List<String> list = new ArrayList<>();
 
         for (int i = 0; i < COLUMN_SIZE; i++) {
             String title = "column " + i;
@@ -99,8 +98,7 @@ public class TableViewModel {
                 title = "large column " + i;
             }
 
-            ColumnHeader header = new ColumnHeader(title);
-            list.add(header);
+            list.add(title);
         }
 
         return list;
@@ -169,7 +167,7 @@ public class TableViewModel {
     }
 
     @NonNull
-    public List<ColumnHeader> getColumnHeaderList() {
+    public List<String> getColumnHeaderList() {
         return getRandomColumnHeaderList();
     }
 }
