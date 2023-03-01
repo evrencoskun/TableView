@@ -24,13 +24,10 @@
 
 package com.evrencoskun.tableviewsample.tableview;
 
-import static java.lang.Math.abs;
-
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 
-import com.evrencoskun.tableviewsample.R;
 import com.evrencoskun.tableviewsample.tableview.model.Cell;
+import com.evrencoskun.tableviewsample.tableview.model.MyItem;
 import com.evrencoskun.tableviewsample.tableview.model.RowHeader;
 
 import java.util.ArrayList;
@@ -42,44 +39,15 @@ import java.util.Random;
  */
 
 public class TableViewModel {
-
-    // Columns indexes
-    public static final int MOOD_COLUMN_INDEX = 3;
-    public static final int GENDER_COLUMN_INDEX = 4;
-
-    // Constant values for icons
-    public static final int SAD = 1;
-    public static final int HAPPY = 2;
-    public static final int BOY = 1;
-    public static final int GIRL = 2;
-
     // Constant size for dummy data sets
     private static final int COLUMN_SIZE = 500;
     private static final int ROW_SIZE = 500;
-
-    // Drawables
-    @DrawableRes
-    private final int mBoyDrawable;
-    @DrawableRes
-    private final int mGirlDrawable;
-    @DrawableRes
-    private final int mHappyDrawable;
-    @DrawableRes
-    private final int mSadDrawable;
-
-    public TableViewModel() {
-        // initialize drawables
-        mBoyDrawable = R.drawable.ic_male;
-        mGirlDrawable = R.drawable.ic_female;
-        mHappyDrawable = R.drawable.ic_happy;
-        mSadDrawable = R.drawable.ic_sad;
-    }
 
     @NonNull
     private List<RowHeader> getSimpleRowHeaderList() {
         List<RowHeader> list = new ArrayList<>();
         for (int i = 0; i < ROW_SIZE; i++) {
-            RowHeader header = new RowHeader(String.valueOf(i), "row " + i);
+            RowHeader header = new RowHeader(new MyItem(String.valueOf(i)));
             list.add(header);
         }
 
@@ -110,43 +78,12 @@ public class TableViewModel {
      * This is a dummy model list test some cases.
      */
     @NonNull
-    private List<List<Cell>> getCellListForSortingTest() {
-        List<List<Cell>> list = new ArrayList<>();
-        for (int i = 0; i < ROW_SIZE; i++) {
-            List<Cell> cellList = new ArrayList<>();
-            for (int j = 0; j < COLUMN_SIZE; j++) {
-                Object text = "cell " + j + " " + i;
-
-                final int random = new Random().nextInt();
-                if (j == 0) {
-                    text = i;
-                } else if (j == 1) {
-                    // to test Sorting
-                    text = random;
-                } else if (j == 2) {
-                    // to test Sorting
-                    text = abs(random) % 100;
-                } else if (j == MOOD_COLUMN_INDEX) {
-                    text = random % 2 == 0 ? HAPPY : SAD;
-                } else if (j == GENDER_COLUMN_INDEX) {
-                    text = random % 2 == 0 ? BOY : GIRL;
-                }
-
-                // Create dummy id.
-                // String id = j + "-" + i;
-                // For Sorting to work id must be unique per row. Unique per cell is not neccessary
-                String id = "" + i;
-
-                Cell cell;
-                if (j == 3) {
-                    cell = new Cell(id, text);
-                } else if (j == 4) {
-                    // NOTE female and male keywords for filter will have conflict since "female"
-                    // contains "male"
-                    cell = new Cell(id, text);
-                } else {
-                    cell = new Cell(id, text);
-                }
+    private List<List<Cell<MyItem>>> getCellListForSortingTest() {
+        List<List<Cell<MyItem>>> list = new ArrayList<>();
+        for (int rowId = 0; rowId < ROW_SIZE; rowId++) {
+            List<Cell<MyItem>> cellList = new ArrayList<>();
+            Cell<MyItem> cell = new Cell(new MyItem("" + rowId));
+            for (int colId = 0; colId < COLUMN_SIZE; colId++) {
                 cellList.add(cell);
             }
             list.add(cellList);
@@ -155,17 +92,8 @@ public class TableViewModel {
         return list;
     }
 
-    @DrawableRes
-    public int getDrawable(int value, boolean isGender) {
-        if (isGender) {
-            return value == BOY ? mBoyDrawable : mGirlDrawable;
-        } else {
-            return value == SAD ? mSadDrawable : mHappyDrawable;
-        }
-    }
-
     @NonNull
-    public List<List<Cell>> getCellList() {
+    public List<List<Cell<MyItem>>> getCellList() {
         return getCellListForSortingTest();
     }
 

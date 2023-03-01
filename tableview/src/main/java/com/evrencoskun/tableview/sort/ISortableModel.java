@@ -39,5 +39,5 @@ public interface ISortableModel {
     String getId();
 
     @Nullable
-    Object getContent();
+    Object getContent(int column);
 }

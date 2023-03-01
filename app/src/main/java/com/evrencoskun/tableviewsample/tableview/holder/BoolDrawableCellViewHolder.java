@@ -25,40 +25,34 @@
 package com.evrencoskun.tableviewsample.tableview.holder;
 
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ImageView;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableviewsample.R;
-import com.evrencoskun.tableviewsample.tableview.model.Cell;
 
 /**
- * Created by evrencoskun on 23/10/2017.
+ * Created by evrencoskun on 4.02.2018.
  */
 
-public class CellViewHolder extends AbstractViewHolder {
+public class BoolDrawableCellViewHolder extends AbstractViewHolder {
     @NonNull
-    private final TextView cell_textview;
-    @NonNull
-    private final LinearLayout cell_container;
+    public final ImageView cell_image;
+    @DrawableRes private final int mIdDrawableTrue;
+    @DrawableRes private final int mIdDrawableFalse;
 
-    public CellViewHolder(@NonNull View itemView) {
+    public BoolDrawableCellViewHolder(@NonNull View itemView, @DrawableRes int idDrawableTrue, @DrawableRes int idDrawableFalse) {
         super(itemView);
-        cell_textview = itemView.findViewById(R.id.cell_data);
-        cell_container = itemView.findViewById(R.id.cell_container);
+        cell_image = itemView.findViewById(R.id.cell_image);
+        mIdDrawableTrue = idDrawableTrue;
+        mIdDrawableFalse = idDrawableFalse;
     }
 
-    public void setCell(@Nullable Cell cell) {
-        cell_textview.setText(String.valueOf(cell.getData()));
+    public void setData(boolean data) {
+        int moodDrawable = data ? mIdDrawableTrue : mIdDrawableFalse;
 
-        // If your TableView should have auto resize for cells & columns.
-        // Then you should consider the below lines. Otherwise, you can ignore them.
-
-        // It is necessary to remeasure itself.
-        cell_container.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        cell_textview.requestLayout();
+        cell_image.setImageResource(moodDrawable);
     }
 }

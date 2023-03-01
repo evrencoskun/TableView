@@ -41,9 +41,9 @@ public class RowHeaderSortComparator extends AbstractSortComparator implements C
     @Override
     public int compare(ISortableModel o1, ISortableModel o2) {
         if (mSortState == SortState.DESCENDING) {
-            return compareContent(o2.getContent(), o1.getContent());
+            return compareContent(o2.getContent(0), o1.getContent(0));
         } else {
-            return compareContent(o1.getContent(), o2.getContent());
+            return compareContent(o1.getContent(0), o2.getContent(0));
         }
     }
 }

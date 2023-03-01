@@ -45,6 +45,7 @@ import com.evrencoskun.tableview.pagination.Pagination;
 import com.evrencoskun.tableviewsample.tableview.TableViewAdapter;
 import com.evrencoskun.tableviewsample.tableview.TableViewListener;
 import com.evrencoskun.tableviewsample.tableview.TableViewModel;
+import com.evrencoskun.tableviewsample.tableview.model.MyItem;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -158,7 +159,7 @@ public class MainFragment extends Fragment {
         // Sets a filter to the table, this will only filter a specific column.
         // In the example data, this will filter the mood column.
         if (mTableFilter != null) {
-            mTableFilter.set(TableViewModel.MOOD_COLUMN_INDEX, filter);
+            mTableFilter.set(MyItem.COLUMN_INDEX_MOOD_HAPPY, filter);
         }
     }
 
@@ -166,7 +167,7 @@ public class MainFragment extends Fragment {
         // Sets a filter to the table, this will only filter a specific column.
         // In the example data, this will filter the gender column.
         if (mTableFilter != null) {
-            mTableFilter.set(TableViewModel.GENDER_COLUMN_INDEX, filter);
+            mTableFilter.set(MyItem.COLUMN_INDEX_GENDER_MALE, filter);
         }
     }
 

@@ -73,9 +73,9 @@ public class RowHeaderSortCallback extends DiffUtil.Callback {
         if (mOldCellItems.size() > oldItemPosition && mNewCellItems.size() > newItemPosition) {
             // Compare contents
             Object oldContent = mOldCellItems.get(oldItemPosition)
-                    .getContent();
+                    .getContent(0);
             Object newContent = mNewCellItems.get(newItemPosition)
-                    .getContent();
+                    .getContent(0);
             return oldContent.equals(newContent);
         }
 

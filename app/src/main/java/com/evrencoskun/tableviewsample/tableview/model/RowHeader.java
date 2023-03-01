@@ -27,12 +27,14 @@ package com.evrencoskun.tableviewsample.tableview.model;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.evrencoskun.tableview.sort.ISortableModel;
+
 /**
  * Created by evrencoskun on 11/06/2017.
  */
 
-public class RowHeader extends Cell {
-    public RowHeader(@NonNull String id, @Nullable String data) {
-        super(id, data);
+public class RowHeader<C extends ISortableModel> extends Cell<C> {
+    public RowHeader(@NonNull C data) {
+        super(data);
     }
 }

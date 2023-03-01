@@ -34,16 +34,13 @@ import com.evrencoskun.tableview.sort.ISortableModel;
  * Created by evrencoskun on 11/06/2017.
  */
 
-public class Cell implements ISortableModel, IFilterableModel {
-    @NonNull
-    private final String mId;
+public class Cell<C extends ISortableModel> implements ISortableModel, IFilterableModel {
     @Nullable
-    private final Object mData;
+    private final C mData;
     @NonNull
     private final String mFilterKeyword;
 
-    public Cell(@NonNull String id, @Nullable Object data) {
-        this.mId = id;
+    public Cell(@NonNull C data) {
         this.mData = data;
         this.mFilterKeyword = String.valueOf(data);
     }
@@ -55,7 +52,7 @@ public class Cell implements ISortableModel, IFilterableModel {
     @NonNull
     @Override
     public String getId() {
-        return mId;
+        return mData.getId();
     }
 
     /**
@@ -64,12 +61,12 @@ public class Cell implements ISortableModel, IFilterableModel {
      */
     @Nullable
     @Override
-    public Object getContent() {
-        return mData;
+    public Object getContent(int column) {
+        return mData.getContent(column);
     }
 
     @Nullable
-    public Object getData() {
+    public C getData() {
         return mData;
     }
 

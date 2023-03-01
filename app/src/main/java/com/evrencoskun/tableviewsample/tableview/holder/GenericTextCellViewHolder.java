@@ -25,27 +25,44 @@
 package com.evrencoskun.tableviewsample.tableview.holder;
 
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableviewsample.R;
-import com.evrencoskun.tableviewsample.tableview.TableViewModel;
+import com.evrencoskun.tableviewsample.tableview.model.Cell;
 
 /**
- * Created by evrencoskun on 4.02.2018.
+ * Created by evrencoskun on 23/10/2017.
  */
 
-public class GenderCellViewHolder extends MoodCellViewHolder {
+public class GenericTextCellViewHolder extends AbstractViewHolder {
+    @NonNull
+    private final TextView cell_textview;
+    @NonNull
+    private final LinearLayout cell_container;
+    private int mColumnPosition;
+    private int mRowPosition;
 
-    public GenderCellViewHolder(@NonNull View itemView) {
+    public GenericTextCellViewHolder(@NonNull View itemView) {
         super(itemView);
+        cell_textview = itemView.findViewById(R.id.cell_data);
+        cell_container = itemView.findViewById(R.id.cell_container);
     }
 
-    @Override
-    public void setData(Object data) {
-        int gender = (int) data;
-        int genderDrawable = gender == TableViewModel.BOY ? R.drawable.ic_male : R.drawable.ic_female;
+    public void setCell(@Nullable Cell cell, int columnPosition, int rowPosition) {
+        mColumnPosition = columnPosition;
+        mRowPosition = rowPosition;
+        cell_textview.setText(String.valueOf(cell.getContent(columnPosition)));
 
-        cell_image.setImageResource(genderDrawable);
+        // If your TableView should have auto resize for cells & columns.
+        // Then you should consider the below lines. Otherwise, you can ignore them.
+
+        // It is necessary to remeasure itself.
+        cell_container.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        cell_textview.requestLayout();
     }
 }
