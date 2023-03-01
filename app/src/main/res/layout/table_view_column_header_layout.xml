@@ -29,7 +29,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="@dimen/cell_height"
-    android:background="@color/cell_background_color"
+    android:background="@color/default_table_cell_background_color"
     android:orientation="vertical">
 
     <FrameLayout
@@ -52,7 +52,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="4"
                 android:gravity="center"
-                android:textColor="@color/table_view_default_text_color"
+                android:textColor="@color/default_table_view_text_color"
                 android:textSize="@dimen/text_size"
                 tools:text="Header Data"/>
 
@@ -73,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_gravity="bottom"
-            android:background="@color/header_line_color"/>
+            android:background="@color/default_table_header_line_color"/>
     </FrameLayout>
 </LinearLayout>
 

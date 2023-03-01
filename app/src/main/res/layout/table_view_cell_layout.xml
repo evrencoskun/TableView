@@ -27,7 +27,7 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="wrap_content"
               android:layout_height="@dimen/cell_height"
-              android:background="@color/cell_background_color"
+              android:background="@color/default_table_cell_background_color"
               android:gravity="center"
               android:orientation="vertical">
 
@@ -41,7 +41,7 @@
         android:layout_marginStart="10dp"
         android:gravity="center"
         android:maxLines="1"
-        android:textColor="@color/table_view_default_text_color"
+        android:textColor="@color/default_table_view_text_color"
         android:textSize="@dimen/text_size"
         android:visibility="visible"
         tools:text="Cell Data"/>

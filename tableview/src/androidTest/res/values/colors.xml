@@ -23,7 +23,7 @@
   ~ SOFTWARE.
   -->
 <resources>
-    <color name="cell_background_color">#ffffff</color>
-    <color name="header_line_color">#0a0a0a</color>
-    <color name="table_view_default_text_color">#0a0a0a</color>
+    <color name="default_table_cell_background_color">#ffffff</color>
+    <color name="default_table_header_line_color">#0a0a0a</color>
+    <color name="default_table_view_text_color">#0a0a0a</color>
 </resources>
