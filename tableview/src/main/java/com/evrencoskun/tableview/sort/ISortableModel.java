@@ -32,6 +32,9 @@ import androidx.annotation.Nullable;
  */
 
 public interface ISortableModel {
+    /**
+     * to make sorting work, Id must be unique per data row.
+     */
     @NonNull
     String getId();
 

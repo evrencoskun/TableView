@@ -49,8 +49,8 @@ public class Cell implements ISortableModel, IFilterableModel {
     }
 
     /**
-     * This is necessary for sorting process.
-     * See ISortableModel
+     * This is necessary for sorting process. Id must be unique per data row.
+     * See {@link ISortableModel}.
      */
     @NonNull
     @Override
@@ -60,7 +60,7 @@ public class Cell implements ISortableModel, IFilterableModel {
 
     /**
      * This is necessary for sorting process.
-     * See ISortableModel
+     * See {@link ISortableModel}.
      */
     @Nullable
     @Override
@@ -73,6 +73,9 @@ public class Cell implements ISortableModel, IFilterableModel {
         return mData;
     }
 
+    /**
+     * See {@link IFilterableModel}.
+     */
     @NonNull
     @Override
     public String getFilterableKeyword() {
