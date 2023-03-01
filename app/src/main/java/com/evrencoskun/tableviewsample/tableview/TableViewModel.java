@@ -24,6 +24,8 @@
 
 package com.evrencoskun.tableviewsample.tableview;
 
+import static java.lang.Math.abs;
+
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 
@@ -119,7 +121,11 @@ public class TableViewModel {
                 if (j == 0) {
                     text = i;
                 } else if (j == 1) {
+                    // to test Sorting
                     text = random;
+                } else if (j == 2) {
+                    // to test Sorting
+                    text = abs(random) % 100;
                 } else if (j == MOOD_COLUMN_INDEX) {
                     text = random % 2 == 0 ? HAPPY : SAD;
                 } else if (j == GENDER_COLUMN_INDEX) {
@@ -127,7 +133,9 @@ public class TableViewModel {
                 }
 
                 // Create dummy id.
-                String id = j + "-" + i;
+                // String id = j + "-" + i;
+                // For Sorting to work id must be unique per row. Unique per cell is not neccessary
+                String id = "" + i;
 
                 Cell cell;
                 if (j == 3) {
