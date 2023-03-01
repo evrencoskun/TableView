@@ -35,17 +35,17 @@ import com.evrencoskun.tableview.sort.ISortableModel;
  */
 
 public class Cell implements ISortableModel, IFilterableModel {
-    @Nullable
-    protected final Object mData;
-    @NonNull
-    protected final String mFilterKeyword;
     @NonNull
     private final String mId;
+    @Nullable
+    private final Object mData;
+    @NonNull
+    private final String mFilterKeyword;
 
     public Cell(@NonNull String id, @Nullable Object data) {
+        this.mId = id;
         this.mData = data;
         this.mFilterKeyword = String.valueOf(data);
-        this.mId = id;
     }
 
     /**
@@ -63,6 +63,7 @@ public class Cell implements ISortableModel, IFilterableModel {
      * See ISortableModel
      */
     @Nullable
+    @Override
     public Object getContent() {
         return mData;
     }
