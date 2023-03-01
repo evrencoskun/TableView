@@ -27,18 +27,24 @@ package com.evrencoskun.tableviewsample.tableview.model;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.evrencoskun.tableview.filter.IFilterableModel;
 import com.evrencoskun.tableview.sort.ISortableModel;
 
 /**
  * Created by evrencoskun on 11/06/2017.
  */
 
-public class Cell extends CellBase implements ISortableModel {
+public class Cell implements ISortableModel, IFilterableModel {
+    @Nullable
+    protected final Object mData;
+    @NonNull
+    protected final String mFilterKeyword;
     @NonNull
     private final String mId;
 
     public Cell(@NonNull String id, @Nullable Object data) {
-        super(data);
+        this.mData = data;
+        this.mFilterKeyword = String.valueOf(data);
         this.mId = id;
     }
 
@@ -52,4 +58,23 @@ public class Cell extends CellBase implements ISortableModel {
         return mId;
     }
 
+    /**
+     * This is necessary for sorting process.
+     * See ISortableModel
+     */
+    @Nullable
+    public Object getContent() {
+        return mData;
+    }
+
+    @Nullable
+    public Object getData() {
+        return mData;
+    }
+
+    @NonNull
+    @Override
+    public String getFilterableKeyword() {
+        return mFilterKeyword;
+    }
 }
