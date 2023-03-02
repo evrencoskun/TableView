@@ -41,7 +41,7 @@ import com.evrencoskun.tableviewsample.tableview.holder.ColumnHeaderViewHolder;
 import com.evrencoskun.tableviewsample.tableview.holder.BoolDrawableCellViewHolder;
 import com.evrencoskun.tableviewsample.tableview.holder.RowHeaderViewHolder;
 import com.evrencoskun.tableviewsample.tableview.model.Cell;
-import com.evrencoskun.tableviewsample.tableview.model.MyItem;
+import com.evrencoskun.tableviewsample.tableview.model.MySamplePojo;
 import com.evrencoskun.tableviewsample.tableview.model.RowHeader;
 
 /**
@@ -50,7 +50,7 @@ import com.evrencoskun.tableviewsample.tableview.model.RowHeader;
  * This is a sample of custom TableView Adapter.
  */
 
-public class TableViewAdapter extends AbstractTableAdapter<String, RowHeader, Cell<MyItem>> {
+public class TableViewAdapter extends AbstractTableAdapter<String, RowHeader, Cell<MySamplePojo>> {
 
     // Cell View Types by Column Position
     private static final int MOOD_CELL_TYPE = 1;
@@ -119,7 +119,7 @@ public class TableViewAdapter extends AbstractTableAdapter<String, RowHeader, Ce
      * @see #onCreateCellViewHolder(ViewGroup, int) ;
      */
     @Override
-    public void onBindCellViewHolder(@NonNull AbstractViewHolder holder, @Nullable Cell<MyItem> cellItemModel, int
+    public void onBindCellViewHolder(@NonNull AbstractViewHolder holder, @Nullable Cell<MySamplePojo> cellItemModel, int
             columnPosition, int rowPosition) {
 
         switch (holder.getItemViewType()) {
@@ -273,9 +273,9 @@ public class TableViewAdapter extends AbstractTableAdapter<String, RowHeader, Ce
         // then you should fill this method to be able create different
         // type of GenericTextCellViewHolder on "onCreateCellViewHolder"
         switch (column) {
-            case MyItem.COLUMN_INDEX_MOOD_HAPPY:
+            case MySamplePojo.COLUMN_INDEX_MOOD_HAPPY:
                 return MOOD_CELL_TYPE;
-            case MyItem.COLUMN_INDEX_GENDER_MALE:
+            case MySamplePojo.COLUMN_INDEX_GENDER_MALE:
                 return GENDER_CELL_TYPE;
             default:
                 // Default view type

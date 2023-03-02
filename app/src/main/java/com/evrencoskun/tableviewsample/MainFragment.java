@@ -45,10 +45,13 @@ import com.evrencoskun.tableview.pagination.Pagination;
 import com.evrencoskun.tableviewsample.tableview.TableViewAdapter;
 import com.evrencoskun.tableviewsample.tableview.TableViewListener;
 import com.evrencoskun.tableviewsample.tableview.TableViewModel;
-import com.evrencoskun.tableviewsample.tableview.model.MyItem;
+import com.evrencoskun.tableviewsample.tableview.model.MySamplePojo;
 
 /**
  * A simple {@link Fragment} subclass.
+ *
+ * * Display the TableView.
+ * * Implements filtering, paging, selection, onClick-handling, menue-commands
  */
 public class MainFragment extends Fragment {
     private Spinner moodFilter, genderFilter;
@@ -159,7 +162,7 @@ public class MainFragment extends Fragment {
         // Sets a filter to the table, this will only filter a specific column.
         // In the example data, this will filter the mood column.
         if (mTableFilter != null) {
-            mTableFilter.set(MyItem.COLUMN_INDEX_MOOD_HAPPY, filter);
+            mTableFilter.set(MySamplePojo.COLUMN_INDEX_MOOD_HAPPY, filter);
         }
     }
 
@@ -167,7 +170,7 @@ public class MainFragment extends Fragment {
         // Sets a filter to the table, this will only filter a specific column.
         // In the example data, this will filter the gender column.
         if (mTableFilter != null) {
-            mTableFilter.set(MyItem.COLUMN_INDEX_GENDER_MALE, filter);
+            mTableFilter.set(MySamplePojo.COLUMN_INDEX_GENDER_MALE, filter);
         }
     }
 

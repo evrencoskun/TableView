@@ -27,7 +27,7 @@ package com.evrencoskun.tableviewsample.tableview;
 import androidx.annotation.NonNull;
 
 import com.evrencoskun.tableviewsample.tableview.model.Cell;
-import com.evrencoskun.tableviewsample.tableview.model.MyItem;
+import com.evrencoskun.tableviewsample.tableview.model.MySamplePojo;
 import com.evrencoskun.tableviewsample.tableview.model.RowHeader;
 
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public class TableViewModel {
     private List<RowHeader> getSimpleRowHeaderList() {
         List<RowHeader> list = new ArrayList<>();
         for (int i = 0; i < ROW_SIZE; i++) {
-            RowHeader header = new RowHeader(new MyItem(String.valueOf(i)));
+            RowHeader header = new RowHeader(new MySamplePojo(String.valueOf(i)));
             list.add(header);
         }
 
@@ -78,11 +78,11 @@ public class TableViewModel {
      * This is a dummy model list test some cases.
      */
     @NonNull
-    private List<List<Cell<MyItem>>> getCellListForSortingTest() {
-        List<List<Cell<MyItem>>> list = new ArrayList<>();
+    private List<List<Cell<MySamplePojo>>> getCellListForSortingTest() {
+        List<List<Cell<MySamplePojo>>> list = new ArrayList<>();
         for (int rowId = 0; rowId < ROW_SIZE; rowId++) {
-            List<Cell<MyItem>> cellList = new ArrayList<>();
-            Cell<MyItem> cell = new Cell(new MyItem("" + rowId));
+            List<Cell<MySamplePojo>> cellList = new ArrayList<>();
+            Cell<MySamplePojo> cell = new Cell(new MySamplePojo("" + rowId));
             for (int colId = 0; colId < COLUMN_SIZE; colId++) {
                 cellList.add(cell);
             }
@@ -93,7 +93,7 @@ public class TableViewModel {
     }
 
     @NonNull
-    public List<List<Cell<MyItem>>> getCellList() {
+    public List<List<Cell<MySamplePojo>>> getCellList() {
         return getCellListForSortingTest();
     }
 
