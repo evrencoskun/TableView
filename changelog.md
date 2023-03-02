@@ -11,6 +11,6 @@ Product vision: reduce the amount of (copied) code to integrate TableView into a
 * v done: replaced the table header modell with simple Strings.
 * v done: replaced the must-customize Cell.java with a templated Cell<Pojo> where customisation takes place in the pojo
 * v done: keep demo app intact using MySamplePojo
-* . customized TableViewAdapter inherits from new generic TableViewAdapterBase<Pojo> 
+* v done: customized TableViewAdapter inherits from new generic TableViewAdapterBase<Pojo> 
 * . (planed): replace List<List<Cell<Pojo>>> with List<Row<Pojo>> 
 * . additional lib containing the generic gui classes and resources
