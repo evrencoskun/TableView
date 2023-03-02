@@ -32,7 +32,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.evrencoskun.tableview.IRow;
 import com.evrencoskun.tableview.ITableView;
+import com.evrencoskun.tableview.Row;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
 import com.evrencoskun.tableview.handler.ScrollHandler;
@@ -46,9 +48,11 @@ import java.util.List;
 
 /**
  * Created by evrencoskun on 10/06/2017.
+ *
+ * The adapter contains a List of IRow-s of Cells
  */
 
-public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
+public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<IRow<C>> {
     @NonNull
     private final ITableView mTableView;
 
@@ -58,7 +62,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
     // This is for testing purpose
     private int mRecyclerViewId = 0;
 
-    public CellRecyclerViewAdapter(@NonNull Context context, @Nullable List<C> itemList, @NonNull ITableView tableView) {
+    public CellRecyclerViewAdapter(@NonNull Context context, @Nullable List<IRow<C>> itemList, @NonNull ITableView tableView) {
         super(context, itemList);
         this.mTableView = tableView;
 
@@ -250,9 +254,9 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
         // Lets change the model list silently
         // Create a new list which the column is already removed.
-        List<List<C>> cellItems = new ArrayList<>();
+        List<IRow<C>> cellItems = new ArrayList<>();
         for (int i = 0; i < mItemList.size(); i++) {
-            List<C> rowList = new ArrayList<>((List<C>) mItemList.get(i));
+            IRow<C> rowList = new Row<>(mItemList.get(i));
 
             if (rowList.size() > column) {
                 rowList.remove(column);
@@ -262,7 +266,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         }
 
         // Change data without notifying. Because we already did for visible recyclerViews.
-        setItems((List<C>) cellItems, false);
+        setItems(cellItems, false);
     }
 
     public void addColumnItems(int column, @NonNull List<C> cellColumnItems) {
@@ -286,9 +290,9 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
 
         // Lets change the model list silently
-        List<List<C>> cellItems = new ArrayList<>();
+        List<IRow<C>> cellItems = new ArrayList<>();
         for (int i = 0; i < mItemList.size(); i++) {
-            List<C> rowList = new ArrayList<>((List<C>) mItemList.get(i));
+            IRow<C> rowList = new Row<>(mItemList.get(i));
 
             if (rowList.size() > column) {
                 rowList.add(column, cellColumnItems.get(i));
@@ -298,6 +302,6 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         }
 
         // Change data without notifying. Because we already did for visible recyclerViews.
-        setItems((List<C>) cellItems, false);
+        setItems(cellItems, false);
     }
 }

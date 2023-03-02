@@ -26,6 +26,8 @@ package com.evrencoskun.tableviewsample.tableview;
 
 import androidx.annotation.NonNull;
 
+import com.evrencoskun.tableview.IRow;
+import com.evrencoskun.tableview.Row;
 import com.evrencoskun.tableviewsample.tableview.model.Cell;
 import com.evrencoskun.tableviewsample.tableview.model.MySamplePojo;
 import com.evrencoskun.tableviewsample.tableview.model.RowHeader;
@@ -78,10 +80,10 @@ public class TableViewModel {
      * This is a dummy model list test some cases.
      */
     @NonNull
-    private List<List<Cell<MySamplePojo>>> getCellListForSortingTest() {
-        List<List<Cell<MySamplePojo>>> list = new ArrayList<>();
+    private List<IRow<Cell<MySamplePojo>>> getCellListForSortingTest() {
+        List<IRow<Cell<MySamplePojo>>> list = new ArrayList<>();
         for (int rowId = 0; rowId < ROW_SIZE; rowId++) {
-            List<Cell<MySamplePojo>> cellList = new ArrayList<>();
+            IRow<Cell<MySamplePojo>> cellList = new Row<>();
             Cell<MySamplePojo> cell = new Cell(new MySamplePojo("" + rowId));
             for (int colId = 0; colId < COLUMN_SIZE; colId++) {
                 cellList.add(cell);
@@ -93,7 +95,7 @@ public class TableViewModel {
     }
 
     @NonNull
-    public List<List<Cell<MySamplePojo>>> getCellList() {
+    public List<IRow<Cell<MySamplePojo>>> getCellList() {
         return getCellListForSortingTest();
     }
 

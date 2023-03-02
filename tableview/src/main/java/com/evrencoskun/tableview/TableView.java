@@ -54,6 +54,7 @@ import com.evrencoskun.tableview.listener.itemclick.RowHeaderRecyclerViewItemCli
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
 import com.evrencoskun.tableview.preference.SavedState;
+import com.evrencoskun.tableview.sort.ISortableModel;
 import com.evrencoskun.tableview.sort.SortState;
 
 import androidx.annotation.AttrRes;
@@ -396,7 +397,7 @@ public class TableView extends FrameLayout implements ITableView {
         return recyclerView;
     }
 
-    public <CH, RH, C> void setAdapter(@Nullable AbstractTableAdapter<CH, RH, C> tableAdapter) {
+    public <CH, RH, C extends ISortableModel> void setAdapter(@Nullable AbstractTableAdapter<CH, RH, C> tableAdapter) {
         if (tableAdapter != null) {
             this.mTableAdapter = tableAdapter;
             this.mTableAdapter.setRowHeaderWidth(mRowHeaderWidth);

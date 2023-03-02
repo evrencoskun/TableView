@@ -26,6 +26,8 @@ package com.evrencoskun.tableview.sort;
 
 import androidx.annotation.NonNull;
 
+import com.evrencoskun.tableview.IRow;
+
 import java.util.Comparator;
 import java.util.List;
 
@@ -37,14 +39,14 @@ public class RowHeaderForCellSortComparator implements Comparator<List<ISortable
     @NonNull
     private final List<ISortableModel> mReferenceList;
     @NonNull
-    private final List<List<ISortableModel>> mColumnList;
+    private final List<IRow<ISortableModel>> mColumnList;
     @NonNull
     private final SortState mSortState;
     @NonNull
     private final RowHeaderSortComparator mRowHeaderSortComparator;
 
     public RowHeaderForCellSortComparator(@NonNull List<ISortableModel> referenceList,
-                                          @NonNull List<List<ISortableModel>> columnList,
+                                          @NonNull List<IRow<ISortableModel>> columnList,
                                           @NonNull SortState sortState) {
         this.mReferenceList = referenceList;
         this.mColumnList = columnList;

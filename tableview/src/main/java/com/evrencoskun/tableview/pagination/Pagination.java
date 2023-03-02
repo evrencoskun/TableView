@@ -27,6 +27,7 @@ package com.evrencoskun.tableview.pagination;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.evrencoskun.tableview.IRow;
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.AdapterDataSetChangedListener;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
@@ -51,13 +52,13 @@ public class Pagination implements IPagination {
     private int currentPage;
     private int pageCount;
     @NonNull
-    private List<List<ISortableModel>> originalCellData;
+    private List<IRow<ISortableModel>> originalCellData;
     @NonNull
     private List<ISortableModel> originalRowData;
     @Nullable
     private RowHeaderRecyclerViewAdapter<ISortableModel> mRowHeaderRecyclerViewAdapter;
     @Nullable
-    private CellRecyclerViewAdapter<List<ISortableModel>> mCellRecyclerViewAdapter;
+    private CellRecyclerViewAdapter<ISortableModel> mCellRecyclerViewAdapter;
     @Nullable
     private OnTableViewPageTurnedListener onTableViewPageTurnedListener;
 
@@ -116,7 +117,7 @@ public class Pagination implements IPagination {
 
     private void paginateData() {
         int start, end;
-        List<List<ISortableModel>> currentPageCellData = new ArrayList<>();
+        List<IRow<ISortableModel>> currentPageCellData = new ArrayList<>();
         List<ISortableModel> currentPageRowData = new ArrayList<>();
         // No pagination if itemsPerPage is 0, all data will be loaded into the TableView.
         if (itemsPerPage == 0) {
@@ -226,14 +227,14 @@ public class Pagination implements IPagination {
     private final FilterChangedListener<ISortableModel> filterChangedListener =
             new FilterChangedListener<ISortableModel>() {
                 @Override
-                public void onFilterChanged(@NonNull List<List<ISortableModel>> filteredCellItems, @NonNull List<ISortableModel> filteredRowHeaderItems) {
+                public void onFilterChanged(@NonNull List<IRow<ISortableModel>> filteredCellItems, @NonNull IRow<ISortableModel> filteredRowHeaderItems) {
                     originalCellData = new ArrayList<>(filteredCellItems);
                     originalRowData = new ArrayList<>(filteredRowHeaderItems);
                     reloadPages();
                 }
 
                 @Override
-                public void onFilterCleared(@NonNull List<List<ISortableModel>> originalCellItems, @NonNull List<ISortableModel> originalRowHeaderItems) {
+                public void onFilterCleared(@NonNull List<IRow<ISortableModel>> originalCellItems, @NonNull IRow<ISortableModel> originalRowHeaderItems) {
                     originalCellData = new ArrayList<>(originalCellItems);
                     originalRowData = new ArrayList<>(originalRowHeaderItems);
                     reloadPages();
@@ -256,7 +257,7 @@ public class Pagination implements IPagination {
 
     private void paginateOnColumnSort(int column, @NonNull SortState sortState) {
         List<ISortableModel> sortedRowHeaderList = new ArrayList<>(originalRowData);
-        List<List<ISortableModel>> sortedList = new ArrayList<>(originalCellData);
+        List<IRow<ISortableModel>> sortedList = new ArrayList<>(originalCellData);
         if (sortState != SortState.UNSORTED) {
             if (column == -1) {
                 Collections.sort(sortedRowHeaderList, new RowHeaderSortComparator(sortState));

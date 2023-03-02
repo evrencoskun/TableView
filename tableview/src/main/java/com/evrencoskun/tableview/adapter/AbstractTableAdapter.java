@@ -32,10 +32,12 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.evrencoskun.tableview.IRow;
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.ColumnHeaderRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.RowHeaderRecyclerViewAdapter;
+import com.evrencoskun.tableview.sort.ISortableModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +46,7 @@ import java.util.List;
  * Created by evrencoskun on 10/06/2017.
  */
 
-public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<CH, RH, C> {
+public abstract class AbstractTableAdapter<CH, RH, C extends ISortableModel> implements ITableAdapter<CH, RH, C> {
 
     private int mRowHeaderWidth;
     private int mColumnHeaderHeight;
@@ -56,7 +58,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
 
     protected List<CH> mColumnHeaderItems;
     protected List<RH> mRowHeaderItems;
-    protected List<List<C>> mCellItems;
+    protected List<IRow<C>> mCellItems;
 
     private ITableView mTableView;
     private List<AdapterDataSetChangedListener<CH, RH, C>> dataSetChangedListeners;
@@ -107,7 +109,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
         dispatchRowHeaderDataSetChangesToListeners(mRowHeaderItems);
     }
 
-    public void setCellItems(@Nullable List<List<C>> cellItems) {
+    public void setCellItems(@Nullable List<IRow<C>> cellItems) {
         if (cellItems == null) {
             return;
         }
@@ -124,7 +126,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
     public void setAllItems(
             @Nullable List<CH> columnHeaderItems,
             @Nullable List<RH> rowHeaderItems,
-            @Nullable List<List<C>> cellItems
+            @Nullable List<IRow<C>> cellItems
     ) {
         // Set all items
         setColumnHeaderItems(columnHeaderItems);
@@ -302,7 +304,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
         mRowHeaderRecyclerViewAdapter.addItem(rowPosition, rowHeaderItem);
     }
 
-    public void addRowRange(int rowPositionStart, @Nullable List<RH> rowHeaderItem, @Nullable List<List<C>> cellItems) {
+    public void addRowRange(int rowPositionStart, @Nullable List<RH> rowHeaderItem, @Nullable List<IRow<C>> cellItems) {
         mRowHeaderRecyclerViewAdapter.addItemRange(rowPositionStart, rowHeaderItem);
         mCellRecyclerViewAdapter.addItemRange(rowPositionStart, cellItems);
     }
@@ -377,7 +379,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
         }
     }
 
-    private void dispatchCellDataSetChangesToListeners(@NonNull List<List<C>> newCellItems) {
+    private void dispatchCellDataSetChangesToListeners(@NonNull List<IRow<C>> newCellItems) {
         if (dataSetChangedListeners != null) {
             for (AdapterDataSetChangedListener<CH, RH, C> listener : dataSetChangedListeners) {
                 listener.onCellItemsChanged(newCellItems);

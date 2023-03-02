@@ -28,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 
+import com.evrencoskun.tableview.IRow;
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.ColumnHeaderRecyclerViewAdapter;
@@ -52,7 +53,7 @@ import java.util.List;
 
 public class ColumnSortHandler {
 
-    private final CellRecyclerViewAdapter<List<ISortableModel>> mCellRecyclerViewAdapter;
+    private final CellRecyclerViewAdapter<ISortableModel> mCellRecyclerViewAdapter;
     private final RowHeaderRecyclerViewAdapter<ISortableModel> mRowHeaderRecyclerViewAdapter;
     private final ColumnHeaderRecyclerViewAdapter mColumnHeaderRecyclerViewAdapter;
 
@@ -68,7 +69,7 @@ public class ColumnSortHandler {
     }
 
     public ColumnSortHandler(@NonNull ITableView tableView) {
-        this.mCellRecyclerViewAdapter = (CellRecyclerViewAdapter<List<ISortableModel>>) tableView.getCellRecyclerView()
+        this.mCellRecyclerViewAdapter = (CellRecyclerViewAdapter<ISortableModel>) tableView.getCellRecyclerView()
                 .getAdapter();
 
         this.mRowHeaderRecyclerViewAdapter = (RowHeaderRecyclerViewAdapter<ISortableModel>) tableView
@@ -82,8 +83,8 @@ public class ColumnSortHandler {
         List<ISortableModel> originalRowHeaderList = mRowHeaderRecyclerViewAdapter.getItems();
         List<ISortableModel> sortedRowHeaderList = new ArrayList<>(originalRowHeaderList);
 
-        List<List<ISortableModel>> originalList = mCellRecyclerViewAdapter.getItems();
-        List<List<ISortableModel>> sortedList = new ArrayList<>(originalList);
+        List<IRow<ISortableModel>> originalList = mCellRecyclerViewAdapter.getItems();
+        List<IRow<ISortableModel>> sortedList = new ArrayList<>(originalList);
 
         if (sortState != SortState.UNSORTED) {
             // Do descending / ascending sort
@@ -106,8 +107,8 @@ public class ColumnSortHandler {
     }
 
     public void sort(int column, @NonNull SortState sortState) {
-        List<List<ISortableModel>> originalList = mCellRecyclerViewAdapter.getItems();
-        List<List<ISortableModel>> sortedList = new ArrayList<>(originalList);
+        List<IRow<ISortableModel>> originalList = mCellRecyclerViewAdapter.getItems();
+        List<IRow<ISortableModel>> sortedList = new ArrayList<>(originalList);
 
         List<ISortableModel> originalRowHeaderList
                 = mRowHeaderRecyclerViewAdapter.getItems();
@@ -138,7 +139,7 @@ public class ColumnSortHandler {
 
     private void swapItems(@NonNull List<ISortableModel> oldRowHeader,
                            @NonNull List<ISortableModel> newRowHeader,
-                           @NonNull List<List<ISortableModel>> newColumnItems,
+                           @NonNull List<IRow<ISortableModel>> newColumnItems,
                            @NonNull SortState sortState
     ) {
 
@@ -160,7 +161,7 @@ public class ColumnSortHandler {
         }
     }
 
-    private void swapItems(@NonNull List<List<ISortableModel>> oldItems, @NonNull List<List<ISortableModel>>
+    private void swapItems(@NonNull List<IRow<ISortableModel>> oldItems, @NonNull List<IRow<ISortableModel>>
             newItems, int column, @NonNull List<ISortableModel> newRowHeader, @NonNull SortState sortState) {
 
         // Set new items without calling notifyCellDataSetChanged method of CellRecyclerViewAdapter
@@ -181,9 +182,9 @@ public class ColumnSortHandler {
         }
     }
 
-    public void swapItems(@NonNull List<List<ISortableModel>> newItems, int column) {
+    public void swapItems(@NonNull List<IRow<ISortableModel>> newItems, int column) {
 
-        List<List<ISortableModel>> oldItems = mCellRecyclerViewAdapter.getItems();
+        List<IRow<ISortableModel>> oldItems = mCellRecyclerViewAdapter.getItems();
 
         // Set new items without calling notifyCellDataSetChanged method of CellRecyclerViewAdapter
         mCellRecyclerViewAdapter.setItems(newItems, !mEnableAnimation);
