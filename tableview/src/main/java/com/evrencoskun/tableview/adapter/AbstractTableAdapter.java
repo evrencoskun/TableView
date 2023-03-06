@@ -25,6 +25,7 @@
 package com.evrencoskun.tableview.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -48,12 +49,13 @@ import java.util.List;
 
 public abstract class AbstractTableAdapter<CH, RH, C extends ISortableModel> implements ITableAdapter<CH, RH, C> {
 
+    private final String tag = getClass().getSimpleName();
     private int mRowHeaderWidth;
     private int mColumnHeaderHeight;
 
     private ColumnHeaderRecyclerViewAdapter<CH> mColumnHeaderRecyclerViewAdapter;
     private RowHeaderRecyclerViewAdapter<RH> mRowHeaderRecyclerViewAdapter;
-    private CellRecyclerViewAdapter mCellRecyclerViewAdapter;
+    private CellRecyclerViewAdapter<C> mCellRecyclerViewAdapter;
     private View mCornerView;
 
     protected List<CH> mColumnHeaderItems;
@@ -207,7 +209,7 @@ public abstract class AbstractTableAdapter<CH, RH, C extends ISortableModel> imp
         return mRowHeaderRecyclerViewAdapter;
     }
 
-    public CellRecyclerViewAdapter getCellRecyclerViewAdapter() {
+    public CellRecyclerViewAdapter<C> getCellRecyclerViewAdapter() {
         return mCellRecyclerViewAdapter;
     }
 
@@ -225,37 +227,70 @@ public abstract class AbstractTableAdapter<CH, RH, C extends ISortableModel> imp
     }
 
     @Nullable
-    public CH getColumnHeaderItem(int position) {
-        if ((mColumnHeaderItems == null || mColumnHeaderItems.isEmpty()) || position < 0 ||
-                position >= mColumnHeaderItems.size()) {
+    public CH getColumnHeaderItem(int columnPosition) {
+        int size = (mColumnHeaderItems == null) ? 0 : mColumnHeaderItems.size();
+        if (columnPosition < 0 || columnPosition >= size) {
+            Log.i(tag,"getColumnHeaderItem(col=" + columnPosition +
+                    ") : Illegal columnPosition allowed 0 .. " + size);
             return null;
         }
-        return mColumnHeaderItems.get(position);
+        return mColumnHeaderItems.get(columnPosition);
     }
 
     @Nullable
-    public RH getRowHeaderItem(int position) {
-        if ((mRowHeaderItems == null || mRowHeaderItems.isEmpty()) || position < 0 || position >=
-                mRowHeaderItems.size()) {
+    public RH getRowHeaderItem(int rowPosition) {
+        int size = (mRowHeaderItems == null) ? 0 : mRowHeaderItems.size();
+        if (rowPosition < 0 || rowPosition >= size) {
+            Log.i(tag,"getRowHeaderItem(row=" + rowPosition +
+                    ") : Illegal rowPosition allowed 0 .. " + size);
+
             return null;
         }
-        return mRowHeaderItems.get(position);
+        return mRowHeaderItems.get(rowPosition);
     }
 
+    /**
+     * gets data from model column/row (and not from visibile column/row
+     * that may not match current filter/sorting)
+     * @param columnPosition
+     * @param rowPosition
+     */
+    @Deprecated
     @Nullable
     public C getCellItem(int columnPosition, int rowPosition) {
-        if ((mCellItems == null || mCellItems.isEmpty()) || columnPosition < 0 || rowPosition >=
-                mCellItems.size() || mCellItems.get(rowPosition) == null || rowPosition < 0 ||
-                columnPosition >= mCellItems.get(rowPosition).size()) {
+        IRow<C> row = getRowFromModel(rowPosition);
+        if (row == null) {
             return null;
         }
+        int size = row.size();
+        if (columnPosition < 0 || columnPosition >= size) {
+            Log.i(tag,"getCellItem(col=" + columnPosition +
+                    ", row=" + rowPosition +
+                    ") : Illegal columnPosition allowed 0 .. " + size);
+            return null;
+        }
+        return row.get(columnPosition);
+    }
 
-        return mCellItems.get(rowPosition).get(columnPosition);
+    /**
+     * gets data from model row (and not from visibile row
+     * that may not match current filter/sorting)
+     * @param rowPosition
+     */
+    @Deprecated
+    private IRow<C> getRowFromModel(int rowPosition) {
+        int size = (mCellItems == null) ? 0 : mCellItems.size();
+        if (rowPosition < 0 || rowPosition >= size) {
+            Log.i(tag,"getCellItems(row=" + rowPosition +
+                    ") : Illegal rowPosition allowed 0 .. " + size);
+            return null;
+        }
+        return mCellItems.get(rowPosition);
     }
 
     @Nullable
-    public List<C> getCellRowItems(int rowPosition) {
-        return (List<C>) mCellRecyclerViewAdapter.getItem(rowPosition);
+    public IRow<C> getCellRowItems(int rowPosition) {
+        return mCellRecyclerViewAdapter.getItem(rowPosition);
     }
 
     public void removeRow(int rowPosition) {
@@ -299,7 +334,7 @@ public abstract class AbstractTableAdapter<CH, RH, C extends ISortableModel> imp
         mRowHeaderRecyclerViewAdapter.deleteItemRange(rowPositionStart, itemCount);
     }
 
-    public void addRow(int rowPosition, @Nullable RH rowHeaderItem, @Nullable List<C> cellItems) {
+    public void addRow(int rowPosition, @Nullable RH rowHeaderItem, @Nullable IRow<C> cellItems) {
         mCellRecyclerViewAdapter.addItem(rowPosition, cellItems);
         mRowHeaderRecyclerViewAdapter.addItem(rowPosition, rowHeaderItem);
     }
@@ -318,7 +353,7 @@ public abstract class AbstractTableAdapter<CH, RH, C extends ISortableModel> imp
     }
 
     public void changeCellItem(int columnPosition, int rowPosition, C cellModel) {
-        List<C> cellItems = (List<C>) mCellRecyclerViewAdapter.getItem(rowPosition);
+        IRow<C> cellItems = mCellRecyclerViewAdapter.getItem(rowPosition);
         if (cellItems != null && cellItems.size() > columnPosition) {
             // Update cell row items.
             cellItems.set(columnPosition, cellModel);
@@ -336,9 +371,12 @@ public abstract class AbstractTableAdapter<CH, RH, C extends ISortableModel> imp
                 columnHeaderModelList);
     }
 
+    /**
+     * This method helps to get cell item model that is located on given vertical column position.
+     */
     @NonNull
-    public List<C> getCellColumnItems(int columnPosition) {
-        return mCellRecyclerViewAdapter.getColumnItems(columnPosition);
+    public List<C> getVerticalItemsAtColumn(int columnPosition) {
+        return mCellRecyclerViewAdapter.getVerticalItemsAtColumn(columnPosition);
     }
 
     public void removeColumn(int columnPosition) {

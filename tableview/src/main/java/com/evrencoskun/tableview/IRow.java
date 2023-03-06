@@ -27,4 +27,13 @@ package com.evrencoskun.tableview;
 import java.util.List;
 
 public interface IRow<C> extends List<C> {
+// public interface IRow<C>  {
+/*
+    // methods implemented by List<>
+    int size();
+    C get(int position);
+    C remove(int position);
+
+    void add(int position, C item);
+ */
 }

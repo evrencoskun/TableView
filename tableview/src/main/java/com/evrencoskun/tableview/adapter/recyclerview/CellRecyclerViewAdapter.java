@@ -124,7 +124,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<IRow
                 .recyclerView.getAdapter();
 
         // Get the list
-        List<C> rowList = (List<C>) mItemList.get(yPosition);
+        IRow<C> rowList = mItemList.get(yPosition);
 
         // Set Row position
         viewAdapter.setYPosition(yPosition);
@@ -216,23 +216,23 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<IRow
     }
 
     /**
-     * This method helps to get cell item model that is located on given column position.
+     * This method helps to get cell item model that is located on given vertical column position.
      *
      * @param columnPosition
      */
     @NonNull
-    public List<C> getColumnItems(int columnPosition) {
-        List<C> cellItems = new ArrayList<>();
+    public List<C> getVerticalItemsAtColumn(int columnPosition) {
+        List<C> columnItems = new ArrayList<>();
 
         for (int i = 0; i < mItemList.size(); i++) {
-            List<C> rowList = (List<C>) mItemList.get(i);
+            IRow<C> row = mItemList.get(i);
 
-            if (rowList.size() > columnPosition) {
-                cellItems.add(rowList.get(columnPosition));
+            if (row.size() > columnPosition) {
+                columnItems.add(row.get(columnPosition));
             }
         }
 
-        return cellItems;
+        return columnItems;
     }
 
 
