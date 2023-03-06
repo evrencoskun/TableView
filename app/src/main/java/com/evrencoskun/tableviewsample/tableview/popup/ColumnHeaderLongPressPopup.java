@@ -107,10 +107,10 @@ public class ColumnHeaderLongPressPopup extends PopupMenu implements PopupMenu
                 mTableView.sortColumn(mXPosition, SortState.DESCENDING);
                 break;
             case HIDE_ROW:
-                mTableView.hideRow(5);
+                mTableView.hideRow(3);
                 break;
             case SHOW_ROW:
-                mTableView.showRow(5);
+                mTableView.showRow(3);
                 break;
             case SCROLL_ROW:
                 mTableView.scrollToRowPosition(5);
