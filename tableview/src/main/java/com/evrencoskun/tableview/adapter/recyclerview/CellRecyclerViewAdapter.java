@@ -124,13 +124,13 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<IRow
                 .recyclerView.getAdapter();
 
         // Get the list
-        IRow<C> rowList = mItemList.get(yPosition);
+        IRow<C> row = mItemList.get(yPosition);
 
         // Set Row position
         viewAdapter.setYPosition(yPosition);
 
         // Set the list to the adapter
-        viewAdapter.setItems(rowList);
+        viewAdapter.setItems(row);
     }
 
     @Override
