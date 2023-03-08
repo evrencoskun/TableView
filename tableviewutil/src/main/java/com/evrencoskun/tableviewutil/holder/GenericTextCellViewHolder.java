@@ -56,7 +56,7 @@ public class GenericTextCellViewHolder extends AbstractViewHolder {
     public void setCell(@Nullable Cell cell, int columnPosition, int rowPosition) {
         mColumnPosition = columnPosition;
         mRowPosition = rowPosition;
-        cell_textview.setText(String.valueOf(cell.getContent(columnPosition)));
+        cell_textview.setText(String.valueOf(cell.getContent()));
 
         // If your TableView should have auto resize for cells & columns.
         // Then you should consider the below lines. Otherwise, you can ignore them.

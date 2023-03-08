@@ -58,8 +58,8 @@ public class RowHeaderForCellSortComparator implements Comparator<List<ISortable
     public int compare(List<ISortableModel> l1, List<ISortableModel> l2) {
         int colL1 = this.mColumnList.indexOf(l1);
         int colL2 = this.mColumnList.indexOf(l2);
-        Object o1 = mReferenceList.get(colL1).getContent(colL1);
-        Object o2 = mReferenceList.get(colL2).getContent(colL2);
+        Object o1 = mReferenceList.get(colL1).getContent();
+        Object o2 = mReferenceList.get(colL2).getContent();
         if (mSortState == SortState.DESCENDING) {
             return mRowHeaderSortComparator.compareContent(o2, o1);
         } else {

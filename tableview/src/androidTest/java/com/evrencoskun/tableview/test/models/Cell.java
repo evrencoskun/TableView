@@ -60,7 +60,7 @@ public class Cell implements ISortableModel, IFilterableModel {
      */
     @Nullable
     @Override
-    public Object getContent(int column) {
+    public Object getContent() {
         return mData;
     }
 

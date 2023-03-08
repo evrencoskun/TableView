@@ -36,7 +36,7 @@ public class RowHeader<POJO extends IModelWithId> extends Cell<POJO> {
     }
 
     @Override
-    public Object getContent(int column) {
+    public Object getContent() {
         return getId();
     }
 }

@@ -83,9 +83,9 @@ public class ColumnSortCallback extends DiffUtil.Callback {
                     (newItemPosition).size() > mColumnPosition) {
                 // Compare contents
                 Object oldContent = mOldCellItems.get(oldItemPosition).get(mColumnPosition)
-                        .getContent(mColumnPosition);
+                        .getContent();
                 Object newContent = mNewCellItems.get(newItemPosition).get(mColumnPosition)
-                        .getContent(mColumnPosition);
+                        .getContent();
                 return ObjectsCompat.equals(oldContent, newContent);
             }
         }

@@ -44,8 +44,8 @@ public class ColumnSortComparator extends AbstractSortComparator implements Comp
 
     @Override
     public int compare(List<ISortableModel> t1, List<ISortableModel> t2) {
-        Object o1 = t1.get(mXPosition).getContent(mXPosition);
-        Object o2 = t2.get(mXPosition).getContent(mXPosition);
+        Object o1 = t1.get(mXPosition).getContent();
+        Object o2 = t2.get(mXPosition).getContent();
 
         if (mSortState == SortState.DESCENDING) {
             return compareContent(o2, o1);

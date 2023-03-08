@@ -24,7 +24,6 @@
 
 package com.evrencoskun.tableview.sort;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.model.IModelWithId;
@@ -36,5 +35,5 @@ import com.evrencoskun.tableview.model.IModelWithId;
 public interface ISortableModel extends IModelWithId {
 
     @Nullable
-    Object getContent(int column);
+    Object getContent();
 }

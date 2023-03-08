@@ -63,8 +63,8 @@ public class ColumnForRowHeaderSortComparator implements Comparator<ISortableMod
 
     @Override
     public int compare(ISortableModel o, ISortableModel t1) {
-        Object o1 = mReferenceList.get(this.mRowHeaderList.indexOf(o)).get(column).getContent(column);
-        Object o2 = mReferenceList.get(this.mRowHeaderList.indexOf(t1)).get(column).getContent(column);
+        Object o1 = mReferenceList.get(this.mRowHeaderList.indexOf(o)).get(column).getContent();
+        Object o2 = mReferenceList.get(this.mRowHeaderList.indexOf(t1)).get(column).getContent();
         if (mSortState == SortState.DESCENDING) {
             return mColumnSortComparator.compareContent(o2, o1);
         } else {

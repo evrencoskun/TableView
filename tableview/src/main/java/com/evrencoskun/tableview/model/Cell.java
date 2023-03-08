@@ -65,7 +65,7 @@ public class Cell<POJO extends IModelWithId> implements ISortableModel, IFiltera
      */
     @Nullable
     @Override
-    public Object getContent(int column) {
+    public Object getContent() {
         return columnValueProvider.get(mData);
     }
 
@@ -80,6 +80,6 @@ public class Cell<POJO extends IModelWithId> implements ISortableModel, IFiltera
     @NonNull
     @Override
     public String getFilterableKeyword() {
-        return getContent(0).toString();
+        return getContent().toString();
     }
 }
