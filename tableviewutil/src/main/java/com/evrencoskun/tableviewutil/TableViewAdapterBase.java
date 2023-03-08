@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.evrencoskun.tableviewsample.tableview;
+package com.evrencoskun.tableviewutil;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,8 +36,8 @@ import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.sort.ISortableModel;
 import com.evrencoskun.tableview.sort.SortState;
-import com.evrencoskun.tableviewsample.R;
-import com.evrencoskun.tableviewsample.tableview.holder.ColumnHeaderViewHolder;
+import com.evrencoskun.tableviewutil.R;
+import com.evrencoskun.tableviewutil.holder.ColumnHeaderViewHolder;
 import com.evrencoskun.tableviewutil.holder.GenericTextCellViewHolder;
 import com.evrencoskun.tableviewutil.holder.RowHeaderViewHolder;
 import com.evrencoskun.tableview.model.Cell;
@@ -49,13 +49,7 @@ import com.evrencoskun.tableview.model.RowHeader;
  * Defaultimplementation translates all columns to TextView fields.
  */
 public abstract class TableViewAdapterBase<Pojo extends ISortableModel> extends AbstractTableAdapter<String, RowHeader, Cell<Pojo>> {
-    protected static final String LOG_TAG = TableViewAdapter.class.getSimpleName();
-    @NonNull
-    protected final TableViewModel mTableViewModel;
-
-    public TableViewAdapterBase(TableViewModel tableViewModel) {
-        this.mTableViewModel = tableViewModel;
-    }
+    private static final String LOG_TAG = TableViewAdapterBase.class.getSimpleName();
 
     /**
      * This is where you create your custom Column Header ViewHolder. This method is called when

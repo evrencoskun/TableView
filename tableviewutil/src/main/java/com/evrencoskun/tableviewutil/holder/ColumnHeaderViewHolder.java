@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.evrencoskun.tableviewsample.tableview.holder;
+package com.evrencoskun.tableviewutil.holder;
 
 import android.util.Log;
 import android.view.View;
@@ -36,7 +36,7 @@ import androidx.annotation.Nullable;
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractSorterViewHolder;
 import com.evrencoskun.tableview.sort.SortState;
-import com.evrencoskun.tableviewsample.R;
+import com.evrencoskun.tableviewutil.R;
 
 /**
  * Created by evrencoskun on 23/10/2017.

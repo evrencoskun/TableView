@@ -34,7 +34,7 @@ import androidx.annotation.NonNull;
 import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.sort.SortState;
 import com.evrencoskun.tableviewsample.R;
-import com.evrencoskun.tableviewsample.tableview.holder.ColumnHeaderViewHolder;
+import com.evrencoskun.tableviewutil.holder.ColumnHeaderViewHolder;
 
 /**
  * Created by evrencoskun on 24.12.2017.

@@ -34,6 +34,8 @@ import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableviewsample.R;
+import com.evrencoskun.tableviewutil.TableViewAdapterBase;
+import com.evrencoskun.tableviewutil.holder.ColumnHeaderViewHolder;
 import com.evrencoskun.tableviewutil.holder.BoolDrawableCellViewHolder;
 import com.evrencoskun.tableview.model.Cell;
 import com.evrencoskun.tableviewsample.tableview.model.MySamplePojo;
@@ -46,6 +48,7 @@ import com.evrencoskun.tableviewsample.tableview.model.MySamplePojo;
  */
 
 public class TableViewAdapter extends TableViewAdapterBase<MySamplePojo> {
+    private static final String LOG_TAG = TableViewAdapter.class.getSimpleName();
 
     // Columns indexes
     public static final int COLUMN_INDEX_MOOD_HAPPY = 3;
@@ -55,8 +58,11 @@ public class TableViewAdapter extends TableViewAdapterBase<MySamplePojo> {
     private static final int GENDER_CELL_TYPE = 2;
     // add new one if it necessary..
 
+    @NonNull
+    protected final TableViewModel mTableViewModel;
+
     public TableViewAdapter(@NonNull TableViewModel tableViewModel) {
-        super(tableViewModel);
+        mTableViewModel = tableViewModel;
     }
 
     /**

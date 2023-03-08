@@ -32,7 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.listener.ITableViewListener;
-import com.evrencoskun.tableviewsample.tableview.holder.ColumnHeaderViewHolder;
+import com.evrencoskun.tableviewutil.holder.ColumnHeaderViewHolder;
 import com.evrencoskun.tableviewsample.tableview.popup.ColumnHeaderLongPressPopup;
 import com.evrencoskun.tableviewsample.tableview.popup.RowHeaderLongPressPopup;
 
