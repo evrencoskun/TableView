@@ -8,7 +8,7 @@ requires a lot of copy&paste from example code to use the TableView in a clienta
 
 Product vision: reduce the amount of (copied) code to integrate TableView into a clientapp.
 
-* v done: replaced the table header modell with simple Strings.
+* v done: replaced the table header model with simple Strings.
 * v done: replaced the must-customize Cell.java with a templated Cell<Pojo> where customisation takes place in the pojo
 * v done: keep demo app intact using MySamplePojo
 * v done: customized TableViewAdapter inherits from new generic TableViewAdapterBase<Pojo> 

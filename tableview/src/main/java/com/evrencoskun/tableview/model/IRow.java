@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.evrencoskun.tableview.modell;
+package com.evrencoskun.tableview.model;
 
 import java.util.List;
 

@@ -22,62 +22,18 @@
  * SOFTWARE.
  */
 
-package com.evrencoskun.tableview.modell;
+package com.evrencoskun.tableview.model;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.evrencoskun.tableview.filter.IFilterableModel;
 import com.evrencoskun.tableview.sort.ISortableModel;
 
 /**
  * Created by evrencoskun on 11/06/2017.
  */
 
-public class Cell<T extends ISortableModel> implements ISortableModel, IFilterableModel {
-    @Nullable
-    private final T mData;
-    @NonNull
-    private final String mFilterKeyword;
-    private final IColumnValue columnValueProvider;
-
-    public Cell(@NonNull T data, IColumnValue columnValueProvider) {
-        this.mData = data;
-        this.mFilterKeyword = String.valueOf(data);
-        this.columnValueProvider = columnValueProvider;
-    }
-
-    /**
-     * This is necessary for sorting process. Id must be unique per data row.
-     * See {@link ISortableModel}.
-     */
-    @NonNull
-    @Override
-    public String getId() {
-        return mData.getId();
-    }
-
-    /**
-     * This is necessary for sorting process.
-     * See {@link ISortableModel}.
-     */
-    @Nullable
-    @Override
-    public Object getContent(int column) {
-        return mData.getContent(column);
-    }
-
-    @Nullable
-    public T getData() {
-        return mData;
-    }
-
-    /**
-     * See {@link IFilterableModel}.
-     */
-    @NonNull
-    @Override
-    public String getFilterableKeyword() {
-        return mFilterKeyword;
+public class RowHeader<C extends ISortableModel> extends Cell<C> {
+    public RowHeader(@NonNull C data) {
+        super(data, null);
     }
 }

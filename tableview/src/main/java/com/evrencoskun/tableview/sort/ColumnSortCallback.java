@@ -28,7 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.core.util.ObjectsCompat;
 import androidx.recyclerview.widget.DiffUtil;
 
-import com.evrencoskun.tableview.modell.IRow;
+import com.evrencoskun.tableview.model.IRow;
 
 import java.util.List;
 

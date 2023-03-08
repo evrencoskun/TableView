@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.evrencoskun.tableviewsample.tableview.holder;
+package com.evrencoskun.tableviewutil.holder;
 
 import android.view.View;
 import android.widget.LinearLayout;
@@ -32,8 +32,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
-import com.evrencoskun.tableviewsample.R;
-import com.evrencoskun.tableview.modell.Cell;
+import com.evrencoskun.tableview.model.Cell;
+import com.evrencoskun.tableviewutil.R;
 
 /**
  * Created by evrencoskun on 23/10/2017.

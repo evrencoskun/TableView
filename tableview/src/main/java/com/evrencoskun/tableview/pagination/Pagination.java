@@ -27,7 +27,7 @@ package com.evrencoskun.tableview.pagination;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.evrencoskun.tableview.modell.IRow;
+import com.evrencoskun.tableview.model.IRow;
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.AdapterDataSetChangedListener;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;

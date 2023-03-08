@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2023 Evren Coşkun
+ * Copyright (c) 2021 Evren Coşkun
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,17 +22,26 @@
  * SOFTWARE.
  */
 
-package com.evrencoskun.tableview.modell;
+package com.evrencoskun.tableviewutil.holder;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.view.View;
+import android.widget.TextView;
 
-public class Row<C> extends ArrayList<C> implements IRow<C> {
-    public Row(List<C> cs) {
-        super(cs);
-    }
+import androidx.annotation.NonNull;
 
-    public Row() {
-        super();
+import com.evrencoskun.tableviewutil.R;
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+
+/**
+ * Created by evrencoskun on 23/10/2017.
+ */
+
+public class RowHeaderViewHolder extends AbstractViewHolder {
+    @NonNull
+    public final TextView row_header_textview;
+
+    public RowHeaderViewHolder(@NonNull View itemView) {
+        super(itemView);
+        row_header_textview = itemView.findViewById(R.id.row_header_textview);
     }
 }

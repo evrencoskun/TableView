@@ -26,9 +26,9 @@ package com.evrencoskun.tableview.handler;
 
 import androidx.annotation.NonNull;
 
-import com.evrencoskun.tableview.modell.IRow;
+import com.evrencoskun.tableview.model.IRow;
 import com.evrencoskun.tableview.ITableView;
-import com.evrencoskun.tableview.modell.Row;
+import com.evrencoskun.tableview.model.Row;
 import com.evrencoskun.tableview.adapter.AdapterDataSetChangedListener;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.RowHeaderRecyclerViewAdapter;

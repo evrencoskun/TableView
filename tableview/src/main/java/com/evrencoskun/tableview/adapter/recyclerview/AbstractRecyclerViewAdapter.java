@@ -30,7 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.evrencoskun.tableview.modell.Row;
+import com.evrencoskun.tableview.model.Row;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 
 import java.util.List;

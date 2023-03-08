@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2021 Evren Coşkun
+ * Copyright (c) 2023 Evren Coşkun
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,19 +22,17 @@
  * SOFTWARE.
  */
 
-package com.evrencoskun.tableviewsample.tableview.model;
+package com.evrencoskun.tableview.model;
 
-import androidx.annotation.NonNull;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.evrencoskun.tableview.modell.Cell;
-import com.evrencoskun.tableview.sort.ISortableModel;
+public class Row<C> extends ArrayList<C> implements IRow<C> {
+    public Row(List<C> cs) {
+        super(cs);
+    }
 
-/**
- * Created by evrencoskun on 11/06/2017.
- */
-
-public class RowHeader<C extends ISortableModel> extends Cell<C> {
-    public RowHeader(@NonNull C data) {
-        super(data, null);
+    public Row() {
+        super();
     }
 }

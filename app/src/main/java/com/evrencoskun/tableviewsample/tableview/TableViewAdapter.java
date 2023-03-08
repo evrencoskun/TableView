@@ -34,8 +34,8 @@ import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableviewsample.R;
-import com.evrencoskun.tableviewsample.tableview.holder.BoolDrawableCellViewHolder;
-import com.evrencoskun.tableview.modell.Cell;
+import com.evrencoskun.tableviewutil.holder.BoolDrawableCellViewHolder;
+import com.evrencoskun.tableview.model.Cell;
 import com.evrencoskun.tableviewsample.tableview.model.MySamplePojo;
 
 /**

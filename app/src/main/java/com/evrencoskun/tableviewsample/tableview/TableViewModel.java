@@ -26,12 +26,12 @@ package com.evrencoskun.tableviewsample.tableview;
 
 import androidx.annotation.NonNull;
 
-import com.evrencoskun.tableview.modell.IColumnValue;
-import com.evrencoskun.tableview.modell.IRow;
-import com.evrencoskun.tableview.modell.Row;
-import com.evrencoskun.tableview.modell.Cell;
+import com.evrencoskun.tableview.model.IColumnValue;
+import com.evrencoskun.tableview.model.IRow;
+import com.evrencoskun.tableview.model.Row;
+import com.evrencoskun.tableview.model.Cell;
 import com.evrencoskun.tableviewsample.tableview.model.MySamplePojo;
-import com.evrencoskun.tableviewsample.tableview.model.RowHeader;
+import com.evrencoskun.tableview.model.RowHeader;
 
 import java.util.ArrayList;
 import java.util.List;

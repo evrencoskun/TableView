@@ -22,26 +22,37 @@
  * SOFTWARE.
  */
 
-package com.evrencoskun.tableviewsample.tableview.holder;
+package com.evrencoskun.tableviewutil.holder;
 
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ImageView;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
-import com.evrencoskun.tableviewsample.R;
+import com.evrencoskun.tableviewutil.R;
 
 /**
- * Created by evrencoskun on 23/10/2017.
+ * Created by evrencoskun on 4.02.2018.
  */
 
-public class RowHeaderViewHolder extends AbstractViewHolder {
+public class BoolDrawableCellViewHolder extends AbstractViewHolder {
     @NonNull
-    public final TextView row_header_textview;
+    public final ImageView cell_image;
+    @DrawableRes private final int mIdDrawableTrue;
+    @DrawableRes private final int mIdDrawableFalse;
 
-    public RowHeaderViewHolder(@NonNull View itemView) {
+    public BoolDrawableCellViewHolder(@NonNull View itemView, @DrawableRes int idDrawableTrue, @DrawableRes int idDrawableFalse) {
         super(itemView);
-        row_header_textview = itemView.findViewById(R.id.row_header_textview);
+        cell_image = itemView.findViewById(R.id.cell_image);
+        mIdDrawableTrue = idDrawableTrue;
+        mIdDrawableFalse = idDrawableFalse;
+    }
+
+    public void setData(boolean data) {
+        int moodDrawable = data ? mIdDrawableTrue : mIdDrawableFalse;
+
+        cell_image.setImageResource(moodDrawable);
     }
 }

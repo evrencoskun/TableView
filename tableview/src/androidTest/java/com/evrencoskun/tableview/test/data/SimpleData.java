@@ -24,8 +24,8 @@
 
 package com.evrencoskun.tableview.test.data;
 
-import com.evrencoskun.tableview.modell.IRow;
-import com.evrencoskun.tableview.modell.Row;
+import com.evrencoskun.tableview.model.IRow;
+import com.evrencoskun.tableview.model.Row;
 import com.evrencoskun.tableview.test.models.Cell;
 import com.evrencoskun.tableview.test.models.ColumnHeader;
 import com.evrencoskun.tableview.test.models.RowHeader;
