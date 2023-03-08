@@ -29,6 +29,7 @@ import static java.lang.Math.abs;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.evrencoskun.tableview.model.IModelWithId;
 import com.evrencoskun.tableview.sort.ISortableModel;
 
 import java.util.Random;
@@ -36,14 +37,13 @@ import java.util.Random;
 /**
  * An example Pojo that is displayed in demo app-s tableview.
  */
-public class MySamplePojo implements ISortableModel {
+public class MySamplePojo implements IModelWithId {
 
     public final Integer mRandom;
     public final Integer mRandomShort;
-    private final Object[] columns;
     @NonNull
     private final String mId;
-    @Nullable
+    @NonNull
     public final String mText;
     public final boolean mGenderMale;
     public final boolean mMoodHappy;
@@ -59,9 +59,6 @@ public class MySamplePojo implements ISortableModel {
         mMoodHappy = new Random().nextBoolean();
         mRandom = abs(new Random().nextInt());
         mRandomShort = mRandom % 100;
-
-        // the first colums of the table
-        columns = new Object[]{mRandom, mRandomShort, mText, mGenderMale, mMoodHappy};
     }
 
     /**
@@ -72,18 +69,5 @@ public class MySamplePojo implements ISortableModel {
     @Override
     public String getId() {
         return mId;
-    }
-
-    /**
-     * This is necessary for sorting process.
-     * See {@link ISortableModel}.
-     */
-    @Nullable
-    @Override
-    public Object getContent(int column) {
-        if (column >= 0 && column < columns.length) {
-            return columns[column];
-        }
-        return  "cell " + mId + " " + column;
     }
 }

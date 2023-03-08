@@ -34,9 +34,8 @@ import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
-import com.evrencoskun.tableview.sort.ISortableModel;
+import com.evrencoskun.tableview.model.IModelWithId;
 import com.evrencoskun.tableview.sort.SortState;
-import com.evrencoskun.tableviewutil.R;
 import com.evrencoskun.tableviewutil.holder.ColumnHeaderViewHolder;
 import com.evrencoskun.tableviewutil.holder.GenericTextCellViewHolder;
 import com.evrencoskun.tableviewutil.holder.RowHeaderViewHolder;
@@ -44,11 +43,11 @@ import com.evrencoskun.tableview.model.Cell;
 import com.evrencoskun.tableview.model.RowHeader;
 
 /**
- * Generic adapter that translates a Pojo to TableView-Cells.
+ * Generic adapter that translates a POJO to TableView-Cells.
  *
  * Defaultimplementation translates all columns to TextView fields.
  */
-public abstract class TableViewAdapterBase<Pojo extends ISortableModel> extends AbstractTableAdapter<String, RowHeader, Cell<Pojo>> {
+public abstract class TableViewAdapterBase<POJO extends IModelWithId> extends AbstractTableAdapter<String, RowHeader, Cell<POJO>> {
     private static final String LOG_TAG = TableViewAdapterBase.class.getSimpleName();
 
     /**
@@ -135,7 +134,7 @@ public abstract class TableViewAdapterBase<Pojo extends ISortableModel> extends 
      * @see #onCreateCellViewHolder(ViewGroup, int) ;
      */
     @Override
-    public void onBindCellViewHolder(@NonNull AbstractViewHolder holder, @Nullable Cell<Pojo> cellItemModel, int
+    public void onBindCellViewHolder(@NonNull AbstractViewHolder holder, @Nullable Cell<POJO> cellItemModel, int
             columnPosition, int rowPosition) {
 
         // Get the holder to update cell item text

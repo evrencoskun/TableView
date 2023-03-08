@@ -26,14 +26,17 @@ package com.evrencoskun.tableview.model;
 
 import androidx.annotation.NonNull;
 
-import com.evrencoskun.tableview.sort.ISortableModel;
-
 /**
  * Created by evrencoskun on 11/06/2017.
  */
 
-public class RowHeader<C extends ISortableModel> extends Cell<C> {
-    public RowHeader(@NonNull C data) {
+public class RowHeader<POJO extends IModelWithId> extends Cell<POJO> {
+    public RowHeader(@NonNull POJO data) {
         super(data, null);
+    }
+
+    @Override
+    public Object getContent(int column) {
+        return getId();
     }
 }

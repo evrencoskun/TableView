@@ -34,9 +34,9 @@ import com.evrencoskun.tableview.sort.ISortableModel;
  * Created by evrencoskun on 11/06/2017.
  */
 
-public class Cell<T extends ISortableModel> implements ISortableModel, IFilterableModel {
+public class Cell<POJO extends IModelWithId> implements ISortableModel, IFilterableModel {
     @NonNull
-    private final T mData;
+    private final POJO mData;
     private final IColumnValueProvider columnValueProvider;
 
     /**
@@ -44,7 +44,7 @@ public class Cell<T extends ISortableModel> implements ISortableModel, IFilterab
      * @param data the row where the cell data belongs to.
      * @param columnValueProvider that gets the cell value out of the data-row
      */
-    public Cell(@NonNull T data, IColumnValueProvider columnValueProvider) {
+    public Cell(@NonNull POJO data, IColumnValueProvider columnValueProvider) {
         this.mData = data;
         this.columnValueProvider = columnValueProvider;
     }
@@ -70,7 +70,7 @@ public class Cell<T extends ISortableModel> implements ISortableModel, IFilterab
     }
 
     @Nullable
-    public T getData() {
+    public POJO getData() {
         return mData;
     }
 

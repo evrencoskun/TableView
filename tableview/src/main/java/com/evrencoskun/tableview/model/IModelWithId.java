@@ -22,19 +22,14 @@
  * SOFTWARE.
  */
 
-package com.evrencoskun.tableview.sort;
+package com.evrencoskun.tableview.model;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.evrencoskun.tableview.model.IModelWithId;
-
-/**
- * Created by evrencoskun on 24.11.2017.
- */
-
-public interface ISortableModel extends IModelWithId {
-
-    @Nullable
-    Object getContent(int column);
+public interface IModelWithId {
+    /**
+     * to make sorting work, Id must be unique per data row.
+     */
+    @NonNull
+    String getId();
 }
