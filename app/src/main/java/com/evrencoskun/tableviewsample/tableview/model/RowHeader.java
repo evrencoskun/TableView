@@ -25,8 +25,8 @@
 package com.evrencoskun.tableviewsample.tableview.model;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
+import com.evrencoskun.tableview.modell.Cell;
 import com.evrencoskun.tableview.sort.ISortableModel;
 
 /**
@@ -35,6 +35,6 @@ import com.evrencoskun.tableview.sort.ISortableModel;
 
 public class RowHeader<C extends ISortableModel> extends Cell<C> {
     public RowHeader(@NonNull C data) {
-        super(data);
+        super(data, null);
     }
 }

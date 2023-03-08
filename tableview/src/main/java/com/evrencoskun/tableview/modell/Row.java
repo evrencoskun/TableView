@@ -22,18 +22,17 @@
  * SOFTWARE.
  */
 
-package com.evrencoskun.tableview;
+package com.evrencoskun.tableview.modell;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public interface IRow<C> extends List<C> {
-// public interface IRow<C>  {
-/*
-    // methods implemented by List<>
-    int size();
-    C get(int position);
-    C remove(int position);
+public class Row<C> extends ArrayList<C> implements IRow<C> {
+    public Row(List<C> cs) {
+        super(cs);
+    }
 
-    void add(int position, C item);
- */
+    public Row() {
+        super();
+    }
 }

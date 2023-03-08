@@ -26,7 +26,7 @@ package com.evrencoskun.tableview.adapter;
 
 import androidx.annotation.NonNull;
 
-import com.evrencoskun.tableview.IRow;
+import com.evrencoskun.tableview.modell.IRow;
 
 import java.util.List;
 

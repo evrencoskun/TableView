@@ -37,17 +37,14 @@ import java.util.Random;
  * An example Pojo that is displayed in demo app-s tableview.
  */
 public class MySamplePojo implements ISortableModel {
-    // Columns indexes
-    public static final int COLUMN_INDEX_MOOD_HAPPY = 3;
-    public static final int COLUMN_INDEX_GENDER_MALE = 4;
 
-    private final Integer mRandom;
-    private final Integer mRandomShort;
+    public final Integer mRandom;
+    public final Integer mRandomShort;
     private final Object[] columns;
     @NonNull
     private final String mId;
     @Nullable
-    private final String mText;
+    public final String mText;
     public final boolean mGenderMale;
     public final boolean mMoodHappy;
 

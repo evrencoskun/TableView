@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.evrencoskun.tableviewsample.tableview.model;
+package com.evrencoskun.tableview.modell;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,15 +34,17 @@ import com.evrencoskun.tableview.sort.ISortableModel;
  * Created by evrencoskun on 11/06/2017.
  */
 
-public class Cell<C extends ISortableModel> implements ISortableModel, IFilterableModel {
+public class Cell<T extends ISortableModel> implements ISortableModel, IFilterableModel {
     @Nullable
-    private final C mData;
+    private final T mData;
     @NonNull
     private final String mFilterKeyword;
+    private final IColumnValue columnValueProvider;
 
-    public Cell(@NonNull C data) {
+    public Cell(@NonNull T data, IColumnValue columnValueProvider) {
         this.mData = data;
         this.mFilterKeyword = String.valueOf(data);
+        this.columnValueProvider = columnValueProvider;
     }
 
     /**
@@ -66,7 +68,7 @@ public class Cell<C extends ISortableModel> implements ISortableModel, IFilterab
     }
 
     @Nullable
-    public C getData() {
+    public T getData() {
         return mData;
     }
 

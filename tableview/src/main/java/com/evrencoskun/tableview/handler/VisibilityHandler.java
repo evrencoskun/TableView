@@ -30,7 +30,7 @@ import android.util.SparseArray;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.evrencoskun.tableview.IRow;
+import com.evrencoskun.tableview.modell.IRow;
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import java.util.List;

@@ -40,7 +40,7 @@ import com.evrencoskun.tableviewsample.R;
 import com.evrencoskun.tableviewsample.tableview.holder.ColumnHeaderViewHolder;
 import com.evrencoskun.tableviewsample.tableview.holder.GenericTextCellViewHolder;
 import com.evrencoskun.tableviewsample.tableview.holder.RowHeaderViewHolder;
-import com.evrencoskun.tableviewsample.tableview.model.Cell;
+import com.evrencoskun.tableview.modell.Cell;
 import com.evrencoskun.tableviewsample.tableview.model.RowHeader;
 
 /**

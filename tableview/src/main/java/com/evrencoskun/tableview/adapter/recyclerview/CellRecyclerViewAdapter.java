@@ -32,9 +32,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.evrencoskun.tableview.IRow;
+import com.evrencoskun.tableview.modell.IRow;
 import com.evrencoskun.tableview.ITableView;
-import com.evrencoskun.tableview.Row;
+import com.evrencoskun.tableview.modell.Row;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
 import com.evrencoskun.tableview.handler.ScrollHandler;
