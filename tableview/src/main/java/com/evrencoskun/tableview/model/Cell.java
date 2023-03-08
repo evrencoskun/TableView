@@ -35,15 +35,17 @@ import com.evrencoskun.tableview.sort.ISortableModel;
  */
 
 public class Cell<T extends ISortableModel> implements ISortableModel, IFilterableModel {
-    @Nullable
-    private final T mData;
     @NonNull
-    private final String mFilterKeyword;
-    private final IColumnValue columnValueProvider;
+    private final T mData;
+    private final IColumnValueProvider columnValueProvider;
 
-    public Cell(@NonNull T data, IColumnValue columnValueProvider) {
+    /**
+     *
+     * @param data the row where the cell data belongs to.
+     * @param columnValueProvider that gets the cell value out of the data-row
+     */
+    public Cell(@NonNull T data, IColumnValueProvider columnValueProvider) {
         this.mData = data;
-        this.mFilterKeyword = String.valueOf(data);
         this.columnValueProvider = columnValueProvider;
     }
 
@@ -64,7 +66,7 @@ public class Cell<T extends ISortableModel> implements ISortableModel, IFilterab
     @Nullable
     @Override
     public Object getContent(int column) {
-        return mData.getContent(column);
+        return columnValueProvider.get(mData);
     }
 
     @Nullable
@@ -78,6 +80,6 @@ public class Cell<T extends ISortableModel> implements ISortableModel, IFilterab
     @NonNull
     @Override
     public String getFilterableKeyword() {
-        return mFilterKeyword;
+        return getContent(0).toString();
     }
 }

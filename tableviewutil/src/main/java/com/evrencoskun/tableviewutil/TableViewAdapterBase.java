@@ -143,7 +143,6 @@ public abstract class TableViewAdapterBase<Pojo extends ISortableModel> extends 
         viewHolder.setCell(cellItemModel, columnPosition, rowPosition);
     }
 
-
     /**
      * This is where you create your custom Row Header ViewHolder. This method is called when
      * Row Header RecyclerView of the TableView needs a new RecyclerView.ViewHolder of the given

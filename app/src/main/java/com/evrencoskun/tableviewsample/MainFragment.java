@@ -161,7 +161,7 @@ public class MainFragment extends Fragment {
         // Sets a filter to the table, this will only filter a specific column.
         // In the example data, this will filter the mood column.
         if (mTableFilter != null) {
-            mTableFilter.set(TableViewAdapter.COLUMN_INDEX_MOOD_HAPPY, filter);
+            mTableFilter.set(TableViewModel.COLUMN_INDEX_MOOD_HAPPY, filter);
         }
     }
 
@@ -169,7 +169,7 @@ public class MainFragment extends Fragment {
         // Sets a filter to the table, this will only filter a specific column.
         // In the example data, this will filter the gender column.
         if (mTableFilter != null) {
-            mTableFilter.set(TableViewAdapter.COLUMN_INDEX_GENDER_MALE, filter);
+            mTableFilter.set(TableViewModel.COLUMN_INDEX_GENDER_MALE, filter);
         }
     }
 

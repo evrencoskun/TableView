@@ -35,7 +35,6 @@ import androidx.annotation.Nullable;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableviewsample.R;
 import com.evrencoskun.tableviewutil.TableViewAdapterBase;
-import com.evrencoskun.tableviewutil.holder.ColumnHeaderViewHolder;
 import com.evrencoskun.tableviewutil.holder.BoolDrawableCellViewHolder;
 import com.evrencoskun.tableview.model.Cell;
 import com.evrencoskun.tableviewsample.tableview.model.MySamplePojo;
@@ -50,9 +49,6 @@ import com.evrencoskun.tableviewsample.tableview.model.MySamplePojo;
 public class TableViewAdapter extends TableViewAdapterBase<MySamplePojo> {
     private static final String LOG_TAG = TableViewAdapter.class.getSimpleName();
 
-    // Columns indexes
-    public static final int COLUMN_INDEX_MOOD_HAPPY = 3;
-    public static final int COLUMN_INDEX_GENDER_MALE = 4;
     // Cell View Types by Column Position
     private static final int MOOD_CELL_TYPE = 1;
     private static final int GENDER_CELL_TYPE = 2;
@@ -140,9 +136,9 @@ public class TableViewAdapter extends TableViewAdapterBase<MySamplePojo> {
         // then you should fill this method to be able create different
         // type of GenericTextCellViewHolder on "onCreateCellViewHolder"
         switch (column) {
-            case COLUMN_INDEX_MOOD_HAPPY:
+            case TableViewModel.COLUMN_INDEX_MOOD_HAPPY:
                 return MOOD_CELL_TYPE;
-            case COLUMN_INDEX_GENDER_MALE:
+            case TableViewModel.COLUMN_INDEX_GENDER_MALE:
                 return GENDER_CELL_TYPE;
             default:
                 // Default view type
