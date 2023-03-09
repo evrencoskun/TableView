@@ -54,13 +54,16 @@ public class MySamplePojo implements IModelWithId {
      */
     public MySamplePojo(@NonNull String id) {
         this.mId = id;
-        this.mText = "cell " + mId + " 1";
+        this.mText = getColumnValue(1);
         mGenderMale = new Random().nextBoolean();
         mMoodHappy = new Random().nextBoolean();
         mRandom = abs(new Random().nextInt());
         mRandomShort = mRandom % 100;
     }
 
+    public String getColumnValue(int columnNumber) {
+        return "cell " + mId + " " + columnNumber;
+    }
     /**
      * This is necessary for sorting process. Id must be unique per data row.
      * See {@link ISortableModel}.
