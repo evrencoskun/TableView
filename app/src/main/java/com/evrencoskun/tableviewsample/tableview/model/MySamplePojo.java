@@ -73,4 +73,15 @@ public class MySamplePojo implements IModelWithId {
     public String getId() {
         return mId;
     }
+
+    @Override
+    public String toString() {
+        return "MySamplePojo{" +
+                "Id='" + mId + '\'' +
+                ", Random=" + mRandom +
+                ", RandomShort=" + mRandomShort +
+                ", GenderMale=" + mGenderMale +
+                ", MoodHappy=" + mMoodHappy +
+                '}';
+    }
 }

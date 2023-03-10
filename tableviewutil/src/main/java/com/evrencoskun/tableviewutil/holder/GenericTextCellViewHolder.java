@@ -50,8 +50,8 @@ public class GenericTextCellViewHolder extends AbstractViewHolder {
         cell_container = itemView.findViewById(R.id.cell_container);
     }
 
-    public void setCell(@Nullable Object content, int columnPosition, int rowPosition) {
-        super.setCell(content, columnPosition, rowPosition);
+    public void setCell(@Nullable Object content, int columnPosition, int rowPosition, Object pojo) {
+        super.setCell(content, columnPosition, rowPosition, pojo);
         cell_textview.setText(content == null ? "" : content.toString());
 
         // If your TableView should have auto resize for cells & columns.

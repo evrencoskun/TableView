@@ -39,6 +39,7 @@ import com.evrencoskun.tableview.model.IModelWithId;
 import com.evrencoskun.tableview.model.IViewHolderFactory;
 import com.evrencoskun.tableview.sort.SortState;
 import com.evrencoskun.tableviewutil.holder.BoolDrawableCellViewHolder;
+import com.evrencoskun.tableviewutil.holder.ColumnHeaderViewHolder;
 import com.evrencoskun.tableviewutil.holder.GenericTextCellViewHolder;
 import com.evrencoskun.tableviewutil.holder.RowHeaderViewHolder;
 import com.evrencoskun.tableview.model.Cell;
@@ -75,8 +76,12 @@ public class TableViewAdapter<POJO extends IModelWithId>
     @NonNull
     @Override
     public AbstractViewHolder onCreateColumnHeaderViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return getViewHolderFactory(viewType, TableViewAdapter::createGenericTextCellViewHolder)
-                .createViewHolder(parent);
+        View layout = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.table_view_column_header_layout, parent, false);
+
+        // Create a ColumnHeader ViewHolder
+        return new ColumnHeaderViewHolder(layout, getTableView());
+
     }
 
     /**
@@ -97,7 +102,7 @@ public class TableViewAdapter<POJO extends IModelWithId>
     public void onBindColumnHeaderViewHolder(@NonNull AbstractViewHolder holder, @Nullable String
             columnHeader, int columnPosition) {
 
-        holder.setCell(columnHeader, columnPosition,0);
+        holder.setCell(columnHeader, columnPosition,0, null);
     }
 
     /**
@@ -192,7 +197,7 @@ public class TableViewAdapter<POJO extends IModelWithId>
     @Override
     public void onBindCellViewHolder(@NonNull AbstractViewHolder holder, @Nullable Cell<POJO> cellItemModel, int
             columnPosition, int rowPosition) {
-        holder.setCell(cellItemModel != null ? cellItemModel.getContent() : null, columnPosition, rowPosition);
+        holder.setCell(cellItemModel != null ? cellItemModel.getContent() : null, columnPosition, rowPosition, cellItemModel.getData());
     }
 
     /**

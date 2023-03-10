@@ -66,8 +66,8 @@ public class ColumnHeaderViewHolder extends AbstractSorterViewHolder {
         column_header_sortButton.setOnClickListener(mSortButtonClickListener);
     }
 
-    public void setCell(@Nullable Object content, int columnPosition, int rowPosition) {
-        super.setCell(content, columnPosition, rowPosition);
+    public void setCell(@Nullable Object content, int columnPosition, int rowPosition, Object pojo) {
+        super.setCell(content, columnPosition, rowPosition, pojo);
         setColumnHeader(content == null ? "" : content.toString());
     }
 
