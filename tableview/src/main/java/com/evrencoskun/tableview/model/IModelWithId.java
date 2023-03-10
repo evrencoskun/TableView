@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2021 Evren Coşkun
+ * Copyright (c) 2023 k3b
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@ package com.evrencoskun.tableview.model;
 
 import androidx.annotation.NonNull;
 
+/** All POJO-items in TableView must implement this */
 public interface IModelWithId {
     /**
      * to make sorting work, Id must be unique per data row.

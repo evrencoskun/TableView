@@ -25,7 +25,9 @@
 package com.evrencoskun.tableview.model;
 
 /**
- * Provides a column value object
+ * Lamda support to translate POJO to column value object in a table cell.
+ *
+ * Example: pojo -> pojo.getName()
  */
 public interface IColumnValueProvider<POJO> {
     Object get(POJO row);

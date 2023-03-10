@@ -29,7 +29,7 @@ import android.view.ViewGroup;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 
 /**
- * Provides a factory that creates a view with viewholder.
+ * Lamda Support to create a factory that creates a view with viewholder.
  */
 public interface IViewHolderFactory {
     AbstractViewHolder createViewHolder(ViewGroup parent);

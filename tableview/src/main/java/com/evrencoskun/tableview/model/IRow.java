@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2023 Evren Coşkun
+ * Copyright (c) 2023 k3b
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,4 @@ package com.evrencoskun.tableview.model;
 import java.util.List;
 
 public interface IRow<C> extends List<C> {
-// public interface IRow<C>  {
-/*
-    // methods implemented by List<>
-    int size();
-    C get(int position);
-    C remove(int position);
-
-    void add(int position, C item);
- */
 }
