@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2021 Evren Coşkun
+ * Copyright (c) 2021 Evren Coşkun, 2023 k3b
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,26 +29,39 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.model.IModelWithId;
+import com.evrencoskun.tableview.model.IViewHolderFactory;
 import com.evrencoskun.tableview.sort.SortState;
-import com.evrencoskun.tableviewutil.holder.ColumnHeaderViewHolder;
+import com.evrencoskun.tableviewutil.holder.BoolDrawableCellViewHolder;
 import com.evrencoskun.tableviewutil.holder.GenericTextCellViewHolder;
 import com.evrencoskun.tableviewutil.holder.RowHeaderViewHolder;
 import com.evrencoskun.tableview.model.Cell;
 import com.evrencoskun.tableview.model.RowHeader;
+
+import java.util.List;
 
 /**
  * Generic adapter that translates a POJO to TableView-Cells.
  *
  * Defaultimplementation translates all columns to TextView fields.
  */
-public abstract class TableViewAdapterBase<POJO extends IModelWithId> extends AbstractTableAdapter<String, RowHeader, Cell<POJO>> {
-    private static final String LOG_TAG = TableViewAdapterBase.class.getSimpleName();
+public class TableViewAdapter<POJO extends IModelWithId>
+        extends AbstractTableAdapter<String, RowHeader, Cell<POJO>> {
+    private static final String LOG_TAG = TableViewAdapter.class.getSimpleName();
+
+    public static final int COLUMN_TYPE_GENERIC = 9999;
+    @Nullable private final List<ColumnDefinition<POJO>> columnDefinitions;
+
+    public TableViewAdapter(@Nullable List<ColumnDefinition<POJO>> columnDefinitions) {
+        super();
+        this.columnDefinitions = columnDefinitions;
+    }
 
     /**
      * This is where you create your custom Column Header ViewHolder. This method is called when
@@ -62,14 +75,8 @@ public abstract class TableViewAdapterBase<POJO extends IModelWithId> extends Ab
     @NonNull
     @Override
     public AbstractViewHolder onCreateColumnHeaderViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // TODO: check
-        //Log.e(LOG_TAG, " onCreateColumnHeaderViewHolder has been called");
-        // Get Column Header xml Layout
-        View layout = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.table_view_column_header_layout, parent, false);
-
-        // Create a ColumnHeader ViewHolder
-        return new ColumnHeaderViewHolder(layout, getTableView());
+        return getViewHolderFactory(viewType, TableViewAdapter::createGenericTextCellViewHolder)
+                .createViewHolder(parent);
     }
 
     /**
@@ -90,9 +97,7 @@ public abstract class TableViewAdapterBase<POJO extends IModelWithId> extends Ab
     public void onBindColumnHeaderViewHolder(@NonNull AbstractViewHolder holder, @Nullable String
             columnHeader, int columnPosition) {
 
-        // Get the holder to update cell item text
-        ColumnHeaderViewHolder columnHeaderViewHolder = (ColumnHeaderViewHolder) holder;
-        columnHeaderViewHolder.setColumnHeader(columnHeader);
+        holder.setCell(columnHeader, columnPosition,0);
     }
 
     /**
@@ -107,16 +112,67 @@ public abstract class TableViewAdapterBase<POJO extends IModelWithId> extends Ab
     @NonNull
     @Override
     public AbstractViewHolder onCreateCellViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //TODO check
-        Log.e(LOG_TAG, " onCreateCellViewHolder has been called");
+        return getViewHolderFactory(viewType, TableViewAdapter::createGenericTextCellViewHolder).createViewHolder(parent);
+    }
+
+    /**
+     * Translates columnNumber to CellItemViewType.
+     *
+     * @return columnNumber or COLUMN_TYPE_GENERIC if there is no special CellItemViewType
+     */
+    @Override
+    public int getCellItemViewType(int columnNumber) {
+        IViewHolderFactory viewHolderFactory = getViewHolderFactory(columnNumber, null);
+
+        if (viewHolderFactory != null) {
+            // if columnDefinitions found use columnNumber as returned viewtype
+            return columnNumber;
+        }
+
+        // if no specialised viewType is found use generic
+        return COLUMN_TYPE_GENERIC;
+    }
+
+    private IViewHolderFactory getViewHolderFactory(int column,@Nullable IViewHolderFactory notFoundValue) {
+        if (columnDefinitions != null && column >= 0 && column < columnDefinitions.size()) {
+            IViewHolderFactory factory = columnDefinitions.get(column).getViewHolderFactory();
+            if (factory != null) {
+                return factory;
+            }
+        }
+        return notFoundValue;
+    }
+
+    /**
+     * For cells that display a text
+     *
+     * @param parent where view and viewholder will be attached to
+     * @return viewholder for view attached to R.layout.table_view_cell_layout
+     */
+    @NonNull
+    public static GenericTextCellViewHolder createGenericTextCellViewHolder(@NonNull ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View layout;
 
         // For cells that display a text
-        layout = inflater.inflate(R.layout.table_view_cell_layout, parent, false);
+        View layout = inflater.inflate(R.layout.table_view_cell_layout, parent, false);
 
         // Create a Cell ViewHolder
         return new GenericTextCellViewHolder(layout);
+    }
+
+    // Get image cell layout which has ImageView on the base instead of TextView.
+
+    /**
+     * For cells that display one of two images based on a boolean value
+     * @param parent where view and viewholder will be attached to
+     * @param idDrawableTrue icon id for the image that represents true.
+     * @param idDrawableFalse icon id for the image that represents false.
+     * @return viewholder for view attached to R.layout.table_view_image_cell_layout
+     */
+    @NonNull public static AbstractViewHolder createBoolDrawableCellViewHolder(@NonNull ViewGroup parent, @DrawableRes int idDrawableTrue, @DrawableRes int idDrawableFalse) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View layout = inflater.inflate(R.layout.table_view_image_cell_layout, parent, false);
+        return new BoolDrawableCellViewHolder(layout, idDrawableTrue, idDrawableFalse);
     }
 
     /**
@@ -136,10 +192,7 @@ public abstract class TableViewAdapterBase<POJO extends IModelWithId> extends Ab
     @Override
     public void onBindCellViewHolder(@NonNull AbstractViewHolder holder, @Nullable Cell<POJO> cellItemModel, int
             columnPosition, int rowPosition) {
-
-        // Get the holder to update cell item text
-        GenericTextCellViewHolder viewHolder = (GenericTextCellViewHolder) holder;
-        viewHolder.setCell(cellItemModel, columnPosition, rowPosition);
+        holder.setCell(cellItemModel != null ? cellItemModel.getContent() : null, columnPosition, rowPosition);
     }
 
     /**
@@ -191,14 +244,14 @@ public abstract class TableViewAdapterBase<POJO extends IModelWithId> extends Ab
         View corner = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.table_view_corner_layout, parent, false);
         corner.setOnClickListener(view -> {
-            SortState sortState = TableViewAdapterBase.this.getTableView()
+            SortState sortState = TableViewAdapter.this.getTableView()
                     .getRowHeaderSortingStatus();
             if (sortState != SortState.ASCENDING) {
                 Log.d("TableViewAdapter", "Order Ascending");
-                TableViewAdapterBase.this.getTableView().sortRowHeader(SortState.ASCENDING);
+                TableViewAdapter.this.getTableView().sortRowHeader(SortState.ASCENDING);
             } else {
                 Log.d("TableViewAdapter", "Order Descending");
-                TableViewAdapterBase.this.getTableView().sortRowHeader(SortState.DESCENDING);
+                TableViewAdapter.this.getTableView().sortRowHeader(SortState.DESCENDING);
             }
         });
         return corner;
@@ -210,7 +263,7 @@ public abstract class TableViewAdapterBase<POJO extends IModelWithId> extends Ab
         // If you have different items for Cell View by X (Column) position,
         // then you should fill this method to be able create different
         // type of GenericTextCellViewHolder on "onCreateCellViewHolder"
-        return 0;
+        return COLUMN_TYPE_GENERIC;
     }
 
     @Override
@@ -219,6 +272,6 @@ public abstract class TableViewAdapterBase<POJO extends IModelWithId> extends Ab
         // If you have different items for Row Header View by Y (Row) position,
         // then you should fill this method to be able create different
         // type of RowHeaderViewHolder on "onCreateRowHeaderViewHolder"
-        return 0;
+        return COLUMN_TYPE_GENERIC;
     }
 }

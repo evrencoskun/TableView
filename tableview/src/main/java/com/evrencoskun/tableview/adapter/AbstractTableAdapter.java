@@ -190,6 +190,7 @@ public abstract class AbstractTableAdapter<CH, RH, C extends ISortableModel> imp
         return 0;
     }
 
+    /** Translates columnNumber to CellItemViewType */
     @Override
     public int getCellItemViewType(int position) {
         return 0;

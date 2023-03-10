@@ -42,8 +42,8 @@ import androidx.fragment.app.Fragment;
 import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.filter.Filter;
 import com.evrencoskun.tableview.pagination.Pagination;
-import com.evrencoskun.tableviewsample.tableview.TableViewAdapter;
 import com.evrencoskun.tableviewsample.tableview.TableViewListener;
+import com.evrencoskun.tableviewutil.TableViewAdapter;
 import com.evrencoskun.tableviewutil.TableViewModel;
 import com.evrencoskun.tableviewsample.tableview.TestData;
 import com.evrencoskun.tableviewsample.tableview.model.MySamplePojo;
@@ -129,7 +129,7 @@ public class MainFragment extends Fragment {
         TableViewModel<MySamplePojo> tableViewModel = new TableViewModel(columnDefinitions, pojos);
 
         // Create TableView Adapter
-        TableViewAdapter tableViewAdapter = new TableViewAdapter(tableViewModel);
+        TableViewAdapter<MySamplePojo> tableViewAdapter = new TableViewAdapter<>(columnDefinitions);
 
         mTableView.setAdapter(tableViewAdapter);
         mTableView.setTableViewListener(new TableViewListener(mTableView));

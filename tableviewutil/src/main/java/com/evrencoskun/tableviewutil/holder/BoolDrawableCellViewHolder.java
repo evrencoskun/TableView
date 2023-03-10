@@ -29,6 +29,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableviewutil.R;
@@ -50,9 +51,18 @@ public class BoolDrawableCellViewHolder extends AbstractViewHolder {
         mIdDrawableFalse = idDrawableFalse;
     }
 
-    public void setData(boolean data) {
-        int moodDrawable = data ? mIdDrawableTrue : mIdDrawableFalse;
+    public void setCell(@Nullable Object content, int columnPosition, int rowPosition) {
+        super.setCell(content, columnPosition, rowPosition);
+        setData(content == null ? null : (Boolean) content);
+    }
 
-        cell_image.setImageResource(moodDrawable);
+    public void setData(Boolean data) {
+        if (data != null) {
+            int moodDrawable = data ? mIdDrawableTrue : mIdDrawableFalse;
+
+            cell_image.setImageResource(moodDrawable);
+        } else {
+            cell_image.setImageBitmap(null);
+        }
     }
 }

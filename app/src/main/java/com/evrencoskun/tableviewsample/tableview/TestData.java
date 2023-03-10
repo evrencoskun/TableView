@@ -24,8 +24,10 @@
 
 package com.evrencoskun.tableviewsample.tableview;
 
+import com.evrencoskun.tableviewsample.R;
 import com.evrencoskun.tableviewsample.tableview.model.MySamplePojo;
 import com.evrencoskun.tableviewutil.ColumnDefinition;
+import com.evrencoskun.tableviewutil.TableViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,9 +41,13 @@ import java.util.Random;
  */
 
 public class TestData {
-    // Columns indexes
+    // Columns indexes also used as cell-types
     public static final int COLUMN_INDEX_MOOD_HAPPY = 3;
     public static final int COLUMN_INDEX_GENDER_MALE = 4;
+
+    public static final int COLUMN_TYPE_GENERIC = TableViewAdapter.COLUMN_TYPE_GENERIC;
+
+
     // Constant size for dummy data sets
     private static final int COLUMN_SIZE = 500;
     private static final int ROW_SIZE = 500;
@@ -49,8 +55,7 @@ public class TestData {
     public static List<MySamplePojo> createSampleData() {
         List<MySamplePojo> sampleData = new ArrayList<>();
         for(int i = 0; i < ROW_SIZE; i++) {
-            MySamplePojo header = new MySamplePojo(String.valueOf(i));
-            sampleData.add(header);
+            sampleData.add(new MySamplePojo(String.valueOf(i)));
         }
         return sampleData;
     }
@@ -58,18 +63,25 @@ public class TestData {
     public static List<ColumnDefinition<MySamplePojo>> createColumnDefinitions() {
         List<ColumnDefinition<MySamplePojo>> definitions = new ArrayList<>();
         definitions.addAll(
+                // column 0..4 userdefined
                 Arrays.asList(
-                        new ColumnDefinition<>("Random 0", r -> r.mRandom),
-                        new ColumnDefinition<>("Short 1", r -> r.mRandomShort),
-                        new ColumnDefinition<>("Text 2", r1 -> r1.mText),
-                        new ColumnDefinition<>("Gender 3", r -> r.mGenderMale),
-                        new ColumnDefinition<>("Mood 4", r -> r.mMoodHappy)));
+                        new ColumnDefinition<>("Random 0", r -> r.mRandom, null),
+                        new ColumnDefinition<>("Short 1", r -> r.mRandomShort, null),
+                        new ColumnDefinition<>("Text 2", r1 -> r1.mText, null),
+
+                        // column 3..4 contain image
+                        new ColumnDefinition<>("Gender 3", r -> r.mGenderMale,
+                                parent -> TableViewAdapter.createBoolDrawableCellViewHolder(parent, R.drawable.ic_male, R.drawable.ic_female)),
+                        new ColumnDefinition<>("Mood 4", r -> r.mMoodHappy,
+                                parent -> TableViewAdapter.createBoolDrawableCellViewHolder(parent, R.drawable.ic_happy ,R.drawable.ic_sad))));
+
+        // column 5..500 contain generic text
         for (int i = 5; i < COLUMN_SIZE;i++) {
             final int columnNumber = i;
             boolean large = new Random().nextBoolean();
             definitions.add(new ColumnDefinition<>(
                     (large ? "Lage Column " : "Column ") + i,
-                    r -> r.getColumnValue(columnNumber)));
+                    r -> r.getColumnValue(columnNumber), null));
         }
         return definitions;
     }

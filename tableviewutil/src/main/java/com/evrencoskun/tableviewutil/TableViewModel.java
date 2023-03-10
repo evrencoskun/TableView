@@ -29,6 +29,7 @@ import com.evrencoskun.tableview.model.Cell;
 import com.evrencoskun.tableview.model.IColumnValueProvider;
 import com.evrencoskun.tableview.model.IModelWithId;
 import com.evrencoskun.tableview.model.IRow;
+import com.evrencoskun.tableview.model.IViewHolderFactory;
 import com.evrencoskun.tableview.model.Row;
 import com.evrencoskun.tableview.model.RowHeader;
 
@@ -38,8 +39,8 @@ import java.util.List;
 /**
  * Generic TableViewModel that defines RowHeader, ColumnHeader and Cells of the Table.
  */
-public class TableViewModel<POJO extends IModelWithId> {
-    protected final List<ColumnDefinition<POJO>> columnDefinitions;
+public class TableViewModel<POJO extends IModelWithId>  {
+    private final List<ColumnDefinition<POJO>> columnDefinitions;
     protected final List<POJO> pojos;
 
     public TableViewModel(List<ColumnDefinition<POJO>> columnDefinitions, List<POJO> pojos) {
@@ -55,7 +56,7 @@ public class TableViewModel<POJO extends IModelWithId> {
             IRow<Cell<POJO>> cellList = new Row<>();
             for (int colId = 0; colId < numberOfColumns; colId++) {
                 IColumnValueProvider<POJO> provider =
-                        columnDefinitions.get(colId).getValueProvider();
+                        columnDefinitions.get(colId).getPojoToCellValueProvider();
 
                 Cell<POJO> cell = new Cell(pojo, provider);
                 cellList.add(cell);
@@ -71,7 +72,7 @@ public class TableViewModel<POJO extends IModelWithId> {
         List<String> list = new ArrayList<>();
 
         for (ColumnDefinition<POJO>  c : columnDefinitions) {
-            list.add(c.getHeader());
+            list.add(c.getColumnHeaderText());
         }
         return list;
     }
@@ -86,5 +87,9 @@ public class TableViewModel<POJO extends IModelWithId> {
         }
 
         return list;
+    }
+
+    public List<ColumnDefinition<POJO>> getColumnDefinitions() {
+        return columnDefinitions;
     }
 }

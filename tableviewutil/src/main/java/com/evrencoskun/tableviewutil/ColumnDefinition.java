@@ -24,22 +24,48 @@
 
 package com.evrencoskun.tableviewutil;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.evrencoskun.tableview.model.IColumnValueProvider;
+import com.evrencoskun.tableview.model.IViewHolderFactory;
 
-public class ColumnDefinition<T> {
-    private final String header;
-    private final IColumnValueProvider<T> valueProvider;
+/**
+ * All informations needed to define a Table
+ * @param <POJO>
+ */
+public class ColumnDefinition<POJO> {
+    @NonNull private final String columnHeaderText;
+    @NonNull private final IColumnValueProvider<POJO> pojoToCellValueProvider;
+    @Nullable private final IViewHolderFactory viewHolderFactory;
 
-    public ColumnDefinition(String header, IColumnValueProvider<T> valueProvider) {
-        this.header = header;
-        this.valueProvider = valueProvider;
+    /**
+     * Constructor
+     * @param columnHeaderText text to be displayed as column header
+     * @param pojoToCellValueProvider translates POJO to cell column Text
+     * @param viewHolderFactory creates view with viewholder for this column. null means default viewholder
+     */
+    public ColumnDefinition(
+            @NonNull String columnHeaderText,
+            @NonNull  IColumnValueProvider<POJO> pojoToCellValueProvider,
+            @Nullable IViewHolderFactory viewHolderFactory) {
+        this.columnHeaderText = columnHeaderText;
+        this.pojoToCellValueProvider = pojoToCellValueProvider;
+        this.viewHolderFactory = viewHolderFactory;
     }
 
-    public String getHeader() {
-        return header;
+    /** text to be displayed as column header */
+    @NonNull public String getColumnHeaderText() {
+        return columnHeaderText;
     }
 
-    public IColumnValueProvider<T> getValueProvider() {
-        return valueProvider;
+    /** translates POJO to cell column Text */
+    @NonNull public IColumnValueProvider<POJO> getPojoToCellValueProvider() {
+        return pojoToCellValueProvider;
+    }
+
+    /** creates view with viewholder for this column. null means default viewholder */
+    @Nullable public IViewHolderFactory getViewHolderFactory() {
+        return viewHolderFactory;
     }
 }

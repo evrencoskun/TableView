@@ -24,9 +24,13 @@
 
 package com.evrencoskun.tableview.model;
 
+import android.view.ViewGroup;
+
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+
 /**
- * Provides a column value object
+ * Provides a factory that creates a view with viewholder.
  */
-public interface IColumnValueProvider<POJO> {
-    Object get(POJO row);
+public interface IViewHolderFactory {
+    AbstractViewHolder createViewHolder(ViewGroup parent);
 }

@@ -32,7 +32,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
-import com.evrencoskun.tableview.model.Cell;
 import com.evrencoskun.tableviewutil.R;
 
 /**
@@ -44,8 +43,6 @@ public class GenericTextCellViewHolder extends AbstractViewHolder {
     private final TextView cell_textview;
     @NonNull
     private final LinearLayout cell_container;
-    private int mColumnPosition;
-    private int mRowPosition;
 
     public GenericTextCellViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -53,10 +50,9 @@ public class GenericTextCellViewHolder extends AbstractViewHolder {
         cell_container = itemView.findViewById(R.id.cell_container);
     }
 
-    public void setCell(@Nullable Cell cell, int columnPosition, int rowPosition) {
-        mColumnPosition = columnPosition;
-        mRowPosition = rowPosition;
-        cell_textview.setText(String.valueOf(cell.getContent()));
+    public void setCell(@Nullable Object content, int columnPosition, int rowPosition) {
+        super.setCell(content, columnPosition, rowPosition);
+        cell_textview.setText(content == null ? "" : content.toString());
 
         // If your TableView should have auto resize for cells & columns.
         // Then you should consider the below lines. Otherwise, you can ignore them.
