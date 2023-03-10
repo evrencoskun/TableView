@@ -8,8 +8,8 @@ requires a lot of copy&paste from example code to use the TableView in a clienta
 
 Product vision: reduce the amount of (copied) code to integrate TableView into a clientapp.
 
-* all app specific data comes from tableview independent POJOs (i.e. List<MySamplePojo> from TestData.createSampleData())
-* all info how the POJO is displayed in the tableview comes from ColumnDefinition (i.e. List<ColumnDefinition<MySamplePojo>> from TestData.createColumnDefinitions())
+* all app specific data comes from tableview independent POJOs (i.e. `List<MySamplePojo> from TestData.createSampleData()`)
+* all info how the POJO is displayed in the tableview comes from ColumnDefinition (i.e. `List<ColumnDefinition<MySamplePojo>>` from `TestData.createColumnDefinitions()`)
 * no more need to implement app-specific XxxViewHolder, XxxModell for Cell, Column, RowHeader
 * no more need to implement app-specific TableViewAdapter, TableViewModel
 * no more need to define app specific layout for table_view_Xxx_layout.xml for Cell, Column, RowHeader
@@ -18,7 +18,7 @@ Product vision: reduce the amount of (copied) code to integrate TableView into a
 
 ## Additional Requirements
 
-* java-8 lamda expressions to define column values and custom cell-view(-holders). See createColumnDefinitions() in TestData.java 
+* java-8 lamda expressions to define column values and custom cell-view(-holders). See createColumnDefinitions() in TestData.java
 
 # Some differences between old and new style app that uses tableview
 
@@ -28,7 +28,7 @@ build.gradle dependencies:
 
     implementation "com.evrencoskun.library:tableview:$tableview_version"
 
-Mainfragment.java 
+Mainfragment.java
 
     private void initializeTableView(TableView tableView){
         // Create TableView Adapter
