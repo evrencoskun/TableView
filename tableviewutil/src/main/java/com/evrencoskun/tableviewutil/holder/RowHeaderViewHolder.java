@@ -28,6 +28,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableviewutil.R;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
@@ -38,10 +39,15 @@ import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 
 public class RowHeaderViewHolder extends AbstractViewHolder {
     @NonNull
-    public final TextView row_header_textview;
+    private final TextView row_header_textview;
 
     public RowHeaderViewHolder(@NonNull View itemView) {
         super(itemView);
         row_header_textview = itemView.findViewById(R.id.row_header_textview);
+    }
+
+    public void setCell(@Nullable Object content, int columnPosition, int rowPosition, @Nullable Object pojo) {
+        super.setCell(content,columnPosition,rowPosition,pojo);
+        row_header_textview.setText(String.valueOf(content));
     }
 }

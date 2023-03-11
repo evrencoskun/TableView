@@ -40,7 +40,7 @@ import com.evrencoskun.tableviewutil.R;
 
 public class BoolDrawableCellViewHolder extends AbstractViewHolder {
     @NonNull
-    public final ImageView cell_image;
+    private final ImageView cell_image;
     @DrawableRes private final int mIdDrawableTrue;
     @DrawableRes private final int mIdDrawableFalse;
 

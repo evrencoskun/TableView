@@ -239,7 +239,7 @@ public class TableViewAdapter<POJO extends IModelWithId>
 
         // Get the holder to update row header item text
         RowHeaderViewHolder rowHeaderViewHolder = (RowHeaderViewHolder) holder;
-        rowHeaderViewHolder.row_header_textview.setText(String.valueOf(rowHeaderItemModel.getId()));
+        rowHeaderViewHolder.setCell(rowHeaderItemModel.getId(),-1, rowPosition, rowHeaderItemModel.getData());
     }
 
     @NonNull
