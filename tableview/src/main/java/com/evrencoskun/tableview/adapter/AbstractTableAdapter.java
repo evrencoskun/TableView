@@ -33,7 +33,6 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.evrencoskun.tableview.model.IRow;
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.ColumnHeaderRecyclerViewAdapter;
@@ -60,7 +59,7 @@ public abstract class AbstractTableAdapter<CH, RH, C extends ISortableModel> imp
 
     protected List<CH> mColumnHeaderItems;
     protected List<RH> mRowHeaderItems;
-    protected List<IRow<C>> mCellItems;
+    protected List<List<C>> mCellItems;
 
     private ITableView mTableView;
     private List<AdapterDataSetChangedListener<CH, RH, C>> dataSetChangedListeners;
@@ -111,7 +110,7 @@ public abstract class AbstractTableAdapter<CH, RH, C extends ISortableModel> imp
         dispatchRowHeaderDataSetChangesToListeners(mRowHeaderItems);
     }
 
-    public void setCellItems(@Nullable List<IRow<C>> cellItems) {
+    public void setCellItems(@Nullable List<List<C>> cellItems) {
         if (cellItems == null) {
             return;
         }
@@ -128,7 +127,7 @@ public abstract class AbstractTableAdapter<CH, RH, C extends ISortableModel> imp
     public void setAllItems(
             @Nullable List<CH> columnHeaderItems,
             @Nullable List<RH> rowHeaderItems,
-            @Nullable List<IRow<C>> cellItems
+            @Nullable List<List<C>> cellItems
     ) {
         // Set all items
         setColumnHeaderItems(columnHeaderItems);
@@ -259,7 +258,7 @@ public abstract class AbstractTableAdapter<CH, RH, C extends ISortableModel> imp
     @Deprecated
     @Nullable
     public C getCellItem(int columnPosition, int rowPosition) {
-        IRow<C> row = getRowFromModel(rowPosition);
+        List<C> row = getRowFromModel(rowPosition);
         if (row == null) {
             return null;
         }
@@ -279,7 +278,7 @@ public abstract class AbstractTableAdapter<CH, RH, C extends ISortableModel> imp
      * @param rowPosition
      */
     @Deprecated
-    private IRow<C> getRowFromModel(int rowPosition) {
+    private List<C> getRowFromModel(int rowPosition) {
         int size = (mCellItems == null) ? 0 : mCellItems.size();
         if (rowPosition < 0 || rowPosition >= size) {
             Log.i(tag,"getCellItems(row=" + rowPosition +
@@ -290,7 +289,7 @@ public abstract class AbstractTableAdapter<CH, RH, C extends ISortableModel> imp
     }
 
     @Nullable
-    public IRow<C> getCellRowItems(int rowPosition) {
+    public List<C> getCellRowItems(int rowPosition) {
         return mCellRecyclerViewAdapter.getItem(rowPosition);
     }
 
@@ -335,12 +334,12 @@ public abstract class AbstractTableAdapter<CH, RH, C extends ISortableModel> imp
         mRowHeaderRecyclerViewAdapter.deleteItemRange(rowPositionStart, itemCount);
     }
 
-    public void addRow(int rowPosition, @Nullable RH rowHeaderItem, @Nullable IRow<C> cellItems) {
+    public void addRow(int rowPosition, @Nullable RH rowHeaderItem, @Nullable List<C> cellItems) {
         mCellRecyclerViewAdapter.addItem(rowPosition, cellItems);
         mRowHeaderRecyclerViewAdapter.addItem(rowPosition, rowHeaderItem);
     }
 
-    public void addRowRange(int rowPositionStart, @Nullable List<RH> rowHeaderItem, @Nullable List<IRow<C>> cellItems) {
+    public void addRowRange(int rowPositionStart, @Nullable List<RH> rowHeaderItem, @Nullable List<List<C>> cellItems) {
         mRowHeaderRecyclerViewAdapter.addItemRange(rowPositionStart, rowHeaderItem);
         mCellRecyclerViewAdapter.addItemRange(rowPositionStart, cellItems);
     }
@@ -354,7 +353,7 @@ public abstract class AbstractTableAdapter<CH, RH, C extends ISortableModel> imp
     }
 
     public void changeCellItem(int columnPosition, int rowPosition, C cellModel) {
-        IRow<C> cellItems = mCellRecyclerViewAdapter.getItem(rowPosition);
+        List<C> cellItems = mCellRecyclerViewAdapter.getItem(rowPosition);
         if (cellItems != null && cellItems.size() > columnPosition) {
             // Update cell row items.
             cellItems.set(columnPosition, cellModel);
@@ -418,7 +417,7 @@ public abstract class AbstractTableAdapter<CH, RH, C extends ISortableModel> imp
         }
     }
 
-    private void dispatchCellDataSetChangesToListeners(@NonNull List<IRow<C>> newCellItems) {
+    private void dispatchCellDataSetChangesToListeners(@NonNull List<List<C>> newCellItems) {
         if (dataSetChangedListeners != null) {
             for (AdapterDataSetChangedListener<CH, RH, C> listener : dataSetChangedListeners) {
                 listener.onCellItemsChanged(newCellItems);

@@ -26,8 +26,6 @@ package com.evrencoskun.tableview.adapter;
 
 import androidx.annotation.NonNull;
 
-import com.evrencoskun.tableview.model.IRow;
-
 import java.util.List;
 
 public abstract class AdapterDataSetChangedListener<CH, RH, C> {
@@ -53,7 +51,7 @@ public abstract class AdapterDataSetChangedListener<CH, RH, C> {
      *
      * @param cellItems The current cell items.
      */
-    public void onCellItemsChanged(@NonNull List<IRow<C>> cellItems) {
+    public void onCellItemsChanged(@NonNull List<List<C>> cellItems) {
     }
 
     /**
@@ -66,6 +64,6 @@ public abstract class AdapterDataSetChangedListener<CH, RH, C> {
     public void onDataSetChanged(
             List<CH> columnHeaderItems,
             List<RH> rowHeaderItems,
-            List<IRow<C>> cellItems) {
+            List<List<C>> cellItems) {
     }
 }

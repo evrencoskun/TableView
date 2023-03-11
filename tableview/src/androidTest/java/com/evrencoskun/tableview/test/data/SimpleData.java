@@ -24,8 +24,6 @@
 
 package com.evrencoskun.tableview.test.data;
 
-import com.evrencoskun.tableview.model.IRow;
-import com.evrencoskun.tableview.model.Row;
 import com.evrencoskun.tableview.test.models.Cell;
 import com.evrencoskun.tableview.test.models.ColumnHeader;
 import com.evrencoskun.tableview.test.models.RowHeader;
@@ -34,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleData {
-    private List<IRow<Cell>> cells;
+    private List<List<Cell>> cells;
     private List<ColumnHeader> columnHeaders;
     private List<RowHeader> rowHeaders;
 
@@ -59,7 +57,7 @@ public class SimpleData {
 
         cells = new ArrayList<>();
         for (int i = 0; i < rowSize; i++) {
-            IRow<Cell> cellList = new Row<>();
+            List<Cell> cellList = new ArrayList<>();
             for (int j = 0; j < columnSize; j++) {
                 String id = j + ":" + i;
                 cellList.add(new Cell(id, "r:" + i + "c:" + j));
@@ -68,11 +66,11 @@ public class SimpleData {
         }
     }
 
-    public List<IRow<Cell>> getCells() {
+    public List<List<Cell>> getCells() {
         return cells;
     }
 
-    public void setCells(List<IRow<Cell>> cells) {
+    public void setCells(List<List<Cell>> cells) {
         this.cells = cells;
     }
 

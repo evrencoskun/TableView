@@ -28,8 +28,6 @@ import androidx.annotation.NonNull;
 import androidx.core.util.ObjectsCompat;
 import androidx.recyclerview.widget.DiffUtil;
 
-import com.evrencoskun.tableview.model.IRow;
-
 import java.util.List;
 
 /**
@@ -38,12 +36,12 @@ import java.util.List;
 
 public class ColumnSortCallback extends DiffUtil.Callback {
     @NonNull
-    private final List<IRow<ISortableModel>> mOldCellItems;
+    private final List<List<ISortableModel>> mOldCellItems;
     @NonNull
-    private final List<IRow<ISortableModel>> mNewCellItems;
+    private final List<List<ISortableModel>> mNewCellItems;
     private final int mColumnPosition;
 
-    public ColumnSortCallback(@NonNull List<IRow<ISortableModel>> oldCellItems, @NonNull List<IRow<ISortableModel>>
+    public ColumnSortCallback(@NonNull List<List<ISortableModel>> oldCellItems, @NonNull List<List<ISortableModel>>
             newCellItems, int column) {
         this.mOldCellItems = oldCellItems;
         this.mNewCellItems = newCellItems;

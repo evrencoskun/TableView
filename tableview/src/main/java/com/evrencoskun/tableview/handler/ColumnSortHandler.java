@@ -28,7 +28,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 
-import com.evrencoskun.tableview.model.IRow;
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.ColumnHeaderRecyclerViewAdapter;
@@ -83,8 +82,8 @@ public class ColumnSortHandler {
         List<ISortableModel> originalRowHeaderList = mRowHeaderRecyclerViewAdapter.getItems();
         List<ISortableModel> sortedRowHeaderList = new ArrayList<>(originalRowHeaderList);
 
-        List<IRow<ISortableModel>> originalList = mCellRecyclerViewAdapter.getItems();
-        List<IRow<ISortableModel>> sortedList = new ArrayList<>(originalList);
+        List<List<ISortableModel>> originalList = mCellRecyclerViewAdapter.getItems();
+        List<List<ISortableModel>> sortedList = new ArrayList<>(originalList);
 
         if (sortState != SortState.UNSORTED) {
             // Do descending / ascending sort
@@ -107,8 +106,8 @@ public class ColumnSortHandler {
     }
 
     public void sort(int column, @NonNull SortState sortState) {
-        List<IRow<ISortableModel>> originalList = mCellRecyclerViewAdapter.getItems();
-        List<IRow<ISortableModel>> sortedList = new ArrayList<>(originalList);
+        List<List<ISortableModel>> originalList = mCellRecyclerViewAdapter.getItems();
+        List<List<ISortableModel>> sortedList = new ArrayList<>(originalList);
 
         List<ISortableModel> originalRowHeaderList
                 = mRowHeaderRecyclerViewAdapter.getItems();
@@ -139,7 +138,7 @@ public class ColumnSortHandler {
 
     private void swapItems(@NonNull List<ISortableModel> oldRowHeader,
                            @NonNull List<ISortableModel> newRowHeader,
-                           @NonNull List<IRow<ISortableModel>> newColumnItems,
+                           @NonNull List<List<ISortableModel>> newColumnItems,
                            @NonNull SortState sortState
     ) {
 
@@ -161,7 +160,7 @@ public class ColumnSortHandler {
         }
     }
 
-    private void swapItems(@NonNull List<IRow<ISortableModel>> oldItems, @NonNull List<IRow<ISortableModel>>
+    private void swapItems(@NonNull List<List<ISortableModel>> oldItems, @NonNull List<List<ISortableModel>>
             newItems, int column, @NonNull List<ISortableModel> newRowHeader, @NonNull SortState sortState) {
 
         // Set new items without calling notifyCellDataSetChanged method of CellRecyclerViewAdapter
@@ -182,9 +181,9 @@ public class ColumnSortHandler {
         }
     }
 
-    public void swapItems(@NonNull List<IRow<ISortableModel>> newItems, int column) {
+    public void swapItems(@NonNull List<List<ISortableModel>> newItems, int column) {
 
-        List<IRow<ISortableModel>> oldItems = mCellRecyclerViewAdapter.getItems();
+        List<List<ISortableModel>> oldItems = mCellRecyclerViewAdapter.getItems();
 
         // Set new items without calling notifyCellDataSetChanged method of CellRecyclerViewAdapter
         mCellRecyclerViewAdapter.setItems(newItems, !mEnableAnimation);

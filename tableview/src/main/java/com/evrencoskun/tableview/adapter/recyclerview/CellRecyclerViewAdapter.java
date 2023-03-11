@@ -32,9 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.evrencoskun.tableview.model.IRow;
 import com.evrencoskun.tableview.ITableView;
-import com.evrencoskun.tableview.model.Row;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
 import com.evrencoskun.tableview.handler.ScrollHandler;
@@ -52,7 +50,7 @@ import java.util.List;
  * The adapter contains a List of IRow-s of Cells
  */
 
-public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<IRow<C>> {
+public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<List<C>> {
     @NonNull
     private final ITableView mTableView;
 
@@ -62,7 +60,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<IRow
     // This is for testing purpose
     private int mRecyclerViewId = 0;
 
-    public CellRecyclerViewAdapter(@NonNull Context context, @Nullable List<IRow<C>> itemList, @NonNull ITableView tableView) {
+    public CellRecyclerViewAdapter(@NonNull Context context, @Nullable List<List<C>> itemList, @NonNull ITableView tableView) {
         super(context, itemList);
         this.mTableView = tableView;
 
@@ -124,7 +122,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<IRow
                 .recyclerView.getAdapter();
 
         // Get the list
-        IRow<C> row = mItemList.get(yPosition);
+        List<C> row = mItemList.get(yPosition);
 
         // Set Row position
         viewAdapter.setYPosition(yPosition);
@@ -225,7 +223,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<IRow
         List<C> columnItems = new ArrayList<>();
 
         for (int i = 0; i < mItemList.size(); i++) {
-            IRow<C> row = mItemList.get(i);
+            List<C> row = mItemList.get(i);
 
             if (row.size() > columnPosition) {
                 columnItems.add(row.get(columnPosition));
@@ -254,9 +252,9 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<IRow
 
         // Lets change the model list silently
         // Create a new list which the column is already removed.
-        List<IRow<C>> cellItems = new ArrayList<>();
+        List<List<C>> cellItems = new ArrayList<>();
         for (int i = 0; i < mItemList.size(); i++) {
-            IRow<C> rowList = new Row<>(mItemList.get(i));
+            List<C> rowList = new ArrayList<>(mItemList.get(i));
 
             if (rowList.size() > column) {
                 rowList.remove(column);
@@ -290,9 +288,9 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<IRow
 
 
         // Lets change the model list silently
-        List<IRow<C>> cellItems = new ArrayList<>();
+        List<List<C>> cellItems = new ArrayList<>();
         for (int i = 0; i < mItemList.size(); i++) {
-            IRow<C> rowList = new Row<>(mItemList.get(i));
+            List<C> rowList = new ArrayList<>(mItemList.get(i));
 
             if (rowList.size() > column) {
                 rowList.add(column, cellColumnItems.get(i));

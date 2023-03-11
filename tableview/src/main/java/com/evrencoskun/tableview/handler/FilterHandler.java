@@ -26,9 +26,7 @@ package com.evrencoskun.tableview.handler;
 
 import androidx.annotation.NonNull;
 
-import com.evrencoskun.tableview.model.IRow;
 import com.evrencoskun.tableview.ITableView;
-import com.evrencoskun.tableview.model.Row;
 import com.evrencoskun.tableview.adapter.AdapterDataSetChangedListener;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.RowHeaderRecyclerViewAdapter;
@@ -45,8 +43,8 @@ public class FilterHandler<T extends IFilterableModel> {
 
     private final CellRecyclerViewAdapter<T> mCellRecyclerViewAdapter;
     private final RowHeaderRecyclerViewAdapter<T> mRowHeaderRecyclerViewAdapter;
-    private List<IRow<T>> originalCellDataStore;
-    private IRow<T> originalRowDataStore;
+    private List<List<T>> originalCellDataStore;
+    private List<T> originalRowDataStore;
 
     private List<FilterChangedListener<T>> filterChangedListeners;
 
@@ -64,20 +62,20 @@ public class FilterHandler<T extends IFilterableModel> {
             return;
         }
 
-        List<IRow<T>> originalCellData = new ArrayList<>(originalCellDataStore);
-        IRow<T> originalRowData = new Row<>(originalRowDataStore);
-        List<IRow<T>> filteredCellList = new ArrayList<>();
-        IRow<T> filteredRowList = new Row<>();
+        List<List<T>> originalCellData = new ArrayList<>(originalCellDataStore);
+        List<T> originalRowData = new ArrayList<>(originalRowDataStore);
+        List<List<T>> filteredCellList = new ArrayList<>();
+        List<T> filteredRowList = new ArrayList<>();
 
         if (filter.getFilterItems().isEmpty()) {
             filteredCellList = new ArrayList<>(originalCellDataStore);
-            filteredRowList = new Row<>(originalRowDataStore);
+            filteredRowList = new ArrayList<>(originalRowDataStore);
             dispatchFilterClearedToListeners(originalCellDataStore, originalRowDataStore);
         } else {
             for (int x = 0; x < filter.getFilterItems().size(); ) {
                 final FilterItem filterItem = filter.getFilterItems().get(x);
                 if (filterItem.getFilterType().equals(FilterType.ALL)) {
-                    for (IRow<T> itemsList : originalCellData) {
+                    for (List<T> itemsList : originalCellData) {
                         for (T item : itemsList) {
                             if (item
                                     .getFilterableKeyword()
@@ -92,7 +90,7 @@ public class FilterHandler<T extends IFilterableModel> {
                         }
                     }
                 } else {
-                    for (IRow<T> itemsList : originalCellData) {
+                    for (List<T> itemsList : originalCellData) {
                         if (itemsList
                                 .get(filterItem
                                         .getColumn())
@@ -110,7 +108,7 @@ public class FilterHandler<T extends IFilterableModel> {
                 // If this is the last filter to be processed, the filtered lists will not be cleared.
                 if (++x < filter.getFilterItems().size()) {
                     originalCellData = new ArrayList<>(filteredCellList);
-                    originalRowData = new Row<>(filteredRowList);
+                    originalRowData = new ArrayList<>(filteredRowList);
                     filteredCellList.clear();
                     filteredRowList.clear();
                 }
@@ -131,7 +129,7 @@ public class FilterHandler<T extends IFilterableModel> {
             new AdapterDataSetChangedListener() {
                 @Override
                 public void onRowHeaderItemsChanged(@NonNull List rowHeaderItems) {
-                    originalRowDataStore = new Row<>(rowHeaderItems);
+                    originalRowDataStore = new ArrayList<>(rowHeaderItems);
                 }
 
                 @Override
@@ -141,8 +139,8 @@ public class FilterHandler<T extends IFilterableModel> {
             };
 
     private void dispatchFilterChangedToListeners(
-            @NonNull List<IRow<T>> filteredCellItems,
-            @NonNull IRow<T> filteredRowHeaderItems
+            @NonNull List<List<T>> filteredCellItems,
+            @NonNull List<T> filteredRowHeaderItems
     ) {
         if (filterChangedListeners != null) {
             for (FilterChangedListener<T> listener : filterChangedListeners) {
@@ -152,8 +150,8 @@ public class FilterHandler<T extends IFilterableModel> {
     }
 
     private void dispatchFilterClearedToListeners(
-            @NonNull List<IRow<T>> originalCellItems,
-            @NonNull IRow<T> originalRowHeaderItems
+            @NonNull List<List<T>> originalCellItems,
+            @NonNull List<T> originalRowHeaderItems
     ) {
         if (filterChangedListeners != null) {
             for (FilterChangedListener<T> listener : filterChangedListeners) {

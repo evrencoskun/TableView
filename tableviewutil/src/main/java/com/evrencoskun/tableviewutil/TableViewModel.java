@@ -28,9 +28,6 @@ import androidx.annotation.NonNull;
 import com.evrencoskun.tableview.model.Cell;
 import com.evrencoskun.tableview.model.IColumnValueProvider;
 import com.evrencoskun.tableview.model.IModelWithId;
-import com.evrencoskun.tableview.model.IRow;
-import com.evrencoskun.tableview.model.IViewHolderFactory;
-import com.evrencoskun.tableview.model.Row;
 import com.evrencoskun.tableview.model.RowHeader;
 
 import java.util.ArrayList;
@@ -49,11 +46,11 @@ public class TableViewModel<POJO extends IModelWithId>  {
     }
 
     @NonNull
-    public List<IRow<Cell<POJO>>> getCellList() {
-        List<IRow<Cell<POJO>>> list = new ArrayList<>();
+    public List<List<Cell<POJO>>> getCellList() {
+        List<List<Cell<POJO>>> list = new ArrayList<>();
         int numberOfColumns = columnDefinitions.size();
         for (POJO pojo : pojos) {
-            IRow<Cell<POJO>> cellList = new Row<>();
+            List<Cell<POJO>> cellList = new ArrayList<>();
             for (int colId = 0; colId < numberOfColumns; colId++) {
                 IColumnValueProvider<POJO> provider =
                         columnDefinitions.get(colId).getPojoToCellValueProvider();

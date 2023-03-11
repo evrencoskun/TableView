@@ -30,9 +30,9 @@ import android.util.SparseArray;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.evrencoskun.tableview.model.IRow;
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
+
 import java.util.List;
 
 /**
@@ -77,7 +77,7 @@ public class VisibilityHandler {
         if (hiddenRow != null) {
             // add row model to the adapter
             mTableView.getAdapter().addRow(row, hiddenRow.getRowHeaderModel(),
-                    (IRow) hiddenRow.getCellModelList());
+                    hiddenRow.getCellModelList());
         } else {
             Log.e(LOG_TAG, "This row is already visible.");
         }

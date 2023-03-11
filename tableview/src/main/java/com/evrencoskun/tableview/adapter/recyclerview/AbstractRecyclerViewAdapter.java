@@ -30,9 +30,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.evrencoskun.tableview.model.Row;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,7 +56,7 @@ public abstract class AbstractRecyclerViewAdapter<T> extends RecyclerView
         mContext = context;
 
         if (itemList == null) {
-            mItemList = new Row<>();
+            mItemList = new ArrayList<>();
         } else {
             setItems(itemList);
         }
@@ -77,7 +77,7 @@ public abstract class AbstractRecyclerViewAdapter<T> extends RecyclerView
     }
 
     public void setItems(@NonNull List<T> itemList, boolean notifyDataSet) {
-        mItemList = new Row<>(itemList);
+        mItemList = new ArrayList<>(itemList);
 
         if (notifyDataSet) {
             this.notifyDataSetChanged();
