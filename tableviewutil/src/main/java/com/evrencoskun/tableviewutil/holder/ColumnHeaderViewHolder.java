@@ -66,13 +66,16 @@ public class ColumnHeaderViewHolder extends AbstractSorterViewHolder {
         column_header_sortButton.setOnClickListener(mSortButtonClickListener);
     }
 
+    /**
+     * This method is called from onBindColumnHeaderHolder on TableViewAdapter
+     */
     public void setCell(@Nullable Object content, int columnPosition, int rowPosition, Object pojo) {
         super.setCell(content, columnPosition, rowPosition, pojo);
         setColumnHeader(content == null ? "" : content.toString());
     }
 
     /**
-     * This method is calling from onBindColumnHeaderHolder on TableViewAdapter
+     * @deprecated use {@link #setCell(Object, int, int, Object)} instead
      */
     public void setColumnHeader(@Nullable String columnHeader) {
         column_header_textview.setText(columnHeader);

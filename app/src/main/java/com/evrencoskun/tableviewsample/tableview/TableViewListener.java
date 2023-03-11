@@ -62,12 +62,12 @@ public class TableViewListener implements ITableViewListener {
      */
     @Override
     public void onCellClicked(@NonNull RecyclerView.ViewHolder cellView, int column, int row) {
-        showToast("Cell " + getMessageContext(cellView, column, row, "clicked"));
+        showToast("onCellClicked" + getMessageContext(cellView, column, row));
 
     }
 
     @NonNull
-    private String getMessageContext(RecyclerView.ViewHolder cellView, int column, int row, String action) {
+    private String getMessageContext(RecyclerView.ViewHolder cellView, int column, int row) {
         String data = "";
         if (cellView instanceof  AbstractViewHolder) {
             final Object pojo = ((AbstractViewHolder) cellView).getPojo();
@@ -75,9 +75,7 @@ public class TableViewListener implements ITableViewListener {
                 data = pojo.toString();
             }
         }
-        return "" + column + " " + row + " has been " +
-                action +
-                " for " + data + " [" +
+        return "(c=" + column + ",r=" + row + ") for " + data + " [" +
                 cellView.getClass().getSimpleName() + ".]";
     }
 
@@ -91,7 +89,7 @@ public class TableViewListener implements ITableViewListener {
     @Override
     public void onCellDoubleClicked(@NonNull RecyclerView.ViewHolder cellView, int column, int row) {
         // Do what you want.
-        showToast("Cell " + getMessageContext(cellView, column, row, "double clicked"));
+        showToast("onCellDoubleClicked" + getMessageContext(cellView, column, row));
     }
 
     /**
@@ -105,7 +103,7 @@ public class TableViewListener implements ITableViewListener {
     public void onCellLongPressed(@NonNull RecyclerView.ViewHolder cellView, final int column,
                                   int row) {
         // Do What you want
-        showToast("Cell " + getMessageContext(cellView, column, row, "long pressed"));
+        showToast("onCellLongPressed" + getMessageContext(cellView, column, row));
     }
 
     /**
@@ -118,7 +116,7 @@ public class TableViewListener implements ITableViewListener {
     public void onColumnHeaderClicked(@NonNull RecyclerView.ViewHolder columnHeaderView, int
             column) {
         // Do what you want.
-        showToast("Column header " + getMessageContext(columnHeaderView, column, -1, "clicked"));
+        showToast("onColumnHeaderClicked" + getMessageContext(columnHeaderView, column, -1));
     }
 
     /**
@@ -130,7 +128,7 @@ public class TableViewListener implements ITableViewListener {
     @Override
     public void onColumnHeaderDoubleClicked(@NonNull RecyclerView.ViewHolder columnHeaderView, int column) {
         // Do what you want.
-        showToast("Column header " + getMessageContext(columnHeaderView, column, -1, "double clicked"));
+        showToast("onColumnHeaderDoubleClicked" + getMessageContext(columnHeaderView, column, -1));
     }
 
     /**
@@ -142,7 +140,7 @@ public class TableViewListener implements ITableViewListener {
     @Override
     public void onColumnHeaderLongPressed(@NonNull RecyclerView.ViewHolder columnHeaderView, int
             column) {
-        showToast("Column header " + getMessageContext(columnHeaderView, column, -1, "long pressed"));
+        showToast("onColumnHeaderLongPressed" + getMessageContext(columnHeaderView, column, -1));
 
         if (columnHeaderView instanceof ColumnHeaderViewHolder) {
             // Create Long Press Popup
@@ -162,7 +160,7 @@ public class TableViewListener implements ITableViewListener {
     @Override
     public void onRowHeaderClicked(@NonNull RecyclerView.ViewHolder rowHeaderView, int row) {
         // Do whatever you want.
-        showToast("Row header " + getMessageContext(rowHeaderView, -1, row, "clicked"));
+        showToast("onRowHeaderClicked" + getMessageContext(rowHeaderView, -1, row));
     }
 
     /**
@@ -174,7 +172,7 @@ public class TableViewListener implements ITableViewListener {
     @Override
     public void onRowHeaderDoubleClicked(@NonNull RecyclerView.ViewHolder rowHeaderView, int row) {
         // Do whatever you want.
-        showToast("Row header " + getMessageContext(rowHeaderView, -1, row, "double clicked"));
+        showToast("onRowHeaderDoubleClicked" + getMessageContext(rowHeaderView, -1, row));
     }
 
     /**
@@ -185,7 +183,7 @@ public class TableViewListener implements ITableViewListener {
      */
     @Override
     public void onRowHeaderLongPressed(@NonNull RecyclerView.ViewHolder rowHeaderView, int row) {
-        showToast("Row header " + getMessageContext(rowHeaderView, -1, row, "long pressed"));
+        showToast("onRowHeaderLongPressed" + getMessageContext(rowHeaderView, -1, row));
 
         // Create Long Press Popup
         RowHeaderLongPressPopup popup = new RowHeaderLongPressPopup(rowHeaderView, mTableView, row);

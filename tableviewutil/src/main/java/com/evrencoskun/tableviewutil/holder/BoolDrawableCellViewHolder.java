@@ -56,6 +56,9 @@ public class BoolDrawableCellViewHolder extends AbstractViewHolder {
         setData(content == null ? null : (Boolean) content);
     }
 
+    /**
+     * @deprecated use {@link #setCell(Object, int, int, Object)} instead
+     */
     public void setData(Boolean data) {
         if (data != null) {
             int moodDrawable = data ? mIdDrawableTrue : mIdDrawableFalse;

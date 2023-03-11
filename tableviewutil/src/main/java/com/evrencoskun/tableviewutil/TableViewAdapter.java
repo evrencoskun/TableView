@@ -101,8 +101,7 @@ public class TableViewAdapter<POJO extends IModelWithId>
     @Override
     public void onBindColumnHeaderViewHolder(@NonNull AbstractViewHolder holder, @Nullable String
             columnHeader, int columnPosition) {
-
-        holder.setCell(columnHeader, columnPosition,0, null);
+        holder.setCell(columnHeader, columnPosition,0, getColumnDefinition(columnPosition));
     }
 
     /**
@@ -139,13 +138,21 @@ public class TableViewAdapter<POJO extends IModelWithId>
     }
 
     private IViewHolderFactory getViewHolderFactory(int column,@Nullable IViewHolderFactory notFoundValue) {
-        if (columnDefinitions != null && column >= 0 && column < columnDefinitions.size()) {
-            IViewHolderFactory factory = columnDefinitions.get(column).getViewHolderFactory();
+        ColumnDefinition<POJO> definition = getColumnDefinition(column);
+        if (definition != null) {
+            IViewHolderFactory factory = definition.getViewHolderFactory();
             if (factory != null) {
                 return factory;
             }
         }
         return notFoundValue;
+    }
+
+    private ColumnDefinition<POJO> getColumnDefinition(int column) {
+        if (columnDefinitions != null && column >= 0 && column < columnDefinitions.size()) {
+            return columnDefinitions.get(column);
+        }
+        return null;
     }
 
     /**

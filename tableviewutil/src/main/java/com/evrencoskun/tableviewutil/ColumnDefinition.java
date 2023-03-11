@@ -68,4 +68,11 @@ public class ColumnDefinition<POJO> {
     @Nullable public IViewHolderFactory getViewHolderFactory() {
         return viewHolderFactory;
     }
+
+    @Override
+    public String toString() {
+        return "ColumnDefinition{" +
+                "columnHeaderText='" + columnHeaderText + '\'' +
+                '}';
+    }
 }
