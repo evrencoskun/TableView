@@ -46,6 +46,7 @@ public class Cell<POJO extends IModelWithId> implements ISortableModel, IFiltera
      */
     public Cell(@NonNull POJO data, IColumnValueProvider columnValueProvider) {
         this.mData = data;
+        //!!! TODO bug ??? wrong column content
         this.columnValueProvider = columnValueProvider;
     }
 

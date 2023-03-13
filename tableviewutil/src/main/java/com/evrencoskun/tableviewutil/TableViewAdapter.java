@@ -35,6 +35,7 @@ import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+import com.evrencoskun.tableview.model.ColumnDefinition;
 import com.evrencoskun.tableview.model.IModelWithId;
 import com.evrencoskun.tableview.model.IViewHolderFactory;
 import com.evrencoskun.tableview.sort.SortState;
@@ -45,23 +46,17 @@ import com.evrencoskun.tableviewutil.holder.RowHeaderViewHolder;
 import com.evrencoskun.tableview.model.Cell;
 import com.evrencoskun.tableview.model.RowHeader;
 
-import java.util.List;
-
 /**
  * Generic adapter that translates a POJO to TableView-Cells.
  *
  * Defaultimplementation translates all columns to TextView fields.
  */
 public class TableViewAdapter<POJO extends IModelWithId>
-        extends AbstractTableAdapter<String, RowHeader, Cell<POJO>> {
-    private static final String LOG_TAG = TableViewAdapter.class.getSimpleName();
-
+        extends AbstractTableAdapter<ColumnDefinition<POJO>, RowHeader, Cell<POJO>> {
     public static final int COLUMN_TYPE_GENERIC = 9999;
-    @Nullable private final List<ColumnDefinition<POJO>> columnDefinitions;
 
-    public TableViewAdapter(@Nullable List<ColumnDefinition<POJO>> columnDefinitions) {
+    public TableViewAdapter() {
         super();
-        this.columnDefinitions = columnDefinitions;
     }
 
     /**
@@ -93,15 +88,17 @@ public class TableViewAdapter<POJO extends IModelWithId>
      * @param holder                : This is one of your column header ViewHolders that was created
      *                              on ```onCreateColumnHeaderViewHolder``` method. In this example
      *                              we have created "ColumnHeaderViewHolder" holder.
-     * @param columnHeader          : This is the column header located on this X
-     *                              position. In this example, the model class is "String".
+     * @param columnHeader          : This is the column header located on this X position. In this
+     *                              example, the header is ColumnDefinition.getColumnHeaderText().
      * @param columnPosition        : This is the X (Column) position of the column header item.
      * @see #onCreateColumnHeaderViewHolder(ViewGroup, int) ;
      */
     @Override
-    public void onBindColumnHeaderViewHolder(@NonNull AbstractViewHolder holder, @Nullable String
-            columnHeader, int columnPosition) {
-        holder.setCell(columnHeader, columnPosition,0, getColumnDefinition(columnPosition));
+    public void onBindColumnHeaderViewHolder(@NonNull AbstractViewHolder holder,
+                                             @Nullable ColumnDefinition columnHeader,
+                                             int columnPosition) {
+        //!!! TODO
+        holder.setCell(columnHeader, columnPosition,-1, getColumnDefinition(columnPosition));
     }
 
     /**
@@ -149,8 +146,8 @@ public class TableViewAdapter<POJO extends IModelWithId>
     }
 
     private ColumnDefinition<POJO> getColumnDefinition(int column) {
-        if (columnDefinitions != null && column >= 0 && column < columnDefinitions.size()) {
-            return columnDefinitions.get(column);
+        if (mColumnHeaderItems != null && column >= 0 && column < mColumnHeaderItems.size()) {
+            return mColumnHeaderItems.get(column);
         }
         return null;
     }

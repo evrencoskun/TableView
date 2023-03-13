@@ -26,6 +26,7 @@ package com.evrencoskun.tableviewutil;
 import androidx.annotation.NonNull;
 
 import com.evrencoskun.tableview.model.Cell;
+import com.evrencoskun.tableview.model.ColumnDefinition;
 import com.evrencoskun.tableview.model.IColumnValueProvider;
 import com.evrencoskun.tableview.model.IModelWithId;
 import com.evrencoskun.tableview.model.RowHeader;
@@ -65,13 +66,8 @@ public class TableViewModel<POJO extends IModelWithId>  {
     }
 
     @NonNull
-    public List<String> getColumnHeaderList() {
-        List<String> list = new ArrayList<>();
-
-        for (ColumnDefinition<POJO>  c : columnDefinitions) {
-            list.add(c.getColumnHeaderText());
-        }
-        return list;
+    public List<ColumnDefinition<POJO>> getColumnHeaderList() {
+        return columnDefinitions;
     }
 
 

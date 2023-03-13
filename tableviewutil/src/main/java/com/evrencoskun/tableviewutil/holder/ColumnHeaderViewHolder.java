@@ -35,6 +35,7 @@ import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractSorterViewHolder;
+import com.evrencoskun.tableview.model.ColumnDefinition;
 import com.evrencoskun.tableview.sort.SortState;
 import com.evrencoskun.tableviewutil.R;
 
@@ -71,14 +72,14 @@ public class ColumnHeaderViewHolder extends AbstractSorterViewHolder {
      */
     public void setCell(@Nullable Object content, int columnPosition, int rowPosition, Object pojo) {
         super.setCell(content, columnPosition, rowPosition, pojo);
-        setColumnHeader(content == null ? "" : content.toString());
+        setColumnHeader((ColumnDefinition<?>) pojo);
     }
 
     /**
      * @deprecated use {@link #setCell(Object, int, int, Object)} instead
      */
-    public void setColumnHeader(@Nullable String columnHeader) {
-        column_header_textview.setText(columnHeader);
+    public void setColumnHeader(@Nullable ColumnDefinition<?> columnHeader) {
+        column_header_textview.setText(columnHeader != null ? columnHeader.getColumnHeaderText() : null);
 
         // If your TableView should have auto resize for cells & columns.
         // Then you should consider the below lines. Otherwise, you can remove them.

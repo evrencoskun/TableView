@@ -47,7 +47,7 @@ import com.evrencoskun.tableviewutil.TableViewAdapter;
 import com.evrencoskun.tableviewutil.TableViewModel;
 import com.evrencoskun.tableviewsample.tableview.TestData;
 import com.evrencoskun.tableviewsample.tableview.model.MySamplePojo;
-import com.evrencoskun.tableviewutil.ColumnDefinition;
+import com.evrencoskun.tableview.model.ColumnDefinition;
 
 import java.util.List;
 
@@ -129,7 +129,7 @@ public class MainFragment extends Fragment {
         TableViewModel<MySamplePojo> tableViewModel = new TableViewModel(columnDefinitions, pojos);
 
         // Create TableView Adapter
-        TableViewAdapter<MySamplePojo> tableViewAdapter = new TableViewAdapter<>(columnDefinitions);
+        TableViewAdapter<MySamplePojo> tableViewAdapter = new TableViewAdapter<>();
 
         mTableView.setAdapter(tableViewAdapter);
         mTableView.setTableViewListener(new TableViewListener(mTableView));

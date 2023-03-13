@@ -26,7 +26,7 @@ package com.evrencoskun.tableviewsample.tableview;
 
 import com.evrencoskun.tableviewsample.R;
 import com.evrencoskun.tableviewsample.tableview.model.MySamplePojo;
-import com.evrencoskun.tableviewutil.ColumnDefinition;
+import com.evrencoskun.tableview.model.ColumnDefinition;
 import com.evrencoskun.tableviewutil.TableViewAdapter;
 
 import java.util.ArrayList;

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.evrencoskun.tableviewutil;
+package com.evrencoskun.tableview.model;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

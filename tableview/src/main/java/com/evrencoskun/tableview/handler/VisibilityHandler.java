@@ -45,7 +45,10 @@ public class VisibilityHandler {
     @NonNull
     private final ITableView mTableView;
     @NonNull
+    /** Remember all existing rows that are currently hidden */
     private SparseArray<Row> mHideRowList = new SparseArray<>();
+
+    /** Remember all existing columns that are currently hidden */
     @NonNull
     private SparseArray<Column> mHideColumnList = new SparseArray<>();
 
@@ -237,7 +240,6 @@ public class VisibilityHandler {
         public List<Object> getCellModelList() {
             return mCellModelList;
         }
-
     }
 
     @NonNull

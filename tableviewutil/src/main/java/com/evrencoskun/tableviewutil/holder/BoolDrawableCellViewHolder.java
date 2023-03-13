@@ -24,6 +24,7 @@
 
 package com.evrencoskun.tableviewutil.holder;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -53,7 +54,19 @@ public class BoolDrawableCellViewHolder extends AbstractViewHolder {
 
     public void setCell(@Nullable Object content, int columnPosition, int rowPosition, Object pojo) {
         super.setCell(content, columnPosition, rowPosition, pojo);
-        setData(content == null ? null : (Boolean) content);
+        if (content == null) {
+            setData(null);
+        } else if (!(content instanceof Boolean)) {
+            //!!! TODO bug ??? wrong column content
+            Log.w(this.getClass().getSimpleName(), "setCell('" + content +
+                    "', " + columnPosition + ", "
+                            + rowPosition + ", "
+                            + pojo +
+                    ")");
+            setData(null);
+        } else {
+            setData((Boolean) content);
+        }
     }
 
     /**
