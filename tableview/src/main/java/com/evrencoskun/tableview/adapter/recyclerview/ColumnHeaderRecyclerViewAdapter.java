@@ -50,8 +50,10 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
     private final ITableView mTableView;
     private ColumnSortHelper mColumnSortHelper;
 
-    public ColumnHeaderRecyclerViewAdapter(@NonNull Context context, @Nullable List<CH> itemList, @NonNull ITableAdapter
-            tableAdapter) {
+    public ColumnHeaderRecyclerViewAdapter(
+            @NonNull Context context,
+            @Nullable List<CH> itemList,
+            @NonNull ITableAdapter tableAdapter) {
         super(context, itemList);
         this.mTableAdapter = tableAdapter;
         this.mTableView = tableAdapter.getTableView();

@@ -57,7 +57,7 @@ public class SimpleData {
 
         cells = new ArrayList<>();
         for (int i = 0; i < rowSize; i++) {
-            ArrayList<Cell> cellList = new ArrayList<>();
+            List<Cell> cellList = new ArrayList<>();
             for (int j = 0; j < columnSize; j++) {
                 String id = j + ":" + i;
                 cellList.add(new Cell(id, "r:" + i + "c:" + j));

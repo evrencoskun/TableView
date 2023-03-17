@@ -24,16 +24,15 @@
 
 package com.evrencoskun.tableview.sort;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.evrencoskun.tableview.model.IModelWithId;
 
 /**
  * Created by evrencoskun on 24.11.2017.
  */
 
-public interface ISortableModel {
-    @NonNull
-    String getId();
+public interface ISortableModel extends IModelWithId {
 
     @Nullable
     Object getContent();

@@ -52,7 +52,7 @@ import java.util.List;
 
 public class ColumnSortHandler {
 
-    private final CellRecyclerViewAdapter<List<ISortableModel>> mCellRecyclerViewAdapter;
+    private final CellRecyclerViewAdapter<ISortableModel> mCellRecyclerViewAdapter;
     private final RowHeaderRecyclerViewAdapter<ISortableModel> mRowHeaderRecyclerViewAdapter;
     private final ColumnHeaderRecyclerViewAdapter mColumnHeaderRecyclerViewAdapter;
 
@@ -68,7 +68,7 @@ public class ColumnSortHandler {
     }
 
     public ColumnSortHandler(@NonNull ITableView tableView) {
-        this.mCellRecyclerViewAdapter = (CellRecyclerViewAdapter<List<ISortableModel>>) tableView.getCellRecyclerView()
+        this.mCellRecyclerViewAdapter = (CellRecyclerViewAdapter<ISortableModel>) tableView.getCellRecyclerView()
                 .getAdapter();
 
         this.mRowHeaderRecyclerViewAdapter = (RowHeaderRecyclerViewAdapter<ISortableModel>) tableView

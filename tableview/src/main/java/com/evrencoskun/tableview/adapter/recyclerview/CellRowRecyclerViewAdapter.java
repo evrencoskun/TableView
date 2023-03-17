@@ -33,12 +33,14 @@ import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.ITableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
+import com.evrencoskun.tableview.model.Cell;
+import com.evrencoskun.tableview.sort.ISortableModel;
 
 /**
  * Created by evrencoskun on 10/06/2017.
  */
 
-public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
+public class CellRowRecyclerViewAdapter<C extends ISortableModel> extends AbstractRecyclerViewAdapter<C> {
 
     private int mYPosition;
     private final ITableAdapter mTableAdapter;
@@ -73,7 +75,7 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
 
     @Override
     public int getItemViewType(int position) {
-        return mTableAdapter.getCellItemViewType(position);
+        return ((Cell<?>) getItem(position)).getColumnType();
     }
 
     @Override

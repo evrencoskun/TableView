@@ -34,7 +34,7 @@ import androidx.annotation.NonNull;
 import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.sort.SortState;
 import com.evrencoskun.tableviewsample.R;
-import com.evrencoskun.tableviewsample.tableview.holder.ColumnHeaderViewHolder;
+import com.evrencoskun.tableviewutil.holder.ColumnHeaderViewHolder;
 
 /**
  * Created by evrencoskun on 24.12.2017.
@@ -52,11 +52,13 @@ public class ColumnHeaderLongPressPopup extends PopupMenu implements PopupMenu
     @NonNull
     private final TableView mTableView;
     private final int mXPosition;
+    private final int column;
 
-    public ColumnHeaderLongPressPopup(@NonNull ColumnHeaderViewHolder viewHolder, @NonNull TableView tableView) {
+    public ColumnHeaderLongPressPopup(@NonNull ColumnHeaderViewHolder viewHolder, @NonNull TableView tableView, int column) {
         super(viewHolder.itemView.getContext(), viewHolder.itemView);
         this.mTableView = tableView;
         this.mXPosition = viewHolder.getBindingAdapterPosition();
+        this.column = column;
 
         initialize();
     }
@@ -107,10 +109,10 @@ public class ColumnHeaderLongPressPopup extends PopupMenu implements PopupMenu
                 mTableView.sortColumn(mXPosition, SortState.DESCENDING);
                 break;
             case HIDE_ROW:
-                mTableView.hideRow(5);
+                mTableView.hideRow(3);
                 break;
             case SHOW_ROW:
-                mTableView.showRow(5);
+                mTableView.showRow(3);
                 break;
             case SCROLL_ROW:
                 mTableView.scrollToRowPosition(5);

@@ -22,26 +22,21 @@
  * SOFTWARE.
  */
 
-package com.evrencoskun.tableviewsample.tableview.holder;
-
-import android.view.View;
-import android.widget.TextView;
+package com.evrencoskun.tableview.model;
 
 import androidx.annotation.NonNull;
 
-import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
-import com.evrencoskun.tableviewsample.R;
-
 /**
- * Created by evrencoskun on 23/10/2017.
+ * Created by evrencoskun on 11/06/2017.
  */
 
-public class RowHeaderViewHolder extends AbstractViewHolder {
-    @NonNull
-    public final TextView row_header_textview;
+public class RowHeader<POJO extends IModelWithId> extends Cell<POJO> {
+    public RowHeader(@NonNull POJO data) {
+        super(data, null);
+    }
 
-    public RowHeaderViewHolder(@NonNull View itemView) {
-        super(itemView);
-        row_header_textview = itemView.findViewById(R.id.row_header_textview);
+    @Override
+    public Object getContent() {
+        return getId();
     }
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2021 Evren Coşkun
+ * Copyright (c) 2023 K3b
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,30 +22,13 @@
  * SOFTWARE.
  */
 
-package com.evrencoskun.tableviewsample.tableview.holder;
-
-import android.view.View;
-
-import androidx.annotation.NonNull;
-
-import com.evrencoskun.tableviewsample.R;
-import com.evrencoskun.tableviewsample.tableview.TableViewModel;
+package com.evrencoskun.tableview.model;
 
 /**
- * Created by evrencoskun on 4.02.2018.
+ * Lamda support to translate POJO to column value object in a table cell.
+ *
+ * Example: pojo -> pojo.getName()
  */
-
-public class GenderCellViewHolder extends MoodCellViewHolder {
-
-    public GenderCellViewHolder(@NonNull View itemView) {
-        super(itemView);
-    }
-
-    @Override
-    public void setData(Object data) {
-        int gender = (int) data;
-        int genderDrawable = gender == TableViewModel.BOY ? R.drawable.ic_male : R.drawable.ic_female;
-
-        cell_image.setImageResource(genderDrawable);
-    }
+public interface IColumnValueProvider<POJO> {
+    Object get(POJO row);
 }

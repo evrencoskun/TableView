@@ -57,7 +57,7 @@ public class Pagination implements IPagination {
     @Nullable
     private RowHeaderRecyclerViewAdapter<ISortableModel> mRowHeaderRecyclerViewAdapter;
     @Nullable
-    private CellRecyclerViewAdapter<List<ISortableModel>> mCellRecyclerViewAdapter;
+    private CellRecyclerViewAdapter<ISortableModel> mCellRecyclerViewAdapter;
     @Nullable
     private OnTableViewPageTurnedListener onTableViewPageTurnedListener;
 

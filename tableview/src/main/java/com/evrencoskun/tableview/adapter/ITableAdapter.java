@@ -32,12 +32,13 @@ import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+import com.evrencoskun.tableview.sort.ISortableModel;
 
 /**
  * Created by evrencoskun on 10/06/2017.
  */
 
-public interface ITableAdapter<CH, RH, C> {
+public interface ITableAdapter<CH, RH, C extends ISortableModel> {
 
     int getColumnHeaderItemViewType(int position);
 

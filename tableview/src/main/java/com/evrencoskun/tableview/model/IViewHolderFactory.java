@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2021 Evren Coşkun
+ * Copyright (c) 2023 K3b
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,34 +22,15 @@
  * SOFTWARE.
  */
 
-package com.evrencoskun.tableviewsample.tableview.holder;
+package com.evrencoskun.tableview.model;
 
-import android.view.View;
-import android.widget.ImageView;
-
-import androidx.annotation.NonNull;
+import android.view.ViewGroup;
 
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
-import com.evrencoskun.tableviewsample.R;
-import com.evrencoskun.tableviewsample.tableview.TableViewModel;
 
 /**
- * Created by evrencoskun on 4.02.2018.
+ * Lamda Support to create a factory that creates a view with viewholder.
  */
-
-public class MoodCellViewHolder extends AbstractViewHolder {
-    @NonNull
-    public final ImageView cell_image;
-
-    public MoodCellViewHolder(@NonNull View itemView) {
-        super(itemView);
-        cell_image = itemView.findViewById(R.id.cell_image);
-    }
-
-    public void setData(Object data) {
-        int mood = (int) data;
-        int moodDrawable = mood == TableViewModel.HAPPY ? R.drawable.ic_happy : R.drawable.ic_sad;
-
-        cell_image.setImageResource(moodDrawable);
-    }
+public interface IViewHolderFactory {
+    AbstractViewHolder createViewHolder(ViewGroup parent);
 }

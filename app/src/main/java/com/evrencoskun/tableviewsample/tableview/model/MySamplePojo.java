@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2021 Evren Coşkun
+ * Copyright (c) 2023 k3b
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,33 +24,49 @@
 
 package com.evrencoskun.tableviewsample.tableview.model;
 
+import static java.lang.Math.abs;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.evrencoskun.tableview.filter.IFilterableModel;
+import com.evrencoskun.tableview.model.IModelWithId;
 import com.evrencoskun.tableview.sort.ISortableModel;
 
-/**
- * Created by evrencoskun on 11/06/2017.
- */
+import java.util.Random;
 
-public class Cell implements ISortableModel, IFilterableModel {
+/**
+ * An example Pojo that is displayed in demo app-s tableview.
+ */
+public class MySamplePojo implements IModelWithId {
+
+    public final Integer mRandom;
+    public final Integer mRandomShort;
     @NonNull
     private final String mId;
-    @Nullable
-    private final Object mData;
     @NonNull
-    private final String mFilterKeyword;
-
-    public Cell(@NonNull String id, @Nullable Object data) {
-        this.mId = id;
-        this.mData = data;
-        this.mFilterKeyword = String.valueOf(data);
-    }
+    public final String mText;
+    public final boolean mGenderMale;
+    public final boolean mMoodHappy;
 
     /**
-     * This is necessary for sorting process.
-     * See ISortableModel
+     * Create an item that will be displayed in the TableView.
+     * the "column-values" are random generated.
+     */
+    public MySamplePojo(@NonNull String id) {
+        this.mId = id;
+        this.mText = getColumnValue(1);
+        mGenderMale = new Random().nextBoolean();
+        mMoodHappy = new Random().nextBoolean();
+        mRandom = abs(new Random().nextInt());
+        mRandomShort = mRandom % 100;
+    }
+
+    public String getColumnValue(int columnNumber) {
+        return "cell " + mId + " " + columnNumber;
+    }
+    /**
+     * This is necessary for sorting process. Id must be unique per data row.
+     * See {@link ISortableModel}.
      */
     @NonNull
     @Override
@@ -58,24 +74,14 @@ public class Cell implements ISortableModel, IFilterableModel {
         return mId;
     }
 
-    /**
-     * This is necessary for sorting process.
-     * See ISortableModel
-     */
-    @Nullable
     @Override
-    public Object getContent() {
-        return mData;
-    }
-
-    @Nullable
-    public Object getData() {
-        return mData;
-    }
-
-    @NonNull
-    @Override
-    public String getFilterableKeyword() {
-        return mFilterKeyword;
+    public String toString() {
+        return "MySamplePojo{" +
+                "Id='" + mId + '\'' +
+                ", Random=" + mRandom +
+                ", RandomShort=" + mRandomShort +
+                ", GenderMale=" + mGenderMale +
+                ", MoodHappy=" + mMoodHappy +
+                '}';
     }
 }

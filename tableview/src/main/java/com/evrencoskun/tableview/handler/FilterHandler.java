@@ -41,7 +41,7 @@ import java.util.List;
 
 public class FilterHandler<T extends IFilterableModel> {
 
-    private final CellRecyclerViewAdapter<List<T>> mCellRecyclerViewAdapter;
+    private final CellRecyclerViewAdapter<T> mCellRecyclerViewAdapter;
     private final RowHeaderRecyclerViewAdapter<T> mRowHeaderRecyclerViewAdapter;
     private List<List<T>> originalCellDataStore;
     private List<T> originalRowDataStore;
@@ -50,7 +50,7 @@ public class FilterHandler<T extends IFilterableModel> {
 
     public FilterHandler(@NonNull ITableView tableView) {
         tableView.getAdapter().addAdapterDataSetChangedListener(adapterDataSetChangedListener);
-        this.mCellRecyclerViewAdapter = (CellRecyclerViewAdapter<List<T>>) tableView
+        this.mCellRecyclerViewAdapter = (CellRecyclerViewAdapter<T>) tableView
                 .getCellRecyclerView().getAdapter();
 
         this.mRowHeaderRecyclerViewAdapter = (RowHeaderRecyclerViewAdapter<T>) tableView

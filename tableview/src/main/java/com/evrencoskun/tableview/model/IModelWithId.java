@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2021 Evren Coşkun
+ * Copyright (c) 2023 k3b
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,17 +22,15 @@
  * SOFTWARE.
  */
 
-package com.evrencoskun.tableviewsample.tableview.model;
+package com.evrencoskun.tableview.model;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-/**
- * Created by evrencoskun on 11/06/2017.
- */
-
-public class ColumnHeader extends Cell {
-    public ColumnHeader(@NonNull String id, @Nullable String data) {
-        super(id, data);
-    }
+/** All POJO-items in TableView must implement this */
+public interface IModelWithId {
+    /**
+     * to make sorting work, Id must be unique per data row.
+     */
+    @NonNull
+    String getId();
 }

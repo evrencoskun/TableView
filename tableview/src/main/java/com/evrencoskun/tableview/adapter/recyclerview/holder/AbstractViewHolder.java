@@ -28,6 +28,7 @@ import android.view.View;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -35,6 +36,10 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 
 public abstract class AbstractViewHolder extends RecyclerView.ViewHolder {
+    protected int mColumnPosition;
+    protected int mRowPosition;
+    @Nullable private Object mPojo;
+
     public enum SelectionState {SELECTED, UNSELECTED, SHADOWED}
 
     // Default value
@@ -72,6 +77,15 @@ public abstract class AbstractViewHolder extends RecyclerView.ViewHolder {
 
     public boolean onFailedToRecycleView() {
         return false;
+    }
+
+    public void setCell(@Nullable Object content, int columnPosition, int rowPosition, @Nullable Object pojo) {
+        mColumnPosition = columnPosition;
+        mRowPosition = rowPosition;
+        this.mPojo = pojo;
+    }
+    public Object getPojo() {
+        return mPojo;
     }
 
 }

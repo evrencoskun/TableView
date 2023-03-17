@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.evrencoskun.tableviewsample.tableview.holder;
+package com.evrencoskun.tableviewutil.holder;
 
 import android.view.View;
 import android.widget.LinearLayout;
@@ -32,27 +32,27 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
-import com.evrencoskun.tableviewsample.R;
-import com.evrencoskun.tableviewsample.tableview.model.Cell;
+import com.evrencoskun.tableviewutil.R;
 
 /**
  * Created by evrencoskun on 23/10/2017.
  */
 
-public class CellViewHolder extends AbstractViewHolder {
+public class GenericTextCellViewHolder extends AbstractViewHolder {
     @NonNull
     private final TextView cell_textview;
     @NonNull
     private final LinearLayout cell_container;
 
-    public CellViewHolder(@NonNull View itemView) {
+    public GenericTextCellViewHolder(@NonNull View itemView) {
         super(itemView);
         cell_textview = itemView.findViewById(R.id.cell_data);
         cell_container = itemView.findViewById(R.id.cell_container);
     }
 
-    public void setCell(@Nullable Cell cell) {
-        cell_textview.setText(String.valueOf(cell.getData()));
+    public void setCell(@Nullable Object content, int columnPosition, int rowPosition, Object pojo) {
+        super.setCell(content, columnPosition, rowPosition, pojo);
+        cell_textview.setText(content == null ? "" : content.toString());
 
         // If your TableView should have auto resize for cells & columns.
         // Then you should consider the below lines. Otherwise, you can ignore them.

@@ -22,17 +22,32 @@
  * SOFTWARE.
  */
 
-package com.evrencoskun.tableviewsample.tableview.model;
+package com.evrencoskun.tableviewutil.holder;
+
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.evrencoskun.tableviewutil.R;
+import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+
 /**
- * Created by evrencoskun on 11/06/2017.
+ * Created by evrencoskun on 23/10/2017.
  */
 
-public class RowHeader extends Cell {
-    public RowHeader(@NonNull String id, @Nullable String data) {
-        super(id, data);
+public class RowHeaderViewHolder extends AbstractViewHolder {
+    @NonNull
+    private final TextView row_header_textview;
+
+    public RowHeaderViewHolder(@NonNull View itemView) {
+        super(itemView);
+        row_header_textview = itemView.findViewById(R.id.row_header_textview);
+    }
+
+    public void setCell(@Nullable Object content, int columnPosition, int rowPosition, @Nullable Object pojo) {
+        super.setCell(content,columnPosition,rowPosition,pojo);
+        row_header_textview.setText(String.valueOf(content));
     }
 }

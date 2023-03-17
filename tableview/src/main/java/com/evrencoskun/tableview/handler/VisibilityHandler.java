@@ -32,6 +32,7 @@ import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
+
 import java.util.List;
 
 /**
@@ -44,7 +45,10 @@ public class VisibilityHandler {
     @NonNull
     private final ITableView mTableView;
     @NonNull
+    /** Remember all existing rows that are currently hidden */
     private SparseArray<Row> mHideRowList = new SparseArray<>();
+
+    /** Remember all existing columns that are currently hidden */
     @NonNull
     private SparseArray<Column> mHideColumnList = new SparseArray<>();
 
@@ -127,7 +131,7 @@ public class VisibilityHandler {
         if (hiddenColumn != null) {
             // add column model to the adapter
             mTableView.getAdapter().addColumn(column, hiddenColumn.getColumnHeaderModel(),
-                    hiddenColumn.getCellModelList());
+                    (List<?>) hiddenColumn.getCellModelList());
         } else {
             Log.e(LOG_TAG, "This column is already visible.");
         }
@@ -236,7 +240,6 @@ public class VisibilityHandler {
         public List<Object> getCellModelList() {
             return mCellModelList;
         }
-
     }
 
     @NonNull
@@ -252,9 +255,9 @@ public class VisibilityHandler {
     private Column getColumnValueFromPosition(int column) {
         AbstractTableAdapter adapter = mTableView.getAdapter();
         Object columnHeaderModel = adapter.getColumnHeaderItem(column);
-        List<Object> cellModelList = adapter.getCellColumnItems(column);
+        List<Object> verticalItemsAtColumn = adapter.getVerticalItemsAtColumn(column);
 
-        return new Column(column, columnHeaderModel, cellModelList);
+        return new Column(column, columnHeaderModel, verticalItemsAtColumn);
     }
 
     @NonNull

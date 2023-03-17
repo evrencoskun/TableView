@@ -54,6 +54,7 @@ import com.evrencoskun.tableview.listener.itemclick.RowHeaderRecyclerViewItemCli
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
 import com.evrencoskun.tableview.preference.SavedState;
+import com.evrencoskun.tableview.sort.ISortableModel;
 import com.evrencoskun.tableview.sort.SortState;
 
 import androidx.annotation.AttrRes;
@@ -240,9 +241,9 @@ public class TableView extends FrameLayout implements ITableView {
     public void initialize() {
 
         // Create Views
-        mColumnHeaderRecyclerView = createColumnHeaderRecyclerView();
-        mRowHeaderRecyclerView = createRowHeaderRecyclerView();
-        mCellRecyclerView = createCellRecyclerView();
+        if (mColumnHeaderRecyclerView == null) mColumnHeaderRecyclerView = createColumnHeaderRecyclerView();
+        if (mRowHeaderRecyclerView == null) mRowHeaderRecyclerView = createRowHeaderRecyclerView();
+        if (mCellRecyclerView == null) mCellRecyclerView = createCellRecyclerView();
 
         // Set some Id to help in identification
         mColumnHeaderRecyclerView.setId(R.id.ColumnHeaderRecyclerView);
@@ -255,11 +256,11 @@ public class TableView extends FrameLayout implements ITableView {
         addView(mCellRecyclerView);
 
         // Create Handlers
-        mSelectionHandler = new SelectionHandler(this);
-        mVisibilityHandler = new VisibilityHandler(this);
-        mScrollHandler = new ScrollHandler(this);
-        mPreferencesHandler = new PreferencesHandler(this);
-        mColumnWidthHandler = new ColumnWidthHandler(this);
+        if (mSelectionHandler == null) mSelectionHandler = new SelectionHandler(this);
+        if (mVisibilityHandler == null) mVisibilityHandler = new VisibilityHandler(this);
+        if (mScrollHandler == null) mScrollHandler = new ScrollHandler(this);
+        if (mPreferencesHandler == null) mPreferencesHandler = new PreferencesHandler(this);
+        if (mColumnWidthHandler == null) mColumnWidthHandler = new ColumnWidthHandler(this);
 
         initializeListeners();
     }
@@ -396,7 +397,7 @@ public class TableView extends FrameLayout implements ITableView {
         return recyclerView;
     }
 
-    public <CH, RH, C> void setAdapter(@Nullable AbstractTableAdapter<CH, RH, C> tableAdapter) {
+    public <CH, RH, C extends ISortableModel> void setAdapter(@Nullable AbstractTableAdapter<CH, RH, C> tableAdapter) {
         if (tableAdapter != null) {
             this.mTableAdapter = tableAdapter;
             this.mTableAdapter.setRowHeaderWidth(mRowHeaderWidth);

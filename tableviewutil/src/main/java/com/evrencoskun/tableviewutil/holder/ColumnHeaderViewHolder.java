@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.evrencoskun.tableviewsample.tableview.holder;
+package com.evrencoskun.tableviewutil.holder;
 
 import android.util.Log;
 import android.view.View;
@@ -35,9 +35,9 @@ import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractSorterViewHolder;
+import com.evrencoskun.tableview.model.ColumnDefinition;
 import com.evrencoskun.tableview.sort.SortState;
-import com.evrencoskun.tableviewsample.R;
-import com.evrencoskun.tableviewsample.tableview.model.ColumnHeader;
+import com.evrencoskun.tableviewutil.R;
 
 /**
  * Created by evrencoskun on 23/10/2017.
@@ -68,10 +68,18 @@ public class ColumnHeaderViewHolder extends AbstractSorterViewHolder {
     }
 
     /**
-     * This method is calling from onBindColumnHeaderHolder on TableViewAdapter
+     * This method is called from onBindColumnHeaderHolder on TableViewAdapter
      */
-    public void setColumnHeader(@Nullable ColumnHeader columnHeader) {
-        column_header_textview.setText(String.valueOf(columnHeader.getData()));
+    public void setCell(@Nullable Object content, int columnPosition, int rowPosition, Object pojo) {
+        super.setCell(content, columnPosition, rowPosition, pojo);
+        setColumnHeader((ColumnDefinition<?>) pojo);
+    }
+
+    /**
+     * @deprecated use {@link #setCell(Object, int, int, Object)} instead
+     */
+    public void setColumnHeader(@Nullable ColumnDefinition<?> columnHeader) {
+        column_header_textview.setText(columnHeader != null ? columnHeader.getColumnHeaderText() : null);
 
         // If your TableView should have auto resize for cells & columns.
         // Then you should consider the below lines. Otherwise, you can remove them.

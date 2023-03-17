@@ -1,0 +1,40 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    namespace 'com.evrencoskun.tableviewutil'
+    compileSdkVersion compile_sdk_version
+
+    defaultConfig {
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility = java_version
+        targetCompatibility = java_version
+    }
+}
+
+dependencies {
+    implementation project(path: ':tableview')
+
+    implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
+    implementation "androidx.recyclerview:recyclerview:$androidx_recyclerview_version"
+    testImplementation "junit:junit:$junit_version"
+    androidTestImplementation "androidx.test.ext:junit:$androidx_test_ext_version"
+    androidTestImplementation "androidx.test:rules:$androidx_test_version"
+    androidTestImplementation "androidx.test:runner:$androidx_test_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$androidx_test_espresso_version"
+}

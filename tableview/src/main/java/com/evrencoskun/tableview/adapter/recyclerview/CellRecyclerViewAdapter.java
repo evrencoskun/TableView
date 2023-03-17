@@ -46,9 +46,11 @@ import java.util.List;
 
 /**
  * Created by evrencoskun on 10/06/2017.
+ *
+ * The adapter contains a List of IRow-s of Cells
  */
 
-public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
+public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<List<C>> {
     @NonNull
     private final ITableView mTableView;
 
@@ -58,7 +60,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
     // This is for testing purpose
     private int mRecyclerViewId = 0;
 
-    public CellRecyclerViewAdapter(@NonNull Context context, @Nullable List<C> itemList, @NonNull ITableView tableView) {
+    public CellRecyclerViewAdapter(@NonNull Context context, @Nullable List<List<C>> itemList, @NonNull ITableView tableView) {
         super(context, itemList);
         this.mTableView = tableView;
 
@@ -120,13 +122,13 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
                 .recyclerView.getAdapter();
 
         // Get the list
-        List<C> rowList = (List<C>) mItemList.get(yPosition);
+        List<C> row = mItemList.get(yPosition);
 
         // Set Row position
         viewAdapter.setYPosition(yPosition);
 
         // Set the list to the adapter
-        viewAdapter.setItems(rowList);
+        viewAdapter.setItems(row);
     }
 
     @Override
@@ -212,23 +214,23 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
     }
 
     /**
-     * This method helps to get cell item model that is located on given column position.
+     * This method helps to get cell item model that is located on given vertical column position.
      *
      * @param columnPosition
      */
     @NonNull
-    public List<C> getColumnItems(int columnPosition) {
-        List<C> cellItems = new ArrayList<>();
+    public List<C> getVerticalItemsAtColumn(int columnPosition) {
+        List<C> columnItems = new ArrayList<>();
 
         for (int i = 0; i < mItemList.size(); i++) {
-            List<C> rowList = (List<C>) mItemList.get(i);
+            List<C> row = mItemList.get(i);
 
-            if (rowList.size() > columnPosition) {
-                cellItems.add(rowList.get(columnPosition));
+            if (row.size() > columnPosition) {
+                columnItems.add(row.get(columnPosition));
             }
         }
 
-        return cellItems;
+        return columnItems;
     }
 
 
@@ -252,7 +254,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         // Create a new list which the column is already removed.
         List<List<C>> cellItems = new ArrayList<>();
         for (int i = 0; i < mItemList.size(); i++) {
-            List<C> rowList = new ArrayList<>((List<C>) mItemList.get(i));
+            List<C> rowList = new ArrayList<>(mItemList.get(i));
 
             if (rowList.size() > column) {
                 rowList.remove(column);
@@ -262,7 +264,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         }
 
         // Change data without notifying. Because we already did for visible recyclerViews.
-        setItems((List<C>) cellItems, false);
+        setItems(cellItems, false);
     }
 
     public void addColumnItems(int column, @NonNull List<C> cellColumnItems) {
@@ -288,7 +290,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         // Lets change the model list silently
         List<List<C>> cellItems = new ArrayList<>();
         for (int i = 0; i < mItemList.size(); i++) {
-            List<C> rowList = new ArrayList<>((List<C>) mItemList.get(i));
+            List<C> rowList = new ArrayList<>(mItemList.get(i));
 
             if (rowList.size() > column) {
                 rowList.add(column, cellColumnItems.get(i));
@@ -298,6 +300,6 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         }
 
         // Change data without notifying. Because we already did for visible recyclerViews.
-        setItems((List<C>) cellItems, false);
+        setItems(cellItems, false);
     }
 }
