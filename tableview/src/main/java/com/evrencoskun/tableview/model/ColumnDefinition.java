@@ -24,6 +24,8 @@
 
 package com.evrencoskun.tableview.model;
 
+import android.util.SparseArray;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -35,23 +37,40 @@ import com.evrencoskun.tableview.model.IViewHolderFactory;
  * @param <POJO>
  */
 public class ColumnDefinition<POJO> {
+    public static final int COLUMN_TYPE_GENERIC = 9999;
     @NonNull private final String columnHeaderText;
     @NonNull private final IColumnValueProvider<POJO> pojoToCellValueProvider;
     @Nullable private final IViewHolderFactory viewHolderFactory;
+
+    private final int columnType;
+
+    private static SparseArray<IViewHolderFactory> typId2ViewHolderFactory = new SparseArray<>();
 
     /**
      * Constructor
      * @param columnHeaderText text to be displayed as column header
      * @param pojoToCellValueProvider translates POJO to cell column Text
      * @param viewHolderFactory creates view with viewholder for this column. null means default viewholder
+     * @param columnType id of the used viewHolderFactory (must be unique for each viewholder-type). COLUMN_TYPE_GENERIC means default viewholder
      */
     public ColumnDefinition(
             @NonNull String columnHeaderText,
             @NonNull  IColumnValueProvider<POJO> pojoToCellValueProvider,
-            @Nullable IViewHolderFactory viewHolderFactory) {
+            @Nullable IViewHolderFactory viewHolderFactory,
+            int columnType) {
         this.columnHeaderText = columnHeaderText;
         this.pojoToCellValueProvider = pojoToCellValueProvider;
         this.viewHolderFactory = viewHolderFactory;
+        this.columnType = columnType;
+        if (columnType != COLUMN_TYPE_GENERIC) {
+           typId2ViewHolderFactory.append(columnType, viewHolderFactory);
+        }
+    }
+
+    public ColumnDefinition(
+            @NonNull String columnHeaderText,
+            @NonNull  IColumnValueProvider<POJO> pojoToCellValueProvider) {
+        this(columnHeaderText,pojoToCellValueProvider,null, COLUMN_TYPE_GENERIC);
     }
 
     /** text to be displayed as column header */
@@ -74,5 +93,8 @@ public class ColumnDefinition<POJO> {
         return "ColumnDefinition{" +
                 "columnHeaderText='" + columnHeaderText + '\'' +
                 '}';
+    }
+    public int getColumnType() {
+        return columnType;
     }
 }

@@ -53,10 +53,8 @@ public class TableViewModel<POJO extends IModelWithId>  {
         for (POJO pojo : pojos) {
             List<Cell<POJO>> cellList = new ArrayList<>();
             for (int colId = 0; colId < numberOfColumns; colId++) {
-                IColumnValueProvider<POJO> provider =
-                        columnDefinitions.get(colId).getPojoToCellValueProvider();
-
-                Cell<POJO> cell = new Cell(pojo, provider);
+                ColumnDefinition<POJO> columnDefinition = columnDefinitions.get(colId);
+                Cell<POJO> cell = new Cell(pojo, columnDefinition);
                 cellList.add(cell);
             }
             list.add(cellList);

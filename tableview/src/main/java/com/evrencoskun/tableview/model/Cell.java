@@ -37,17 +37,15 @@ import com.evrencoskun.tableview.sort.ISortableModel;
 public class Cell<POJO extends IModelWithId> implements ISortableModel, IFilterableModel {
     @NonNull
     private final POJO mData;
-    private final IColumnValueProvider columnValueProvider;
+    private final ColumnDefinition<POJO> columnDefinition;
 
     /**
-     *
      * @param data the row where the cell data belongs to.
-     * @param columnValueProvider that gets the cell value out of the data-row
+     * @param columnDefinition defines mapping from pojo to content and optional viewHolderId for non standard viewholders
      */
-    public Cell(@NonNull POJO data, IColumnValueProvider columnValueProvider) {
+    public Cell(@NonNull POJO data, ColumnDefinition<POJO> columnDefinition) {
         this.mData = data;
-        //!!! TODO bug ??? wrong column content
-        this.columnValueProvider = columnValueProvider;
+        this.columnDefinition = columnDefinition;
     }
 
     /**
@@ -67,9 +65,12 @@ public class Cell<POJO extends IModelWithId> implements ISortableModel, IFiltera
     @Nullable
     @Override
     public Object getContent() {
-        return columnValueProvider.get(mData);
+        return columnDefinition.getPojoToCellValueProvider().get(mData);
     }
 
+    public int getColumnType() {
+        return columnDefinition.getColumnType();
+    }
     @Nullable
     public POJO getData() {
         return mData;

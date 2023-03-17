@@ -53,7 +53,6 @@ import com.evrencoskun.tableview.model.RowHeader;
  */
 public class TableViewAdapter<POJO extends IModelWithId>
         extends AbstractTableAdapter<ColumnDefinition<POJO>, RowHeader, Cell<POJO>> {
-    public static final int COLUMN_TYPE_GENERIC = 9999;
 
     public TableViewAdapter() {
         super();
@@ -64,13 +63,13 @@ public class TableViewAdapter<POJO extends IModelWithId>
      * Column Header RecyclerView of the TableView needs a new RecyclerView.ViewHolder of the given
      * type to represent an item.
      *
-     * @param viewType : This value comes from "getColumnHeaderItemViewType" method to support
+     * @param viewholderTypeId : This value comes from "getColumnHeaderItemViewType" method to support
      *                 different type of viewHolder as a Column Header item.
      * @see #getColumnHeaderItemViewType(int);
      */
     @NonNull
     @Override
-    public AbstractViewHolder onCreateColumnHeaderViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AbstractViewHolder onCreateColumnHeaderViewHolder(@NonNull ViewGroup parent, int viewholderTypeId) {
         View layout = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.table_view_column_header_layout, parent, false);
 
@@ -106,40 +105,43 @@ public class TableViewAdapter<POJO extends IModelWithId>
      * RecyclerView of the TableView needs a new RecyclerView.ViewHolder of the given type to
      * represent an item.
      *
-     * @param viewType : This value comes from "getCellItemViewType" method to support different
+     * @param viewholderTypeId : This value comes from "getCellItemViewType" method to support different
      *                 type of viewHolder as a Cell item.
      * @see #getCellItemViewType(int);
      */
     @NonNull
     @Override
-    public AbstractViewHolder onCreateCellViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return getViewHolderFactory(viewType, TableViewAdapter::createGenericTextCellViewHolder).createViewHolder(parent);
+    public AbstractViewHolder onCreateCellViewHolder(@NonNull ViewGroup parent, int viewholderTypeId) {
+        return getViewHolderFactoryById(viewholderTypeId, TableViewAdapter::createGenericTextCellViewHolder).createViewHolder(parent);
     }
 
     /**
-     * Translates columnNumber to CellItemViewType.
+     * Translates columnNumber to CellItemViewType (viewholderTypeId).
      *
      * @return columnNumber or COLUMN_TYPE_GENERIC if there is no special CellItemViewType
      */
     @Override
     public int getCellItemViewType(int columnNumber) {
-        IViewHolderFactory viewHolderFactory = getViewHolderFactory(columnNumber, null);
-
-        if (viewHolderFactory != null) {
-            // if columnDefinitions found use columnNumber as returned viewtype
-            return columnNumber;
-        }
-
-        // if no specialised viewType is found use generic
-        return COLUMN_TYPE_GENERIC;
+        return getViewHolderTypeId(columnNumber,ColumnDefinition.COLUMN_TYPE_GENERIC);
     }
 
-    private IViewHolderFactory getViewHolderFactory(int column,@Nullable IViewHolderFactory notFoundValue) {
-        ColumnDefinition<POJO> definition = getColumnDefinition(column);
+    private IViewHolderFactory getViewHolderFactoryById(int viewholderTypeId, @Nullable IViewHolderFactory notFoundValue) {
+        ColumnDefinition<POJO> definition = getColumnDefinition(viewholderTypeId);
         if (definition != null) {
             IViewHolderFactory factory = definition.getViewHolderFactory();
             if (factory != null) {
                 return factory;
+            }
+        }
+        return notFoundValue;
+    }
+
+    private int getViewHolderTypeId(int column, @Nullable int notFoundValue) {
+        ColumnDefinition<POJO> definition = getColumnDefinition(column);
+        if (definition != null) {
+            int id = definition.getColumnType();
+            if (id != ColumnDefinition.COLUMN_TYPE_GENERIC) {
+                return id;
             }
         }
         return notFoundValue;
@@ -209,13 +211,13 @@ public class TableViewAdapter<POJO extends IModelWithId>
      * Row Header RecyclerView of the TableView needs a new RecyclerView.ViewHolder of the given
      * type to represent an item.
      *
-     * @param viewType : This value comes from "getRowHeaderItemViewType" method to support
+     * @param viewholderTypeId : This value comes from "getRowHeaderItemViewType" method to support
      *                 different type of viewHolder as a row Header item.
      * @see #getRowHeaderItemViewType(int);
      */
     @NonNull
     @Override
-    public AbstractViewHolder onCreateRowHeaderViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AbstractViewHolder onCreateRowHeaderViewHolder(@NonNull ViewGroup parent, int viewholderTypeId) {
         // Get Row Header xml Layout
         View layout = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.table_view_row_header_layout, parent, false);
@@ -272,7 +274,7 @@ public class TableViewAdapter<POJO extends IModelWithId>
         // If you have different items for Cell View by X (Column) position,
         // then you should fill this method to be able create different
         // type of GenericTextCellViewHolder on "onCreateCellViewHolder"
-        return COLUMN_TYPE_GENERIC;
+        return ColumnDefinition.COLUMN_TYPE_GENERIC;
     }
 
     @Override
@@ -281,6 +283,6 @@ public class TableViewAdapter<POJO extends IModelWithId>
         // If you have different items for Row Header View by Y (Row) position,
         // then you should fill this method to be able create different
         // type of RowHeaderViewHolder on "onCreateRowHeaderViewHolder"
-        return COLUMN_TYPE_GENERIC;
+        return ColumnDefinition.COLUMN_TYPE_GENERIC;
     }
 }
